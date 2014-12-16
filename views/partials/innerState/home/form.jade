@@ -1,0 +1,5 @@
+div.container.content-container
+    div.row(style="margin-top: 100px;")
+        div.col-lg-8.col-lg-offset-2.col-sm-12
+            form#scholarshipForm(ng-submit="processForm()")
+                .ui-view#formViews(ng-init="user.csrf='#{_csrf}'")

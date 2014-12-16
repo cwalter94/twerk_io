@@ -1,0 +1,14 @@
+div.container.content-container(ng-init="user.csrf='#{_csrf}'")
+    div.row.text-center.intro-text
+        .col-lg-12.col-xs-12.text-left
+            h1 Nobody likes twerking with strangers.
+        .col-lg-12.col-xs-12.text-left
+            h3 Post your open tablespace at libraries and coffee shops, and we'll let other students know where they can find a study spot.
+
+            h3 Plus with a verified twerk buddy, you'll have the contact info of people around you if you need to leave your things for a minute.
+
+    div.row.text-center
+        .col-lg-6.col-xs-12
+            button.btn.btn-default.btn-lg(style="height: 50px; width: 250px; font-size: 20px; margin-top: 20px;", ui-sref="home.request.name") Post Your Spot
+        .col-lg-6.col-xs-12
+            button.btn.btn-default.btn-lg(style="height: 50px; width: 250px; font-size: 20px; margin-top: 20px;", ui-sref="home.find") Find Open Spots

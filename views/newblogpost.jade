@@ -1,0 +1,16 @@
+extends layout
+
+block content
+    script.
+        $('.create-blog-post').css('display', 'none');
+
+    div(ng-controller='newBlogPostCtrl')
+
+        btn.btn.btn-large.btn-warning.publish-blog-post(ng-click="publish()") Publish
+        div.alert-warn.fade(flash-alert='error', active-class='in alert')
+            strong.alert-message {{flash.message}}
+
+        input(type='hidden', name='_csrf', value=_csrf, ng-init="user.csrf='#{_csrf}'")
+        input.blog-post-title(placeholder='Title', ng-model="blogpost.title")
+        text-angular(ng-model="blogpost.text", height='50%',  placeholder="Put something here.", ta-file-drop="onFileSelect")
+

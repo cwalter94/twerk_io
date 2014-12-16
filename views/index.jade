@@ -1,0 +1,13 @@
+extends layout
+
+block head
+    base(href="/")
+
+block body
+    include partials/navbar
+
+    div.alert-warn.fade(flash-alert='error', active-class='in alert')
+        strong.alert-message {{flash.message}}
+        input(type='hidden', name='_csrf', value=_csrf, ng-init="user.csrf='#{_csrf}'")
+
+    .ui-view

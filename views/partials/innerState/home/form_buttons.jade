@@ -1,0 +1,14 @@
+div.container.content-container
+    div.row
+        div.col-lg-6.col-lg-offset-3.col-xs-12
+            .page-header.text-center
+                #statusButtons.text-center
+                    a(ui-sref-active="active", ui-sref=".name") Name
+                    a(ui-sref-active="active", ui-sref=".email") Email
+                    a(ui-sref-active="active", ui-sref=".phone") Phone
+                    a(ui-sref-active="active", ui-sref=".details") Details
+
+    div.row
+        div.col-lg-8.col-lg-offset-2.col-sm-12
+            form#scholarshipForm(ng-submit="processForm()")
+                .ui-view#formViews

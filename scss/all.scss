@@ -1,0 +1,423 @@
+html {
+  background: url('../img/bg1.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+
+
+  body {
+
+    background: rgba(250, 250, 250, .8);
+
+    .scholarship-page {
+      height: 100%;
+      width: 100%;
+      position: absolute;
+      top: 0;
+      left: 0;
+
+
+      &.scholarship-app {
+        background: rgba(255, 255, 255, 1) !important;
+      }
+
+      .scholarship-par {
+        font-size: 26px;
+//        color: white;
+      }
+    }
+
+    .btn-main {
+      font-weight: 300;
+      font-family: "Helvetica Neue Light", "Helvetica-Neue-Light", sans-serif;
+      font-size: 20px;
+      height: 50px;
+      width: 100%;
+      border-width: 1px;
+      border-color: #003262;
+      background: transparent;
+
+
+      &:hover {
+        background: transparent !important;
+        color: #003262;
+      }
+
+      span {
+        font-size: 20px;
+        margin-left: 20px;
+      }
+    }
+
+    ui-view, .ui-view {
+      height: 100%;
+    }
+
+    .input-main {
+      font-size: 28px;
+      text-align: center;
+
+    }
+
+    .label-main {
+      font-size: 28px;
+      text-align: left;
+      font-weight: 300;
+      color: #003262;
+      margin-bottom: 20px;
+    }
+
+    nav {
+
+      li.dropdown {
+        &.open {
+          a {
+            background-color: rgba(255,255,255,0) !important;
+            color: #444 !important;
+          }
+
+          ul {
+            padding: 0px;
+            background-color: rgba(255,255,255,.4) !important;
+
+            a:hover {
+              background-color: rgba(255,255,255,.4) !important;
+              color: #444 !important;
+            }
+          }
+        }
+      }
+
+      &.top-nav-collapse {
+        li.dropdown {
+          &.open {
+            a {
+              background-color: rgba(255, 255, 255, .2) !important;
+              color: #444 !important;
+            }
+
+            ul {
+              background-color: rgba(255,255,255,1) !important;
+
+              a:hover {
+                background-color: rgba(0,0,0,.1) !important;
+                color: #444 !important;
+              }
+            }
+          }
+        }
+      }
+
+
+
+    }
+
+    .bounce-home {
+      position:absolute;
+      left:50%;
+      bottom:10%;
+      margin-left:-100px;
+      height:50px;
+      width:200px;
+      background:transparent;
+      text-align: center;
+
+      -webkit-animation-name: bounce;
+      -webkit-animation-timing-function: linear;
+      -webkit-animation-iteration-count: infinite;
+      -webkit-animation-duration: 2s;
+    }
+
+
+    .btn-main {
+      font-size: 32px;
+      text-align: center;
+      color: #FFF;
+
+      &:hover {
+        color: #EEE;
+      }
+    }
+    .alert-flash {
+      padding: 8px 35px 8px 14px;
+      margin-bottom: 20px;
+      text-shadow: 0 1px 0 rgba(255, 255, 255, 0.5);
+      border: 1px solid transparent;
+      -webkit-border-radius: 4px;
+      -moz-border-radius: 4px;
+      border-radius: 4px;
+
+      /* change transition property to all */
+      -webkit-transition-property: all;
+      transition-property: all;
+    }
+
+    .alert-flash h4 {
+      margin: 0;
+    }
+
+
+    .address-select {
+      text-transform: uppercase;
+      font-family: Montserrat,sans-serif;
+      background: #FFF;
+      background-image: #FFF;
+
+      .selectize-input {
+        background: #FFF;
+        background-image: none !important;
+        box-shadow: none !important;
+        background-color: transparent !important;
+        height: 34px !important;
+      }
+    }
+
+
+
+    #statusButtons {
+      a {
+        margin: 10px;
+        border-bottom: 2px solid transparent;
+        font-size: 24px;
+        color: #AAA;
+
+        &.active {
+           border-bottom-color: #003262;
+           color: #003262;
+        }
+      }
+
+    }
+
+
+    #pageViews {
+
+
+      -webkit-transition: all 0s ease;
+      -moz-transition: all 0s ease;
+      -ms-transition: all 0s ease;
+      -o-transition: all 0s ease;
+      transition: all 0s ease;
+      opacity: 1;
+
+      &.ng-enter, &.ng-leave {
+        opacity: 0;
+      }
+
+      @keyframes slideOutTop {
+        from    {
+          opacity: 1
+        }
+        to      {
+          opacity: 0;
+        }
+      }
+      @-moz-keyframes slideOutTop {
+        from    {
+          opacity: 1
+        }
+        to      {
+          opacity: 0;
+        }
+      }
+      @-webkit-keyframes slideOutTop {
+        from    {
+          opacity: 1
+        }
+        to      {
+          opacity: 0;
+        }
+      }
+
+      /* slide in from the right */
+      @keyframes slideInBottom {
+        from    {
+          opacity: 0
+        }
+        to      {
+          opacity: 1;
+        }
+      }
+      @-moz-keyframes slideInBottom {
+        from    {
+          opacity: 0
+        }
+        to      {
+          opacity: 1;
+        }
+      }
+      @-webkit-keyframes slideInBottom {
+        from    {
+          opacity: 0
+        }
+        to      {
+          opacity: 1;
+        }
+      }
+    }
+
+
+    #formViews {
+
+      &.ng-enter, &.ng-leave {
+        position: absolute;
+        left: 0px;
+        right: 0px;
+//        -webkit-transition: all .5s ease;
+//        -moz-transition: all .5s ease;
+//        -ms-transition: all .5s ease;
+//        -o-transition: all .5s ease;
+//        transition: all .5s ease;
+      }
+
+      &.ng-enter {
+        -webkit-animation:slideInRight 0.5s both ease;
+        -moz-animation:slideInRight 0.5s both ease;
+        animation:slideInRight 0.5s both ease;
+      }
+
+      &.ng-leave {
+        -webkit-animation:slideOutLeft 0.5s both ease;
+        -moz-animation:slideOutLeft 0.5s both ease;
+        animation:slideOutLeft 0.5s both ease;
+      }
+
+      @keyframes slideOutLeft {
+        to      { transform: translateX(-200%); }
+      }
+      @-moz-keyframes slideOutLeft {
+        to      { -moz-transform: translateX(-200%); }
+      }
+      @-webkit-keyframes slideOutLeft {
+        to      { -webkit-transform: translateX(-200%); }
+      }
+
+      /* slide in from the right */
+      @keyframes slideInRight {
+        from    { transform:translateX(200%); }
+        to      { transform: translateX(0); }
+      }
+      @-moz-keyframes slideInRight {
+        from    { -moz-transform:translateX(200%); }
+        to      { -moz-transform: translateX(0); }
+      }
+      @-webkit-keyframes slideInRight {
+        from    { -webkit-transform:translateX(200%); }
+        to      { -webkit-transform: translateX(0); }
+      }
+
+
+    }
+
+
+    .alert-flash .close {
+      position: relative;
+      top: -2px;
+      right: -21px;
+      line-height: 20px;
+    }
+
+    /* add warning colors to warn class */
+    .alert-warn {
+      background-color: #fcf8e3;
+      border: 1px solid #fbeed5;
+    }
+
+    .alert-warn,
+    .alert-warn h4 {
+      color: #c09853;
+    }
+
+    .create-blog-post, .publish-blog-post {
+      position: fixed;
+      z-index: 1031;
+      top: 0px;
+      right: 50px;
+
+      i {
+        font-size: 24px;
+
+      }
+    }
+
+    .publish-blog-post {
+      z-index: 1032;
+      top: 7px;
+    }
+
+    .editable {
+      cursor: pointer;
+    }
+
+
+
+    .content-container {
+      margin-top: 75px;
+
+      .intro-text {
+        * {
+          color: #003262;
+        }
+
+        h1 {
+          font-size: 70px;
+        }
+        h3 {
+
+        }
+      }
+
+      .form-button {
+        margin-top: 20px;
+      }
+
+
+      text-angular {
+        width: 100%;
+        min-height: 400px;
+        font-size: 24px;
+        border: 0px;
+
+        .form-control {
+          height: auto !important;
+          box-shadow: none;
+          border: 0px;
+
+          &:focus {
+            outline: 0;
+          }
+        }
+
+        .ta-text {
+          *:focus {
+            outline: 0px;
+          }
+        }
+
+        .ta-toolbar {
+          top: 0px;
+
+          position: fixed;
+          padding-top: 0px;
+          background-color: #FFF;
+          -webkit-transition: all .5s;
+          -moz-transition: all .5s;
+          -ms-transition: all .5s;
+          -o-transition: all .5s;
+          transition: all .5s;
+
+          &.focussed {
+            padding-top: 2px;
+            top: 50px;
+          }
+
+        }
+
+        .ta-resizer-handle-overlay {
+          display: none !important;
+        }
+      }
+
+      }
+    }
+}

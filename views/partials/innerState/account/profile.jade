@@ -1,0 +1,92 @@
+extends ../../../layout
+
+block content
+  script(src="/js/angular/controllers/profileCtrl.js")
+  link(rel="stylesheet", href="/css/account.css")
+
+  div.container(ng-controller="profileCtrl", ng-init='user.csrf="#{_csrf}"')
+      .row.page-header
+        h3 Profile Information
+
+      .row
+        .col-md-4
+          div.profile-picture(ng-file-drop='onFileSelect($files)', ng-show='dropSupported',
+              ng-file-drop-available="dropSupported=true", ng-file-drag-over-delay='100', ng-init='user.picture="#{user.profile.picture}"')
+            img(ng-src='{{user.picture}}', width='100%')
+        form.col-md-8.form-horizontal(action='/account/profile', method='POST', ng-init="user.excomm=#{user.excomm}")
+            input(type='hidden', name='_csrf', value=_csrf)
+            .form-group
+              label.col-sm-2.control-label(for='email') Email
+              .col-sm-6
+                input.form-control(type='email', name='email', id='email', value='#{user.email}', ng-init='user.email="#{user.email}"')
+            .form-group
+              label.col-sm-2.control-label(for='name') Name
+              .col-sm-6
+                input.form-control(type='text', name='name', id='name', value='#{user.profile.name}')
+
+            .form-group(ng-init="user.role='#{user.role}'")
+                input(type="hidden", name="role", value="{{user.role}}", ng-model="user.role")
+                label.col-sm-2.control-label Role 
+                .col-sm-6
+                    button.btn.btn-default(type='button', ng-model='user.role', data-html='1', ng-options='role as role for role in roles', bs-select='')
+                        | Select
+                        span.caret
+
+            .form-group(ng-init="address.selected.formatted_address='#{user.profile.address}'")
+                label.col-sm-2.control-label(for='address') Address
+                input(type="hidden", name="address", value="{{address.selected.formatted_address}}", ng-model="address.selected.formatted_address"
+                ng-init="refreshAddresses('#{user.profile.address}')")
+                ui-select.col-sm-6.address-select(ng-model='address.selected', theme='selectize', ng-disabled='disabled', reset-search-input='false')
+                    ui-select-match(placeholder='Enter an address...', style="padding-right: 20px", ng-init="$select.search='#{user.profile.address}'") {{$select.selected.formatted_address}}
+                    ui-select-choices(repeat='address in addresses track by $index', refresh='refreshAddresses($select.search)', refresh-delay='0')
+                        div(ng-bind-html='address.formatted_address | highlight: $select.search')
+
+            .form-group(ng-show="user.role=='Active'")
+                label.col-sm-2.control-label(for='excomm') ExComm
+                input.col-sm-1(type='checkbox', name='excomm', id='excomm', ng-click='excomm=!excomm', ng-model='user.excomm', style="margin: 10px;")
+
+            .form-group(ng-show='user.role=="Active" && user.excomm', ng-init='user.excommPosition=excommTitles["#{user.excommPosition}"]')
+                input(type='hidden', name='excommPosition', ng-model='user.excommPosition', value='{{user.excommPosition}}')
+                label.col-sm-2.control-label(for='email') Position
+                .col-sm-6
+                    .btn-group(dropdown='', is-open='posSelect.isopen')
+                        button.btn.btn-default.dropdown-toggle(type='button', ng-disabled='disabled') {{user.excommPosition ? user.excommPosition : 'Select'}}
+                            span.caret
+                        ul.dropdown-menu(role='menu')
+                            li(ng-repeat='pos in excommTitles')
+                                a(ng-click='user.excommPosition=pos') {{pos}}
+            .form-group
+              .col-sm-offset-2.col-sm-4
+                button.btn.btn.btn-primary(type='submit')
+                  span.ion-edit
+                  | Update Profile
+
+
+      .page-header
+        h3 Change Password
+
+      form.form-horizontal(action='/account/password', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        .form-group
+          label.col-sm-3.control-label(for='password') New Password
+          .col-sm-4
+            input.form-control(type='password', name='password', id='password')
+        .form-group
+          label.col-sm-3.control-label(for='confirmPassword') Confirm Password
+          .col-sm-4
+            input.form-control(type='password', name='confirmPassword', id='confirmPassword')
+        .form-group
+          .col-sm-offset-3.col-sm-4
+            button.btn.btn.btn-primary(type='submit')
+              span.ion-locked
+              | Change Password
+
+      .page-header
+        h3 Delete Account
+
+      p You can delete your account, but keep in mind this action is irreversible.
+      form(action='/account/delete', method='POST')
+        input(type='hidden', name='_csrf', value=_csrf)
+        button.btn.btn-danger(type='submit')
+          span.ion-trash-b
+          | Delete my account

@@ -1,0 +1,11 @@
+.row
+    .col-lg-8.col-lg-offset-2.col-xs-12
+        .form-group.form-group-lg
+            label.col-xs-12.input-lg.label-main Berkeley email address:
+            input.col-xs-12.form-control.input-lg.input-main(ng-model="formData.email")
+
+.row.form-button
+    .col-lg-4.col-lg-offset-4.col-xs-12.text-center
+        a.btn.btn-default.btn-main(ui-sref="home.request.verifyemail", ng-show="formData.email.indexOf('@berkeley.edu') > -1", ng-click="verifyEmail(formData.email)")
+            | Next
+            span.fa.fa-arrow-circle-o-right

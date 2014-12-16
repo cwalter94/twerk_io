@@ -1,0 +1,15 @@
+{
+  "name": "request",
+  "homepage": "https://github.com/mikeal/request",
+  "version": "2.51.1",
+  "_release": "2.51.1",
+  "_resolution": {
+    "type": "version",
+    "tag": "v2.51.1",
+    "commit": "d478f9b376b1d72efc7770c95409fe5498b1cb8f"
+  },
+  "_source": "git://github.com/mikeal/request.git",
+  "_target": "~2.51.1",
+  "_originalSource": "request",
+  "_direct": true
+}

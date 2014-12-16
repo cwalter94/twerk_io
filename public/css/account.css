@@ -1,0 +1,19 @@
+.profile-picture {
+  width: 100%;
+  margin: auto;
+  max-width: 170px;
+  height: 200px;
+  border: 2px dashed #DDD; }
+  .profile-picture.dropover {
+    border-color: #0000ff; }
+
+.address-select {
+  text-transform: uppercase;
+  font-family: Montserrat,sans-serif;
+  background: #FFF;
+  background-image: #FFF; }
+  .address-select .selectize-input {
+    background: #FFF;
+    background-image: none !important;
+    box-shadow: none !important;
+    background-color: #FFF !important; }
