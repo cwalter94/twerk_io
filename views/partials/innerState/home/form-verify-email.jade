@@ -1,11 +1,16 @@
-.row
-    .col-lg-8.col-lg-offset-2.col-xs-12
-        .form-group.form-group-lg
-            label.col-xs-12.input-lg.label-main We just sent an email to that address. Enter the verification code here:
-            input.col-xs-12.form-control.input-lg.input-main(ng-model="formData.emailVerify")
+div.container.content-container
+    div.row(style="margin-top: 100px;")
+        div.col-lg-8.col-lg-offset-2.col-sm-12
+            form#scholarshipForm()
+                .ui-view#formViews(ng-init="user.csrf='#{_csrf}'")
+                    .row
+                        .col-lg-8.col-lg-offset-2.col-xs-12
+                            .form-group.form-group-lg
+                                label.col-xs-12.input-lg.label-main We just sent an email to that address. Enter the verification code here:
+                                input.col-xs-12.form-control.input-lg.input-main(ng-model="formData.code", style="margin-top: 40px;")
 
-.row.form-button
-    .col-lg-4.col-lg-offset-4.col-xs-12.text-center
-        a.btn.btn-default.btn-main(ui-sref="home.request.phone", ng-show="verifyEmailCode(formData.email)")
-            | Next
-            span.fa.fa-arrow-circle-o-right
+                    .row.form-button
+                        .col-lg-4.col-lg-offset-4.col-xs-12.text-center
+                            a.btn.btn-default.btn-main(ui-sref="home.request.phone", ng-show="verifyEmailCode()")
+                                | Next
+                                span.fa.fa-arrow-circle-o-right

@@ -29,6 +29,18 @@ app.config(function(uiSelectConfig, flashProvider, $stateProvider, $urlRouterPro
             url: '',
             templateUrl: '/partials/inner/home/intro'
         })
+        .state('home.login', {
+            url: 'login',
+            templateUrl: '/partials/inner/home/form-login'
+        })
+        .state('home.register', {
+            url: 'register',
+            templateUrl: '/partials/inner/home/form-register'
+        })
+        .state('home.verifyemail', {
+            url: 'verify',
+            templateUrl: '/partials/inner/home/form-verify-email'
+        })
         .state('home.request', {
             url: 'request',
             abstract: true,
@@ -41,10 +53,6 @@ app.config(function(uiSelectConfig, flashProvider, $stateProvider, $urlRouterPro
         .state('home.request.email', {
             url: '/email',
             templateUrl: '/partials/inner/home/form-email'
-        })
-        .state('home.request.verifyemail', {
-            url: '/verify',
-            templateUrl: '/partials/inner/home/form-verify-email'
         })
         .state('home.request.phone', {
             url: '/phone',

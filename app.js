@@ -3,10 +3,10 @@
  */
 
 var express = require('express');
-var cookieParser = require('cookie-parser');
+var cookieparser = require('cookie-parser');
 var compress = require('compression');
 var session = require('express-session');
-var bodyParser = require('body-parser');
+var bodyparser = require('body-parser');
 var logger = require('morgan');
 var errorHandler = require('errorhandler');
 var csrf = require('lusca').csrf();
@@ -30,29 +30,14 @@ var mailgunPubKey = "pubkey-61659c85d07e91b13398effbb8f3f476";
  * Controllers (route handlers).
  */
 
-var homeController = require('./controllers/home');
-var userController = require('./controllers/user');
-var apiController = require('./controllers/api');
-var contactController = require('./controllers/contact');
-var blogController = require('./controllers/blog');
-var alumniController = require('./controllers/alumni');
-var scholarshipController = require('./controllers/scholarship');
+var loginController = require('./controllers/login');
 
 var accountSid = 'AC5fda92712e1b88c02edd825fce4ce15c';
 var authToken = "5f67a5da30d9e943f593e1a31839b38f";
 var client = require('twilio')(accountSid, authToken);
-var Parse = require("parse").Parse;
-//
-//var parseExpressHttpsRedirect = require('parse-express-https-redirect');
-//var parseExpressCookieSession = require('parse-express-cookie-session');
+var parse = require("Parse").Parse;
+var parseStrategy = require('passport-parse');
 
-var app = express();
-//app.use(cookieParser('TWERK_KANYE_WEST_SIGNING_SECRET'));
-//app.use(parseExpressCookieSession({ cookie: { maxAge: 3600000 } }));
-
-
-
-Parse.initialize("wrYfl1BbtGto9UYCecx305xHeZu6ycf8TOz1cce5", "JJZIYfKZvDi6Ene8YeiscLEqnzYrtZt2jaBBX4Tn");
 
 /**
  * API keys and Passport configuration.
@@ -60,6 +45,15 @@ Parse.initialize("wrYfl1BbtGto9UYCecx305xHeZu6ycf8TOz1cce5", "JJZIYfKZvDi6Ene8Ye
 
 var secrets = require('./config/secrets');
 var passportConf = require('./config/passport');
+
+var app = express();
+//
+
+//
+
+
+parse.initialize("wrYfl1BbtGto9UYCecx305xHeZu6ycf8TOz1cce5", "JJZIYfKZvDi6Ene8YeiscLEqnzYrtZt2jaBBX4Tn", "ntAz47qeSXl7DGrFiSbhIRWeal6SIXhlW1WHHIuQ");
+var parseStrategy = new parseStrategy({parseClient: parse});
 
 /**
  * Create Express server.
@@ -88,25 +82,34 @@ var csrfExclude = ['/url1', '/url2'];
 app.set('port', process.env.PORT || 3000);
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'jade');
+
+
 app.use(compress());
 app.use(connectAssets({
   paths: [path.join(__dirname, 'public/css'), path.join(__dirname, 'public/js')],
   helperContext: app.locals
 }));
 app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyparser.json());
+app.use(bodyparser.urlencoded({ extended: true }));
 app.use(expressValidator());
 app.use(methodOverride());
-app.use(cookieParser());
-app.use(session({
-  resave: true,
-  saveUninitialized: true,
-  secret: secrets.sessionSecret
-}));
+
+app.use(cookieparser());
+//
+
+passport.use(parseStrategy);
 app.use(passport.initialize());
+
 app.use(passport.session());
+
 app.use(flash());
+
+app.use(session({
+    secret: secrets.sessionSecret,
+    key: 'sid',
+    cookie: {secure: false}
+}))
 app.use(function(req, res, next) {
   // CSRF protection.
   if (_.contains(csrfExclude, req.path)) return next();
@@ -132,62 +135,31 @@ app.use(express.static(path.join(__dirname, '/public'), { maxAge: week }));
  * Main routes.
  */
 
+app.post('/api/login', loginController.login);
 
-app.get('/partials/outer/:name', function(req, res) {
-    console.log("outer");
-    res.render('partials/outerState/' + req.params.name);
-});
+app.post('/api/register', function(req, res, next) {
 
-app.get('/partials/inner/:dir/:name', function(req, res) {
-    console.log("inner");
-    console.log(req.params.dir);
-    res.render('partials/innerState/' + req.params.dir + '/' + req.params.name);
-});
-
-app.get('/api/verify/phone', function(req, res) {
-
-});
-
-app.get('/api/verify/emailcode', function(req, res) {
-
-
-    var query = new Parse.Query("request");
-    query.equalTo("email", req.params.email);
-
-    query.find({
-        success: function(events) {
-            if (events[0].verCode == req.params.code) {
-                res.render({success: true, data: events, error: null});
-            }
-            else {
-                res.render({success: false, data: null, error: "Verification code incorrect."});
-            }
-
-        },
-        error: function(error) {
-            res.render({success: false, data: null, error: events});
-        }})
-
-});
-
-app.get('/api/verify/email', function(req, res) {
     var mailgun = new Mailgun({apiKey: mailgunKey, domain: mailgunUrl});
-    var request = Parse.Object.extend("request");
-    request = new request();
-    console.log(req.query);
-    request.set("name", req.query.name);
-    request.set("email", req.query.email);
+    var user = new parse.User();
+
     var code = genCode();
+    var data = req.body;
 
-    request.set("verCode", code);
+    user.set("username", data.email);
+    user.set("password", data.password);
+    user.set("email", data.email);
+    user.set("phone", data.phone || "");
+    user.set("verCode", code);
+    user.set("verified", false);
 
-    request.save(null, {
+    user.signUp(null, {
         success: function(result) {
+            console.log(result);
             var emaildata = {
                 //Specify email data
                 from: 'admin@twerk.io',
                 //The email to contact
-                to: req.query.email,
+                to: data.email,
                 //Subject and text data
                 subject: 'Twerk.io Verification Code: ' + code,
                 text: 'Keep twerking hard! Copy the verification code into your web browser to verify this email address.'
@@ -198,19 +170,23 @@ app.get('/api/verify/email', function(req, res) {
                 if (err) {
                     console.log("got an error: ", err);
                     res.json({success: false, data: {}, error: err});
+                    return;
                 }
                 //Else we can greet    and leave
                 else {
                     res.json({success: true, data: {}, error: null});
+                    return;
                 }
             });
         },
         error: function(result, error) {
+            console.log(error);
             res.json({
                 success: false,
                 data: result,
                 error: error
-            })
+            });
+            return;
         }
     });
 
@@ -232,15 +208,95 @@ app.get('/api/verify/email', function(req, res) {
 
 });
 
-app.post('/api/request', passportConf.isAuthenticated, function(req, res) {
+
+app.get('/partials/outer/:name', function(req, res) {
+    console.log("outer");
+    res.render('partials/outerState/' + req.params.name);
+});
+
+app.get('/partials/inner/:dir/:name', function(req, res) {
+    console.log("inner");
+    console.log(req.params.dir);
+    res.render('partials/innerState/' + req.params.dir + '/' + req.params.name);
+});
+
+app.get('/api/verify/phone', function(req, res) {
+
+});
+
+app.get('/api/verify/emailcode', function(req, res) {
+
+
+    if (parse.User.current()) {
+        // We need to fetch because we need to show fields on the user object.
+        parse.User.current().fetch().then(function(user) {
+                // Render the user profile information (e.g. email, phone, etc).
+                var code = req.query.code;
+                console.log(JSON.stringify(user));
+                if (user.verCode == code) {
+                    user.set("emailVerified", true);
+                    user.set("verified", true);
+                    user.save(null, {
+                        success: function(result) {
+                            console.log("verify success");
+                        },
+                        error: function(result, error) {
+                            console.log("verify failure.");
+                            console.log(error);
+                        }
+                    });
+                }
+
+            },
+            function(error) {
+                // Render error page.
+            });
+    } else {
+        // User not logged in, redirect to login form.
+        res.redirect('/login');
+    }
+
+
+});
+
+app.get('/api/verify/email', function(req, res) {
+    var query = new parse.Query("User");
+    var username = req.query.email;
+
+    query.find(null, {
+        success: function(users) {
+            if (users.length > 0) {
+                console.log("user already exists");
+                res.json({success: true, data: {
+                    registered: true
+                    }
+                });
+            } else {
+                res.json({success: true, data: {
+                    registered: false
+                }});
+            }
+
+        },
+        error: function(result) {
+            console.log("error in checking user");
+            res.json({success: false});
+        }
+    });
+
+});
+
+app.post('/api/request', function(req, res) {
 
     var data = req.body;
-    var request = Parse.Object.extend("request");
+    var user = parse.User.current();
+    console.log(JSON.stringify(user));
+    var request = parse.Object.extend("request");
     request = new request();
 
     request.set("name", data.name);
-    request.set("phone", data.phone);
-    request.set("email", data.email);
+    request.set("phone", user.phone);
+    request.set("email", user.email);
     request.set("supplement1", data.supplement1);
     request.set("supplement2", data.supplement2);
 
@@ -262,7 +318,9 @@ app.post('/api/request', passportConf.isAuthenticated, function(req, res) {
     });
 });
 
-app.get("*", function(req, res) {
+
+app.get("/*", function(req, res) {
+    console.log("something else");
     res.render('index');
 });
 

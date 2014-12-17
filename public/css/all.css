@@ -23,14 +23,27 @@ html {
       height: 50px;
       width: 100%;
       border-width: 1px;
-      border-color: #003262;
-      background: transparent; }
+      border-color: #FFF;
+      background: transparent;
+      line-height: 35px; }
       html body .btn-main:hover {
         background: transparent !important;
-        color: #003262; }
+        color: #003262 !important;
+        border-color: #003262 !important; }
       html body .btn-main span {
         font-size: 20px;
         margin-left: 20px; }
+    html body .btn-intro {
+      width: 250px;
+      border-color: #003262;
+      background-color: transparent;
+      font-size: 22px;
+      font-weight: 300;
+      font-family: "Helvetica Neue Light", "Helvetica-Neue-Light", sans-serif;
+      color: #003262; }
+      html body .btn-intro:hover {
+        background-color: #FFF;
+        border-color: #003262 !important; }
     html body ui-view, html body .ui-view {
       height: 100%; }
     html body .input-main {
@@ -93,7 +106,7 @@ html {
       margin: 0; }
     html body .address-select {
       text-transform: uppercase;
-      font-family: Montserrat,sans-serif;
+      font-family: Montserrat, sans-serif;
       background: #FFF;
       background-image: #FFF; }
       html body .address-select .selectize-input {

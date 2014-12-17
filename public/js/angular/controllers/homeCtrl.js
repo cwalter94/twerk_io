@@ -1,7 +1,8 @@
 var homeController = app.controller('homeCtrl', function($scope, $http) {
-    $scope.formData = {};
+    $scope.formData = {email: "", password: "", repassword: ""};
     $scope.user = {csrf: ""};
     $scope.emailChecked = false;
+    $scope.registered = false;
 
     $scope.showSuccess = function() {
         console.log("success");
@@ -16,11 +17,11 @@ var homeController = app.controller('homeCtrl', function($scope, $http) {
 
     };
 
-    $scope.verifyEmailCode = function(code) {
-        if (code.length == 5 && !$scope.emailChecked) {
+    $scope.verifyEmailCode = function() {
+        if ($scope.formData.code.length == 5 && !$scope.emailChecked) {
             $http({
                 method: 'GET',
-                url: 'api/verify/emailcode?email=' + $scope.formData.email + '&code=' + code
+                url: 'api/verify/emailcode?email=' + $scope.formData.email + '&code=' + $scope.formData.code
             }).
                 success(function(data, status, headers, config) {
                     console.log(data);
@@ -35,14 +36,37 @@ var homeController = app.controller('homeCtrl', function($scope, $http) {
         }
     };
 
+    $scope.request = function() {
+
+        if ($scope.user.loggedin) {
+            $http({
+                method: 'POST',
+                url: '/api/request',
+                headers: {
+                    'x-csrf-token': $scope.user.csrf
+                },
+                data: $scope.formData
+            }).
+                success(function(data, status, headers, config) {
+                    console.log(data);
+                    console.log($scope.user);
+                    $scope.showSuccess();
+                }).
+                error(function(data, status, headers, config) {
+                    $scope.showError();
+                });
+
+        }
+    };
+
     $scope.verifyEmail = function(email) {
         $http({
             method: 'GET',
-            url: '/api/verify/email?email=' + email + '&name=' + $scope.formData.name
+            url: '/api/verify/email?email=' + email
 
         }).
             success(function(data, status, headers, config) {
-//                console.log(data);
+                $scope.registered = data.registered;
                 $scope.showSuccess();
                 return true;
             }).
@@ -53,23 +77,59 @@ var homeController = app.controller('homeCtrl', function($scope, $http) {
 
     };
 
-    $scope.processForm = function() {
-        $http({
-            method: 'POST',
-            url: '/api/request',
-            headers: {
-                'x-csrf-token': $scope.user.csrf
-            },
-            data: $scope.formData
-        }).
-            success(function(data, status, headers, config) {
-                console.log(data);
-                console.log($scope.user);
-                $scope.showSuccess();
+    $scope.login = function() {
+
+        var temp = $scope.formData;
+
+        if (temp.email.length > 3 && temp.password.length > 1) {
+            $http({
+                method: 'POST',
+                url: '/api/login',
+                headers: {
+                    'x-csrf-token': $scope.user.csrf
+                },
+                data: {
+                username: $scope.formData.email,
+                    password: $scope.formData.password
+            }
             }).
-            error(function(data, status, headers, config) {
-                $scope.showError();
-            });
+                success(function(data, status, headers, config) {
+                    console.log(data);
+                    $scope.showSuccess();
+                }).
+                error(function(data, status, headers, config) {
+                    console.log(data);
+                    console.log(status);
+                    console.log(headers);
+                    console.log(config);
+                    $scope.showError();
+                });
+
+        }
+
+    };
+    $scope.register = function() {
+
+            var temp = $scope.formData;
+            if (temp.email.length > 3 && temp.password.length > 1 && temp.password == temp.repassword) {
+                $http({
+                    method: 'POST',
+                    url: '/api/register',
+                    headers: {
+                        'x-csrf-token': $scope.user.csrf
+                    },
+                    data: $scope.formData
+                }).
+                    success(function(data, status, headers, config) {
+                        console.log(data);
+                        console.log($scope.user);
+                        $scope.showSuccess();
+                    }).
+                    error(function(data, status, headers, config) {
+                        $scope.showError();
+                    });
+
+            }
 
     };
 });
