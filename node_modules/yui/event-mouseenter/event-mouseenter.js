@@ -126,4 +126,4 @@ Y.Event.define("mouseleave", Y.merge(config, {
 }), true);
 
 
-}, '3.18.1', {"requires": ["event-synthetic"]});
+}, '3.18.0', {"requires": ["event-synthetic"]});

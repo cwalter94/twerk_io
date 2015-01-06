@@ -350,4 +350,4 @@ Y.App.TransitionsNative = AppTransitionsNative;
 Y.Base.mix(Y.App, [AppTransitionsNative]);
 
 
-}, '3.18.1', {"requires": ["app-transitions", "app-transitions-css", "parallel", "transition"]});
+}, '3.18.0', {"requires": ["app-transitions", "app-transitions-css", "parallel", "transition"]});

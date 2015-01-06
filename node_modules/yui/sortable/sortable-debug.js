@@ -525,4 +525,4 @@ YUI.add('sortable', function (Y, NAME) {
 
 
 
-}, '3.18.1', {"requires": ["dd-delegate", "dd-drop-plugin", "dd-proxy"]});
+}, '3.18.0', {"requires": ["dd-delegate", "dd-drop-plugin", "dd-proxy"]});

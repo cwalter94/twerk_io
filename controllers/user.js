@@ -6,9 +6,11 @@ var passport = require('passport');
 var User = require('../models/User');
 var secrets = require('../config/secrets');
 var multiparty = require('multiparty');
-
+var jwt = require('jsonwebtoken');
 var uuid = require('uuid');
 var fs = require('fs');
+var UnauthorizedError = require('express-jwt/lib/errors/UnauthorizedError');
+
 /**
  * GET /login
  * Login page.
@@ -21,234 +23,73 @@ exports.getLogin = function (req, res) {
     });
 };
 
-/**
- * POST /login
- * Sign in using email and password.
- * @param email
- * @param password
- * @param role
- */
+exports.validateToken = function(req, res, next) {
 
-exports.postLogin = function (req, res, next) {
-    req.assert('email', 'Email is not valid').isEmail();
-    req.assert('password', 'Password cannot be blank').notEmpty();
 
-    var errors = req.validationErrors();
-
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/login');
+    if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.length)) {
+        return res.send(401);
+//        req.user = null;
+//        req.token = null;
+//        return next();
     }
 
-    passport.authenticate('local', function (err, user, info) {
-        if (err) return next(err);
-        if (!user) {
-            req.flash('errors', { msg: info.message });
-            return res.redirect('/login');
-        }
-        req.logIn(user, function (err) {
-            if (err) return next(err);
-            req.flash('success', { msg: 'Success! You are logged in.' });
-            res.redirect('/account');
-        });
-    })(req, res, next);
-};
+    var token = req.headers.authorization.split(' ')[1];
 
-/**
- * GET /logout
- * Log out.
- */
-
-exports.logout = function (req, res) {
-    req.logout();
-    res.redirect('/');
-};
-
-/**
- * GET /signup
- * Signup page.
- */
-
-exports.getSignup = function (req, res) {
-    if (req.user) return res.redirect('/');
-    res.render('account/signup', {
-        title: 'Create Account'
-    });
-};
-
-/**
- * POST /signup
- * Create a new local account.
- * @param email
- * @param password
- * @param role
- */
-
-exports.postSignup = function (req, res, next) {
-    req.assert('email', 'Email is not valid').isEmail();
-    req.assert('password', 'Password must be at least 4 characters long').len(4);
-    req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-    var errors = req.validationErrors();
-
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/signup');
-    }
-
-    var excomm = false;
-    if (req.body.excomm) {
-        excomm = true;
-    }
-
-    var user = new User({
-        email: req.body.email,
-        password: req.body.password,
-        excomm: excomm,
-        role: req.body.role
-    });
-
-    User.findOne({ email: req.body.email }, function (err, existingUser) {
-        if (existingUser) {
-            req.flash('errors', { msg: 'Account with that email address already exists.' });
-            return res.redirect('/signup');
-        }
-        user.save(function (err) {
-            if (err) return next(err);
-            req.logIn(user, function (err) {
-                if (err) return next(err);
-                res.redirect('/');
-            });
-        });
-    });
-};
-
-
-exports.getAccount = function (req, res) {
-    res.render('account/profile', {
-        title: 'Account Management'
-    });
-};
-
-
-/**
- * GET /account
- * Profile page.
- */
-
-exports.getAccount = function (req, res) {
-    res.render('account/profile', {
-        title: 'Account Management'
-    });
-};
-
-/**
- * POST /account/profile
- * Update profile information.
- */
-
-exports.postUpdateProfile = function (req, res, next) {
-    console.log(req.user);
-    User.findById(req.user.id, function (err, user) {
-        if (err) return next(err);
-        user.excomm = req.body.excomm;
-        user.email = req.body.email || '';
-        user.profile.name = req.body.name || 'Unknown';
-        user.profile.gender = req.body.gender || '';
-        user.profile.location = req.body.location || '';
-        user.profile.website = req.body.website || '';
-        user.profile.address = req.body.address || '';
-        user.role = req.body.role || '';
-        if (user.excomm) {
-            user.excommPosition = req.body.excommPosition.toString().toLowerCase().replace(/\s+/g, '');
-        } else {
-            user.excommPosition = "";
-        }
-
-
-        user.save(function (err) {
-            if (err) return next(err);
-            req.flash('success', { msg: 'Profile information updated.'});
-            res.redirect('/account');
-        });
-    });
-};
-
-/**
- * POST /admin/account/profile
- * Update profile information.
- */
-
-exports.postAdminUpdateProfile = function (req, res, next) {
-
-    User.findById(req.user.id, function (err, user) {
-        if (err) return next(err);
-        console.log(user);
-        if (user.role == 'Webmaster') {
-            console.log(req.body);
-
-            User.findOne({email: req.body.email}, 'email excomm role profile', function (err, user) {
-                if (err || user == null) return next(err);
-                console.log(user);
-                user.profile.name = req.body.name;
-                user.excomm = true;
-                user.save(function (err) {
-                    if (err) return next(err);
-                    res.json({ success: true, msg: 'Profile information updated.'});
-                    return;
-                });
-            });
-
-
-        } else {
-            res.json({success: false, msg: 'Authorization failed.'});
-            return next();
-        }
-
-    });
-};
-
-/**
- * POST /account/picture
- */
-exports.postProfilePicture = function (req, res, next) {
-    var form = new multiparty.Form();
-    form.parse(req, function (err, fields, files) {
-
-        var file = files.file[0];
-        var contentType = file.headers['content-type'];
-        var tmpPath = file.path;
-        var extIndex = tmpPath.lastIndexOf('.');
-        var extension = (extIndex < 0) ? '' : tmpPath.substr(extIndex);
-        // uuid is for generating unique filenames.
-        var fileName = uuid.v4() + extension;
-        var destPath = 'public/img/members/' + fileName;
-
-        // Server side file type checker.
-        if (contentType !== 'image/png' && contentType !== 'image/jpeg') {
-            fs.unlink(tmpPath);
-            return res.status(400).send('Unsupported file type.');
-        }
-
-        fs.rename(tmpPath, destPath, function (err) {
+    try {
+        jwt.verify(token, secrets.jwt, {}, function(err, decoded) {
             if (err) {
-                return res.status(400).send('Image is not saved:');
+                res.send(401);
+                return next(new UnauthorizedError('invalid_token', err));
             }
+            User.findOne({email: decoded.email}, function (err, user) {
 
-            User.findOne({excommPosition: req.headers.filerole}, 'email excommPosition profile', function (err, user) {
-                if (err || user == null) return next(err);
-                user.profile.picture = destPath.substring(6);
-                user.save(function (err) {
-                    if (err) return next(err);
-                    return res.json({success: true, msg: 'Profile picture updated.', picture: destPath.substring(6)});
-                });
+                if (err) {
+                    console.log(err);
+                    return res.status(401).end();
+                }
+
+
+//                for (var i = 0; i < user.expiredtokens.length; i++) {
+//                    var expiredtoken = user.expiredtokens[i];
+//
+//                    if (typeof expiredtoken === Object) {
+//                        if (token === expiredtoken.t) return next(new UnauthorizedError('invalid_token',  { message: 'This token is expired.' }));
+//
+//                        // if more than 8 days old (diff in milliseconds), remove from stored expired tokens
+//                        if ((Math.floor((new Date())/1000) - expiredtoken.issued_at) > 192*1000*3600) {
+//                            user.expiredtokens.splice(i, 1);
+//                            i--;
+//                        }
+//                    } else {
+//                        // if expiredtoken isn't an object (created before objects were necessary to track dates (jwt won't decode token if it's expired))
+//                        // assign new expiredtoken object with date to one day ago
+//                        user.expiredtokens[i] = {token: expiredtoken, issued_at: Math.floor((new Date())/1000) - (1*24*3600)};
+//
+//                        if (token === user.expiredtokens[i].token) return next(new UnauthorizedError('invalid_token',  { message: 'This token is expired.' }));
+//                    }
+//
+//                }
+
+                if ((Math.floor((new Date())/1000) - decoded.iat) > 1*1000*3600) { // if token age > 1 hour
+                    user.expiredtokens.push({token: token, issued_at: decoded.iat});
+                    req['user'] = user;
+                    var newtoken = jwt.sign({email: decoded.email, name: user.name, roles: user.roles}, secrets.jwt, { expiresInDays: 7});
+                    req['token'] = newtoken;
+                    return next();
+                }
+
+                req['user'] = user;
+                return next();
+
             });
-
-
         });
 
-
-    });
+    } catch(err) {
+        res.send(401);
+        next(new UnauthorizedError('invalid_token',  { message: 'Token is expired. Login required.' }));
+    }
 };
+
 
 /**
  * POST /admin/account/picture
@@ -302,36 +143,6 @@ exports.postAdminProfilePicture = function (req, res, next) {
 
 
 /**
- * POST /account/password
- * Update current password.
- * @param password
- */
-
-exports.postUpdatePassword = function (req, res, next) {
-    req.assert('password', 'Password must be at least 4 characters long').len(4);
-    req.assert('confirmPassword', 'Passwords do not match').equals(req.body.password);
-
-    var errors = req.validationErrors();
-
-    if (errors) {
-        req.flash('errors', errors);
-        return res.redirect('/account');
-    }
-
-    User.findById(req.user.id, function (err, user) {
-        if (err) return next(err);
-
-        user.password = req.body.password;
-
-        user.save(function (err) {
-            if (err) return next(err);
-            req.flash('success', { msg: 'Password has been changed.' });
-            res.redirect('/account');
-        });
-    });
-};
-
-/**
  * POST /account/delete
  * Delete user account.
  */
@@ -342,30 +153,6 @@ exports.postDeleteAccount = function (req, res, next) {
         req.logout();
         req.flash('info', { msg: 'Your account has been deleted.' });
         res.redirect('/');
-    });
-};
-
-/**
- * GET /account/unlink/:provider
- * Unlink OAuth provider.
- * @param provider
- */
-
-exports.getOauthUnlink = function (req, res, next) {
-    var provider = req.params.provider;
-    User.findById(req.user.id, function (err, user) {
-        if (err) return next(err);
-
-        user[provider] = undefined;
-        user.tokens = _.reject(user.tokens, function (token) {
-            return token.kind === provider;
-        });
-
-        user.save(function (err) {
-            if (err) return next(err);
-            req.flash('info', { msg: provider + ' account has been unlinked.' });
-            res.redirect('/account');
-        });
     });
 };
 

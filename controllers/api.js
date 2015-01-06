@@ -1,5 +1,6 @@
 var secrets = require('../config/secrets');
 var User = require('../models/User');
+var BlogPost = require('../models/BlogPost');
 var querystring = require('querystring');
 var validator = require('validator');
 var async = require('async');
@@ -7,17 +8,23 @@ var cheerio = require('cheerio');
 var request = require('request');
 var graph = require('fbgraph');
 var LastFmNode = require('lastfm').LastFmNode;
-var tumblr = require('tumblr.js');
 var foursquare = require('node-foursquare')({ secrets: secrets.foursquare });
-var Github = require('github-api');
 var Twit = require('twit');
 var stripe =  require('stripe')(secrets.stripe.apiKey);
 var twilio = require('twilio')(secrets.twilio.sid, secrets.twilio.token);
-var Linkedin = require('node-linkedin')(secrets.linkedin.clientID, secrets.linkedin.clientSecret, secrets.linkedin.callbackURL);
 var clockwork = require('clockwork')({key: secrets.clockwork.apiKey});
 var ig = require('instagram-node').instagram();
 var Y = require('yui/yql');
 var _ = require('lodash');
+var passport = require('passport');
+var multiparty = require('multiparty');
+var uuid = require('uuid');
+var fs = require('fs');
+var expressJwt = require('express-jwt');
+var jwt = require('jsonwebtoken');
+var AWS = require('aws-sdk');
+var Mailgun = require('mailgun');
+AWS.config.loadFromPath('./config/aws.json');
 
 /**
  * GET /api
@@ -30,6 +37,372 @@ exports.getApi = function(req, res) {
   });
 };
 
+exports.getUser = function(req, res) {
+    if (req.user && req.user.username) {
+        User.findOne({username: req.user.username}, function (err, user) {
+
+            if (err) {
+                console.log(err);
+                return res.send(401);
+            }
+
+            return res.json({user: {username: req.params.username, roles: user.roles}, token:req.token});
+
+        });
+    } else {
+        return res.status(401).end();
+    }
+};
+
+exports.getBrowse = function(req, res) {
+
+        User.find({}, 'name email picture status classes', function (err, users) {
+
+            if (err) {
+                console.log(err);
+                return res.send(401);
+            }
+
+            return res.json({token: req.token, users: users});
+
+        });
+
+};
+
+exports.adminAllUsers = function(req, res) {
+    if (req.user && req.user.roles && req.user.roles.indexOf('Admin') > -1) {
+        User.find({}, 'username email roles status housePositions', function (err, users) {
+            if (err) {
+                console.log(err);
+                return res.send(401);
+            }
+
+//            for (var i = 0; i < users.length; i++) {
+//                var user = users[i];
+//
+//                if (!user.housePositions.length) {
+//                    user.housePositions = [];
+//                }
+//                user.save(function(err) {
+//                    if (err) return res.status(401).end();
+//                });
+//            }
+
+            return res.json({token: req.token, users: users});
+        })
+    } else {
+        return res.status(401).end();
+    }
+};
+
+exports.adminSaveUser = function(req, res) {
+    if (req.user && req.user.roles && req.user.roles.indexOf('Admin') > -1) {
+        User.findOne({username: req.body.user.username}, function (err, user) {
+            if (err) {
+                console.log(err);
+                return res.status(401).end();
+            }
+
+            user.roles = req.body.user.roles || user.roles;
+            user.status = req.body.user.status || user.status;
+            user.username = req.body.user.username || user.username;
+            user.email = req.body.user.email || user.email;
+            user.housePositions = req.body.user.housePositions;
+            user.excomm = user.housePositions.length > 0;
+
+            user.save(function (err) {
+                if (err) return res.status(401).end();
+                console.log(user);
+                return res.json({token: req.token});
+            });
+        })
+    } else {
+        return res.status(401).end();
+    }
+};
+
+exports.adminDeleteUser = function(req, res) {
+    if (req.user && req.user.roles && req.user.roles.indexOf('Admin') > -1) {
+        User.findOne({username: req.body.user.username}).remove(function(err) {
+            if (err) return res.status(401).end('An unkown error occurred. Please try again later.');
+
+            return res.json({data : {token: req.token}});
+        });
+    } else {
+        return res.status(401).end('An unkown error occurred. Please try again later.');
+    }
+};
+
+exports.authenticate = function(req, res, next) {
+
+    var credentials = req.body.credentials || '';
+    var username = '', password = '';
+
+    if (credentials) {
+        username = credentials.username || '';
+        password = credentials.password || '';
+
+
+        if (username == '' || password == '') {
+            return res.send(401);
+        }
+
+    } else {
+        return res.send(401);
+    }
+
+    //needs to query user.email for legacy reasons
+    User.findOne({username: username}, function (err, user) {
+
+        if (err) {
+            console.log(err);
+            return res.status(401).end('An unkown error occurred. Please try again later.');
+        }
+        if (!user) {
+            return res.status(401).end('Incorrect username or password.');
+        }
+
+        user.comparePassword(password, function(isMatch) {
+            if (!isMatch) {
+                return res.status(401).end('Incorrect username or password.');
+            }
+
+            var token = jwt.sign({username: user.username}, secrets.jwt, { expiresInDays: 7 });
+            return res.json({user : user, token: token});
+        });
+
+    });
+};
+
+exports.register = function(req, res, next) {
+    var email = req.body.email || '';
+    var password = req.body.password || '';
+    var name = req.body.name || "";
+    var major = req.body.major || [];
+    var minor = req.body.minor || [];
+    var classes = req.body.classes || [];
+    var roles = req.body.roles || [];
+
+    if (email == '' || password == '') {
+        return res.status(401).end('Email and password required.');
+    }
+
+    var user = new User({
+        name: name,
+        email: email,
+        classes: classes,
+        major: major,
+        minor: minor,
+        roles: roles,
+        verified: false
+    });
+
+    user.save(function (err) {
+        if (err) return res.status(401).end('User with that email already exists.');
+        var token = jwt.sign({username: user.username, roles: user.roles}, secrets.jwt, { expiresInDays: 7 });
+        return res.json({token:token, user: {email: user.email, roles: user.roles}});
+    });
+};
+
+exports.getUserProfile = function(req, res, next) {
+
+    if (req.user) {
+        // needs to query user.email for legacy reasons
+        User.findOne({email: req.user.email},
+            'username status roles name email picture major minor',
+
+            function (err, user) {
+
+            if (err || !user) {
+                return res.send(401);
+            }
+
+            return res.json({user : user, token: req.token});
+
+        });
+    } else {
+        return res.status(401).end();
+    }
+};
+
+
+exports.postUserProfile = function(req, res, next) {
+    var userUpdate = req.body.data;
+
+    User.findOne({email: req.user.email}, function (err, user) {
+
+        if (err) {
+            return res.status(401).end('A user with that username or contact email already exists.');
+        }
+
+        user.email = userUpdate.email || user.email;
+        user.status = userUpdate.status || user.status;
+        user.name = userUpdate.name || user.name;
+        user.major = userUpdate.major || user.major;
+        user.minor = userUpdate.minor || user.minor;
+        user.roles = userUpdate.roles || user.roles;
+
+        user.save(function (err) {
+            if (err) return res.status(401).end('An error occurred. Please try again later.');
+            return res.json({token: req.body.token});
+        });
+    });
+
+};
+
+exports.postUserPicture = function(req, res, next) {
+    if (req.user) {
+        var form = new multiparty.Form();
+        form.parse(req, function (err, fields, files) {
+
+            var file = files.file[0];
+            var contentType = file.headers['content-type'];
+            var tmpPath = file.path;
+            var extIndex = tmpPath.lastIndexOf('.');
+            var extension = (extIndex < 0) ? '' : tmpPath.substr(extIndex);
+            // uuid is for generating unique filenames.
+            var fileName = uuid.v4() + extension;
+            // Server side file type checker.
+            if (contentType !== 'image/png' && contentType !== 'image/jpeg') {
+                fs.unlink(tmpPath);
+                return res.status(401).end('Unsupported file type.');
+            }
+            var bucket = new AWS.S3({params: {Bucket: 'twerk.io/img/members'}});
+
+            var stream = fs.createReadStream(tmpPath);
+            var data = {Key: fileName, Body: stream};
+
+            bucket.putObject(data, function(err, data) {
+                if (err) return res.status(401).end("Image is not saved.");
+
+                User.findOne({username: req.user.username}, 'username picture', function (err, user) {
+                    if (err || user == null) return next(err);
+                    var url = 'https://s3-us-west-1.amazonaws.com/twerk.io/img/members/' + fileName;
+                    user.picture = url;
+
+                    user.save(function (err) {
+                        if (err) return next(err);
+                        return res.json({picture: url, token: req.token});
+                    });
+                });
+            });
+        });
+    } else {
+        return res.status(401).end();
+    }
+};
+
+exports.getUserLogout = function(req, res, next) {
+
+    User.findOne({username: req.user.username}, function (err, user) {
+
+        if (err) {
+            console.log(err);
+            return res.status(401).end();
+        }
+
+        user.expiredtokens.push(req.headers.authorization.split(' ')[1]);
+
+        user.save(function (err) {
+            if (err) return next(err);
+            return res.json({success: true, data: null});
+        });
+
+
+    });
+};
+
+exports.verifyEmail = function(req, res, next) {
+    var mailgun = new Mailgun({apiKey: secrets.mailgunKey, domain: secrets.mailgunUrl});
+    var code = genCode();
+
+    User.findOne({email: req.query.email}, 'verificationCode', function(err, user) {
+        if (err) return res.status(401).end('Wrong verification code.');
+
+        var emaildata = {
+            //Specify email data
+            from: 'admin@twerk.io',
+            //The email to contact
+            to: req.query.email,
+            //Subject and text data
+            subject: 'Twerk.io Verification Code: ' + code,
+            text: 'Keep twerking hard! Copy this verification code into your web browser to verify this email address.'
+        };
+
+            mailgun.messages().send(emaildata, function (err, body) {
+                //If there is an error, render the error page
+                if (err) {
+                    console.log("got an error: ", err);
+                    res.json({success: false, data: {}, error: err});
+                }
+                //Else we can greet    and leave
+                else {
+                    res.json({success: true, data: {}, error: null});
+                }
+            });
+
+    });
+
+
+    function genCode() {
+        var i, possible, text;
+        text = "";
+        possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        i = 0;
+        while (i < 5) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+            i++;
+        }
+        return text;
+    }
+
+
+
+
+};
+
+exports.verifyUserEmail = function(req, res, next){
+    User.findOne({email: req.params.email}, 'email', function (err, user) {
+
+        if (err) {
+            console.log(err);
+            return res.status(401).end();
+        }
+
+        if (!user.verified) {
+            return res.json({user: user});
+        }
+        return res.status(401).end('User already verified.');
+
+    });
+};
+/**
+ * DO NOT USE THIS FUNCTION FOR ANYTHING EXCEPT DEBUGGING
+ * (used for resetting password manually, if password is lost)
+ * @param req
+ * @param res
+ * @param next
+ */
+
+exports.manualResetPassword = function(req, res, next) {
+    if (req.body.password === undefined) {
+        return res.status(401).end();
+    }
+
+    User.findOne({ email: req.body.username }, function (err, user) {
+        if (err) return next(err);
+
+        user.username = req.body.username;
+        user.password = req.body.password;
+
+        user.save(function (err) {
+            if (err) return next(err);
+            return res.status(200).end();
+        });
+
+    });
+};
+
 /**
  * GET /api/foursquare
  * Foursquare API example.
@@ -37,7 +410,6 @@ exports.getApi = function(req, res) {
 
 exports.getFoursquare = function(req, res, next) {
   var token = _.find(req.user.tokens, { kind: 'foursquare' });
-  console.log(token);
   async.parallel({
     trendingVenues: function(callback) {
       foursquare.Venues.getTrending('40.7222756', '-74.0022724', { limit: 50 }, token.accessToken, function(err, results) {

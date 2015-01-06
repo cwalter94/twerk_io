@@ -56,4 +56,4 @@ Y.Widget.prototype.getSkinName = function (skinPrefix) {
 };
 
 
-}, '3.18.1', {"requires": ["widget-base"]});
+}, '3.18.0', {"requires": ["widget-base"]});

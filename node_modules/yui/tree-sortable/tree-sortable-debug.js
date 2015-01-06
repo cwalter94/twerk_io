@@ -374,4 +374,4 @@ NodeSortable.prototype = {
 Y.Tree.Node.Sortable = NodeSortable;
 
 
-}, '3.18.1', {"requires": ["tree"]});
+}, '3.18.0', {"requires": ["tree"]});

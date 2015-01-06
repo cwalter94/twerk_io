@@ -681,7 +681,7 @@ Y.DataTable = Y.mix(
     Y.DataTable); // Migrate static and namespaced classes
 
 
-}, '3.18.1', {
+}, '3.18.0', {
     "requires": [
         "datatable-core",
         "datatable-table",

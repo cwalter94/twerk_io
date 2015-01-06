@@ -9,4 +9,4 @@ Y.Path = Y.SVGPath;
 Y.Drawing = Y.SVGDrawing;
 
 
-}, '3.18.1');
+}, '3.18.0');

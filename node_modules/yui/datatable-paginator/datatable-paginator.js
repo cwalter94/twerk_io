@@ -979,7 +979,7 @@ Y.DataTable.Paginator.View = View;
 Y.Base.mix(Y.DataTable, [Y.DataTable.Paginator]);
 
 
-}, '3.18.1', {
+}, '3.18.0', {
     "requires": [
         "model",
         "view",

@@ -1004,4 +1004,4 @@ Y.Model = Y.extend(Model, Y.Base, {
 });
 
 
-}, '3.18.1', {"requires": ["base-build", "escape", "json-parse"]});
+}, '3.18.0', {"requires": ["base-build", "escape", "json-parse"]});

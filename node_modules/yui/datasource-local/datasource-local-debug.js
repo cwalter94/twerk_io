@@ -399,4 +399,4 @@ Y.extend(DSLocal, Y.Base, {
 Y.namespace("DataSource").Local = DSLocal;
 
 
-}, '3.18.1', {"requires": ["base"]});
+}, '3.18.0', {"requires": ["base"]});

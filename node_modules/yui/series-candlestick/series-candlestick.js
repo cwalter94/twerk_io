@@ -311,4 +311,4 @@ Y.extend(CandlestickSeries, Y.RangeSeries, {
 Y.CandlestickSeries = CandlestickSeries;
 
 
-}, '3.18.1', {"requires": ["series-range"]});
+}, '3.18.0', {"requires": ["series-range"]});

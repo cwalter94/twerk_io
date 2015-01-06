@@ -1598,7 +1598,7 @@ Y.UploaderFlash = Y.extend(UploaderFlash, Y.Widget, {
 Y.UploaderFlash.Queue = UploaderQueue;
 
 
-}, '3.18.1', {
+}, '3.18.0', {
     "requires": [
         "swfdetect",
         "escape",

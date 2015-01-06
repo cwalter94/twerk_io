@@ -1,2 +1,13 @@
+div#home-container
+    div#home-intro
+        .scroll-container
+            .container.content-container
+                .row
+                    .col-md-12
+                        div.alert-warn.fade(flash-alert='error', active-class='in alert')
+                            strong.alert-message {{flash.message}}
 
-.ui-view#pageViews
+                    .col-md-6.col-md-offset-3.col-xs-10.col-xs-offset-1
+                        .ui-view#homeViews
+
+

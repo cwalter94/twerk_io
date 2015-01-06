@@ -944,4 +944,4 @@ Y.CartesianSeries = Y.Base.create("cartesianSeries", Y.SeriesBase, [], {
 });
 
 
-}, '3.18.1', {"requires": ["series-base"]});
+}, '3.18.0', {"requires": ["series-base"]});

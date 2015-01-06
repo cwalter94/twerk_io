@@ -1,19 +1,28 @@
+div.row
 
-.container.content-container
-    .page-header
-        h3 Sign in
-    form(method='POST', action="#").row
-        input(type='hidden', name='_csrf', value=_csrf)
-        .col-sm-8.col-sm-offset-2
-            .form-group
-                label.control-label(for='email') Email
-                input.form-control(type='text', name='email', id='email', placeholder='Email', autofocus=true)
-            .form-group
-                label.control-label(for='password') Password
-                input.form-control(type='password', name='password', id='password', placeholder='Password')
-            .form-group
-                button.btn.btn-primary(type='submit', value='submit')
-                    span.ion-android-hand
-                    | Login
-                a.btn.btn-link(href='/forgot') Forgot your password?
-                a.btn.btn-link(href='/register') Need an account?
+    div.col-xs-10.col-xs-offset-1
+        .page-header.text-center
+            div.alert-warn.fade(flash-alert="error", active-class='in alert', ng-click="hide()")
+                strong.alert-message {{flash.message}}
+            div.alert-warn.fade.row(flash-alert='success', active-class='in alert')
+                strong.alert-message {{flash.message}}
+
+            h2 Login
+
+        form(name="formData", ng-submit="processForm()").row
+            .col-xs-12
+                .row
+                    .col-lg-6.col-lg-offset-3.col-xs-8.col-xs-offset-2
+                        .form-group.form-group-lg.row
+                            label.col-xs-2.input-lg Email:
+                            input.col-xs-10.form-control.input-lg(type="email", ng-model="formData.email", ng-class="{'error': formData.username.$error.$email}")
+                    .col-lg-6.col-lg-offset-3.col-xs-8.col-xs-offset-2
+                        .form-group.form-group-lg.row
+                            label.col-xs-2.input-lg Password:
+                            input.col-xs-10.form-control.input-lg(type="password", ng-model="formData.password", ng-class="{'error': formData.username.$error.$email}")
+
+                .row.form-control-row
+                    .col-xs-6.col-xs-offset-6.text-center
+                        a
+                            button.btn.btn-lg.btn-default(type='submit')
+                                | Login

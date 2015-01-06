@@ -1807,4 +1807,4 @@ version of YUI.
 Y.Controller = Y.Router;
 
 
-}, '3.18.1', {"optional": ["querystring-parse"], "requires": ["array-extras", "base-build", "history"]});
+}, '3.18.0', {"optional": ["querystring-parse"], "requires": ["array-extras", "base-build", "history"]});

@@ -9,4 +9,4 @@ Y.Path = Y.CanvasPath;
 Y.Drawing = Y.CanvasDrawing;
 
 
-}, '3.18.1');
+}, '3.18.0');

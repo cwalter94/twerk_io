@@ -423,7 +423,7 @@ Y.Tab = Y.Base.create('tab', Y.Widget, [Y.WidgetChild], {
 });
 
 
-}, '3.18.1', {
+}, '3.18.0', {
     "requires": [
         "widget",
         "widget-parent",

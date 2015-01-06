@@ -9,4 +9,4 @@ Y.Path = Y.VMLPath;
 Y.Drawing = Y.VMLDrawing;
 
 
-}, '3.18.1');
+}, '3.18.0');

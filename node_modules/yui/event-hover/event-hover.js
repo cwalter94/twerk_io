@@ -67,4 +67,4 @@ conf.detachDelegate = conf.detach;
 Y.Event.define("hover", conf);
 
 
-}, '3.18.1', {"requires": ["event-mouseenter"]});
+}, '3.18.0', {"requires": ["event-mouseenter"]});

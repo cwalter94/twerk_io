@@ -33,4 +33,4 @@ Y.namespace("DataType");
 Y.DataType.Date = Y.Date;
 
 
-}, '3.18.1');
+}, '3.18.0');

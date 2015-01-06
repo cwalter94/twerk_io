@@ -529,4 +529,4 @@ Y.namespace('DataTable').HeaderView = Y.Base.create('tableHeader', Y.View, [], {
 });
 
 
-}, '3.18.1', {"requires": ["datatable-core", "view", "classnamemanager"]});
+}, '3.18.0', {"requires": ["datatable-core", "view", "classnamemanager"]});

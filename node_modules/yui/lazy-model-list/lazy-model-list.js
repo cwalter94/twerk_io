@@ -515,4 +515,4 @@ Y.LazyModelList = Y.Base.create('lazyModelList', Y.ModelList, [], {
 });
 
 
-}, '3.18.1', {"requires": ["model-list"]});
+}, '3.18.0', {"requires": ["model-list"]});

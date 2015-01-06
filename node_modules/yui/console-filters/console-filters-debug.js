@@ -720,4 +720,4 @@ Y.namespace('Plugin').ConsoleFilters = Y.extend(ConsoleFilters, Y.Plugin.Base,
 });
 
 
-}, '3.18.1', {"requires": ["plugin", "console"], "skinnable": true});
+}, '3.18.0', {"requires": ["plugin", "console"], "skinnable": true});

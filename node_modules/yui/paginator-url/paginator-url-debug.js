@@ -64,4 +64,4 @@ Y.namespace('Paginator').Url = PaginatorUrl;
 Y.Base.mix(Y.Paginator, [PaginatorUrl]);
 
 
-}, '3.18.1', {"requires": ["paginator"]});
+}, '3.18.0', {"requires": ["paginator"]});

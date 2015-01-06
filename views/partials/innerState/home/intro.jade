@@ -1,15 +1,7 @@
-div.container.content-container(ng-init="user.csrf='#{_csrf}'")
-    div.row.text-center.intro-text
-        .col-lg-12.col-xs-12.text-left
-            h1 Twerking hard or hardly twerking?
-        .col-lg-12.col-xs-12.text-left
-            h3 Twerking by yourself is never fun. Post your open tablespace at libraries and coffee shops, and we'll let other students know where they can find a study spot.
+h2 Twerking hard or hardly twerking?
+    p Find people in your classes, or just find other students to be around while you work on your own thing.
+    p Never worry again about leaving your stuff with complete strangers when you take a break!
 
-            h3 Plus with a verified twerk buddy, you'll have the contact info of people around you if you need to leave your things for a minute.
-
-
-    div.row.text-center
-        .col-lg-6.col-xs-12
-            button.btn.btn-default.btn-lg.btn-intro(ui-sref="home.login") Login
-        .col-lg-6.col-xs-12
-            button.btn.btn-default.btn-lg.btn-intro(ui-sref="home.register") Register
+    .row.form-control-row
+        .col-xs-12.text-center
+            a.btn.btn-default.btn-main(ui-sref="site.home.register.email") Register

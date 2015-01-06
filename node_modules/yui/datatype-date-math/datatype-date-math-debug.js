@@ -205,4 +205,4 @@ Y.namespace("DataType");
 Y.DataType.Date = Y.Date;
 
 
-}, '3.18.1', {"requires": ["yui-base"]});
+}, '3.18.0', {"requires": ["yui-base"]});

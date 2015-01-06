@@ -566,4 +566,4 @@ var HSL = 'hsl',
 Y.Color = Y.mix(Y.Color, Harmony);
 
 
-}, '3.18.1', {"requires": ["color-hsl"]});
+}, '3.18.0', {"requires": ["color-hsl"]});

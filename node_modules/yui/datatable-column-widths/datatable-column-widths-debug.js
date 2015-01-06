@@ -320,4 +320,4 @@ for an example of how to do this.
  */
 
 
-}, '3.18.1', {"requires": ["datatable-base"]});
+}, '3.18.0', {"requires": ["datatable-base"]});

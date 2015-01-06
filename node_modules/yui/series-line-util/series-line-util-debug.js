@@ -284,4 +284,4 @@ Y.augment(Lines, Y.Attribute);
 Y.Lines = Lines;
 
 
-}, '3.18.1');
+}, '3.18.0');

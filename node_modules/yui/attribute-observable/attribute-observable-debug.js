@@ -234,4 +234,4 @@ YUI.add('attribute-observable', function (Y, NAME) {
     Y.AttributeEvents = AttributeObservable;
 
 
-}, '3.18.1', {"requires": ["event-custom"]});
+}, '3.18.0', {"requires": ["event-custom"]});

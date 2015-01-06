@@ -863,4 +863,4 @@ Y.augment(Parent, Y.ArrayList);
 Y.WidgetParent = Parent;
 
 
-}, '3.18.1', {"requires": ["arraylist", "base-build", "widget"]});
+}, '3.18.0', {"requires": ["arraylist", "base-build", "widget"]});

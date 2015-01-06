@@ -130,4 +130,4 @@ Y.mix(JSONPRequest.prototype, {
 }, true);
 
 
-}, '3.18.1', {"requires": ["jsonp"]});
+}, '3.18.0', {"requires": ["jsonp"]});

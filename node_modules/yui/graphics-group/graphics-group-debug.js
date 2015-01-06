@@ -307,4 +307,4 @@ EllipseGroup.ATTRS = Y.ShapeGroup.ATTRS;
 Y.EllipseGroup = EllipseGroup;
 
 
-}, '3.18.1', {"requires": ["graphics"]});
+}, '3.18.0', {"requires": ["graphics"]});

@@ -153,4 +153,4 @@ YUI.add('io-nodejs', function (Y, NAME) {
 
 
 
-}, '3.18.1', {"requires": ["io-base"]});
+}, '3.18.0', {"requires": ["io-base"]});

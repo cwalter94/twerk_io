@@ -549,4 +549,4 @@ Y.augment(Plots, Y.Attribute);
 Y.Plots = Plots;
 
 
-}, '3.18.1');
+}, '3.18.0');

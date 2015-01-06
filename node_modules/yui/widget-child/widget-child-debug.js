@@ -374,4 +374,4 @@ Child.prototype = {
 Y.WidgetChild = Child;
 
 
-}, '3.18.1', {"requires": ["base-build", "widget"]});
+}, '3.18.0', {"requires": ["base-build", "widget"]});

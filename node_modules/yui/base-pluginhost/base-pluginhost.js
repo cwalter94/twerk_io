@@ -33,4 +33,4 @@ YUI.add('base-pluginhost', function (Y, NAME) {
     Base.unplug = PluginHost.unplug;
 
 
-}, '3.18.1', {"requires": ["base-base", "pluginhost"]});
+}, '3.18.0', {"requires": ["base-base", "pluginhost"]});

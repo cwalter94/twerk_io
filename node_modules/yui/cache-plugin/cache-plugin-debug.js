@@ -50,4 +50,4 @@ Y.mix(CachePlugin, {
 Y.namespace("Plugin").Cache = CachePlugin;
 
 
-}, '3.18.1', {"requires": ["plugin", "cache-base"]});
+}, '3.18.0', {"requires": ["plugin", "cache-base"]});

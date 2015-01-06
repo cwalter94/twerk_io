@@ -1,6 +1,6 @@
 /**
  * angular-ui-utils - Swiss-Army-Knife of AngularJS tools (with no external dependencies!)
- * @version v0.1.1 - 2014-12-01
+ * @version v0.1.1 - 2014-12-22
  * @link http://angular-ui.github.com
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -221,27 +221,30 @@ angular.module('ui.indeterminate',[]).directive('uiIndeterminate', [
  *          {{ 'Here Is my_phoneNumber' | inflector:'variable' }} => hereIsMyPhoneNumber
  */
 angular.module('ui.inflector',[]).filter('inflector', function () {
-  function ucwords(text) {
-    return text.replace(/^([a-z])|\s+([a-z])/g, function ($1) {
-      return $1.toUpperCase();
-    });
+
+  function tokenize(text) {
+    text = text.replace(/([A-Z])|([\-|\_])/g, function(_, $1) { return ' ' + ($1 || ''); });
+    return text.replace(/\s\s+/g, ' ').trim().toLowerCase().split(' ');
   }
 
-  function breakup(text, separator) {
-    return text.replace(/[A-Z]/g, function (match) {
-      return separator + match;
+  function capitalizeTokens(tokens) {
+    var result = [];
+    angular.forEach(tokens, function(token) {
+      result.push(token.charAt(0).toUpperCase() + token.substr(1));
     });
+    return result;
   }
 
   var inflectors = {
     humanize: function (value) {
-      return ucwords(breakup(value, ' ').split('_').join(' '));
+      return capitalizeTokens(tokenize(value)).join(' ');
     },
     underscore: function (value) {
-      return value.substr(0, 1).toLowerCase() + breakup(value.substr(1), '_').toLowerCase().split(' ').join('_');
+      return tokenize(value).join('_');
     },
     variable: function (value) {
-      value = value.substr(0, 1).toLowerCase() + ucwords(value.split('_').join(' ')).substr(1).split(' ').join('');
+      value = tokenize(value);
+      value = value[0] + capitalizeTokens(value.slice(1)).join('');
       return value;
     }
   };
@@ -524,7 +527,7 @@ angular.module('ui.mask', [])
             controller.$viewValue = value.length ? maskValue(value) : '';
             controller.$setValidity('mask', isValid);
             if (value === '' && iAttrs.required) {
-              controller.$setValidity('required', false);
+                controller.$setValidity('required', !controller.$error.required);
             }
             return isValid ? value : undefined;
           }
@@ -2055,6 +2058,172 @@ angular.module('ui.unique',[]).filter('unique', ['$parse', function ($parse) {
   };
 }]);
 
+(function () {
+    'use strict';
+
+    angular.module('myApp', ['ui.uploader']).controller('myController', demoController);
+
+    demoController.$inject = ['$log', 'uiUploader', '$scope'];
+
+    function demoController($log, $uiUploader, $scope) {
+        
+        $scope.btn_remove = function(file){
+            $log.info('deleting='+file);
+            $uiUploader.removeFile(file);
+        };
+        
+        $scope.btn_clean = function(){
+            $uiUploader.removeAll();
+        };
+
+        $scope.btn_upload = function() {
+            $log.info('uploading...');
+            $uiUploader.startUpload({
+                url: 'http://localhost:3000/welcome/ui_uploader',
+                concurrency: 2,
+                onProgress: function(file) {
+                    $log.info(file.name+'='+file.humanSize);
+                    //$log.info($scope.files.indexOf(file));
+                    $scope.$apply();
+                },
+                onCompleted: function(file) {
+                    $log.info(file);
+                }
+            });
+        };
+        
+        $scope.files=[];
+
+        var element = document.getElementById('file1');
+        element.addEventListener('change', function(e) {
+            var files = e.target.files;
+            $uiUploader.addFiles(files);
+            $scope.files = $uiUploader.getFiles();
+            $scope.$apply();
+            //            $log.info($uiUploader.files.length);
+        });
+    }
+})();
+'use strict';
+/*
+ * Author: Remy Alain Ticona Carbajal http://realtica.org
+ * Description: The main objective of ng-uploader is to have a user control,
+ * clean, simple, customizable, and above all very easy to implement.
+ * Licence: MIT
+ */
+
+angular.module('ui.uploader', []).service('uiUploader', uiUploader);
+
+uiUploader.$inject = ['$log'];
+
+function uiUploader($log) {
+    /*jshint validthis: true */
+    var self = this;
+    self.files = [];
+    self.options = {};
+    self.activeUploads = 0;
+    $log.info('uiUploader loaded');
+    
+    function addFiles(files) {
+        for (var i = 0; i < files.length; i++) {
+            self.files.push(files[i]);
+        }
+    }
+
+    function getFiles() {
+        return self.files;
+    }
+
+    function startUpload(options) {
+        self.options = options;
+        for (var i = 0; i < self.files.length; i++) {
+            if (self.activeUploads == self.options.concurrency) {
+                break;
+            }
+            if (self.files[i].active)
+                continue;
+            ajaxUpload(self.files[i], self.options.url);
+        }
+    }
+    
+    function removeFile(file){
+        self.files.splice(self.files.indexOf(file),1);
+    }
+    
+    function removeAll(){
+        self.files.splice(0,self.files.length);
+    }
+    
+    return {
+        addFiles: addFiles,
+        getFiles: getFiles,
+        files: self.files,
+        startUpload: startUpload,
+        removeFile: removeFile,
+        removeAll:removeAll
+    };
+    
+    function getHumanSize(bytes) {
+        var sizes = ['n/a', 'bytes', 'KiB', 'MiB', 'GiB', 'TB', 'PB', 'EiB', 'ZiB', 'YiB'];
+        var i = +Math.floor(Math.log(bytes) / Math.log(1024));
+        return (bytes / Math.pow(1024, i)).toFixed(i ? 1 : 0) + ' ' + sizes[isNaN(bytes) ? 0 : i + 1];
+    }
+
+    function ajaxUpload(file, url) {
+        var xhr, formData, prop, data = '',
+            key = '' || 'file';
+        self.activeUploads += 1;
+        file.active = true;
+        xhr = new window.XMLHttpRequest();
+        formData = new window.FormData();
+        xhr.open('POST', url);
+
+        // Triggered when upload starts:
+        xhr.upload.onloadstart = function() {};
+
+        // Triggered many times during upload:
+        xhr.upload.onprogress = function(event) {
+            if (!event.lengthComputable) {
+                return;
+            }
+            // Update file size because it might be bigger than reported by
+            // the fileSize:
+            //$log.info("progres..");
+            //console.info(event.loaded);
+            file.loaded = event.loaded;
+            file.humanSize = getHumanSize(event.loaded);
+            self.options.onProgress(file);
+        };
+
+        // Triggered when upload is completed:
+        xhr.onload = function() {
+            self.activeUploads -= 1;
+            startUpload(self.options);
+            self.options.onCompleted(file);
+        };
+
+        // Triggered when upload fails:
+        xhr.onerror = function() {};
+
+        // Append additional data if provided:
+        if (data) {
+            for (prop in data) {
+                if (data.hasOwnProperty(prop)) {
+                    formData.append(prop, data[prop]);
+                }
+            }
+        }
+
+        // Append file data:
+        formData.append(key, file, file.name);
+
+        // Initiate upload:
+        xhr.send(formData);
+
+        return xhr;
+    }
+
+}
 'use strict';
 
 /**

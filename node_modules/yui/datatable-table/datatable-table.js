@@ -752,4 +752,4 @@ Y.namespace('DataTable').TableView = Y.Base.create('table', Y.View, [], {
 
 
 
-}, '3.18.1', {"requires": ["datatable-core", "datatable-head", "datatable-body", "view", "classnamemanager"]});
+}, '3.18.0', {"requires": ["datatable-core", "datatable-head", "datatable-body", "view", "classnamemanager"]});

@@ -3554,4 +3554,4 @@ Y.SVGGraphic = SVGGraphic;
 
 
 
-}, '3.18.1', {"requires": ["graphics"]});
+}, '3.18.0', {"requires": ["graphics"]});

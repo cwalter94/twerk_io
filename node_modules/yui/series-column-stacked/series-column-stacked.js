@@ -348,4 +348,4 @@ Y.StackedColumnSeries = Y.Base.create("stackedColumnSeries", Y.ColumnSeries, [Y.
 
 
 
-}, '3.18.1', {"requires": ["series-stacked", "series-column"]});
+}, '3.18.0', {"requires": ["series-stacked", "series-column"]});

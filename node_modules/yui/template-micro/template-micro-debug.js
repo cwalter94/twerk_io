@@ -246,4 +246,4 @@ Micro.revive = function (precompiled) {
 };
 
 
-}, '3.18.1', {"requires": ["escape"]});
+}, '3.18.0', {"requires": ["escape"]});

@@ -1,35 +1,26 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 var crypto = require('crypto');
-
+var jwt = require('jsonwebtoken');
+var secrets = require('../config/secrets');
 var userSchema = new mongoose.Schema({
-  email: { type: String, unique: true, lowercase: true },
-  password: String,
-  role: String,
-  status: {type: String, default: 'Alumni'},
-  verified: {type: Boolean, default: false},
-  excomm: Boolean,
-  excommPosition: String,
+    email: { type: String, unique: true, lowercase: true },
+    password: String,
+    status: {type: String, default: ''},
+    verified: {type: Boolean, default: false},
+    roles: {type: Array, default: ['User']},
 
-  facebook: String,
-  twitter: String,
-  google: String,
-  github: String,
-  instagram: String,
-  linkedin: String,
-  tokens: Array,
+    expiredtokens: {type: Array, default: []},
 
-  profile: {
     name: { type: String, default: '' },
-    gender: { type: String, default: '' },
-    location: { type: String, default: '' },
-    website: { type: String, default: '' },
     picture: { type: String, default: '' },
-    address: {type: String, default: ''}
-  },
+    major: {type: Array, default: []},
+    minor: {type: Array, default: []},
+    phone: String,
+    verificationCode: String,
 
-  resetPasswordToken: String,
-  resetPasswordExpires: Date
+    resetPasswordToken: String,
+    resetPasswordExpires: Date
 });
 
 /**
@@ -37,20 +28,19 @@ var userSchema = new mongoose.Schema({
  * "Pre" is a Mongoose middleware that executes before each user.save() call.
  */
 
-userSchema.pre('save', function(next) {
-  var user = this;
+userSchema.pre('save', function (next) {
+    var user = this;
+    if (!user.isModified('password')) return next();
 
-  if (!user.isModified('password')) return next();
+    bcrypt.genSalt(5, function (err, salt) {
+        if (err) return next(err);
 
-  bcrypt.genSalt(5, function(err, salt) {
-    if (err) return next(err);
-
-    bcrypt.hash(user.password, salt, null, function(err, hash) {
-      if (err) return next(err);
-      user.password = hash;
-      next();
+        bcrypt.hash(user.password, salt, null, function (err, hash) {
+            if (err) return next(err);
+            user.password = hash;
+            next();
+        });
     });
-  });
 });
 
 /**
@@ -58,27 +48,30 @@ userSchema.pre('save', function(next) {
  * Used by Passport-Local Strategy for password validation.
  */
 
-userSchema.methods.comparePassword = function(candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function(err, isMatch) {
-    if (err) return cb(err);
-    cb(null, isMatch);
-  });
+userSchema.methods.comparePassword = function (candidatePassword, cb) {
+    bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+        if (err) return cb(err);
+        cb(isMatch);
+    });
 };
 
-/**
- * Get URL to a user's gravatar.
- * Used in Navbar and Account Management page.
- */
+userSchema.methods.verifytoken = function(token, cb) {
+    if (!this.expiredtokens.length) return cb(token);
 
-userSchema.methods.gravatar = function(size) {
-  if (!size) size = 200;
+    for (var i = 0; i < this.expiredtokens.length; i++) {
+        var t = this.expiredtokens[i];
+        var profile = jwt.verify(t, secrets.jwt);
 
-  if (!this.email) {
-    return 'https://gravatar.com/avatar/?s=' + size + '&d=retro';
-  }
-
-  var md5 = crypto.createHash('md5').update(this.email).digest('hex');
-  return 'https://gravatar.com/avatar/' + md5 + '?s=' + size + '&d=retro';
+        // if more than 1 days old, remove from stored expired tokens
+        if (profile.original_iat - new Date() > 1) { // iat == issued at
+            this.expiredtokens.splice(i, 1);
+            i--;
+        } else {
+            if (token == t) return cb(null)
+        }
+    }
+    return cb(token)
 };
+
 
 module.exports = mongoose.model('User', userSchema);

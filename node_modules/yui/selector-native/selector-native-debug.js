@@ -402,4 +402,4 @@ Y.mix(Y.Selector, Selector, true);
 })(Y);
 
 
-}, '3.18.1', {"requires": ["dom-base"]});
+}, '3.18.0', {"requires": ["dom-base"]});

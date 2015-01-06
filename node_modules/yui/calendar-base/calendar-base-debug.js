@@ -1689,7 +1689,7 @@ Y.CalendarBase = Y.extend( CalendarBase, Y.Widget, {
 });
 
 
-}, '3.18.1', {
+}, '3.18.0', {
     "requires": [
         "widget",
         "datatype-date",

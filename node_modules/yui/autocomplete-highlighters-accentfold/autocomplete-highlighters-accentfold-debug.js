@@ -104,4 +104,4 @@ Y.mix(Y.namespace('AutoCompleteHighlighters'), {
 });
 
 
-}, '3.18.1', {"requires": ["array-extras", "highlight-accentfold"]});
+}, '3.18.0', {"requires": ["array-extras", "highlight-accentfold"]});

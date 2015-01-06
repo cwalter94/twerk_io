@@ -49,4 +49,4 @@ Y.mix(Y.Node.DOM_EVENTS, {
 });
 
 
-}, '3.18.1', {"requires": ["node-base"]});
+}, '3.18.0', {"requires": ["node-base"]});

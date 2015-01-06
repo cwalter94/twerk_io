@@ -62,4 +62,4 @@ Y.Node.prototype.load = function(url, selector, callback) {
 };
 
 
-}, '3.18.1', {"requires": ["node-base", "io-base"]});
+}, '3.18.0', {"requires": ["node-base", "io-base"]});

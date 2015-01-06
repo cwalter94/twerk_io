@@ -1050,4 +1050,4 @@ Y.mix(Y.IO.prototype, {
 
 
 
-}, '3.18.1', {"requires": ["event-custom-base", "querystring-stringify-simple"]});
+}, '3.18.0', {"requires": ["event-custom-base", "querystring-stringify-simple"]});

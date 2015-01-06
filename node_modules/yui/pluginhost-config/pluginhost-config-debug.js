@@ -127,4 +127,4 @@ YUI.add('pluginhost-config', function (Y, NAME) {
     };
 
 
-}, '3.18.1', {"requires": ["pluginhost-base"]});
+}, '3.18.0', {"requires": ["pluginhost-base"]});

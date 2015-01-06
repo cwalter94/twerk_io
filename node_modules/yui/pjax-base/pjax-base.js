@@ -439,4 +439,4 @@ PjaxBase.ATTRS = {
 
 Y.PjaxBase = PjaxBase;
 
-}, '3.18.1', {"requires": ["classnamemanager", "node-event-delegate", "router"]});
+}, '3.18.0', {"requires": ["classnamemanager", "node-event-delegate", "router"]});

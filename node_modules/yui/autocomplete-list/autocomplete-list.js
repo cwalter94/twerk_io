@@ -885,7 +885,7 @@ for API docs.
 Y.AutoComplete = List;
 
 
-}, '3.18.1', {
+}, '3.18.0', {
     "lang": [
         "en",
         "es",

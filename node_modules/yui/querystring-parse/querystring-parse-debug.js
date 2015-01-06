@@ -159,4 +159,4 @@ QueryString.unescape = function (s) {
 
 
 
-}, '3.18.1', {"requires": ["yui-base", "array-extras"]});
+}, '3.18.0', {"requires": ["yui-base", "array-extras"]});

@@ -648,4 +648,4 @@ Y.Recordset = Recordset;
 
 
 
-}, '3.18.1', {"requires": ["base", "arraylist"]});
+}, '3.18.0', {"requires": ["base", "arraylist"]});

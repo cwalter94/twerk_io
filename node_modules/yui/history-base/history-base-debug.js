@@ -636,4 +636,4 @@ Y.mix(HistoryBase.prototype, {
 Y.HistoryBase = HistoryBase;
 
 
-}, '3.18.1', {"requires": ["event-custom-complex"]});
+}, '3.18.0', {"requires": ["event-custom-complex"]});

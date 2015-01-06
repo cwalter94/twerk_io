@@ -86,4 +86,4 @@ Y.MarkerSeries = Y.Base.create("markerSeries", Y.CartesianSeries, [Y.Plots], {
 
 
 
-}, '3.18.1', {"requires": ["series-cartesian", "series-plot-util"]});
+}, '3.18.0', {"requires": ["series-cartesian", "series-plot-util"]});

@@ -76,4 +76,4 @@ NodeLabelable.prototype = {
 Y.Tree.Node.Labelable = NodeLabelable;
 
 
-}, '3.18.1', {"requires": ["tree"]});
+}, '3.18.0', {"requires": ["tree"]});

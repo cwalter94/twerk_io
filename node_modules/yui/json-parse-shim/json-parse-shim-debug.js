@@ -180,4 +180,4 @@ Y.JSON.parse = function (s,reviver) {
 Y.JSON.parse.isShim = true;
 
 
-}, '3.18.1', {"requires": ["json-parse"]});
+}, '3.18.0', {"requires": ["json-parse"]});

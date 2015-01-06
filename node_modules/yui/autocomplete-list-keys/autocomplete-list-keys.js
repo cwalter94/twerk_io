@@ -183,4 +183,4 @@ ListKeys.prototype = {
 Y.Base.mix(Y.AutoCompleteList, [ListKeys]);
 
 
-}, '3.18.1', {"requires": ["autocomplete-list", "base-build"]});
+}, '3.18.0', {"requires": ["autocomplete-list", "base-build"]});

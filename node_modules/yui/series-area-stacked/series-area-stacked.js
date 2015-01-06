@@ -57,4 +57,4 @@ Y.StackedAreaSeries = Y.Base.create("stackedAreaSeries", Y.AreaSeries, [Y.Stacki
 });
 
 
-}, '3.18.1', {"requires": ["series-stacked", "series-area"]});
+}, '3.18.0', {"requires": ["series-stacked", "series-area"]});

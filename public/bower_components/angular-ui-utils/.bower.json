@@ -5,11 +5,11 @@
     "angular": ">= 1.0.2"
   },
   "homepage": "https://github.com/angular-ui/ui-utils",
-  "_release": "84f458a385",
+  "_release": "5814d4c5f5",
   "_resolution": {
     "type": "branch",
     "branch": "bower",
-    "commit": "84f458a38573f3da838ecdfa6d740a4dc1b01ef1"
+    "commit": "5814d4c5f5edf8111744db2e12acd1b80e653f8f"
   },
   "_source": "git://github.com/angular-ui/ui-utils.git",
   "_target": "bower",

@@ -1208,4 +1208,4 @@ Y.namespace('DataTable').BodyView = Y.Base.create('tableBody', Y.View, [], {
 });
 
 
-}, '3.18.1', {"requires": ["datatable-core", "view", "classnamemanager"]});
+}, '3.18.0', {"requires": ["datatable-core", "view", "classnamemanager"]});

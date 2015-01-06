@@ -1291,4 +1291,4 @@ WidgetButtons.prototype = {
 Y.WidgetButtons = WidgetButtons;
 
 
-}, '3.18.1', {"requires": ["button-plugin", "cssbutton", "widget-stdmod"]});
+}, '3.18.0', {"requires": ["button-plugin", "cssbutton", "widget-stdmod"]});

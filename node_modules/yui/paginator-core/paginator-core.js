@@ -143,4 +143,4 @@ Y.mix(PaginatorCore.prototype, {
 
 
 
-}, '3.18.1', {"requires": ["base"]});
+}, '3.18.0', {"requires": ["base"]});

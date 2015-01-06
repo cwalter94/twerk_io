@@ -1,4 +1,4 @@
-var newBlogPostController = app.controller('newBlogPostCtrl', function($scope, $http, $upload, flash) {
+var newBlogPostController = app.controller('newBlogPostCtrl', function($scope, $http, $upload, flash, $location) {
     $scope.blogpost = {};
 
     $scope.blogpost.title = '';
@@ -9,28 +9,16 @@ var newBlogPostController = app.controller('newBlogPostCtrl', function($scope, $
     $scope.publish = function () {
         if (!$scope.blogpost.title || !$scope.blogpost.text) {
             flash.error = 'Please fill in ' + ($scope.blogpost.title ? ' text.' : 'title.');
-        } else {
-            $http({
-                method: 'POST',
-                url: '/blog/new',
-                headers: {
-                    'x-csrf-token' : $scope.user.csrf
-                },
-                data: {
-                    title: $scope.blogpost.title,
-                    text: $scope.blogpost.text,
-                    author: 'historian@ducalifornia.org',
-                    pictures: []
-                }
 
-            }).success(function(data, status, headers, config) {
-                console.log(data);
-                flash.success = "Published successfully.";
-            }).
-                error(function(data, status, headers, config) {
-                    console.log(data);
-                   flash.error = "Not published.";
-                });;
+        } else {
+            $http.post('/api/blog/newpost', {blogpost: $scope.blogpost})
+                .success(function(data) {
+                    $location.path('/blog');
+                })
+                .error(function(err) {
+                    console.log(err);
+                    flash.error("An error occurred. Try again later.");
+                })
         }
     };
 

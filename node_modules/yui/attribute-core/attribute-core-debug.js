@@ -1205,4 +1205,4 @@ YUI.add('attribute-core', function (Y, NAME) {
     Y.AttributeCore = AttributeCore;
 
 
-}, '3.18.1', {"requires": ["oop"]});
+}, '3.18.0', {"requires": ["oop"]});

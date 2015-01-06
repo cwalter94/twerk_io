@@ -954,4 +954,4 @@ Y.Event.simulate = function(target, type, options){
 
 
 
-}, '3.18.1', {"requires": ["event-base"]});
+}, '3.18.0', {"requires": ["event-base"]});

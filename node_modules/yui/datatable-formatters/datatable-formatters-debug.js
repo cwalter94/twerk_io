@@ -560,4 +560,4 @@ and autocomplete-based editors, where the order of the items in the dropdown mat
  */
 
 
-}, '3.18.1', {"requires": ["datatable-body", "datatype-number-format", "datatype-date-format", "escape"]});
+}, '3.18.0', {"requires": ["datatable-body", "datatype-number-format", "datatype-date-format", "escape"]});

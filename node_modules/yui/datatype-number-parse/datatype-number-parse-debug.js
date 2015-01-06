@@ -102,4 +102,4 @@ Y.namespace("DataType");
 Y.DataType.Number = Y.Number;
 
 
-}, '3.18.1', {"requires": ["escape"]});
+}, '3.18.0', {"requires": ["escape"]});

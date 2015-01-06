@@ -72,4 +72,4 @@ Y.Paginator = Y.mix(
 );
 
 
-}, '3.18.1', {"requires": ["paginator-core"]});
+}, '3.18.0', {"requires": ["paginator-core"]});

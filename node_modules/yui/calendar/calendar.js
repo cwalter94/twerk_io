@@ -607,4 +607,4 @@ Y.Calendar = Y.extend(Calendar, Y.CalendarBase, {
 });
 
 
-}, '3.18.1', {"requires": ["calendar-base", "calendarnavigator"], "skinnable": true});
+}, '3.18.0', {"requires": ["calendar-base", "calendarnavigator"], "skinnable": true});

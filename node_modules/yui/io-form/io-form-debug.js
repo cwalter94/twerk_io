@@ -127,4 +127,4 @@ Y.mix(Y.IO.prototype, {
 }, true);
 
 
-}, '3.18.1', {"requires": ["io-base", "node-base"]});
+}, '3.18.0', {"requires": ["io-base", "node-base"]});

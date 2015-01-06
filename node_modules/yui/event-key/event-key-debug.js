@@ -169,4 +169,4 @@ eventDef.detachDelegate = eventDef.detach;
 Y.Event.define('key', eventDef, true);
 
 
-}, '3.18.1', {"requires": ["event-synthetic"]});
+}, '3.18.0', {"requires": ["event-synthetic"]});

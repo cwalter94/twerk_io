@@ -1,27 +1,27 @@
-var loginCtrl = app.controller('loginCtrl', function($scope, $upload, $http, $location) {
+var loginCtrl = app.controller('loginCtrl', function($scope, $http, $location, $window, principal, flash) {
+    $scope.csrf = "";
+
     $scope.user = {
     };
 
-    $scope.form = ($location.path() != '/scholarship');
-
-    $scope.formData = {};
 
     $scope.processForm = function() {
-
+        if ($scope.formData.username !== undefined && $scope.formData.password !== undefined) {
+            var credentials = {
+                username: $scope.formData.username,
+                password: $scope.formData.password
+            };
+            principal.login(credentials).then(function(data) {
+                $location.path('/account/profile');
+            }, (function(error) {
+                flash.error = error;
+            }));
+        }
     };
 
     $scope.addresses = [];
     $scope.address = {};
 
-    $scope.refreshAddresses = function(address) {
-        var params = {address: address, sensor: false};
-        return $http.get(
-            'http://maps.googleapis.com/maps/api/geocode/json',
-            {params: params}
-        ).then(function(response) {
-                $scope.addresses = response.data.results;
-            });
-    };
 
     $scope.getUrl = function() {
         return $location.path()

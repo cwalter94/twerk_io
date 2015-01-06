@@ -23,9 +23,10 @@ h4,
 h5,
 h6 {
     margin: 0 0 30px;
-    font-family: Helvetica, Helvetica-Neue-Light, sans-serif;
-    font-weight: 200;
-    color: #555;
+    text-transform: uppercase;
+    font-family: Montserrat,sans-serif;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
 p {
@@ -65,15 +66,14 @@ a:focus {
     font-weight: 700;
 }
 .navbar-brand {
-    height: 40px;
-    padding: 5px 15px;
-    font-size: 18px;
-    line-height: 1em;
-    color: #003262;
+  height: 40px;
+  padding: 5px 15px;
+  font-size: 18px;
+  line-height: 1em;
 }
 
 .navbar-brand h1{
-    color: #003262;
+	color: #fff;
   font-size: 20px;
   line-height: 40px;
 }
@@ -305,7 +305,7 @@ hr {
 	width:100%;
 	position:relative;
 	
-	background: url(../img/bg1.jpg);
+	background: url(https://s3-us-west-1.amazonaws.com/ducalifornia.node/img/bg1.jpg);
     background-size: cover;
 }
 
@@ -641,8 +641,8 @@ Parallax
     -moz-animation-timing-function: linear;
 }
 
-@-webkit-keyframes pulse {    
-    0 {
+@-webkit-keyframes pulse {
+    0% {
         -webkit-transform: scale(1);
         transform: scale(1);
     }
@@ -658,8 +658,8 @@ Parallax
     }
 }
 
-@-moz-keyframes pulse {    
-    0 {
+@-moz-keyframes pulse {
+    0% {
         -moz-transform: scale(1);
         transform: scale(1);
     }

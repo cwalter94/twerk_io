@@ -1700,4 +1700,4 @@ Y.ChartLegend = Y.Base.create("chartlegend", Y.Widget, [Y.Renderer], {
 });
 
 
-}, '3.18.1', {"requires": ["charts-base"]});
+}, '3.18.0', {"requires": ["charts-base"]});

@@ -1,9 +1,7 @@
-var navCtrl = app.controller('navCtrl', function($scope, $location) {
+var navCtrl = app.controller('navCtrl', function($scope, $location, authorize) {
     $scope.status = {
         isopen: true
     };
 
-    $scope.getUrl = function() {
-        return '' + $location.path();
-    }
+
 });

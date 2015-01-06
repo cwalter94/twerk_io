@@ -6,6 +6,7 @@
 		jQuery("#preloader").delay(100).fadeOut("slow");
 		jQuery("#load").delay(100).fadeOut("slow");
 	});
+
 	//jQuery for page scrolling feature - requires jQuery Easing plugin
 	$(function() {
 		$('.btn-main').bind('click', function(event) {

@@ -1308,7 +1308,7 @@ YUI.add('dial', function (Y, NAME) {
     Y.Dial = Dial;
 
 
-}, '3.18.1', {
+}, '3.18.0', {
     "requires": [
         "widget",
         "dd-drag",

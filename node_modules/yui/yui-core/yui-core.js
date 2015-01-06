@@ -158,7 +158,7 @@ available.
 (function() {
 
     var proto, prop,
-        VERSION = '3.18.1',
+        VERSION = '3.18.0',
         PERIOD = '.',
         BASE = 'http://yui.yahooapis.com/',
         /*
@@ -4014,4 +4014,4 @@ YUI.Env.aliases = {
 };
 
 
-}, '3.18.1');
+}, '3.18.0');

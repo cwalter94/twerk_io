@@ -28,4 +28,4 @@ YUI.add('file', function (Y, NAME) {
  }
 
 
-}, '3.18.1', {"requires": ["file-flash", "file-html5"]});
+}, '3.18.0', {"requires": ["file-flash", "file-html5"]});

@@ -46,4 +46,4 @@ Y.Widget.prototype._uiSizeCB = function(expand) {
 };
 
 
-}, '3.18.1', {"requires": ["widget-base"]});
+}, '3.18.0', {"requires": ["widget-base"]});

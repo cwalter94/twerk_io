@@ -84,4 +84,4 @@ Y.namespace('DataTable.Templates').Paginator = {
 };
 
 
-}, '3.18.1', {"requires": ["template"]});
+}, '3.18.0', {"requires": ["template"]});

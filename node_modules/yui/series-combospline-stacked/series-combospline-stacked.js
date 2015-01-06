@@ -69,4 +69,4 @@ Y.StackedComboSplineSeries = Y.Base.create("stackedComboSplineSeries", Y.Stacked
 });
 
 
-}, '3.18.1', {"requires": ["series-combo-stacked", "series-curve-util"]});
+}, '3.18.0', {"requires": ["series-combo-stacked", "series-curve-util"]});

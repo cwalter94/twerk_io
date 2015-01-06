@@ -189,4 +189,4 @@ conf.detachDelegate = conf.detach;
 Event.define("contextmenu", conf, true);
 
 
-}, '3.18.1', {"requires": ["event-synthetic", "dom-screen"]});
+}, '3.18.0', {"requires": ["event-synthetic", "dom-screen"]});

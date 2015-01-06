@@ -829,4 +829,4 @@ YUI.add('base-core', function (Y, NAME) {
     Y.BaseCore = BaseCore;
 
 
-}, '3.18.1', {"requires": ["attribute-core"]});
+}, '3.18.0', {"requires": ["attribute-core"]});

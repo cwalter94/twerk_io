@@ -242,4 +242,4 @@ Histogram.prototype = {
 Y.Histogram = Histogram;
 
 
-}, '3.18.1', {"requires": ["series-cartesian", "series-plot-util"]});
+}, '3.18.0', {"requires": ["series-cartesian", "series-plot-util"]});

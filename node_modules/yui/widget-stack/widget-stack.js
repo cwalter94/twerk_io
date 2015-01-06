@@ -437,4 +437,4 @@ YUI.add('widget-stack', function (Y, NAME) {
     Y.WidgetStack = Stack;
 
 
-}, '3.18.1', {"requires": ["base-build", "widget"], "skinnable": true});
+}, '3.18.0', {"requires": ["base-build", "widget"], "skinnable": true});

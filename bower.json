@@ -29,7 +29,11 @@
     "textAngular": "~1.2.2",
     "angular-flash": "~0.1.14",
     "angular-animate": "~1.3.4",
-    "request": "~2.51.1"
+    "angular-cookies": "~1.3.8",
+    "angular-ui-utils": "bower",
+    "angular-smart-table": "~1.4.5",
+    "rangy-official": "~1.3.0-alpha.20140921",
+    "angular-loading-bar": "~0.6.0"
   },
   "resolutions": {
     "angular": "~1.3.4"

@@ -105,4 +105,4 @@ Y.extend(DSFn, Y.DataSource.Local, {
 Y.DataSource.Function = DSFn;
 
 
-}, '3.18.1', {"requires": ["datasource-local"]});
+}, '3.18.0', {"requires": ["datasource-local"]});

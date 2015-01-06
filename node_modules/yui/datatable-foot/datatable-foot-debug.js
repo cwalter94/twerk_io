@@ -109,4 +109,4 @@ Y.namespace('DataTable').FooterView = Y.Base.create('tableFooter', Y.View, [], {
 });
 
 
-}, '3.18.1', {"requires": ["datatable-core", "view"]});
+}, '3.18.0', {"requires": ["datatable-core", "view"]});

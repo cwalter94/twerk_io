@@ -197,4 +197,4 @@ YUI.add('dd-plugin', function (Y, NAME) {
 
 
 
-}, '3.18.1', {"optional": ["dd-constrain", "dd-proxy"], "requires": ["dd-drag"]});
+}, '3.18.0', {"optional": ["dd-constrain", "dd-proxy"], "requires": ["dd-drag"]});

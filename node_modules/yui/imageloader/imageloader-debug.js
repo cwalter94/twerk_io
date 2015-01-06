@@ -662,4 +662,4 @@ YUI.add('imageloader', function (Y, NAME) {
 
 
 
-}, '3.18.1', {"requires": ["base-base", "node-style", "node-screen"]});
+}, '3.18.0', {"requires": ["base-base", "node-style", "node-screen"]});

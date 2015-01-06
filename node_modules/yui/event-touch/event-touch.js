@@ -178,4 +178,4 @@ else {
 Y.Event._GESTURE_MAP = GESTURE_MAP;
 
 
-}, '3.18.1', {"requires": ["node-base"]});
+}, '3.18.0', {"requires": ["node-base"]});

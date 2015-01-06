@@ -757,4 +757,4 @@ Y.mix(Transition.toggles, {
 });
 
 
-}, '3.18.1', {"requires": ["node-style"]});
+}, '3.18.0', {"requires": ["node-style"]});

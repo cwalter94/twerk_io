@@ -1454,4 +1454,4 @@ Y.ScrollView = Y.extend(ScrollView, Y.Widget, {
 });
 
 
-}, '3.18.1', {"requires": ["widget", "event-gestures", "event-mousewheel", "transition"], "skinnable": true});
+}, '3.18.0', {"requires": ["widget", "event-gestures", "event-mousewheel", "transition"], "skinnable": true});

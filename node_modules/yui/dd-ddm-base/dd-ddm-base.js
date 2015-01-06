@@ -371,4 +371,4 @@ YUI.add('dd-ddm-base', function (Y, NAME) {
 
 
 
-}, '3.18.1', {"requires": ["node", "base", "yui-throttle", "classnamemanager"]});
+}, '3.18.0', {"requires": ["node", "base", "yui-throttle", "classnamemanager"]});

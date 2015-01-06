@@ -167,4 +167,4 @@ Y.Pjax = Y.Base.create('pjax', Y.Router, [Y.PjaxBase, Y.PjaxContent], {
 });
 
 
-}, '3.18.1', {"requires": ["pjax-base", "pjax-content"]});
+}, '3.18.0', {"requires": ["pjax-base", "pjax-content"]});

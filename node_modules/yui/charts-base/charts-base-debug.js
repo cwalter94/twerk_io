@@ -5151,7 +5151,7 @@ function Chart(cfg)
 Y.Chart = Chart;
 
 
-}, '3.18.1', {
+}, '3.18.0', {
     "requires": [
         "dom",
         "event-mouseenter",

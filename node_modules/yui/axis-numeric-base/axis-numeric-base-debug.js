@@ -718,4 +718,4 @@ Y.NumericImpl = NumericImpl;
 Y.NumericAxisBase = Y.Base.create("numericAxisBase", Y.AxisBase, [Y.NumericImpl]);
 
 
-}, '3.18.1', {"requires": ["axis-base"]});
+}, '3.18.0', {"requires": ["axis-base"]});

@@ -943,4 +943,4 @@ YUI.add('editor-base', function (Y, NAME) {
 
 
 
-}, '3.18.1', {"requires": ["base", "frame", "node", "exec-command", "editor-selection"]});
+}, '3.18.0', {"requires": ["base", "frame", "node", "exec-command", "editor-selection"]});

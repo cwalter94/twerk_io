@@ -898,4 +898,4 @@ Y.AxisBase = Y.Base.create("axisBase", Y.Base, [Y.Renderer], {
 });
 
 
-}, '3.18.1', {"requires": ["classnamemanager", "datatype-number", "datatype-date", "base", "event-custom"]});
+}, '3.18.0', {"requires": ["classnamemanager", "datatype-number", "datatype-date", "base", "event-custom"]});

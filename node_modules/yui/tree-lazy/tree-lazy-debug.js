@@ -173,4 +173,4 @@ Y.namespace('Plugin.Tree').Lazy = Y.Base.create('lazyTreePlugin', Y.Plugin.Base,
 });
 
 
-}, '3.18.1', {"requires": ["base-pluginhost", "plugin", "tree"]});
+}, '3.18.0', {"requires": ["base-pluginhost", "plugin", "tree"]});

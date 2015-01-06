@@ -31,4 +31,4 @@ Y.YQLRequest.prototype._send = function (url, o) {
 };
 
 
-}, '3.18.1', {"requires": ["yql"]});
+}, '3.18.0', {"requires": ["yql"]});
