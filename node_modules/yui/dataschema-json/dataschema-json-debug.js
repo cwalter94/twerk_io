@@ -440,4 +440,4 @@ SchemaJSON = {
 Y.DataSchema.JSON = Y.mix(SchemaJSON, Base);
 
 
-}, '3.18.0', {"requires": ["dataschema-base", "json"]});
+}, '3.18.1', {"requires": ["dataschema-base", "json"]});

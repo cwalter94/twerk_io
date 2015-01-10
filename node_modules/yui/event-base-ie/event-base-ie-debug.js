@@ -300,4 +300,4 @@ if (imp && (!imp.hasFeature('Events', '2.0'))) {
 }
 
 
-}, '3.18.0', {"requires": ["node-base"]});
+}, '3.18.1', {"requires": ["node-base"]});

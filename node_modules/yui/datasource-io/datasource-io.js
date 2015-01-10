@@ -198,4 +198,4 @@ Y.extend(DSIO, Y.DataSource.Local, {
 Y.DataSource.IO = DSIO;
 
 
-}, '3.18.0', {"requires": ["datasource-local", "io-base"]});
+}, '3.18.1', {"requires": ["datasource-local", "io-base"]});

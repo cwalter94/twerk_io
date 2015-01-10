@@ -244,4 +244,4 @@ Y.CategoryImpl = CategoryImpl;
 Y.CategoryAxisBase = Y.Base.create("categoryAxisBase", Y.AxisBase, [Y.CategoryImpl]);
 
 
-}, '3.18.0', {"requires": ["axis-base"]});
+}, '3.18.1', {"requires": ["axis-base"]});

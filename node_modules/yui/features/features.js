@@ -402,4 +402,4 @@ add('load', '22', {
     "ua": "winjs"
 });
 
-}, '3.18.0', {"requires": ["yui-base"]});
+}, '3.18.1', {"requires": ["yui-base"]});

@@ -297,4 +297,4 @@ if (!testFeature('style', 'computedStyle')) {
 }
 
 
-}, '3.18.0', {"requires": ["dom-style", "color-base"]});
+}, '3.18.1', {"requires": ["dom-style", "color-base"]});

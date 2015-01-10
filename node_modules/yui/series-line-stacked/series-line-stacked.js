@@ -46,4 +46,4 @@ Y.StackedLineSeries = Y.Base.create("stackedLineSeries", Y.LineSeries, [Y.Stacki
 });
 
 
-}, '3.18.0', {"requires": ["series-stacked", "series-line"]});
+}, '3.18.1', {"requires": ["series-stacked", "series-line"]});

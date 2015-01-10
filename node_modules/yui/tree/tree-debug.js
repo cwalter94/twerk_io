@@ -937,4 +937,4 @@ var Tree = Y.Base.create('tree', Y.Base, [], {
 Y.Tree = Y.mix(Tree, Y.Tree);
 
 
-}, '3.18.0', {"requires": ["base-build", "tree-node"]});
+}, '3.18.1', {"requires": ["base-build", "tree-node"]});

@@ -232,4 +232,4 @@ Y.App.Content = AppContent;
 Y.Base.mix(Y.App, [AppContent]);
 
 
-}, '3.18.0', {"requires": ["app-base", "pjax-content"]});
+}, '3.18.1', {"requires": ["app-base", "pjax-content"]});

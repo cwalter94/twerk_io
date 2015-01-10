@@ -201,4 +201,4 @@ Y.augment(SWF, Y.EventTarget);
 Y.SWF = SWF;
 
 
-}, '3.18.0', {"requires": ["event-custom", "node", "swfdetect", "escape"]});
+}, '3.18.1', {"requires": ["event-custom", "node", "swfdetect", "escape"]});

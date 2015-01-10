@@ -51,4 +51,4 @@ Y.Node.prototype.delegate = function(type) {
 };
 
 
-}, '3.18.0', {"requires": ["node-base", "event-delegate"]});
+}, '3.18.1', {"requires": ["node-base", "event-delegate"]});

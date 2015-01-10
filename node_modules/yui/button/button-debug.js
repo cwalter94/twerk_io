@@ -329,4 +329,4 @@ Y.Button = Button;
 Y.ToggleButton = ToggleButton;
 
 
-}, '3.18.0', {"requires": ["button-core", "cssbutton", "widget"]});
+}, '3.18.1', {"requires": ["button-core", "cssbutton", "widget"]});

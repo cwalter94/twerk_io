@@ -1,5 +1,15 @@
 html body {
   /* add warning colors to warn class */ }
+  html body #loading-bar-spinner .spinner-icon {
+    width: 30px;
+    height: 30px;
+    border-radius: 30px;
+    border-top-color: #FFE80F;
+    border-left-color: #FFE80F; }
+  html body #loading-bar .bar {
+    background: #FFE80F;
+    height: 3px;
+    top: 0; }
   html body #statusButtons a {
     font-size: 14px;
     padding: 10px 10px 5px 10px; }
@@ -11,6 +21,23 @@ html body {
     margin-top: 50px;
     overflow-y: scroll;
     height: calc(100% - 50px); }
+  html body input, html body ui-select, html body ui-select-multiple, html body .select2-choices {
+    border-color: #adadad;
+    border-radius: 2px !important;
+    font-family: Montserrat, HelveticaNeue, 'sans-serif';
+    font-weight: 400;
+    -webkit-transition: all .5s;
+    -moz-transition: all .5s;
+    -ms-transition: all .5s;
+    -o-transition: all .5s;
+    transition: all .5s; }
+    html body input:focus, html body input:hover, html body ui-select:focus, html body ui-select:hover, html body ui-select-multiple:focus, html body ui-select-multiple:hover, html body .select2-choices:focus, html body .select2-choices:hover {
+      border: 1px solid #67b0d1;
+      outline: 0;
+      color: #000;
+      background-color: #FFF; }
+    html body input .error, html body ui-select .error, html body ui-select-multiple .error, html body .select2-choices .error {
+      border: 1px solid #FF0000; }
   html body #tagSelection ul {
     background-image: none;
     border-radius: 6px; }
@@ -57,31 +84,37 @@ html body {
     height: 100%; }
   html body .btn.btn-default.ng-pristine {
     color: #AAA; }
-    html body .btn.btn-default.ng-pristine.ng-dirty {
+    html body .btn.btn-default.ng-pristine.ng-browsety {
       color: #333; }
-  html body nav li.dropdown {
-    cursor: pointer; }
-    html body nav li.dropdown.open a {
-      background-color: rgba(255, 255, 255, 0) !important;
-      color: #444 !important; }
-    html body nav li.dropdown.open ul {
-      padding: 0px;
-      background-color: rgba(255, 255, 255, 0.4) !important; }
-      html body nav li.dropdown.open ul a:hover {
-        background-color: rgba(255, 255, 255, 0.4) !important;
+  html body nav {
+    margin: 0px; }
+    html body nav li.dropdown {
+      cursor: pointer; }
+      html body nav li.dropdown.open a {
+        background-color: rgba(255, 255, 255, 0) !important;
         color: #444 !important; }
-  html body nav.top-nav-collapse li.dropdown.open a {
-    background-color: rgba(255, 255, 255, 0.2) !important;
-    color: #444 !important;
-    cursor: pointer; }
-  html body nav.top-nav-collapse li.dropdown.open ul {
-    background-color: white !important; }
-    html body nav.top-nav-collapse li.dropdown.open ul a:hover {
-      background-color: rgba(0, 0, 0, 0.1) !important;
+      html body nav li.dropdown.open ul {
+        padding: 0px;
+        background-color: rgba(255, 255, 255, 0.4) !important; }
+        html body nav li.dropdown.open ul a:hover {
+          background-color: rgba(255, 255, 255, 0.4) !important;
+          color: #444 !important; }
+    html body nav.top-nav-collapse li.dropdown.open a {
+      background-color: rgba(255, 255, 255, 0.2) !important;
       color: #444 !important;
       cursor: pointer; }
-  html body nav.transparent-nav {
-    background: transparent !important; }
+    html body nav.top-nav-collapse li.dropdown.open ul {
+      background-color: white !important; }
+      html body nav.top-nav-collapse li.dropdown.open ul a:hover {
+        background-color: rgba(0, 0, 0, 0.1) !important;
+        color: #444 !important;
+        cursor: pointer; }
+    html body nav.transparent-nav {
+      background: transparent !important;
+      border-bottom: 1px solid #EEE;
+      padding: 0px; }
+      html body nav.transparent-nav .navbar-brand > * {
+        color: #666; }
   html body .form-control-row {
     margin-top: 50px; }
   html body .btn-form {
@@ -241,14 +274,13 @@ html body {
           top: 50px; }
       html body .content-container text-angular .ta-resizer-handle-overlay {
         display: none !important; }
-  html body #dir-container {
+  html body #browse-container {
     height: 100%;
-    padding: 55px 50px 0px 50px; }
-    html body #dir-container > .row {
+    padding: 80px 50px 0px 50px; }
+    html body #browse-container > .row {
       height: calc(100% - 5px);
       width: 100%; }
-      html body #dir-container > .row .dir-col {
-        width: 0%;
+      html body #browse-container > .row .browse-col {
         float: left;
         padding: 0px 10px 0px 10px;
         height: 100%;
@@ -257,38 +289,55 @@ html body {
         -ms-transition: all 1s;
         -o-transition: all 1s;
         transition: all 1s; }
-        html body #dir-container > .row .dir-col.col-lg-12 {
-          width: 100%; }
-        html body #dir-container > .row .dir-col.col-lg-8 {
-          width: calc(100% - 100% / 3); }
-        html body #dir-container > .row .dir-col.col-lg-4 {
-          width: calc(100% - 200% / 3); }
-        html body #dir-container > .row .dir-col.right-pane {
+        html body #browse-container > .row .browse-col.right-pane {
           border-left: solid 2px darkgray; }
-          html body #dir-container > .row .dir-col.right-pane .email {
-            font-size: 22px; }
-          html body #dir-container > .row .dir-col.right-pane .section {
-            margin-top: 30px; }
-            html body #dir-container > .row .dir-col.right-pane .section .detail {
-              font-size: 18px; }
-            html body #dir-container > .row .dir-col.right-pane .section .detail-xs {
-              font-size: 14px; }
-            html body #dir-container > .row .dir-col.right-pane .section h1, html body #dir-container > .row .dir-col.right-pane .section h2, html body #dir-container > .row .dir-col.right-pane .section h3, html body #dir-container > .row .dir-col.right-pane .section h4, html body #dir-container > .row .dir-col.right-pane .section h5, html body #dir-container > .row .dir-col.right-pane .section h6 {
-              margin-bottom: 0px;
-              margin-top: 10px; }
-            html body #dir-container > .row .dir-col.right-pane .section p {
-              margin: 10px 10px 0px 10px; }
-        html body #dir-container > .row .dir-col .nav-dir {
+          html body #browse-container > .row .browse-col.right-pane .profile-view-container {
+            height: 100%;
+            padding-left: 15px; }
+            html body #browse-container > .row .browse-col.right-pane .profile-view-container .profile-info-container {
+              max-height: 220px;
+              overflow-y: hidden; }
+              html body #browse-container > .row .browse-col.right-pane .profile-view-container .profile-info-container h4 {
+                margin-bottom: 0; }
+              html body #browse-container > .row .browse-col.right-pane .profile-view-container .profile-info-container .profile-info {
+                padding-left: 0px;
+                padding-right: 0px; }
+                html body #browse-container > .row .browse-col.right-pane .profile-view-container .profile-info-container .profile-info .profile-detail {
+                  font-size: 18px; }
+            html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container {
+              height: calc(100% - 220px);
+              padding: 10px; }
+              html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-inner-container {
+                margin: 10px;
+                height: 100%;
+                width: 100%;
+                overflow-y: scroll; }
+              html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-input {
+                width: 100%; }
+                html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-input textarea {
+                  width: 100%;
+                  border: 1px solid #EEE;
+                  height: 30px; }
+                  html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-input textarea:focus, html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-input textarea:hover {
+                    border: 1px solid #666; }
+          html body #browse-container > .row .browse-col.right-pane .message-container {
+            height: calc(100% - 220px);
+            float: left;
+            position: relative;
+            margin: 10px;
+            border-left: 2px solid cyan;
+            overflow-y: scroll; }
+        html body #browse-container > .row .browse-col .nav-browse {
           height: 50px;
           width: calc(100% - 20px);
           left: 20px;
           position: absolute;
           background-color: white; }
-          html body #dir-container > .row .dir-col .nav-dir .search-box-outer {
+          html body #browse-container > .row .browse-col .nav-browse .search-box-outer {
             border: 1px solid #DDD;
             border-radius: 2px;
             width: 100%; }
-            html body #dir-container > .row .dir-col .nav-dir .search-box-outer .search-icon {
+            html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-icon {
               position: absolute;
               top: 0;
               left: 0;
@@ -297,45 +346,56 @@ html body {
               line-height: 40px;
               vertical-align: middle;
               font-size: 24px; }
-            html body #dir-container > .row .dir-col .nav-dir .search-box-outer .search-cat-select-col, html body #dir-container > .row .dir-col .nav-dir .search-box-outer .search-col {
+            html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-cat-select-col, html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-col {
               width: auto;
               float: left;
               padding-left: 32px;
               vertical-align: middle;
               line-height: 40px;
               background: transparent; }
-              html body #dir-container > .row .dir-col .nav-dir .search-box-outer .search-cat-select-col button, html body #dir-container > .row .dir-col .nav-dir .search-box-outer .search-col button {
+              html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-cat-select-col button, html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-col button {
                 background: transparent;
                 border: none;
                 color: #333; }
-            html body #dir-container > .row .dir-col .nav-dir .search-box-outer .search-col {
+            html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-col {
               padding-left: 5px;
               min-width: 200px;
-              width: calc(100% - 200px); }
-            html body #dir-container > .row .dir-col .nav-dir .search-box-outer .search-box-inner {
+              width: calc(100% - 135px); }
+            html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-box-inner {
               font-size: 24px;
               border: none;
               width: 100%;
               height: 100%; }
-        html body #dir-container > .row .dir-col .dir-inner-container {
+        html body #browse-container > .row .browse-col .browse-inner-container {
           margin-top: 55px;
           height: calc(100% - 55px);
           overflow-y: scroll; }
-          html body #dir-container > .row .dir-col .dir-inner-container .dir-sm-container {
+          html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container {
             float: left;
             width: 320px;
             height: 100px;
             background: #f9f9f9;
-            padding: 5px;
+            padding: 5px 15px;
             border: 1px solid transparent;
             border-radius: 2px;
             margin: 10px; }
-            html body #dir-container > .row .dir-col .dir-inner-container .dir-sm-container .col-xs-4 {
+            html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container .col-xs-4 {
               max-height: 80px;
               overflow-y: hidden; }
-              html body #dir-container > .row .dir-col .dir-inner-container .dir-sm-container .col-xs-4 img {
+              html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container .col-xs-4 img {
                 width: 100%; }
-            html body #dir-container > .row .dir-col .dir-inner-container .dir-sm-container h5 {
+            html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container.full-width {
+              width: 100%;
+              margin: 0px;
+              margin-bottom: 10px;
+              height: 140px; }
+              html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container.full-width .row {
+                height: 100%; }
+                html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container.full-width .row > * {
+                  padding-top: 0px;
+                  padding-left: 5px;
+                  max-height: 125px; }
+            html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container h5 {
               margin-bottom: 0px; }
   html body #new-blog-post-container {
     margin-top: 50px; }

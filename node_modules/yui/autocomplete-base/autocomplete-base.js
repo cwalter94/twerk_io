@@ -1535,7 +1535,7 @@ AutoCompleteBase.UI_SRC = (Y.Widget && Y.Widget.UI_SRC) || 'ui';
 Y.AutoCompleteBase = AutoCompleteBase;
 
 
-}, '3.18.0', {
+}, '3.18.1', {
     "optional": [
         "autocomplete-sources"
     ],

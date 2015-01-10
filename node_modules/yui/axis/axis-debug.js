@@ -3170,4 +3170,4 @@ Y.Axis = Y.Base.create("axis", Y.Widget, [Y.AxisBase], {
 Y.AxisType = Y.Base.create("baseAxis", Y.Axis, [], {});
 
 
-}, '3.18.0', {"requires": ["dom", "widget", "widget-position", "widget-stack", "graphics", "axis-base"]});
+}, '3.18.1', {"requires": ["dom", "widget", "widget-position", "widget-stack", "graphics", "axis-base"]});

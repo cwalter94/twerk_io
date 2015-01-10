@@ -238,4 +238,4 @@ NodeOpenable.prototype = {
 Y.Tree.Node.Openable = NodeOpenable;
 
 
-}, '3.18.0', {"requires": ["tree"]});
+}, '3.18.1', {"requires": ["tree"]});

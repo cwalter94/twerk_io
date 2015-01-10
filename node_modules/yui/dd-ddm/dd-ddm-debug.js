@@ -123,4 +123,4 @@ YUI.add('dd-ddm', function (Y, NAME) {
 
 
 
-}, '3.18.0', {"requires": ["dd-ddm-base", "event-resize"]});
+}, '3.18.1', {"requires": ["dd-ddm-base", "event-resize"]});

@@ -349,4 +349,4 @@ Y.TimeImpl = TimeImpl;
 Y.TimeAxisBase = Y.Base.create("timeAxisBase", Y.AxisBase, [Y.TimeImpl]);
 
 
-}, '3.18.0', {"requires": ["axis-base"]});
+}, '3.18.1', {"requires": ["axis-base"]});

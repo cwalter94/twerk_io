@@ -45,4 +45,4 @@ Plugin.AutoComplete     = ACListPlugin;
 Plugin.AutoCompleteList = ACListPlugin;
 
 
-}, '3.18.0', {"requires": ["autocomplete-list", "node-pluginhost"]});
+}, '3.18.1', {"requires": ["autocomplete-list", "node-pluginhost"]});

@@ -683,4 +683,4 @@ YUI.add('anim-base', function (Y, NAME) {
     Y.extend(Y.Anim, Y.Base, proto);
 
 
-}, '3.18.0', {"requires": ["base-base", "node-style", "color-base"]});
+}, '3.18.1', {"requires": ["base-base", "node-style", "color-base"]});

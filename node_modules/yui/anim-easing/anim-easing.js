@@ -362,4 +362,4 @@ var Easing = {
 Y.Easing = Easing;
 
 
-}, '3.18.0', {"requires": ["anim-base"]});
+}, '3.18.1', {"requires": ["anim-base"]});

@@ -1623,4 +1623,4 @@ Y.NodeList.importMethod(Y.Node.prototype, [
 ]);
 
 
-}, '3.18.0', {"requires": ["dom-core", "selector"]});
+}, '3.18.1', {"requires": ["dom-core", "selector"]});

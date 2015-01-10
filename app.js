@@ -19,9 +19,10 @@ var passport = require('passport');
 var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 var User = require('./models/User');
+var Room = require('./models/Room');
 var expressJwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
-
+var socketioJwt = require('socketio-jwt');
 
 /**
  * Controllers (route handlers).
@@ -29,6 +30,7 @@ var jwt = require('jsonwebtoken');
 
 var userController = require('./controllers/user');
 var apiController = require('./controllers/api');
+var socketController = require('./controllers/socket');
 
 /**
  * API keys and Passport configuration.
@@ -43,6 +45,8 @@ var passportConf = require('./config/passport');
 
 var app = express();
 app.set('env', process.env.ENV || 'development');
+var server = require('http').createServer(app);
+var io = require('socket.io').listen(server);
 
 
 /**
@@ -97,18 +101,26 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
         function (err, existingUser) {
             if (err) console.log(err);
 
-            if (existingUser == null) {
-                var user = new User({
-                    email: 'admin@twerk.io',
-                    password: secrets.admin_pw,
-                    roles: ['User', 'Blogger', 'Admin'],
-                    verified: true
-                });
+            if (existingUser === null) {
+                console.log("Mongo connection success.");
 
-                user.save(function (err) {
-                    if (err) console.log(err);
-                    console.log("Mongo connection success. Seed data success.");
-                })
+
+                for (var i = 0; i < 25; i++) {
+                    var user = new User({
+                        email: 'user' + i + '@berkeley.edu',
+                        name: 'John Doesomething ' + i,
+                        password: secrets.admin_pw,
+                        roles: ['User', 'Blogger', 'Admin'],
+                        verified: true
+                    });
+
+                    user.save(function (err) {
+                        if (err) console.log(err);
+                        console.log("Seed data " + i + " success.");
+                    })
+                }
+
+
 
 
             } else {
@@ -132,12 +144,16 @@ app.get('/partials/inner/:dir/:name', function(req, res) {
 
 app.post('/authenticate', apiController.authenticate);
 app.post('/register', apiController.register);
-app.get('/verify/{:email}', apiController.verifyUserEmail);
+app.get('/verify/:code', apiController.verifyEmail);
 
 app.get('/api/user', apiController.getUser);
 app.get('/api/userprofile', apiController.getUserProfile);
 app.post('/api/userprofile', apiController.postUserProfile);
 app.post('/api/userpicture', apiController.postUserPicture);
+
+app.get('/api/user/messages', apiController.getMessages);
+app.get('/api/user/messages/:to', apiController.getMessages);
+app.post('api/user/messages/:to', apiController.postMessage);
 
 app.get('/api/browse', apiController.getBrowse);
 app.get('/api/browse/:id', apiController.getBrowse);
@@ -161,10 +177,18 @@ app.use(errorHandler());
 /**
  * Start Express server.
  */
+var io = require('socket.io').listen(app.listen(app.get('port'), function() {
+    console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
+}));
 
-app.listen(app.get('port'), function() {
-  console.log('Express server listening on port %d in %s mode', app.get('port'), app.get('env'));
-});
+console.log("socket.io started successfully.");
 
+io.set('authorization', socketioJwt.authorize({
+    secret: secrets.jwt,
+    handshake: true
+}));
+
+
+io.sockets.on("connection", socketController.socketHandler);
 
 module.exports = app;

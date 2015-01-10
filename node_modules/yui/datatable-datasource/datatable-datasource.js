@@ -177,4 +177,4 @@ Y.extend(DataTableDataSource, Y.Plugin.Base, {
 Y.namespace("Plugin").DataTableDataSource = DataTableDataSource;
 
 
-}, '3.18.0', {"requires": ["datatable-base", "plugin", "datasource-local"]});
+}, '3.18.1', {"requires": ["datatable-base", "plugin", "datasource-local"]});

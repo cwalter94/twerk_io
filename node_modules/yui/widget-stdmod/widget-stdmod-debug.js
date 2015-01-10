@@ -777,4 +777,4 @@ YUI.add('widget-stdmod', function (Y, NAME) {
     Y.WidgetStdMod = StdMod;
 
 
-}, '3.18.0', {"requires": ["base-build", "widget"]});
+}, '3.18.1', {"requires": ["base-build", "widget"]});

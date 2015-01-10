@@ -19,7 +19,7 @@ if (YUI.YUITest) {
 
     //Make this global for back compat
     YUITest = {
-        version: "3.18.0",
+        version: "3.18.1",
         guid: function(pre) {
             return Y.guid(pre);
         }
@@ -3866,4 +3866,4 @@ if (!YUI.YUITest) {
 } //End if for YUI.YUITest
 
 
-}, '3.18.0', {"requires": ["event-simulate", "event-custom", "json-stringify"]});
+}, '3.18.1', {"requires": ["event-simulate", "event-custom", "json-stringify"]});

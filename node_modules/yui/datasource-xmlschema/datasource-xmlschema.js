@@ -99,4 +99,4 @@ Y.extend(DataSourceXMLSchema, Y.Plugin.Base, {
 Y.namespace('Plugin').DataSourceXMLSchema = DataSourceXMLSchema;
 
 
-}, '3.18.0', {"requires": ["datasource-local", "plugin", "datatype-xml", "dataschema-xml"]});
+}, '3.18.1', {"requires": ["datasource-local", "plugin", "datatype-xml", "dataschema-xml"]});

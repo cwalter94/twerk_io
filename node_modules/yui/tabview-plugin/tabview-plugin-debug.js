@@ -13,4 +13,4 @@ Y.namespace('Plugin');
 Y.Plugin.Tabview = TabviewPlugin;
 
 
-}, '3.18.0', {"requires": ["tabview-base"]});
+}, '3.18.1', {"requires": ["tabview-base"]});

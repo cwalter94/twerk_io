@@ -158,7 +158,7 @@ available.
 (function() {
 
     var proto, prop,
-        VERSION = '3.18.0',
+        VERSION = '3.18.1',
         PERIOD = '.',
         BASE = 'http://yui.yahooapis.com/',
         /*
@@ -4014,7 +4014,7 @@ YUI.Env.aliases = {
 };
 
 
-}, '3.18.0', {"use": ["get", "features", "intl-base", "yui-log", "yui-later"]});
+}, '3.18.1', {"use": ["get", "features", "intl-base", "yui-log", "yui-later"]});
 YUI.add('get', function (Y, NAME) {
 
 /*jslint boss:true, expr:true, laxbreak: true */
@@ -5289,7 +5289,7 @@ Transaction.prototype = {
 };
 
 
-}, '3.18.0', {"requires": ["yui-base"]});
+}, '3.18.1', {"requires": ["yui-base"]});
 YUI.add('features', function (Y, NAME) {
 
 var feature_tests = {};
@@ -5694,7 +5694,7 @@ add('load', '22', {
     "ua": "winjs"
 });
 
-}, '3.18.0', {"requires": ["yui-base"]});
+}, '3.18.1', {"requires": ["yui-base"]});
 YUI.add('intl-base', function (Y, NAME) {
 
 /**
@@ -5782,7 +5782,7 @@ Y.mix(Y.namespace('Intl'), {
 });
 
 
-}, '3.18.0', {"requires": ["yui-base"]});
+}, '3.18.1', {"requires": ["yui-base"]});
 YUI.add('yui-log', function (Y, NAME) {
 
 /**
@@ -5907,7 +5907,7 @@ INSTANCE.message = function() {
 };
 
 
-}, '3.18.0', {"requires": ["yui-base"]});
+}, '3.18.1', {"requires": ["yui-base"]});
 YUI.add('yui-later', function (Y, NAME) {
 
 /**
@@ -5985,5 +5985,5 @@ Y.Lang.later = Y.later;
 
 
 
-}, '3.18.0', {"requires": ["yui-base"]});
-YUI.add('yui', function (Y, NAME) {}, '3.18.0', {"use": ["get", "features", "intl-base", "yui-log", "yui-later"]});
+}, '3.18.1', {"requires": ["yui-base"]});
+YUI.add('yui', function (Y, NAME) {}, '3.18.1', {"use": ["get", "features", "intl-base", "yui-log", "yui-later"]});

@@ -3,10 +3,7 @@ div.row
 
     div.col-xs-10.col-xs-offset-1
         .page-header.text-center
-            div.alert-warn.fade(flash-alert="error", active-class='in alert', ng-click="hide()")
-                strong.alert-message {{flash.message}}
-            div.alert-warn.fade.row(flash-alert='success', active-class='in alert')
-                strong.alert-message {{flash.message}}
+
 
             h2 New Account Information
 
@@ -19,4 +16,4 @@ div.row
 div.row
     div.col-xs-12
         form(name="formData", novalidate)#registerForm
-            .ui-view#formViews(ng-init="formData.status = formData.status || 'Alumni'", ng-class="{'leaveRight': !leaveLeft, 'leaveLeft' : leaveLeft}")
+            .ui-view#formViews(ng-class="{'leaveRight': !leaveLeft, 'leaveLeft' : leaveLeft}")

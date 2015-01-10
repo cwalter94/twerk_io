@@ -1,5 +1,5 @@
 var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap', 'ngSanitize',
-    'mgcrea.ngStrap', 'textAngular', 'xeditable','angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table'], function() {
+    'mgcrea.ngStrap', 'textAngular', 'xeditable','angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table', 'btford.socket-io'], function() {
 
 })
     .config(function(uiSelectConfig, flashProvider, $httpProvider, $stateProvider, $urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
@@ -68,6 +68,16 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
             templateUrl: '/partials/inner/register/form-repassword'
         })
 
+        .state('site.home.verify', {
+            url: 'verify',
+            templateUrl: '/partials/outer/verify'
+        })
+
+        .state('site.home.checkVerification', {
+            url: 'verify/:code',
+            templateUrl: '/partials/outer/checkVerification'
+        })
+
 
         .state('site.account', {
             url: '/account',
@@ -113,35 +123,64 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
             }
         })
 
+        .state('site.home.messages', {
+            url: 'messages',
+            abstract: true,
+            controller: 'messagesCtrl',
+            templateUrl: '/partials/outer/messages',
+            resolve: {
+                messages: ['$http', 'principal', function($http, principal) {
+                    return $http.get('/api/messages/' + principal.identity)
+                        .then(function(response) {
+                            return response.data.messages;
+                        });
+                }]
+            }
+
+
+        })
+
+
         .state('site.browse', {
             url: '/browse',
             templateUrl: '/partials/outer/browse',
             controller: 'browseCtrl',
             resolve: {
-                users: ['$http', 'principal', function($http) {
+                users: ['$http', function($http) {
                     return $http.get('/api/browse')
                         .then(function(response) {
                             return response.data.users;
                         });
+                }],
+                me: ['principal', function(principal) {
+                    return principal.identity().then(function(data) {
+                        return data;
+                    })
                 }]
             }
         })
         .state('site.browse.profile', {
             url: '/{id}',
             resolve: {
-                profile: ['$http', '$stateParams', function($http, $stateParams) {
+                data: ['$http', '$stateParams', function($http, $stateParams) {
                     return $http.get('/api/browse/' + $stateParams.id)
                         .then(function(response) {
-                            return response.data.profile;
+                            return response.data;
                         });
                 }]
             },
             templateUrl: '/partials/inner/directory/rightpane',
-            controller: function($scope, profile) {
-                $scope.profile = profile;
+            controller: function($scope, data) {
+                $scope.profile = data.profile;
+                $scope.room = data.room;
+                $scope.joinRoom = function(room) {
+                    $scope.$parent.socket.emit('join:room', room);
+                    $scope.$parent.message.to = room;
+                    $scope.$parent.messages[room] = data.messages;
+                };
 
             }
-        })
+        });
         
 
     $urlRouterProvider.otherwise('/');
@@ -161,8 +200,8 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
     guest: 'guest'
 })
 
-    .factory('principal', ['$q', '$http', '$timeout', '$window','$cookieStore',
-    function($q, $http, $timeout, $window, $cookieStore) {
+    .factory('principal', ['$q', '$http', '$timeout', '$window','$cookieStore', '$location',
+    function($q, $http, $timeout, $window, $cookieStore, socket) {
         var _identity = undefined,
             _authenticated = false;
 
@@ -262,6 +301,7 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
                         _authenticated = false;
                         $cookieStore.put('jwt', null);
                         $cookieStore.put('username', null);
+                        socket.emit('disconnect', {});
                         deferred.reject(err);
                     });
                 return deferred.promise;
@@ -285,12 +325,32 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
                     });
 
                 return deferred.promise;
+            },
+            sendMessage: function(message) {
+                var deferred = $q.defer();
+
+
+                $http.post('/api/user/messages/' + message.to, message)
+                    .success(function(data) {
+                        _identity = data.user;
+                        $cookieStore.put('jwt', data.token);
+                        _authenticated = true;
+                        deferred.resolve(data.message);
+                    })
+                    .error(function (err) {
+                        _identity = null;
+                        _authenticated = false;
+                        $cookieStore.put('jwt', null);
+                        deferred.reject(err);
+                    });
+
+                return deferred.promise;
             }
         };
     }
 ])
     .factory('authorization', ['$rootScope', '$state', 'principal', '$location',
-        function($rootScope, $state, principal) {
+        function($rootScope, $state, principal, $location) {
             return {
                 authorize: function() {
                     return principal.identity()
@@ -311,6 +371,8 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
                                     // now, send them to the signin state so they can log in
                                     $location.path('/login')
                                 }
+                            } else if (isAuthenticated && $rootScope.toState && $rootScope.toState.name.indexOf('home') > -1){
+                                $location.path('/browse');
                             }
                         });
                 }
@@ -326,7 +388,7 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
 
                 if ($cookieStore.get('jwt')) {
                     config.headers.Authorization = 'Bearer ' + $cookieStore.get('jwt');
-                } else if ($location.path() === '/account/profile') {
+                } else if ($location.path() === '/account/profile' || $location.path().indexOf('/browse') > -1) {
                     $location.path('/login');
                 }
                 return config;
@@ -344,25 +406,22 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
             }
         };
     })
-    .filter('housePositionsFilter', function() {
-        return function (allPositions, openPositions, userPositions, search) {
-            if (!angular.isUndefined(allPositions) && !angular.isUndefined(openPositions) && openPositions.length < allPositions.length) {
-                var temp = openPositions.concat(userPositions);
-                var result = [];
-                for (var i = 0; i < temp.length; i++) {
-                    var elem = temp[i];
-                    if (elem.toLowerCase().indexOf(search.toLowerCase()) > -1) {
-                        result.push(elem);
-                    }
-                }
-                return result;
+    .factory('socket', function (socketFactory, $cookieStore) {
+        if ($cookieStore.get('jwt')) {
+            var authSocket = io.connect('', {
+                query: 'token=' + $cookieStore.get('jwt')
+            });
 
+            mySocket = socketFactory({
+                ioSocket: authSocket
+            });
 
-            } else {
-                return allPositions;
-            }
+            return mySocket;
+
+        } else {
+            console.log("Socket auth failed.");
+            return {};
         }
-
     })
     .run(['$rootScope', '$state', '$stateParams', 'authorization', 'principal', 'editableOptions',
         function($rootScope, $state, $stateParams, authorization, principal, editableOptions) {
@@ -373,8 +432,6 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
 
                 $rootScope.toState = toState;
                 $rootScope.toStateParams = toStateParams;
-
-
                 // if the principal is resolved, do an authorization check immediately. otherwise,
                 // it'll be done when the state it resolved.
 

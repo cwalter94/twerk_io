@@ -1,0 +1,12 @@
+
+div.row
+
+    div.col-xs-10.col-xs-offset-1
+        .page-header.text-center
+            div.alert-warn.fade(flash-alert="error", active-class='in alert', ng-click="hide()")
+                strong.alert-message {{flash.message}}
+            div.alert-warn.fade.row(flash-alert='success', active-class='in alert')
+                strong.alert-message {{flash.message}}
+
+            h2 Thanks for registering!
+            p We sent you an email at your berkeley.edu address with a link to verify your account.

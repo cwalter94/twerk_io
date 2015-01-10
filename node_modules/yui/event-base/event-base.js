@@ -1360,4 +1360,4 @@ Y.Env.evt.plugins.contentready = {
 };
 
 
-}, '3.18.0', {"requires": ["event-custom-base"]});
+}, '3.18.1', {"requires": ["event-custom-base"]});

@@ -456,4 +456,4 @@ if (Y.Selector.useNative && Y.config.doc.querySelector) {
 }
 
 
-}, '3.18.0', {"requires": ["selector-native"]});
+}, '3.18.1', {"requires": ["selector-native"]});

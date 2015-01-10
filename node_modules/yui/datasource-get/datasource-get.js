@@ -206,4 +206,4 @@ Y.DataSource.Get = Y.extend(DSGet, Y.DataSource.Local, {
 YUI.namespace("Env.DataSource.callbacks");
 
 
-}, '3.18.0', {"requires": ["datasource-local", "get"]});
+}, '3.18.1', {"requires": ["datasource-local", "get"]});

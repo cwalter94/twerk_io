@@ -396,4 +396,4 @@ YUI.add('dd-ddm-drop', function (Y, NAME) {
 
 
 
-}, '3.18.0', {"requires": ["dd-ddm"]});
+}, '3.18.1', {"requires": ["dd-ddm"]});

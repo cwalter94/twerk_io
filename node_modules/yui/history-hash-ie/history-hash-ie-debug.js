@@ -135,4 +135,4 @@ if (Y.UA.ie && !Y.HistoryBase.nativeHashChange) {
 }
 
 
-}, '3.18.0', {"requires": ["history-hash", "node-base"]});
+}, '3.18.1', {"requires": ["history-hash", "node-base"]});

@@ -170,4 +170,4 @@ _queue.empty = function () { io.qEmpty(); };
 Y.io.queue = _queue;
 
 
-}, '3.18.0', {"requires": ["io-base", "queue-promote"]});
+}, '3.18.1', {"requires": ["io-base", "queue-promote"]});

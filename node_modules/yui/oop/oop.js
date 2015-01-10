@@ -429,4 +429,4 @@ Y.rbind = function(f, c) {
 };
 
 
-}, '3.18.0', {"requires": ["yui-base"]});
+}, '3.18.1', {"requires": ["yui-base"]});

@@ -23,4 +23,4 @@ Y.namespace('Plugin');
 Y.Plugin.NodeFX = NodeFX;
 
 
-}, '3.18.0', {"requires": ["node-pluginhost", "anim-base"]});
+}, '3.18.1', {"requires": ["node-pluginhost", "anim-base"]});

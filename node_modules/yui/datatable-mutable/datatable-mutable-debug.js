@@ -632,4 +632,4 @@ Fired by the `moveColumn` method.
 
 
 
-}, '3.18.0', {"requires": ["datatable-base"]});
+}, '3.18.1', {"requires": ["datatable-base"]});

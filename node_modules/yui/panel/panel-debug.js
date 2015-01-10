@@ -96,7 +96,7 @@ Y.Panel = Y.Base.create('panel', Y.Widget, [
 });
 
 
-}, '3.18.0', {
+}, '3.18.1', {
     "requires": [
         "widget",
         "widget-autohide",

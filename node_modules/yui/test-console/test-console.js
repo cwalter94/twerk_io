@@ -304,4 +304,4 @@ Y.namespace('Test').Console = Y.extend(TestConsole, Y.Console, {
 });
 
 
-}, '3.18.0', {"requires": ["console-filters", "test", "array-extras"], "skinnable": true});
+}, '3.18.1', {"requires": ["console-filters", "test", "array-extras"], "skinnable": true});

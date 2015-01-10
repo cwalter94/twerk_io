@@ -129,4 +129,4 @@ Y.RangeSeries = RangeSeries;
 
 
 
-}, '3.18.0', {"requires": ["series-cartesian"]});
+}, '3.18.1', {"requires": ["series-cartesian"]});

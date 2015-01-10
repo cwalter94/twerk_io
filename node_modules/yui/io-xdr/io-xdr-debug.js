@@ -315,4 +315,4 @@ event is fired, this value will be set to 0.
 Y.io.xdr = { delay : 100 };
 
 
-}, '3.18.0', {"requires": ["io-base", "datatype-xml-parse"]});
+}, '3.18.1', {"requires": ["io-base", "datatype-xml-parse"]});

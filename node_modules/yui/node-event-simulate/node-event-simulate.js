@@ -184,4 +184,4 @@ Y.Node.prototype.simulateGesture = function (name, options, cb) {
 };
 
 
-}, '3.18.0', {"requires": ["node-base", "event-simulate", "gesture-simulate"]});
+}, '3.18.1', {"requires": ["node-base", "event-simulate", "gesture-simulate"]});

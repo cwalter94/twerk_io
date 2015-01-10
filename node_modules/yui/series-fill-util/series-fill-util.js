@@ -514,4 +514,4 @@ Y.augment(Fills, Y.Attribute);
 Y.Fills = Fills;
 
 
-}, '3.18.0');
+}, '3.18.1');

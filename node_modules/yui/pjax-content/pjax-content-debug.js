@@ -278,4 +278,4 @@ PjaxContent.ATTRS = {
 Y.PjaxContent = PjaxContent;
 
 
-}, '3.18.0', {"requires": ["io-base", "node-base", "router"]});
+}, '3.18.1', {"requires": ["io-base", "node-base", "router"]});

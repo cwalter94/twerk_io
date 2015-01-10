@@ -2516,4 +2516,4 @@ exports["default"] = Handlebars;
 Y.Handlebars = Handlebars['default'];
 
 
-}, '3.18.0', {"requires": ["handlebars-base"]});
+}, '3.18.1', {"requires": ["handlebars-base"]});

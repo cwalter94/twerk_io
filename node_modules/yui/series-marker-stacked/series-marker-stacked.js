@@ -47,4 +47,4 @@ Y.StackedMarkerSeries = Y.Base.create("stackedMarkerSeries", Y.MarkerSeries, [Y.
 
 
 
-}, '3.18.0', {"requires": ["series-stacked", "series-marker"]});
+}, '3.18.1', {"requires": ["series-stacked", "series-marker"]});

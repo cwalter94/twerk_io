@@ -132,4 +132,4 @@ CurveUtil.prototype = {
 Y.CurveUtil = CurveUtil;
 
 
-}, '3.18.0');
+}, '3.18.1');

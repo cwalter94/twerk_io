@@ -46,4 +46,4 @@ Y.namespace("DataType");
 Y.DataType.XML = Y.XML;
 
 
-}, '3.18.0');
+}, '3.18.1');

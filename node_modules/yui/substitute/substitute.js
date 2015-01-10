@@ -167,4 +167,4 @@ to `Y.dump(...)`, e.g. "{someObject 2}".  See the
 
 
 
-}, '3.18.0', {"requires": ["yui-base"], "optional": ["dump"]});
+}, '3.18.1', {"requires": ["yui-base"], "optional": ["dump"]});

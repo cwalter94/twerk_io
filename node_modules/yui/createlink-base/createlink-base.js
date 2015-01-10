@@ -82,4 +82,4 @@ YUI.add('createlink-base', function (Y, NAME) {
 
 
 
-}, '3.18.0', {"requires": ["editor-base"]});
+}, '3.18.1', {"requires": ["editor-base"]});

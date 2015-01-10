@@ -338,4 +338,4 @@ Y.extend(CacheOffline, Y.Cache, localStorage ? {
 Y.CacheOffline = CacheOffline;
 
 
-}, '3.18.0', {"requires": ["cache-base", "json"]});
+}, '3.18.1', {"requires": ["cache-base", "json"]});

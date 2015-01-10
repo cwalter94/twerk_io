@@ -106,4 +106,4 @@ Y.namespace("DataType");
 Y.DataType.Number = Y.Number;
 
 
-}, '3.18.0');
+}, '3.18.1');

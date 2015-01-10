@@ -133,4 +133,4 @@ Y.mix(Y.namespace('AutoCompleteFilters'), {
 });
 
 
-}, '3.18.0', {"requires": ["array-extras", "text-accentfold", "text-wordbreak"]});
+}, '3.18.1', {"requires": ["array-extras", "text-accentfold", "text-wordbreak"]});

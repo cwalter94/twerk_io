@@ -520,4 +520,4 @@ YUI.add('node-flick', function (Y, NAME) {
     Y.Plugin.Flick = Flick;
 
 
-}, '3.18.0', {"requires": ["classnamemanager", "transition", "event-flick", "plugin"], "skinnable": true});
+}, '3.18.1', {"requires": ["classnamemanager", "transition", "event-flick", "plugin"], "skinnable": true});

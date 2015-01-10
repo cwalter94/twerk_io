@@ -260,4 +260,4 @@ YUI.add('plugin', function (Y, NAME) {
     Y.namespace("Plugin").Base = Plugin;
 
 
-}, '3.18.0', {"requires": ["base-base"]});
+}, '3.18.1', {"requires": ["base-base"]});

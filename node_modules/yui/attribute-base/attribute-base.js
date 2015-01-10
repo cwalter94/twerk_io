@@ -107,4 +107,4 @@ YUI.add('attribute-base', function (Y, NAME) {
     Y.Attribute = Attribute;
 
 
-}, '3.18.0', {"requires": ["attribute-core", "attribute-observable", "attribute-extras"]});
+}, '3.18.1', {"requires": ["attribute-core", "attribute-observable", "attribute-extras"]});

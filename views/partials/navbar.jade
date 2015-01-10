@@ -1,9 +1,9 @@
-nav.navbar.navbar-custom.navbar-fixed-top(role="navigation")
+nav.navbar.navbar-custom.navbar-fixed-top(role="navigation", ng-class="{'transparent-nav': getUrl().indexOf('browse') > -1}")
     .container
         .navbar-header.page-scroll
             button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-main-collapse")
                 i.fa.fa-bars
-            a.navbar-brand(ui-sref="site.home.intro")
+            a.navbar-brand(ui-sref="{{principal.isAuthenticated() ? 'site.browse' : 'site.home.intro'}}")
                 h1 Twerk.io
         // Collect the nav links, forms, and other content for toggling
         .collapse.navbar-collapse.navbar-right.navbar-main-collapse

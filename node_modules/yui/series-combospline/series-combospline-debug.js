@@ -57,4 +57,4 @@ Y.ComboSplineSeries = Y.Base.create("comboSplineSeries", Y.ComboSeries, [Y.Curve
 });
 
 
-}, '3.18.0', {"requires": ["series-combo", "series-curve-util"]});
+}, '3.18.1', {"requires": ["series-combo", "series-curve-util"]});

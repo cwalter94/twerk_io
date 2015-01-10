@@ -1640,4 +1640,4 @@ Y.each(Y.Resize.prototype.ALL_HANDLES, function(handle) {
 });
 
 
-}, '3.18.0', {"requires": ["base", "widget", "event", "oop", "dd-drag", "dd-delegate", "dd-drop"], "skinnable": true});
+}, '3.18.1', {"requires": ["base", "widget", "event", "oop", "dd-drag", "dd-delegate", "dd-drop"], "skinnable": true});

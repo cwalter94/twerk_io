@@ -51,4 +51,4 @@ YUI.add('dd-gestures', function (Y, NAME) {
 
 
 
-}, '3.18.0', {"requires": ["dd-drag", "event-synthetic", "event-gestures"]});
+}, '3.18.1', {"requires": ["dd-drag", "event-synthetic", "event-gestures"]});

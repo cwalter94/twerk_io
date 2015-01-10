@@ -636,4 +636,4 @@ define(GESTURE_MOVE_END, {
 });
 
 
-}, '3.18.0', {"requires": ["node-base", "event-touch", "event-synthetic"]});
+}, '3.18.1', {"requires": ["node-base", "event-touch", "event-synthetic"]});

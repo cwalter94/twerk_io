@@ -976,4 +976,4 @@ attribute for that.
 Y.Base.mix(Y.DataTable, [Sortable]);
 
 
-}, '3.18.0', {"requires": ["datatable-base"], "lang": ["en", "fr", "es", "hu"], "skinnable": true});
+}, '3.18.1', {"requires": ["datatable-base"], "lang": ["en", "fr", "es", "hu"], "skinnable": true});

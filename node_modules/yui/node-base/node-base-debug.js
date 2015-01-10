@@ -1000,4 +1000,4 @@ Y.mix(Y.NodeList.prototype, {
 });
 
 
-}, '3.18.0', {"requires": ["event-base", "node-core", "dom-base", "dom-style"]});
+}, '3.18.1', {"requires": ["event-base", "node-core", "dom-base", "dom-style"]});

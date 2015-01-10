@@ -1267,4 +1267,4 @@ Y.GraphicBase = GraphicBase;
 	 */
 
 
-}, '3.18.0', {"requires": ["node", "event-custom", "pluginhost", "matrix", "classnamemanager"]});
+}, '3.18.1', {"requires": ["node", "event-custom", "pluginhost", "matrix", "classnamemanager"]});

@@ -387,4 +387,4 @@ Y_DOM = {
 Y.DOM = Y_DOM;
 
 
-}, '3.18.0', {"requires": ["oop", "features"]});
+}, '3.18.1', {"requires": ["oop", "features"]});

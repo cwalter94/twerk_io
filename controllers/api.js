@@ -1,6 +1,5 @@
 var secrets = require('../config/secrets');
 var User = require('../models/User');
-var BlogPost = require('../models/BlogPost');
 var querystring = require('querystring');
 var validator = require('validator');
 var async = require('async');
@@ -23,9 +22,10 @@ var fs = require('fs');
 var expressJwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var AWS = require('aws-sdk');
-var Mailgun = require('mailgun');
+var Mailgun = require('mailgun-js');
 AWS.config.loadFromPath('./config/aws.json');
-
+var Room = require('../models/Room');
+var Message = require('../models/Message');
 /**
  * GET /api
  * List of API examples.
@@ -38,15 +38,15 @@ exports.getApi = function(req, res) {
 };
 
 exports.getUser = function(req, res) {
-    if (req.user && req.user.username) {
-        User.findOne({username: req.user.username}, function (err, user) {
+    if (req.user && req.user.email) {
+        User.findOne({email: req.user.email}, function (err, user) {
 
             if (err) {
                 console.log(err);
                 return res.send(401);
             }
 
-            return res.json({user: {username: req.params.username, roles: user.roles}, token:req.token});
+            return res.json({user: {email: req.user.email, roles: user.roles, id: user._id}, token:req.token});
 
         });
     } else {
@@ -55,23 +55,70 @@ exports.getUser = function(req, res) {
 };
 
 exports.getBrowse = function(req, res) {
+        if (req.params.id) {
+            User.findOne({_id: req.params.id}, 'name email picture status classes', function (err, user) {
 
-        User.find({}, 'name email picture status classes', function (err, users) {
+                if (err) {
+                    console.log(err);
+                    return res.send(401);
+                }
 
-            if (err) {
-                console.log(err);
-                return res.send(401);
-            }
+                if (user) {
+                    Room.findOne({usersLength: 2, $and: [{users: req.user._id},{users: user._id}]}, function(err, room) {
+                        if (err) {
+                            return res.json({token: req.token, profile: user, room: null, messages: null});
+                        } else if (room) {
+                            Message.find({to: room._id}, 'from text', function(err, messages) {
+                                if (err) {
+                                    console.log(err);
+                                    return res.json({token: req.token, profile: user, room: room._id, messages: null});
+                                }
+                                return res.json({token: req.token, profile: user, room: room._id, messages: messages});
+                            });
+                        } else {
+                            var r = new Room({
+                                messages: [],
+                                users: [user._id, req.user._id],
+                                messagesLength: 0,
+                                usersLength: 0
+                            });
 
-            return res.json({token: req.token, users: users});
+                            r.save(function(err) {
+                                console.log(r);
+                                if (err) {
+                                    //res.status(401).end('An error occurred while setting up messages for this user.');
+                                    console.log(err);
+                                    return res.json({token: req.token, profile: user, room: null});
+                                }
+                                return res.json({token: req.token, profile: user, room: r._id, });
 
-        });
+                            })
+                        }
+                    });
+                } else {
+                    res.status(401).end("An error occurred while retrieving this user's profile.");
+                    return res.json({token: token})
+                }
+            });
+        } else {
+            User.find({}, 'name email picture status classes', function (err, users) {
+
+                if (err) {
+                    console.log(err);
+                    return res.send(401);
+                }
+
+                return res.json({token: req.token, users: users});
+
+            });
+        }
+
 
 };
 
 exports.adminAllUsers = function(req, res) {
     if (req.user && req.user.roles && req.user.roles.indexOf('Admin') > -1) {
-        User.find({}, 'username email roles status housePositions', function (err, users) {
+        User.find({}, 'email email roles status housePositions', function (err, users) {
             if (err) {
                 console.log(err);
                 return res.send(401);
@@ -97,7 +144,7 @@ exports.adminAllUsers = function(req, res) {
 
 exports.adminSaveUser = function(req, res) {
     if (req.user && req.user.roles && req.user.roles.indexOf('Admin') > -1) {
-        User.findOne({username: req.body.user.username}, function (err, user) {
+        User.findOne({email: req.body.user.email}, function (err, user) {
             if (err) {
                 console.log(err);
                 return res.status(401).end();
@@ -105,7 +152,7 @@ exports.adminSaveUser = function(req, res) {
 
             user.roles = req.body.user.roles || user.roles;
             user.status = req.body.user.status || user.status;
-            user.username = req.body.user.username || user.username;
+            user.email = req.body.user.email || user.email;
             user.email = req.body.user.email || user.email;
             user.housePositions = req.body.user.housePositions;
             user.excomm = user.housePositions.length > 0;
@@ -123,7 +170,7 @@ exports.adminSaveUser = function(req, res) {
 
 exports.adminDeleteUser = function(req, res) {
     if (req.user && req.user.roles && req.user.roles.indexOf('Admin') > -1) {
-        User.findOne({username: req.body.user.username}).remove(function(err) {
+        User.findOne({email: req.body.user.email}).remove(function(err) {
             if (err) return res.status(401).end('An unkown error occurred. Please try again later.');
 
             return res.json({data : {token: req.token}});
@@ -134,16 +181,15 @@ exports.adminDeleteUser = function(req, res) {
 };
 
 exports.authenticate = function(req, res, next) {
-
     var credentials = req.body.credentials || '';
-    var username = '', password = '';
+    var email = '', password = '';
 
     if (credentials) {
-        username = credentials.username || '';
+        email = credentials.email || '';
         password = credentials.password || '';
 
 
-        if (username == '' || password == '') {
+        if (email == '' || password == '') {
             return res.send(401);
         }
 
@@ -151,23 +197,22 @@ exports.authenticate = function(req, res, next) {
         return res.send(401);
     }
 
-    //needs to query user.email for legacy reasons
-    User.findOne({username: username}, function (err, user) {
+    User.findOne({email: email}, 'email classes verified major minor', function (err, user) {
 
         if (err) {
             console.log(err);
-            return res.status(401).end('An unkown error occurred. Please try again later.');
+            return res.status(401).end('An unknown error occurred. Please try again later.');
         }
         if (!user) {
-            return res.status(401).end('Incorrect username or password.');
+            return res.status(401).end('Incorrect email or password.');
         }
 
         user.comparePassword(password, function(isMatch) {
             if (!isMatch) {
-                return res.status(401).end('Incorrect username or password.');
+                return res.status(401).end('Incorrect email or password.');
             }
 
-            var token = jwt.sign({username: user.username}, secrets.jwt, { expiresInDays: 7 });
+            var token = jwt.sign({email: user.email}, secrets.jwt, { expiresInDays: 7 });
             return res.json({user : user, token: token});
         });
 
@@ -175,6 +220,18 @@ exports.authenticate = function(req, res, next) {
 };
 
 exports.register = function(req, res, next) {
+    function genCode() {
+        var i, possible, text;
+        text = "";
+        possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+        i = 0;
+        while (i < 15) {
+            text += possible.charAt(Math.floor(Math.random() * possible.length));
+            i++;
+        }
+        return text;
+    }
+
     var email = req.body.email || '';
     var password = req.body.password || '';
     var name = req.body.name || "";
@@ -182,34 +239,60 @@ exports.register = function(req, res, next) {
     var minor = req.body.minor || [];
     var classes = req.body.classes || [];
     var roles = req.body.roles || [];
+    var expiredTokens = [];
+    var code = genCode();
 
-    if (email == '' || password == '') {
-        return res.status(401).end('Email and password required.');
+    if (email == '' || password == '' || email.indexOf('berkeley.edu') == -1) {
+        return res.status(401).end('Valid email and password required.');
     }
 
     var user = new User({
         name: name,
         email: email,
+        password: password,
         classes: classes,
         major: major,
         minor: minor,
         roles: roles,
+        verificationCode: code,
         verified: false
     });
 
     user.save(function (err) {
         if (err) return res.status(401).end('User with that email already exists.');
-        var token = jwt.sign({username: user.username, roles: user.roles}, secrets.jwt, { expiresInDays: 7 });
-        return res.json({token:token, user: {email: user.email, roles: user.roles}});
+
+        var mailgun = new Mailgun({apiKey: secrets.mailgunKey, domain: secrets.mailgunUrl});
+
+        var emaildata = {
+            //Specify email data
+            from: 'admin@twerk.io',
+            //The email to contact
+            to: req.query.email,
+            //Subject and text data
+            subject: 'Your Twerk.io Verification',
+            text: 'Keep twerking hard! Use the following link to verify your email account: <a href="www.twerk.io/verify/' + code + '"</a>'
+        };
+
+        mailgun.messages().send(emaildata, function (err, body) {
+            //If there is an error, render the error page
+            if (err) {
+                console.log(err);
+
+            }
+            //Else we can greet    and leave
+            else {
+                var token = jwt.sign({email: user.email, roles: user.roles, verified: false}, secrets.jwt, { expiresInDays: 7 });
+                return res.json({token:token, user: {email: email, classes: classes, roles: roles, major: major, minor: minor}});
+            }
+        });
     });
 };
 
 exports.getUserProfile = function(req, res, next) {
 
-    if (req.user) {
-        // needs to query user.email for legacy reasons
+    if (req.user && req.user.verified) {
         User.findOne({email: req.user.email},
-            'username status roles name email picture major minor',
+            'email status roles name email picture major minor',
 
             function (err, user) {
 
@@ -220,8 +303,10 @@ exports.getUserProfile = function(req, res, next) {
             return res.json({user : user, token: req.token});
 
         });
+    } else if (req.user && !req.user.verified) {
+        return res.status(401).end('Email needs to be verified.');
     } else {
-        return res.status(401).end();
+        return res.status(401).end('An unkonwn problem occurred. Please try again later.')
     }
 };
 
@@ -232,7 +317,7 @@ exports.postUserProfile = function(req, res, next) {
     User.findOne({email: req.user.email}, function (err, user) {
 
         if (err) {
-            return res.status(401).end('A user with that username or contact email already exists.');
+            return res.status(401).end('A user with that email already exists.');
         }
 
         user.email = userUpdate.email || user.email;
@@ -275,7 +360,7 @@ exports.postUserPicture = function(req, res, next) {
             bucket.putObject(data, function(err, data) {
                 if (err) return res.status(401).end("Image is not saved.");
 
-                User.findOne({username: req.user.username}, 'username picture', function (err, user) {
+                User.findOne({email: req.user.email}, 'email picture', function (err, user) {
                     if (err || user == null) return next(err);
                     var url = 'https://s3-us-west-1.amazonaws.com/twerk.io/img/members/' + fileName;
                     user.picture = url;
@@ -294,7 +379,7 @@ exports.postUserPicture = function(req, res, next) {
 
 exports.getUserLogout = function(req, res, next) {
 
-    User.findOne({username: req.user.username}, function (err, user) {
+    User.findOne({email: req.user.email}, function (err, user) {
 
         if (err) {
             console.log(err);
@@ -305,72 +390,66 @@ exports.getUserLogout = function(req, res, next) {
 
         user.save(function (err) {
             if (err) return next(err);
-            return res.json({success: true, data: null});
+            return res.json({user: null, token: null});
         });
 
 
     });
 };
 
-exports.verifyEmail = function(req, res, next) {
-    var mailgun = new Mailgun({apiKey: secrets.mailgunKey, domain: secrets.mailgunUrl});
-    var code = genCode();
+exports.getMessages = function(req, res, next) {
+    if (req.params.to) {
+        Message.find({from: req.user._id, to: req.params.to}).sort('-time').exec(function(err, messages) {
+            if (err) return res.status(401).end('An unknown error occurred. Please try again later.');
 
-    User.findOne({email: req.query.email}, 'verificationCode', function(err, user) {
-        if (err) return res.status(401).end('Wrong verification code.');
+            return res.json({token: req.token, messages: messages});
+        })
+    } else {
+        Message.find({from: req.user._id}).sort('-time').exec(function(err, messages) {
+            if (err) return res.status(401).end('An unknown error occurred. Please try again later.');
+            var temp = {};
+            var results = [];
 
-        var emaildata = {
-            //Specify email data
-            from: 'admin@twerk.io',
-            //The email to contact
-            to: req.query.email,
-            //Subject and text data
-            subject: 'Twerk.io Verification Code: ' + code,
-            text: 'Keep twerking hard! Copy this verification code into your web browser to verify this email address.'
-        };
+            for (var i = 0; i < messages.length; i++) {
+                var message = messages[i];
 
-            mailgun.messages().send(emaildata, function (err, body) {
-                //If there is an error, render the error page
-                if (err) {
-                    console.log("got an error: ", err);
-                    res.json({success: false, data: {}, error: err});
+                if (!temp[message.to]) {
+                    temp[message.to] = message;
+                    results.push(message);
                 }
-                //Else we can greet    and leave
-                else {
-                    res.json({success: true, data: {}, error: null});
-                }
-            });
+            }
 
-    });
-
-
-    function genCode() {
-        var i, possible, text;
-        text = "";
-        possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        i = 0;
-        while (i < 5) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-            i++;
-        }
-        return text;
+            return res.json({token: req.token, messages: results});
+        });
     }
-
-
-
-
 };
 
-exports.verifyUserEmail = function(req, res, next){
-    User.findOne({email: req.params.email}, 'email', function (err, user) {
+exports.postMessage = function(req, res, next) {
+    var message = new Message({
+        from: req.user._id,
+        to: req.body.to,
+        text: req.body.text
+    });
+
+    message.save(function(err) {
+        if (err) return res.status(401).end('An unknown error occurred. Please try again later');
+        return res.json({token: req.token});
+    });
+};
+
+exports.verifyEmail = function(req, res, next){
+    User.findOne({verificationCode: req.params.code, verified: false}, 'email major minor picture status classes', function (err, user) {
 
         if (err) {
             console.log(err);
-            return res.status(401).end();
+            return res.status(401).end('An unknown error occurred. Please try again later.');
         }
 
-        if (!user.verified) {
-            return res.json({user: user});
+        if (user) {
+            user.verified = true;
+
+            var token = jwt.sign({email: user.email, roles: user.roles, verified: true}, secrets.jwt, { expiresInDays: 7 });
+            return res.json({token:token, user: {email: user.email, classes: user.classes, roles: user.roles, major: user.major, minor: user.minor}});
         }
         return res.status(401).end('User already verified.');
 
@@ -389,10 +468,10 @@ exports.manualResetPassword = function(req, res, next) {
         return res.status(401).end();
     }
 
-    User.findOne({ email: req.body.username }, function (err, user) {
+    User.findOne({ email: req.body.email }, function (err, user) {
         if (err) return next(err);
 
-        user.username = req.body.username;
+        user.email = req.body.email;
         user.password = req.body.password;
 
         user.save(function (err) {
@@ -946,7 +1025,7 @@ exports.getInstagram = function(req, res, next) {
   ig.use({ access_token: token.accessToken });
 
   async.parallel({
-    searchByUsername: function(done) {
+    searchByemail: function(done) {
       ig.user_search('richellemead', function(err, users, limit) {
         done(err, users);
       });
@@ -970,7 +1049,7 @@ exports.getInstagram = function(req, res, next) {
     if (err) return next(err);
     res.render('api/instagram', {
       title: 'Instagram API',
-      usernames: results.searchByUsername,
+      emails: results.searchByemail,
       userById: results.searchByUserId,
       popularImages: results.popularImages,
       myRecentMedia: results.myRecentMedia

@@ -23,4 +23,4 @@ Y.Anim.behaviors.xy = {
 
 
 
-}, '3.18.0', {"requires": ["anim-base", "node-screen"]});
+}, '3.18.1', {"requires": ["anim-base", "node-screen"]});

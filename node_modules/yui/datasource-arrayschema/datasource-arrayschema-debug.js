@@ -103,4 +103,4 @@ Y.extend(DataSourceArraySchema, Y.Plugin.Base, {
 Y.namespace('Plugin').DataSourceArraySchema = DataSourceArraySchema;
 
 
-}, '3.18.0', {"requires": ["datasource-local", "plugin", "dataschema-array"]});
+}, '3.18.1', {"requires": ["datasource-local", "plugin", "dataschema-array"]});

@@ -56,4 +56,4 @@ Y.Anim.getBezier = function(points, t) {
 };
 
 
-}, '3.18.0', {"requires": ["anim-xy"]});
+}, '3.18.1', {"requires": ["anim-xy"]});

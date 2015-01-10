@@ -27,10 +27,8 @@ exports.validateToken = function(req, res, next) {
 
 
     if (!req.headers.authorization || (req.headers.authorization && !req.headers.authorization.length)) {
-        return res.send(401);
-//        req.user = null;
-//        req.token = null;
-//        return next();
+        return res.status(401).end('User is not authorized.');
+
     }
 
     var token = req.headers.authorization.split(' ')[1];
@@ -38,55 +36,59 @@ exports.validateToken = function(req, res, next) {
     try {
         jwt.verify(token, secrets.jwt, {}, function(err, decoded) {
             if (err) {
-                res.send(401);
-                return next(new UnauthorizedError('invalid_token', err));
+                return res.status(401).end();
+                //return next(new UnauthorizedError('invalid_token', err));
             }
-            User.findOne({email: decoded.email}, function (err, user) {
+            if (decoded) {
+                User.findOne({email: decoded.email}, function (err, user) {
 
-                if (err) {
-                    console.log(err);
-                    return res.status(401).end();
+                    if (err) {
+                        console.log(err);
+                        return res.status(401).end('Error with user email.');
+                    }
+
+
+                for (var i = 0; i < user.expiredtokens.length; i++) {
+                    var expiredtoken = user.expiredtokens[i];
+
+                    if (typeof expiredtoken === Object) {
+                        if (token === expiredtoken.t) return next(new UnauthorizedError('invalid_token',  { message: 'This token is expired.' }));
+
+                        // if more than 8 days old (diff in milliseconds), remove from stored expired tokens
+                        if ((Math.floor((new Date())/1000) - expiredtoken.issued_at) > 192*1000*3600) {
+                            user.expiredtokens.splice(i, 1);
+                            i--;
+                        }
+                    } else {
+                        // if expiredtoken isn't an object (created before objects were necessary to track dates (jwt won't decode token if it's expired))
+                        // assign new expiredtoken object with date to one day ago
+                        user.expiredtokens[i] = {token: expiredtoken, issued_at: Math.floor((new Date())/1000) - (1*24*3600)};
+
+                        if (token === user.expiredtokens[i].token) return next(new UnauthorizedError('invalid_token',  { message: 'This token is expired.' }));
+                    }
+
                 }
 
+                    if ((Math.floor((new Date())/1000) - decoded.iat) > 1*1000*3600) { // if token age > 1 hour
+                        user.expiredtokens.push({token: token, issued_at: decoded.iat});
+                        req['user'] = user;
+                        var newtoken = jwt.sign({email: decoded.email, name: decoded.name, roles: decoded.roles, verified: decoded.verified}, secrets.jwt, { expiresInDays: 7});
+                        req['token'] = newtoken;
+                        return next();
+                    }
 
-//                for (var i = 0; i < user.expiredtokens.length; i++) {
-//                    var expiredtoken = user.expiredtokens[i];
-//
-//                    if (typeof expiredtoken === Object) {
-//                        if (token === expiredtoken.t) return next(new UnauthorizedError('invalid_token',  { message: 'This token is expired.' }));
-//
-//                        // if more than 8 days old (diff in milliseconds), remove from stored expired tokens
-//                        if ((Math.floor((new Date())/1000) - expiredtoken.issued_at) > 192*1000*3600) {
-//                            user.expiredtokens.splice(i, 1);
-//                            i--;
-//                        }
-//                    } else {
-//                        // if expiredtoken isn't an object (created before objects were necessary to track dates (jwt won't decode token if it's expired))
-//                        // assign new expiredtoken object with date to one day ago
-//                        user.expiredtokens[i] = {token: expiredtoken, issued_at: Math.floor((new Date())/1000) - (1*24*3600)};
-//
-//                        if (token === user.expiredtokens[i].token) return next(new UnauthorizedError('invalid_token',  { message: 'This token is expired.' }));
-//                    }
-//
-//                }
-
-                if ((Math.floor((new Date())/1000) - decoded.iat) > 1*1000*3600) { // if token age > 1 hour
-                    user.expiredtokens.push({token: token, issued_at: decoded.iat});
                     req['user'] = user;
-                    var newtoken = jwt.sign({email: decoded.email, name: user.name, roles: user.roles}, secrets.jwt, { expiresInDays: 7});
-                    req['token'] = newtoken;
+                    req['token'] = token;
                     return next();
-                }
 
-                req['user'] = user;
-                return next();
+                });
+            }
 
-            });
         });
 
     } catch(err) {
         res.send(401);
-        next(new UnauthorizedError('invalid_token',  { message: 'Token is expired. Login required.' }));
+        return next(new UnauthorizedError('invalid_token',  { message: 'Token is expired. Login required.' }));
     }
 };
 

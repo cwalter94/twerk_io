@@ -234,4 +234,4 @@ Y.extend(OHLCSeries, Y.RangeSeries, {
 Y.OHLCSeries = OHLCSeries;
 
 
-}, '3.18.0', {"requires": ["series-range"]});
+}, '3.18.1', {"requires": ["series-range"]});

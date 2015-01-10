@@ -79,4 +79,4 @@ Y.SplineSeries = Y.Base.create("splineSeries",  Y.LineSeries, [Y.CurveUtil, Y.Li
 
 
 
-}, '3.18.0', {"requires": ["series-line", "series-curve-util"]});
+}, '3.18.1', {"requires": ["series-line", "series-curve-util"]});

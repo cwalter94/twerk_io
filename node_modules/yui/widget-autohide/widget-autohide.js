@@ -234,4 +234,4 @@ WidgetAutohide.prototype = {
 Y.WidgetAutohide = WidgetAutohide;
 
 
-}, '3.18.0', {"requires": ["base-build", "event-key", "event-outside", "widget"]});
+}, '3.18.1', {"requires": ["base-build", "event-key", "event-outside", "widget"]});

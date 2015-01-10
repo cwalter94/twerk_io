@@ -550,4 +550,4 @@ YUI.add('dd-drop', function (Y, NAME) {
 
 
 
-}, '3.18.0', {"requires": ["dd-drag", "dd-ddm-drop"]});
+}, '3.18.1', {"requires": ["dd-drag", "dd-ddm-drop"]});

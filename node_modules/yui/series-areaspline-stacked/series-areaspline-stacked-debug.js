@@ -47,4 +47,4 @@ Y.StackedAreaSplineSeries = Y.Base.create("stackedAreaSplineSeries", Y.AreaSerie
 
 
 
-}, '3.18.0', {"requires": ["series-stacked", "series-areaspline"]});
+}, '3.18.1', {"requires": ["series-stacked", "series-areaspline"]});

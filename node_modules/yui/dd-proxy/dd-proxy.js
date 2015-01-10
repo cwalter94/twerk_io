@@ -248,4 +248,4 @@ YUI.add('dd-proxy', function (Y, NAME) {
 
 
 
-}, '3.18.0', {"requires": ["dd-drag"]});
+}, '3.18.1', {"requires": ["dd-drag"]});

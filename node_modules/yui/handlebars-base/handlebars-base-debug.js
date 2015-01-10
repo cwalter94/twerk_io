@@ -690,4 +690,4 @@ Handlebars.revive = Handlebars.template;
 Y.namespace('Template').Handlebars = Handlebars;
 
 
-}, '3.18.0', {"requires": []});
+}, '3.18.1', {"requires": []});

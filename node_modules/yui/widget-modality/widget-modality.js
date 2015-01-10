@@ -562,4 +562,4 @@ var WIDGET       = 'widget',
 
 
 
-}, '3.18.0', {"requires": ["base-build", "event-outside", "widget"], "skinnable": true});
+}, '3.18.1', {"requires": ["base-build", "event-outside", "widget"], "skinnable": true});

@@ -552,4 +552,4 @@ TreeNode.prototype = {
 Y.namespace('Tree').Node = TreeNode;
 
 
-}, '3.18.0');
+}, '3.18.1');

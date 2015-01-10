@@ -88,4 +88,4 @@ Y.NodeList.prototype.unplug = function() {
 };
 
 
-}, '3.18.0', {"requires": ["node-base", "pluginhost"]});
+}, '3.18.1', {"requires": ["node-base", "pluginhost"]});

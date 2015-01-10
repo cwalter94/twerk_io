@@ -345,4 +345,4 @@ PositionConstrain.prototype = {
 Y.WidgetPositionConstrain = PositionConstrain;
 
 
-}, '3.18.0', {"requires": ["widget-position"]});
+}, '3.18.1', {"requires": ["widget-position"]});

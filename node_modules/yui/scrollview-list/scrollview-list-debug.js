@@ -127,4 +127,4 @@ Y.namespace("Plugin").ScrollViewList = Y.extend(ListPlugin, Y.Plugin.Base, {
 
 
 
-}, '3.18.0', {"requires": ["plugin", "classnamemanager"], "skinnable": true});
+}, '3.18.1', {"requires": ["plugin", "classnamemanager"], "skinnable": true});

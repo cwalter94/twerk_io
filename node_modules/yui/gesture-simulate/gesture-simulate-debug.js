@@ -1318,4 +1318,4 @@ Y.Event.simulateGesture = function(node, name, options, cb) {
 };
 
 
-}, '3.18.0', {"requires": ["async-queue", "event-simulate", "node-screen"]});
+}, '3.18.1', {"requires": ["async-queue", "event-simulate", "node-screen"]});

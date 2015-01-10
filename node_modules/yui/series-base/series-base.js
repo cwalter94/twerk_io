@@ -405,4 +405,4 @@ Y.SeriesBase = Y.Base.create("seriesBase", Y.Base, [Y.Renderer], {
 });
 
 
-}, '3.18.0', {"requires": ["graphics", "axis-base"]});
+}, '3.18.1', {"requires": ["graphics", "axis-base"]});

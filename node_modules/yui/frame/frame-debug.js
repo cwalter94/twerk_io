@@ -1073,4 +1073,4 @@ YUI.add('frame', function (Y, NAME) {
 
 
 
-}, '3.18.0', {"requires": ["base", "node", "plugin", "selector-css3", "yui-throttle"]});
+}, '3.18.1', {"requires": ["base", "node", "plugin", "selector-css3", "yui-throttle"]});

@@ -164,4 +164,4 @@ Y.YQL = function (sql, callback, params, opts) {
 };
 
 
-}, '3.18.0', {"requires": ["oop"]});
+}, '3.18.1', {"requires": ["oop"]});

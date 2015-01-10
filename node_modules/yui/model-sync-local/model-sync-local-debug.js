@@ -357,4 +357,4 @@ LocalSync.prototype = {
 Y.namespace('ModelSync').Local = LocalSync;
 
 
-}, '3.18.0', {"requires": ["model", "json-stringify"]});
+}, '3.18.1', {"requires": ["model", "json-stringify"]});

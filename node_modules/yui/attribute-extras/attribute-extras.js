@@ -153,4 +153,4 @@ YUI.add('attribute-extras', function (Y, NAME) {
     Y.AttributeExtras = AttributeExtras;
 
 
-}, '3.18.0', {"requires": ["oop"]});
+}, '3.18.1', {"requires": ["oop"]});

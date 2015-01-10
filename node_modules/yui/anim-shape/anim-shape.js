@@ -182,4 +182,4 @@ YUI.add('anim-shape', function (Y, NAME) {
 
 
 
-}, '3.18.0', {"requires": ["anim-base", "anim-easing", "anim-color", "matrix"]});
+}, '3.18.1', {"requires": ["anim-base", "anim-easing", "anim-color", "matrix"]});

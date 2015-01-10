@@ -60,4 +60,4 @@ Y.AreaSplineSeries = Y.Base.create("areaSplineSeries", Y.AreaSeries, [Y.CurveUti
 
 
 
-}, '3.18.0', {"requires": ["series-area", "series-curve-util"]});
+}, '3.18.1', {"requires": ["series-area", "series-curve-util"]});

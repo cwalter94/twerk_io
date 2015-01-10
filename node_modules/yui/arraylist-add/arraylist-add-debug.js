@@ -84,4 +84,4 @@ Y.mix(Y.ArrayList.prototype, {
 });
 
 
-}, '3.18.0', {"requires": ["arraylist"]});
+}, '3.18.1', {"requires": ["arraylist"]});

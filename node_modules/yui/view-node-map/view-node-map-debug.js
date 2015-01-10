@@ -81,4 +81,4 @@ NodeMap.prototype = {
 Y.View.NodeMap = NodeMap;
 
 
-}, '3.18.0', {"requires": ["view"]});
+}, '3.18.1', {"requires": ["view"]});

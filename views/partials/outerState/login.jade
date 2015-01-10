@@ -9,20 +9,25 @@ div.row
 
             h2 Login
 
-        form(name="formData", ng-submit="processForm()").row
+        form(name="formData").row
             .col-xs-12
                 .row
                     .col-lg-6.col-lg-offset-3.col-xs-8.col-xs-offset-2
                         .form-group.form-group-lg.row
-                            label.col-xs-2.input-lg Email:
-                            input.col-xs-10.form-control.input-lg(type="email", ng-model="formData.email", ng-class="{'error': formData.username.$error.$email}")
+
+                            .col-xs-12
+                                label.input-lg Email:
+                            .col-xs-12
+                                input.form-control.input-lg(type="email", ng-model="formData.email", ng-class="{'error': formData.email.$error.$email}")
                     .col-lg-6.col-lg-offset-3.col-xs-8.col-xs-offset-2
                         .form-group.form-group-lg.row
-                            label.col-xs-2.input-lg Password:
-                            input.col-xs-10.form-control.input-lg(type="password", ng-model="formData.password", ng-class="{'error': formData.username.$error.$email}")
+                            .col-xs-12
+                                label.input-lg Password:
+                            .col-xs-12
+                                input.form-control.input-lg(type="password", ng-model="formData.password")
 
                 .row.form-control-row
                     .col-xs-6.col-xs-offset-6.text-center
                         a
-                            button.btn.btn-lg.btn-default(type='submit')
+                            button.btn.btn-lg.btn-default(type="submit", ng-click="processForm()")
                                 | Login

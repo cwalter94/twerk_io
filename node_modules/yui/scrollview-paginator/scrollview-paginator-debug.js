@@ -743,4 +743,4 @@ Y.extend(PaginatorPlugin, Y.Plugin.Base, {
 Y.namespace('Plugin').ScrollViewPaginator = PaginatorPlugin;
 
 
-}, '3.18.0', {"requires": ["plugin", "classnamemanager"]});
+}, '3.18.1', {"requires": ["plugin", "classnamemanager"]});

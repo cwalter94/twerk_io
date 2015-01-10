@@ -1,6 +1,21 @@
 html {
   body {
 
+    #loading-bar-spinner .spinner-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 30px;
+
+      border-top-color: #FFE80F;
+      border-left-color: #FFE80F;
+    }
+
+    #loading-bar .bar {
+      background: #FFE80F;
+      height: 3px;
+      top: 0;
+    }
+
     #statusButtons {
       a {
         font-size: 14px;
@@ -22,9 +37,29 @@ html {
       height: calc(100% - 50px);
     }
 
-    input {
-      .error {
+    input, ui-select, ui-select-multiple, .select2-choices {
 
+      border-color: #adadad;
+      border-radius: 2px !important;
+
+      font-family: Montserrat, HelveticaNeue, 'sans-serif';
+      font-weight: 400;
+
+      -webkit-transition: all .5s;
+      -moz-transition: all .5s;
+      -ms-transition: all .5s;
+      -o-transition: all .5s;
+      transition: all .5s;
+
+      &:focus, &:hover {
+        border: 1px solid #67b0d1;
+        outline: 0;
+        color: #000;
+        background-color: #FFF;
+      }
+
+      .error {
+        border: 1px solid #FF0000;
       }
     }
 
@@ -100,12 +135,13 @@ html {
     .btn.btn-default.ng-pristine {
       color: #AAA;
 
-      &.ng-dirty {
+      &.ng-browsety {
         color: #333;
       }
     }
 
     nav {
+      margin: 0px;
 
       li.dropdown {
         cursor: pointer;
@@ -152,6 +188,15 @@ html {
 
       &.transparent-nav {
         background: transparent !important;
+        border-bottom: 1px solid #EEE;
+        padding: 0px;
+
+        .navbar-brand {
+          > * {
+            color: #666;
+
+          }
+        }
       }
 
     }
@@ -407,16 +452,15 @@ html {
 
     }
 
-    #dir-container {
+    #browse-container {
       height: 100%;
-      padding: 55px 50px 0px 50px;
+      padding: 80px 50px 0px 50px;
 
       > .row {
         height: calc(100% - 5px);
         width: 100%;
 
-        .dir-col {
-          width: 0%;
+        .browse-col {
           float: left;
           padding: 0px 10px 0px 10px;
           height: 100%;
@@ -427,50 +471,70 @@ html {
           -o-transition: all 1s;
           transition: all 1s;
 
-          &.col-lg-12 {
-            width: 100%;
-          }
-
-          &.col-lg-8 {
-            width: calc(100% - 100% / 3);
-          }
-
-          &.col-lg-4 {
-            width: calc(100% - 200% / 3);
-          }
-
           &.right-pane {
             border-left: solid 2px darkgray;
 
-            .email {
-              font-size: 22px;
+            .profile-view-container {
+              height: 100%;
+              padding-left: 15px;
+
+              .profile-info-container {
+                max-height: 220px;
+                overflow-y: hidden;
+
+                h4 {
+                  margin-bottom: 0;
+                }
+                .profile-info {
+                  padding-left: 0px;
+                  padding-right: 0px;
+
+                  .profile-detail {
+                    font-size: 18px;
+                  }
+                }
+              }
+
+              .message-outer-container {
+                height: calc(100% - 220px);
+                padding: 10px;
+
+                .message-inner-container {
+                  margin: 10px;
+                  height: 100%;
+                  width: 100%;
+                  overflow-y: scroll;
+
+                }
+
+                .message-input {
+                  width: 100%;
+
+                  textarea {
+                    width: 100%;
+                    border: 1px solid #EEE;
+                    height: 30px;
+
+                    &:focus, &:hover {
+                      border: 1px solid #666;
+                    }
+                  }
+                }
+              }
+
             }
 
-            .section {
-              margin-top: 30px;
-
-              .detail {
-                font-size: 18px;
-              }
-
-              .detail-xs {
-                font-size: 14px;
-              }
-
-              h1, h2, h3, h4, h5, h6 {
-                margin-bottom: 0px;
-                margin-top: 10px;
-              }
-
-              p {
-                margin: 10px 10px 0px 10px;
-              }
-
+            .message-container {
+              height: calc(100% - 220px);
+              float: left;
+              position: relative;
+              margin: 10px;
+              border-left: 2px solid cyan;
+              overflow-y: scroll;
             }
-
           }
 
-          .nav-dir {
+          .nav-browse {
             height: 50px;
             width: calc(100% - 20px);
             left: 20px;
@@ -512,7 +576,7 @@ html {
               .search-col {
                 padding-left: 5px;
                 min-width: 200px;
-                width: calc(100% - 200px);
+                width: calc(100% - 135px);
               }
 
               .search-box-inner {
@@ -525,17 +589,17 @@ html {
             }
           }
 
-          .dir-inner-container {
+          .browse-inner-container {
             margin-top: 55px;
             height: calc(100% - 55px);
             overflow-y: scroll;
 
-            .dir-sm-container {
+            .browse-sm-container {
               float: left;
               width: 320px;
               height: 100px;
               background: #f9f9f9;
-              padding: 5px;
+              padding: 5px 15px;
               border: 1px solid transparent;
               border-radius: 2px;
               margin: 10px;
@@ -546,6 +610,24 @@ html {
 
                 img {
                   width: 100%;
+                }
+              }
+
+              &.full-width {
+                width: 100%;
+                margin: 0px;
+                margin-bottom: 10px;
+                height: 140px;
+
+                .row {
+                  height: 100%;
+
+                  > * {
+                    padding-top: 0px;
+                    padding-left: 5px;
+                    max-height: 125px;
+                  }
+
                 }
               }
 
@@ -606,7 +688,6 @@ html {
         }
       }
 
-
       table {
         li.select2-disabled {
           display: none;
@@ -628,34 +709,32 @@ html {
 
         .content-container {
 
+          .col-md-6, .col-xs-10 {
+            background: rgba(255, 255, 255, 1);
+            padding: 20px;
+            overflow-x: hidden;
 
-            .col-md-6, .col-xs-10 {
-              background: rgba(255, 255, 255, 1);
-              padding: 20px;
-              overflow-x: hidden;
-
-              h1, h2, h3, h4, h5, h6 {
-                color: #666;
-                font-weight: 700;
-              }
-
-
-              p {
-                margin-top: 20px;
-                font-size: 24px;
-                font-weight: 300;
-                color: #666;
-                text-transform: none;
-
-              }
-
-              #registerForm {
-                min-height: 210px;
-              }
+            h1, h2, h3, h4, h5, h6 {
+              color: #666;
+              font-weight: 700;
             }
 
+            p {
+              margin-top: 20px;
+              font-size: 24px;
+              font-weight: 300;
+              color: #666;
+              text-transform: none;
+
+            }
+
+            #registerForm {
+              min-height: 210px;
+            }
           }
+
         }
+      }
     }
   }
 }

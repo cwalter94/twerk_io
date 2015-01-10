@@ -224,4 +224,4 @@ Y.namespace("Plugin").RecordsetIndexer = RecordsetIndexer;
 
 
 
-}, '3.18.0', {"requires": ["recordset-base", "plugin"]});
+}, '3.18.1', {"requires": ["recordset-base", "plugin"]});

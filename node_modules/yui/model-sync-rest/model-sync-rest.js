@@ -730,4 +730,4 @@ RESTSync.prototype = {
 Y.namespace('ModelSync').REST = RESTSync;
 
 
-}, '3.18.0', {"requires": ["model", "io-base", "json-stringify"]});
+}, '3.18.1', {"requires": ["model", "io-base", "json-stringify"]});
