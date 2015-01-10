@@ -378,7 +378,8 @@ html body {
             padding: 5px 15px;
             border: 1px solid transparent;
             border-radius: 2px;
-            margin: 10px; }
+            margin: 10px;
+            border-left: 5px solid red; }
             html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container .col-xs-4 {
               max-height: 80px;
               overflow-y: hidden; }
@@ -395,6 +396,8 @@ html body {
                   padding-top: 0px;
                   padding-left: 5px;
                   max-height: 125px; }
+            html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container.online {
+              border-left: 5px solid lightgreen; }
             html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container h5 {
               margin-bottom: 0px; }
   html body #new-blog-post-container {

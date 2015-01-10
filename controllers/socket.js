@@ -2,27 +2,16 @@ var Message = require('../models/Message');
 var Room = require('../models/Room');
 var User = require('../models/User');
 
+var allUsers = {};
+
 exports.socketHandler = function(socket) {
 
+    socket.on('user:init', function(email) {
+        socket.email = email;
+        allUsers[email] = {online : true};
+        socket.emit('user:init', allUsers);
+        socket.broadcast.emit('user:online', email);
 
-    //initialize connection
-    socket.on('init', function(user) {
-        Room.find({users: user._id}, function(err, rooms) {
-            if (err) socket.emit('error', 'An error occurred in finding rooms.');
-            socket.emit('init', {rooms: rooms, user: user._id});
-        })
-    });
-
-
-    // find rooms this user is part of
-    socket.on("get:rooms", function(user) {
-        console.log("socket get all rooms");
-        console.log(user);
-
-        Room.find({users: user._id}, function(err, rooms) {
-            if (err) socket.emit('error', 'An error occurred in finding rooms.');
-            socket.emit('userRooms', rooms);
-        })
     });
 
     //
@@ -37,8 +26,7 @@ exports.socketHandler = function(socket) {
     });
 
     socket.on("send:message", function(msg) {
-        console.log(msg);
-        if (msg.from && msg.to && msg.text) {
+        if (msg.from && msg.to && msg.text !== '') {
             var message = new Message({
                 from: msg.from,
                 to: msg.to,
@@ -61,6 +49,9 @@ exports.socketHandler = function(socket) {
 
     socket.on("disconnect", function() {
 
+        allUsers[socket.email] = {online : false};
+        var temp = [];
+        socket.broadcast.emit('user:offline', socket.email);
     });
 
 };

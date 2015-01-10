@@ -149,7 +149,13 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
                 users: ['$http', function($http) {
                     return $http.get('/api/browse')
                         .then(function(response) {
-                            return response.data.users;
+                            var temp = response.data.users;
+                            var results = {};
+                            for (var i = 0; i < temp.length; i++) {
+                                var elem = temp[i];
+                                results[elem.email] = elem;
+                            }
+                            return results;
                         });
                 }],
                 me: ['principal', function(principal) {
@@ -406,10 +412,11 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
             }
         };
     })
-    .factory('socket', function (socketFactory, $cookieStore) {
+    .factory('socket', function (socketFactory, $cookieStore, principal) {
         if ($cookieStore.get('jwt')) {
+
             var authSocket = io.connect('', {
-                query: 'token=' + $cookieStore.get('jwt')
+                query: 'token=' + $cookieStore.get('jwt'),
             });
 
             mySocket = socketFactory({

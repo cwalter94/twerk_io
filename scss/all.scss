@@ -603,6 +603,7 @@ html {
               border: 1px solid transparent;
               border-radius: 2px;
               margin: 10px;
+              border-left: 5px solid red;
 
               .col-xs-4 {
                 max-height: 80px;
@@ -629,6 +630,10 @@ html {
                   }
 
                 }
+              }
+
+              &.online {
+                border-left: 5px solid lightgreen;
               }
 
               h5 {

@@ -188,7 +188,6 @@ io.set('authorization', socketioJwt.authorize({
     handshake: true
 }));
 
-
 io.sockets.on("connection", socketController.socketHandler);
 
 module.exports = app;
