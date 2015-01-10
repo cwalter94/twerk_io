@@ -23,7 +23,7 @@ var Room = require('./models/Room');
 var expressJwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var socketioJwt = require('socketio-jwt');
-
+var allUsers = {};
 /**
  * Controllers (route handlers).
  */
@@ -188,6 +188,6 @@ io.set('authorization', socketioJwt.authorize({
     handshake: true
 }));
 
-io.sockets.on("connection", socketController.socketHandler);
+io.sockets.on("connection", socketController.socketHandler(allUsers));
 
 module.exports = app;
