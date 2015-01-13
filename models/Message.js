@@ -6,7 +6,8 @@ var messageSchema = new mongoose.Schema({
     created: {type: Date, default: Date.now},
     text: {type: String, required: true},
     fromSocket: {type: String, default: ''},
-    toSocket: {type: String, default: ''}
+    toSocket: {type: String, default: ''},
+    read: {type: Boolean, default: false}
 
 });
 

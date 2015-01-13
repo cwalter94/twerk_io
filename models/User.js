@@ -9,14 +9,16 @@ var userSchema = new mongoose.Schema({
     status: {type: String, default: ''},
     verified: {type: Boolean, default: false},
     roles: {type: Array, default: ['User']},
-    online: {type: Boolean, default: false},
+    lastOnline: {type: Date, default: Date.now, required: true},
+    unreadRooms: {type: [mongoose.Schema.Types.objectId], default: []},
     expiredtokens: {type: Array, default: []},
     socket: {type: String, default: ''},
-
+    testData: {type: Boolean, default: false},
     name: { type: String, default: '' },
     picture: { type: String, default: '' },
     major: {type: Array, default: []},
     minor: {type: Array, default: []},
+    classes: {type: [String], default: []},
     phone: String,
     verificationCode: String,
 

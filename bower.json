@@ -35,7 +35,8 @@
     "rangy-official": "~1.3.0-alpha.20140921",
     "angular-loading-bar": "~0.6.0",
     "angular-socket-io": "~0.3.0",
-    "angular-route": "~1.2.14"
+    "angular-route": "~1.2.14",
+    "angular-once": "~0.1.8"
   },
   "resolutions": {
     "angular": "~1.3.4"

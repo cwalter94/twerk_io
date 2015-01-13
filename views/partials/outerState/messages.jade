@@ -1,0 +1,35 @@
+div.container#messages-container
+    .row
+        .messages-col.col-lg-6
+            div.alert-warn.fade(flash-alert='error', active-class='in alert')
+                strong.alert-message {{flash.message}}
+            nav.nav-messages
+                .search-box-outer.row
+                    input(type="hidden", name="selectedSearchCat", value="{{selectedSearchCat}}", ng-model="selectedSearchCat")
+                    i.fa.fa-search.search-icon
+                    .search-cat-select-col
+                        button.btn.btn-default(type='button', ng-model='selectedSearchCat',
+                        data-html='1', ng-options='searchCat as searchCat for searchCat in searchCats',
+                        bs-select='')
+                            span.caret
+                    .search-col
+                        input.search-box-inner(ng-model="search", ng-focus="searchFocus")
+
+
+            .messages-inner-container
+                a.messages-sm-container.full-width(ng-repeat="room in rooms")
+                    .row
+                        .col-xs-4
+                            img(src="{{user.picture || '/img/generic_avatar.gif'}}")
+                        .col-xs-8
+                            h5.text-left {{user.name || 'Unknown Name'}}
+                            .text-left {{user.status}}
+                            .text-left {{(user.pledgeclassSeason && user.pledgeclassYear) ? user.pledgeclassSeason + ' ' + user.pledgeclassYear : 'Unknown pledge class'}}
+                            .text-left {{user.major ? user.major : 'Unknown major' }}
+
+
+
+        .messages-col.right-pane(ng-class="{'col-lg-6 col-xs-12': (getUrl().indexOf('messages') > -1) && getUrl().length > 8}", ng-show="(getUrl().indexOf('messages') > -1) && getUrl().length > 8")
+            .ui-view#messagesView
+                .jumbotron(style="width: 100%; height: 100%;")
+                    h1 Nothing to display

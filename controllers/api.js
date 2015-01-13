@@ -55,62 +55,39 @@ exports.getUser = function(req, res) {
 };
 
 exports.getBrowse = function(req, res) {
-        if (req.params.id) {
-            User.findOne({_id: req.params.id}, 'name email picture status classes', function (err, user) {
 
-                if (err) {
-                    console.log(err);
-                    return res.send(401);
-                }
-
-                if (user) {
-                    Room.findOne({usersLength: 2, $and: [{users: req.user._id},{users: user._id}]}, function(err, room) {
-                        if (err) {
-                            return res.json({token: req.token, profile: user, room: null, messages: null});
-                        } else if (room) {
-                            Message.find({to: room._id}, 'from text', function(err, messages) {
-                                if (err) {
-                                    console.log(err);
-                                    return res.json({token: req.token, profile: user, room: room._id, messages: null});
-                                }
-                                return res.json({token: req.token, profile: user, room: room._id, messages: messages});
-                            });
-                        } else {
-                            var r = new Room({
-                                messages: [],
-                                users: [user._id, req.user._id],
-                                messagesLength: 0,
-                                usersLength: 0
-                            });
-
-                            r.save(function(err) {
-                                console.log(r);
-                                if (err) {
-                                    //res.status(401).end('An error occurred while setting up messages for this user.');
-                                    console.log(err);
-                                    return res.json({token: req.token, profile: user, room: null});
-                                }
-                                return res.json({token: req.token, profile: user, room: r._id, });
-
-                            })
-                        }
-                    });
-                } else {
-                    res.status(401).end("An error occurred while retrieving this user's profile.");
-                    return res.json({token: token})
-                }
-            });
-        } else {
-            User.find({}, 'name email picture status classes', function (err, users) {
-
-                if (err) {
-                    console.log(err);
-                    return res.send(401);
-                }
+        if (req.query.start && req.query.limit && req.query.sortBy) {
+            var temp = req.query.sortBy;
+            console.log(req.query);
+            User.find({lastOnline : {"$lt" : req.query.start}})
+                .select('_id name email picture status major minor classes lastOnline')
+                .limit(req.query.limit)
+                .sort('-lastOnline')
+                .exec(function (err, users) {
+                    console.log(users);
+                    if (err) {
+                        console.log(err);
+                        return res.status(401).end('An unknown error occurred. Please try again later.');
+                    }
 
                 return res.json({token: req.token, users: users});
 
             });
+
+        } else {
+            User.find({})
+                .select('_id name email picture status major minor classes lastOnline')
+                .limit(20)
+                .sort('lastOnline')
+                .exec(function (err, users) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(401).end('An unknown error occurred. Please try again later.');
+                    }
+
+                    return res.json({token: req.token, users: users});
+
+                });
         }
 
 
@@ -398,43 +375,28 @@ exports.getUserLogout = function(req, res, next) {
 };
 
 exports.getMessages = function(req, res, next) {
-    if (req.params.to) {
-        Message.find({from: req.user._id, to: req.params.to}).sort('-time').exec(function(err, messages) {
-            if (err) return res.status(401).end('An unknown error occurred. Please try again later.');
-
-            return res.json({token: req.token, messages: messages});
-        })
-    } else {
-        Message.find({from: req.user._id}).sort('-time').exec(function(err, messages) {
-            if (err) return res.status(401).end('An unknown error occurred. Please try again later.');
-            var temp = {};
-            var results = [];
-
-            for (var i = 0; i < messages.length; i++) {
-                var message = messages[i];
-
-                if (!temp[message.to]) {
-                    temp[message.to] = message;
-                    results.push(message);
-                }
+    if (req.params.roomId) {
+        Room.findOne({_id: req.params.roomId}, 'messages', function(err, room) {
+            if (err) {
+                console.log(err);
+            } else {
+                Message.find({id: {'$in' : room.messages}}, 'from text', '-time', function(err, messages) {
+                    console.log(messages);
+                    if (err) console.log(err);
+                    if (messages.length > 0) {
+                        return res.json({token: req.token, room: room._id, messages: messages});
+                    }
+                });
             }
-
-            return res.json({token: req.token, messages: results});
         });
+    } else {
+        Room.find({users: req.user._id, messages: {"$not" : {"$size" : 0}}}, 'id lastMessage users usersNames', function(err, rooms) {
+            if (err) return res.status(401).end('An unknown error occurred. Please try again later.');
+            console.log(rooms);
+            return res.json({token: req.token, rooms: rooms})
+        });
+
     }
-};
-
-exports.postMessage = function(req, res, next) {
-    var message = new Message({
-        from: req.user._id,
-        to: req.body.to,
-        text: req.body.text
-    });
-
-    message.save(function(err) {
-        if (err) return res.status(401).end('An unknown error occurred. Please try again later');
-        return res.json({token: req.token});
-    });
 };
 
 exports.verifyEmail = function(req, res, next){

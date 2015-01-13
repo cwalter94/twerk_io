@@ -1,0 +1,38 @@
+.profile-view-container(ng-init="joinRoom(room)")
+    .row.profile-info-container(ng-init="message.toEmail = profile.email")
+        .col-md-4.col-xs-4
+
+            img(src="{{profile.picture || '/img/generic_avatar.gif'}}", style="width: 100%")
+        .col-md-8.col-xs-8.profile-info
+            h4 {{profile.name}}
+            .profile-detail.text-left {{profile.email}}
+            .profile-detail.text-left
+                strong Major:
+                |   {{profile.major.length > 0 ? ' ' + profile.major.join(', ') : ' Unknown'}}
+            .profile-detail.text-left(ng-show="user.minor.length > 0")
+                strong Minor:
+                | {{' ' + profile.minor.join(', ')}}
+            .profile-detail.text-left
+                strong Classes:
+                | {{profile.classes.length > 0 ? ' ' + profile.classes.join(', ') : ' Unknown'}}
+
+    .row.chat-outer-container
+            .col-xs-12.chat-inner-container
+                .row.chat-row(ng-repeat="m in messages[room]")
+                    strong {{m.from === me.id ? 'me' : profile.name}}
+                    | {{' ' + m.text}}
+
+            .col-xs-12.chat-input
+                form(name=message, ng-submit="sendMessage()").row
+                    .col-xs-11
+                        textarea(rows="{{message.rows}}", ng-init="", ng-model="message.text")
+                    .col-xs-1
+                        button.btn.btn-default.btn-info(role="submit", type="submit") Send
+
+
+
+
+
+
+
+

@@ -1,16 +1,16 @@
 var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap', 'ngSanitize',
-    'mgcrea.ngStrap', 'textAngular', 'xeditable','angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table', 'btford.socket-io'], function() {
+    'mgcrea.ngStrap', 'textAngular', 'xeditable','angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table',
+    'btford.socket-io', 'once', 'infinite-scroll'], function() {
 
 })
     .config(function(uiSelectConfig, flashProvider, $httpProvider, $stateProvider, $urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
 
     uiSelectConfig.theme = 'selectize';
-    cfpLoadingBarProvider.latency = 0;
     $locationProvider.html5Mode(true).hashPrefix('!');
     $httpProvider.interceptors.push('authInterceptor');
     flashProvider.errorClassnames.push('alert-danger');
     flashProvider.successClassnames.push('alert-success');
-    cfpLoadingBarProvider.latencyThreshold = 500;
+    cfpLoadingBarProvider.latencyThreshold = 0;
 
     $stateProvider.state('site', {
         abstract: true,
@@ -123,21 +123,35 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
             }
         })
 
-        .state('site.home.messages', {
-            url: 'messages',
-            abstract: true,
+        .state('site.messages', {
+            url: '/messages',
             controller: 'messagesCtrl',
             templateUrl: '/partials/outer/messages',
             resolve: {
-                messages: ['$http', 'principal', function($http, principal) {
-                    return $http.get('/api/messages/' + principal.identity)
+                rooms: ['$http', function($http) {
+                    return $http.get('/api/messages')
                         .then(function(response) {
-                            return response.data.messages;
+                            console.log(response.data.rooms);
+                            return response.data.rooms;
                         });
+                }],
+                me: ['principal', function(principal) {
+                    return principal.identity().then(function(me) {
+                        return me;
+                    })
                 }]
             }
-
-
+        })
+        .state('site.messages.room', {
+            url: '/{roomId}',
+            templateUrl: '/partials/inner/messages/rightpane',
+            resolve: {
+                messages: ['$http', '$stateParams', function($http, $stateParams) {
+                   return $http.get('/api/messages/' + $stateParams.roomId).then(function(response) {
+                       return response.data.messages;
+                   })
+                }]
+            }
         })
 
 
@@ -146,45 +160,11 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
             templateUrl: '/partials/outer/browse',
             controller: 'browseCtrl',
             resolve: {
-                users: ['$http', function($http) {
-                    return $http.get('/api/browse')
-                        .then(function(response) {
-                            var temp = response.data.users;
-                            var results = {};
-                            for (var i = 0; i < temp.length; i++) {
-                                var elem = temp[i];
-                                results[elem.email] = elem;
-                            }
-                            return results;
-                        });
-                }],
                 me: ['principal', function(principal) {
                     return principal.identity().then(function(data) {
                         return data;
                     })
                 }]
-            }
-        })
-        .state('site.browse.profile', {
-            url: '/{id}',
-            resolve: {
-                data: ['$http', '$stateParams', function($http, $stateParams) {
-                    return $http.get('/api/browse/' + $stateParams.id)
-                        .then(function(response) {
-                            return response.data;
-                        });
-                }]
-            },
-            templateUrl: '/partials/inner/directory/rightpane',
-            controller: function($scope, data) {
-                $scope.profile = data.profile;
-                $scope.room = data.room;
-                $scope.joinRoom = function(room) {
-                    $scope.$parent.socket.emit('join:room', room);
-                    $scope.$parent.message.to = room;
-                    $scope.$parent.messages[room] = data.messages;
-                };
-
             }
         });
         
@@ -400,7 +380,6 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
                 return config;
             },
             response: function (response) {
-
                 if (response.status === 401) {
 
                 }
@@ -428,6 +407,31 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
         } else {
             console.log("Socket auth failed.");
             return {};
+        }
+    })
+    .filter('browseFilter',function() {
+        return function(users, search) {
+            if (search == null) return users;
+            var results = {};
+
+            for (var email in users) {
+                var user = users[email];
+                var userString = email + ' ' + user.name + ' '  + user.status;
+                if (user.classes && user.classes.length) userString += ' ' + user.classes.join(' ');
+                if (user.major && user.major.length) userString += ' '  + user.major.join(' ');
+                if (user.minor && user.minor.length) userString += ' ' + user.minor.join(' ');
+
+                var searchStrings = search.split(' ');
+                for (var i = 0; i < searchStrings.length; i++) {
+                    if (userString.toLowerCase().indexOf(searchStrings[i].toLowerCase()) > -1) {
+                        results[email] = user;
+                    } else {
+                        delete results[email];
+                        break;
+                    }
+                }
+            }
+            return results;
         }
     })
     .run(['$rootScope', '$state', '$stateParams', 'authorization', 'principal', 'editableOptions',

@@ -1,13 +1,14 @@
 html body {
+  background: #e9eae7;
   /* add warning colors to warn class */ }
   html body #loading-bar-spinner .spinner-icon {
     width: 30px;
     height: 30px;
     border-radius: 30px;
-    border-top-color: #FFE80F;
-    border-left-color: #FFE80F; }
+    border-top-color: #FFF;
+    border-left-color: #FFF; }
   html body #loading-bar .bar {
-    background: #FFE80F;
+    background: #FFF;
     height: 3px;
     top: 0; }
   html body #statusButtons a {
@@ -88,6 +89,15 @@ html body {
       color: #333; }
   html body nav {
     margin: 0px; }
+    html body nav ul.nav {
+      background: transparent !important; }
+      html body nav ul.nav li {
+        height: 50px; }
+        html body nav ul.nav li a {
+          height: 100%;
+          color: #ffffff !important; }
+          html body nav ul.nav li a:hover {
+            background: rgba(255, 255, 255, 0.1); }
     html body nav li.dropdown {
       cursor: pointer; }
       html body nav li.dropdown.open a {
@@ -99,6 +109,17 @@ html body {
         html body nav li.dropdown.open ul a:hover {
           background-color: rgba(255, 255, 255, 0.4) !important;
           color: #444 !important; }
+    html body nav li a div {
+      dislay: inline-block;
+      position: relative;
+      float: left;
+      width: 90%; }
+      html body nav li a div.message-indicator {
+        float: left;
+        width: auto;
+        overflow: hidden;
+        padding-left: 10px;
+        color: red; }
     html body nav.top-nav-collapse li.dropdown.open a {
       background-color: rgba(255, 255, 255, 0.2) !important;
       color: #444 !important;
@@ -110,11 +131,10 @@ html body {
         color: #444 !important;
         cursor: pointer; }
     html body nav.transparent-nav {
-      background: transparent !important;
-      border-bottom: 1px solid #EEE;
+      background: #52008C;
       padding: 0px; }
       html body nav.transparent-nav .navbar-brand > * {
-        color: #666; }
+        color: #fff; }
   html body .form-control-row {
     margin-top: 50px; }
   html body .btn-form {
@@ -274,136 +294,172 @@ html body {
           top: 50px; }
       html body .content-container text-angular .ta-resizer-handle-overlay {
         display: none !important; }
-  html body #browse-container {
-    height: 100%;
-    padding: 80px 50px 0px 50px; }
-    html body #browse-container > .row {
-      height: calc(100% - 5px);
-      width: 100%; }
-      html body #browse-container > .row .browse-col {
+  html body #browse-container, html body #messages-container {
+    width: 100%;
+    height: 100%; }
+    html body #browse-container .quick-message-container, html body #messages-container .quick-message-container {
+      height: 0;
+      overflow-y: hidden;
+      width: 100%;
+      background: white; }
+      html body #browse-container .quick-message-container.visible, html body #messages-container .quick-message-container.visible {
+        height: 300px; }
+    html body #browse-container .nav-browse, html body #browse-container .nav-messages, html body #messages-container .nav-browse, html body #messages-container .nav-messages {
+      height: 50px;
+      width: 100%;
+      top: 40px;
+      position: absolute;
+      background: transparent; }
+      html body #browse-container .nav-browse .search-box-outer, html body #browse-container .nav-messages .search-box-outer, html body #messages-container .nav-browse .search-box-outer, html body #messages-container .nav-messages .search-box-outer {
+        border: 1px solid #DDD;
+        border-radius: 2px;
+        background: #fff;
+        width: 100%; }
+        html body #browse-container .nav-browse .search-box-outer .search-icon, html body #browse-container .nav-messages .search-box-outer .search-icon, html body #messages-container .nav-browse .search-box-outer .search-icon, html body #messages-container .nav-messages .search-box-outer .search-icon {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 24px;
+          height: 100%;
+          line-height: 40px;
+          vertical-align: middle;
+          font-size: 24px; }
+        html body #browse-container .nav-browse .search-box-outer .search-cat-select-col, html body #browse-container .nav-browse .search-box-outer .search-col, html body #browse-container .nav-messages .search-box-outer .search-cat-select-col, html body #browse-container .nav-messages .search-box-outer .search-col, html body #messages-container .nav-browse .search-box-outer .search-cat-select-col, html body #messages-container .nav-browse .search-box-outer .search-col, html body #messages-container .nav-messages .search-box-outer .search-cat-select-col, html body #messages-container .nav-messages .search-box-outer .search-col {
+          width: auto;
+          float: left;
+          padding-left: 32px;
+          vertical-align: middle;
+          line-height: 40px;
+          background: transparent; }
+          html body #browse-container .nav-browse .search-box-outer .search-cat-select-col button, html body #browse-container .nav-browse .search-box-outer .search-col button, html body #browse-container .nav-messages .search-box-outer .search-cat-select-col button, html body #browse-container .nav-messages .search-box-outer .search-col button, html body #messages-container .nav-browse .search-box-outer .search-cat-select-col button, html body #messages-container .nav-browse .search-box-outer .search-col button, html body #messages-container .nav-messages .search-box-outer .search-cat-select-col button, html body #messages-container .nav-messages .search-box-outer .search-col button {
+            background: transparent;
+            border: none;
+            color: #333; }
+        html body #browse-container .nav-browse .search-box-outer .search-col, html body #browse-container .nav-messages .search-box-outer .search-col, html body #messages-container .nav-browse .search-box-outer .search-col, html body #messages-container .nav-messages .search-box-outer .search-col {
+          padding-left: 5px;
+          min-width: 200px;
+          width: calc(100% - 135px); }
+        html body #browse-container .nav-browse .search-box-outer .search-box-inner, html body #browse-container .nav-messages .search-box-outer .search-box-inner, html body #messages-container .nav-browse .search-box-outer .search-box-inner, html body #messages-container .nav-messages .search-box-outer .search-box-inner {
+          font-size: 24px;
+          border: none;
+          width: 100%;
+          height: 100%; }
+    html body #browse-container .nav-messages, html body #messages-container .nav-messages {
+      width: calc(100% - 40px);
+      left: 40px; }
+    html body #browse-container .messages-col, html body #messages-container .messages-col {
+      height: 100%;
+      padding: 20px; }
+    html body #browse-container .scroll-container, html body #messages-container .scroll-container {
+      margin-top: 100px;
+      height: calc(100% - 100px); }
+      html body #browse-container .scroll-container .browse-col, html body #messages-container .scroll-container .browse-col {
         float: left;
-        padding: 0px 10px 0px 10px;
         height: 100%;
         -webkit-transition: all 1s;
         -moz-transition: all 1s;
         -ms-transition: all 1s;
         -o-transition: all 1s;
         transition: all 1s; }
-        html body #browse-container > .row .browse-col.right-pane {
+        html body #browse-container .scroll-container .browse-col.right-pane, html body #messages-container .scroll-container .browse-col.right-pane {
           border-left: solid 2px darkgray; }
-          html body #browse-container > .row .browse-col.right-pane .profile-view-container {
+          html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container {
             height: 100%;
             padding-left: 15px; }
-            html body #browse-container > .row .browse-col.right-pane .profile-view-container .profile-info-container {
+            html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .profile-info-container, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .profile-info-container {
               max-height: 220px;
               overflow-y: hidden; }
-              html body #browse-container > .row .browse-col.right-pane .profile-view-container .profile-info-container h4 {
+              html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .profile-info-container h4, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .profile-info-container h4 {
                 margin-bottom: 0; }
-              html body #browse-container > .row .browse-col.right-pane .profile-view-container .profile-info-container .profile-info {
+              html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .profile-info-container .profile-info, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .profile-info-container .profile-info {
                 padding-left: 0px;
                 padding-right: 0px; }
-                html body #browse-container > .row .browse-col.right-pane .profile-view-container .profile-info-container .profile-info .profile-detail {
+                html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .profile-info-container .profile-info .profile-detail, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .profile-info-container .profile-info .profile-detail {
                   font-size: 18px; }
-            html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container {
+            html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container {
               height: calc(100% - 220px);
               padding: 10px; }
-              html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-inner-container {
+              html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-inner-container, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-inner-container {
                 margin: 10px;
                 height: 100%;
                 width: 100%;
                 overflow-y: scroll; }
-              html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-input {
+              html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-input, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-input {
                 width: 100%; }
-                html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-input textarea {
+                html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-input textarea, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-input textarea {
                   width: 100%;
                   border: 1px solid #EEE;
                   height: 30px; }
-                  html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-input textarea:focus, html body #browse-container > .row .browse-col.right-pane .profile-view-container .message-outer-container .message-input textarea:hover {
+                  html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-input textarea:focus, html body #browse-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-input textarea:hover, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-input textarea:focus, html body #messages-container .scroll-container .browse-col.right-pane .profile-view-container .chat-outer-container .chat-input textarea:hover {
                     border: 1px solid #666; }
-          html body #browse-container > .row .browse-col.right-pane .message-container {
+          html body #browse-container .scroll-container .browse-col.right-pane .chat-container, html body #messages-container .scroll-container .browse-col.right-pane .chat-container {
             height: calc(100% - 220px);
             float: left;
             position: relative;
             margin: 10px;
             border-left: 2px solid cyan;
             overflow-y: scroll; }
-        html body #browse-container > .row .browse-col .nav-browse {
-          height: 50px;
-          width: calc(100% - 20px);
-          left: 20px;
-          position: absolute;
-          background-color: white; }
-          html body #browse-container > .row .browse-col .nav-browse .search-box-outer {
-            border: 1px solid #DDD;
-            border-radius: 2px;
-            width: 100%; }
-            html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-icon {
-              position: absolute;
-              top: 0;
-              left: 0;
-              width: 24px;
-              height: 100%;
-              line-height: 40px;
-              vertical-align: middle;
-              font-size: 24px; }
-            html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-cat-select-col, html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-col {
-              width: auto;
-              float: left;
-              padding-left: 32px;
-              vertical-align: middle;
-              line-height: 40px;
-              background: transparent; }
-              html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-cat-select-col button, html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-col button {
-                background: transparent;
-                border: none;
-                color: #333; }
-            html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-col {
-              padding-left: 5px;
-              min-width: 200px;
-              width: calc(100% - 135px); }
-            html body #browse-container > .row .browse-col .nav-browse .search-box-outer .search-box-inner {
-              font-size: 24px;
-              border: none;
-              width: 100%;
-              height: 100%; }
-        html body #browse-container > .row .browse-col .browse-inner-container {
-          margin-top: 55px;
-          height: calc(100% - 55px);
-          overflow-y: scroll; }
-          html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container {
+        html body #browse-container .scroll-container .browse-col .browse-inner-container, html body #browse-container .scroll-container .browse-col .messages-inner-container, html body #messages-container .scroll-container .browse-col .browse-inner-container, html body #messages-container .scroll-container .browse-col .messages-inner-container {
+          margin-top: 0px;
+          height: 100%; }
+          html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container {
             float: left;
-            width: 320px;
-            height: 100px;
-            background: #f9f9f9;
-            padding: 5px 15px;
-            border: 1px solid transparent;
+            width: 360px;
+            height: 180px;
+            overflow: hidden;
+            padding: 5px 10px;
+            border: 1px solid #fafafa;
             border-radius: 2px;
             margin: 10px;
-            border-left: 5px solid red; }
-            html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container .col-xs-4 {
-              max-height: 80px;
+            border-left: 0px solid;
+            color: #666;
+            background: white;
+            background: -moz-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+            background: -webkit-gradient(left top, right bottom, color-stop(0%, white), color-stop(50%, #fcfcfc), color-stop(100%, #fcfcfc));
+            background: -webkit-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+            background: -o-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+            background: -ms-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+            background: linear-gradient(135deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fcfcfc', GradientType=1); }
+            html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container .col-xs-4, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container .col-xs-4, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container .col-xs-4, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container .col-xs-4, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container .col-xs-4, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container .col-xs-4, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container .col-xs-4, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container .col-xs-4 {
+              max-height: 100px;
               overflow-y: hidden; }
-              html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container .col-xs-4 img {
+              html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container .col-xs-4 img, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container .col-xs-4 img, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container .col-xs-4 img, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container .col-xs-4 img, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container .col-xs-4 img, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container .col-xs-4 img, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container .col-xs-4 img, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container .col-xs-4 img {
                 width: 100%; }
-            html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container.full-width {
-              width: 100%;
-              margin: 0px;
-              margin-bottom: 10px;
-              height: 140px; }
-              html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container.full-width .row {
+            html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container.full-width, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container.full-width, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container.full-width, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container.full-width, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container.full-width, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container.full-width, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container.full-width, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container.full-width {
+              margin: 0px auto;
+              margin-bottom: 10px; }
+              html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container.full-width .row, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container.full-width .row, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container.full-width .row, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container.full-width .row, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container.full-width .row, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container.full-width .row, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container.full-width .row, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container.full-width .row {
                 height: 100%; }
-                html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container.full-width .row > * {
+                html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container.full-width .row > *, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container.full-width .row > *, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container.full-width .row > *, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container.full-width .row > *, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container.full-width .row > *, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container.full-width .row > *, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container.full-width .row > *, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container.full-width .row > * {
                   padding-top: 0px;
                   padding-left: 5px;
                   max-height: 125px; }
-            html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container.online {
+            html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container.online, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container.online, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container.online, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container.online, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container.online, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container.online, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container.online, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container.online {
               border-left: 5px solid lightgreen; }
-            html body #browse-container > .row .browse-col .browse-inner-container .browse-sm-container h5 {
-              margin-bottom: 0px; }
-  html body #new-blog-post-container {
-    margin-top: 50px; }
-  html body #blog-posts-container {
-    margin-top: 50px; }
+            html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container:hover, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container:hover, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container:hover, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container:hover, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container:hover, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container:hover, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container:hover, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container:hover {
+              cursor: pointer; }
+            html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container .btn-message, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container .btn-message, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container .btn-message, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container .btn-message, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container .btn-message, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container .btn-message, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container .btn-message, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container .btn-message {
+              height: 50px;
+              border-top: 1px solid #999;
+              background-color: #FFF;
+              margin-top: 15px; }
+              html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container .btn-message i, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container .btn-message i, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container .btn-message i, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container .btn-message i, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container .btn-message i, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container .btn-message i, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container .btn-message i, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container .btn-message i {
+                margin-right: 10px; }
+            html body #browse-container .scroll-container .browse-col .browse-inner-container .browse-sm-container h5, html body #browse-container .scroll-container .browse-col .browse-inner-container .messages-sm-container h5, html body #browse-container .scroll-container .browse-col .messages-inner-container .browse-sm-container h5, html body #browse-container .scroll-container .browse-col .messages-inner-container .messages-sm-container h5, html body #messages-container .scroll-container .browse-col .browse-inner-container .browse-sm-container h5, html body #messages-container .scroll-container .browse-col .browse-inner-container .messages-sm-container h5, html body #messages-container .scroll-container .browse-col .messages-inner-container .browse-sm-container h5, html body #messages-container .scroll-container .browse-col .messages-inner-container .messages-sm-container h5 {
+              margin-top: 10px;
+              margin-bottom: 5px; }
+  html body #browse-container {
+    width: 100%;
+    padding: 0px;
+    height: calc(100% - 50px); }
+    html body #browse-container .scroll-container .content-container {
+      padding-top: 0px; }
+    html body #browse-container.shrink {
+      height: calc(100% - 350px) !important; }
+  html body #messages-container {
+    margin-top: 50px;
+    height: calc(100% - 50px); }
   html body #account-container .col-xs-12 .btn-save {
     margin-top: 10px; }
   html body #account-container .btn-save {

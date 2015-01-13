@@ -9,7 +9,15 @@ exports.socketHandler = function (allUsers) {
             socket.email = email;
             allUsers[email] = {online : true};
             socket.emit('user:init', allUsers);
-            socket.broadcast.emit('user:online', email);
+            socket.join(email);
+            User.findOne({email: email}, 'lastOnline', function(err, user) {
+                console.log(user);
+                user.lastOnline = Date.now();
+                user.save(function(err) {
+                    console.log(err);
+                    socket.broadcast.emit('user:online', email);
+                })
+            })
 
         });
 
@@ -25,22 +33,44 @@ exports.socketHandler = function (allUsers) {
         });
 
         socket.on("send:message", function(msg) {
-            if (msg.from && msg.to && msg.text !== '') {
+            if (msg.from && msg.to && msg.toEmail && msg.text !== '') {
                 var message = new Message({
                     from: msg.from,
                     to: msg.to,
                     text: msg.text
                 });
+
                 message.save(function(err) {
                     if (err) {
                         console.log(err);
                         socket.emit('error', 'An error occurred when saving this message');
                     } else {
-                        console.log(msg.to);
-                        socket.broadcast.to('' + msg.to).emit("send:message", message);
-                    }
+                        Room.findOne({_id: msg.to}, 'messages', function(err, room) {
+                            if (err) {
+                                console.log(err);
+                                socket.emit('error', 'An error occurred when saving this message');
+                            } else if (room) {
+                                room.messages.push(message._id);
+                                room.lastMessage = message.text;
 
-                })
+                                room.save(function(err) {
+                                    if (err) {
+                                        console.log(err);
+                                    } else {
+                                        socket.broadcast.to('' + msg.to).emit("send:message", message);
+                                        if (allUsers[msg.toEmail] && allUsers[msg.toEmail].online) {
+                                            socket.broadcast.to('' + msg.toEmail).emit("new:message");
+                                        }
+                                    }
+
+                                });
+                            } else {
+                                console.log('no room found');
+                            }
+                        });
+                    }
+                });
+
             } else {
                 socket.emit('error', 'An error occurred - required fields not met.');
             }
@@ -48,7 +78,8 @@ exports.socketHandler = function (allUsers) {
 
         socket.on("disconnect", function() {
 
-            allUsers[socket.email] = {online : false};
+            allUsers[socket.email] = {online : false, lastOnline: Date.now()};
+
             var temp = [];
             socket.broadcast.emit('user:offline', socket.email);
         });
