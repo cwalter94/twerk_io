@@ -79,15 +79,13 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
         })
 
 
-        .state('site.account', {
-            url: '/account',
-            abstract: true,
+        .state('site.profile', {
+            url: '/profile',
             templateUrl: '/partials/outer/account',
             controller: 'accountCtrl',
             resolve: {
-                user: ['$cookieStore', '$http',
-                    function($cookieStore, $http) {
-
+                user: ['$http',
+                    function($http) {
                         return $http.get('/api/userprofile/')
                             .then(function(response) {
                                 return response.data.user;
@@ -96,10 +94,6 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
                     }
                 ]
             }
-        })
-        .state('site.account.profile', {
-            url: '/profile',
-            templateUrl: '/partials/inner/account/basic'
         })
 
         
@@ -145,12 +139,8 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
         .state('site.messages.room', {
             url: '/{roomId}',
             templateUrl: '/partials/inner/messages/rightpane',
-            resolve: {
-                messages: ['$http', '$stateParams', function($http, $stateParams) {
-                   return $http.get('/api/messages/' + $stateParams.roomId).then(function(response) {
-                       return response.data.messages;
-                   })
-                }]
+            controller: function($scope) {
+                console.log($scope);
             }
         })
 
@@ -165,6 +155,15 @@ var app = angular.module('twerkApp', ['ui.utils','angular-loading-bar', 'ngAnima
                         return data;
                     })
                 }]
+            }
+        })
+        .state('site.browse.room', {
+            url: '/{roomId}',
+            templateUrl: '/partials/inner/messages/rightpane',
+            controller: function($scope) {
+                $http.get('/api/messages/' + $stateParams.roomId).then(function(response) {
+                    $scope.room = response.data.messages;
+                })
             }
         });
         
