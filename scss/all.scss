@@ -493,8 +493,11 @@ html {
 
     #browse-container, #messages-container {
 
-      width: 100%;
       height: 100%;
+
+      >.row {
+        height: 100%;
+      }
 
       .nav-browse, .nav-messages {
         height: 50px;
@@ -558,7 +561,6 @@ html {
       }
       .messages-col {
         height: 100%;
-        padding: 20px;
       }
 
       .scroll-container {
@@ -643,80 +645,13 @@ html {
 
 
 
-                  .profile-info-container {
-                    height: 75px;
-                    background: #E3819C;
 
-                    .img-col {
-                      width: 85px;
-
-
-                    }
-
-                    .name-col {
-                      color: white;
-                      display: inline-block;
-                      float: left;
-                      padding: 0px;
-                      width: calc(100% - 100px);
-
-                      .name {
-                        margin: 0px;
-                        padding: 0px;
-                      }
-                    }
-
-                    .status-col {
-                      display: none;
-                    }
-
-                    .remove {
-                      display: none;
-                    }
-
-
-
-                  }
 
                   &.online {
 
                     .profile-info-container {
                       background: #81B3E3;
 
-                    }
-
-                  }
-                  .chat-container {
-                    display: block;
-                    height: 305px;
-                    padding: 0px;
-                    padding-top: 0px;
-                    background: #dfdfdf;
-
-                    .chat-message-display-container {
-                      height: calc(100% - 42px);
-                      background: #fdfdfd;
-
-
-                    }
-
-                    .chat-input-container {
-                      height: 42px;
-                      border-top: 2px solid #666;
-                      width: 100%;
-                      background: #ededed;
-
-
-                      textarea {
-                        border: none;
-                        background: white;
-                        width: 100%;
-                        font-size: 12px;
-                        -webkit-box-shadow: none ;
-                        -moz-box-shadow: none ;
-                        box-shadow: none ;
-                        outline: none;
-                      }
                     }
 
                   }
@@ -761,6 +696,7 @@ html {
 
     }
 
+
     #browse-container {
       width: 100%;
       padding: 0px;
@@ -778,10 +714,98 @@ html {
 
     }
 
+
+
     #messages-container {
-      margin-top: 50px;
-      height: calc(100% - 50px);
+      padding-top: 50px;
+      height: 100%;
+
+
     }
+
+    #chat-container {
+      display: block;
+      height: 100%;
+      padding-top: 40px;
+      width: 100%;
+
+      .chat-profile-container {
+        height: 100px;
+        background: #E3819C;
+
+        .img-col {
+          padding: 5px;
+          height: 100%;
+
+          img {
+            height: 100%;
+          }
+
+        }
+
+        .name-col {
+          color: white;
+          float: left;
+          padding: 5px;
+
+          .name {
+            margin: 0px;
+            padding: 0px;
+          }
+        }
+
+        .status-col {
+          display: none;
+        }
+
+        .remove {
+          display: none;
+        }
+
+
+
+      }
+
+      .chat-message-display-container {
+        height: calc(100% - 192px);
+        background: #fdfdfd;
+
+
+      }
+
+      .chat-input-container {
+        height: 80px;
+        width: 100%;
+        background: #ebebeb;
+        padding: 15px;
+        padding-top: 12px;
+        border: 1px solid #ccc;
+
+
+        textarea {
+          border: 1px solid #ccc;
+          resize: none;
+          background: white;
+          font-size: 16px;
+          -webkit-box-shadow: none ;
+          -moz-box-shadow: none ;
+          box-shadow: none ;
+          outline: none;
+          padding: 5px;
+          height: 100%;
+          width: 100%;
+        }
+
+        .btn-send {
+          position: absolute;
+          right: 2px;
+          top: 8px;
+          color: #666;
+        }
+      }
+
+    }
+
 
     #account-container {
       .col-xs-12 {

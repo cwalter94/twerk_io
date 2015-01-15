@@ -181,7 +181,8 @@ app.get('/api/messages/:roomId', apiController.getMessages);
 app.get('/api/browse', apiController.getBrowse);
 app.get('/api/browse/:roomId', apiController.getBrowse);
 
-app.get('/api/rooms', apiController.getRooms)
+app.get('/api/rooms', apiController.getRooms);
+app.get('/api/rooms/:roomId', apiController.getMessages);
 
 app.get('/api/admin/allusers', apiController.adminAllUsers);
 app.post('/api/admin/saveuser', apiController.adminSaveUser);

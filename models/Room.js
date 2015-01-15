@@ -7,9 +7,10 @@ var roomSchema = new mongoose.Schema({
     title: {type: String, default: 'Default'},
     usersLength: {type: Number, default: 0},
     messagesLength: {type: Number, default: 0},
-    created: {type: Date, default: Date.now},
+    created: {type: Date, default: Date.now, required: true},
     lastMessage: {type: String, default: ''},
-    usersNames: {type: [String], default:''}
+    usersNames: {type: [String], default:''},
+    lastMessageCreatedAt: {type: Date, default: Date.now, required: true}
 });
 
 roomSchema.pre('save', function (next) {

@@ -1,8 +1,6 @@
 div.container#messages-container
     .row
-        .messages-col.col-lg-6
-            div.alert-warn.fade(flash-alert='error', active-class='in alert')
-                strong.alert-message {{flash.message}}
+        .messages-col.col-xs-5
             nav.nav-messages
                 .search-box-outer.row
                     input(type="hidden", name="selectedSearchCat", value="{{selectedSearchCat}}", ng-model="selectedSearchCat")
@@ -29,7 +27,7 @@ div.container#messages-container
 
 
 
-        .messages-col.right-pane(ng-class="{'col-lg-6 col-xs-12': (getUrl().indexOf('messages') > -1) && getUrl().length > 8}", ng-show="(getUrl().indexOf('messages') > -1) && getUrl().length > 8")
+        .messages-col.right-pane.col-xs-7
             .ui-view#messagesView
-                .jumbotron(style="width: 100%; height: 100%;")
+                .jumbotron(style="width: 100%; height: 100%; margin: 15px;")
                     h1 Nothing to display

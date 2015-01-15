@@ -59,13 +59,11 @@ exports.getBrowse = function(req, res) {
 
         if (req.query.start && req.query.limit && req.query.sortBy) {
             var temp = req.query.sortBy;
-            console.log(req.query);
             User.find({lastOnline : {"$lt" : req.query.start}})
                 .select(selectString)
                 .limit(req.query.limit)
                 .sort('-lastOnline')
                 .exec(function (err, users) {
-                    console.log(users);
                     if (err) {
                         console.log(err);
                         return res.status(401).end('An unknown error occurred. Please try again later.');
@@ -81,7 +79,6 @@ exports.getBrowse = function(req, res) {
                 .limit(20)
                 .sort('lastOnline')
                 .exec(function (err, users) {
-                    console.log(users);
                     if (err) {
                         console.log(err);
                         return res.status(401).end('An unknown error occurred. Please try again later.');
@@ -96,8 +93,8 @@ exports.getBrowse = function(req, res) {
 };
 
 exports.getRooms = function(req, res) {
-    console.log(req.query);
     if (req.query.toUserName && req.query.toUserId) {
+        console.log("TO USERNAME TO USERID");
         Room.findOne({users: {"$size" : 2}, users: req.user._id, users: req.params.toUserId}, 'usersNames messages', function(err, room) {
             if (err) {
                 console.log(err);
@@ -105,8 +102,14 @@ exports.getRooms = function(req, res) {
                 Message.find({id: {'$in' : room.messages}}, 'from text', '-time', function(err, messages) {
                     if (err) console.log(err);
                     if (messages.length > 0) {
-                        return res.json({token: req.token, room: room._id, messages: messages});
+                        var tempRoom = {
+                            _id: room._id,
+                            users: room.users,
+                            messages: messages
+                        };
+                        return res.json({token: req.token, room: tempRoom});
                     }
+                    return res.status(401).end('An unknown error occurred while finding messages');
                 });
             } else {
                 var newRoom = new Room({
@@ -118,19 +121,90 @@ exports.getRooms = function(req, res) {
                         console.log(err);
                         return res.json({token: req.token, room: null, messages: null});
                     }
-                    return res.json({token: req.token, room: newRoom._id, messages: []});
+                    return res.json({token: req.token, room: newRoom, messages: []});
+                });
+            }
+        });
+    } else if (req.query.roomId) {
+        Room.findOne({_id : req.query.roomId}, 'usersNames messages users', function(err, room) {
+            if (err) {
+                console.log(err);
+                return res.status(401).end('An error occurred while finding this chat.');
+            } else if (room) {
+                console.log("ROOM");
+                console.log(room);
+                User.find({_id : {"$in" : room.users}}, function(err, users) {
+                    var user = {};
+                    for (var i in users) {
+                        if (users[i]._id != req.user._id) {
+                            user = users[i];
+                        }
+                    }
+                    if (err) {
+                        console.log(err);
+                        return res.status(401).end('An error occurred while retrieving users for this chat.');
+                    }
+                    if (room.messages.length) {
+                        Message.find({_id: {'$in' : room.messages}}, 'from text', '-time', function(err, messages) {
+                            if (err) console.log(err);
+                            if (messages.length > 0) {
+                                var tempRoom = {
+                                    _id : room._id,
+                                    toUsers: [{
+                                        email: user.email,
+                                        name: user.name,
+                                        _id: user._id,
+                                        classes: user.classes,
+                                        status: user.status
+                                    }],
+                                    messages: messages
+                                };
+
+                                return res.json({token: req.token, room: tempRoom});
+                            }
+                            return res.status(401).end('An unknown error occurred while finding messages');
+                        });
+                    } else {
+                        var tempRoom = {
+                            _id : room._id,
+                            toUsers: [{
+                                email: user.email,
+                                name: user.name,
+                                _id: user._id,
+                                classes: user.classes,
+                                status: user.status
+                            }],
+                            messages: []
+                        };
+
+                        return res.json({token: req.token, room: tempRoom});
+                    }
+
+
+                })
+
+            } else {
+                var newRoom = new Room({
+                    users: [req.user._id, req.query.toUserId],
+                    usersNames: [req.user.name, req.query.toUserName]
+                });
+                newRoom.save(function(err) {
+                    if (err) {
+                        console.log(err);
+                        return res.json({token: req.token, room: null, messages: null});
+                    }
+                    return res.json({token: req.token, room: newRoom, messages: []});
                 });
             }
         });
     } else {
         Room.find({users: req.user._id, messages: {"$not" : {"$size" : 0}}}, 'id lastMessage users usersNames', function(err, rooms) {
             if (err) return res.status(401).end('An unknown error occurred. Please try again later.');
-            console.log(rooms);
             return res.json({token: req.token, rooms: rooms})
         });
 
     }
-}
+};
 
 exports.adminAllUsers = function(req, res) {
     if (req.user && req.user.roles && req.user.roles.indexOf('Admin') > -1) {
@@ -420,7 +494,6 @@ exports.getMessages = function(req, res, next) {
                 console.log(err);
             } else {
                 Message.find({id: {'$in' : room.messages}}, 'from text', '-time', function(err, messages) {
-                    console.log(messages);
                     if (err) console.log(err);
                     if (messages.length > 0) {
                         return res.json({token: req.token, room: room._id, messages: messages});
