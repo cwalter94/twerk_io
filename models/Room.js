@@ -10,7 +10,7 @@ var roomSchema = new mongoose.Schema({
     created: {type: Date, default: Date.now, required: true},
     lastMessage: {type: String, default: ''},
     usersNames: {type: [String], default:''},
-    lastMessageCreatedAt: {type: Date, default: Date.now, required: true}
+    lastMessageCreated: {type: Date, default: Date.now, required: true}
 });
 
 roomSchema.pre('save', function (next) {

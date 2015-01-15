@@ -22,7 +22,18 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     function (authorization) {
                         return authorization.authorize();
                     }
-                ]
+                ],
+                siteSocket: ['socket', function(socket) {
+                    return socket.getSocket().then(function(s) {
+                        return s;
+                    })
+                }],
+                me: ['principal', function (principal) {
+                    return principal.identity().then(function (identity) {
+                        return identity;
+                    })
+                }]
+
             }
         })
             .state('site.home', {
@@ -127,11 +138,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 templateUrl: '/partials/inner/messages/room',
                 controller: 'roomCtrl',
                 resolve: {
-                    me: ['principal', function (principal) {
-                        return principal.identity().then(function (identity) {
-                            return identity;
-                        })
-                    }],
+
                     toUser: ['messageFactory', '$stateParams', function(messageFactory, $stateParams) {
                         return messageFactory.getToUsers($stateParams.roomId)
                             .then(function(toUsers) {
@@ -145,14 +152,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             .state('site.browse', {
                 url: '/browse',
                 templateUrl: '/partials/outer/browse',
-                controller: 'browseCtrl',
-                resolve: {
-                    me: ['principal', function (principal) {
-                        return principal.identity().then(function (data) {
-                            return data;
-                        })
-                    }]
-                }
+                controller: 'browseCtrl'
             });
 
 
@@ -377,27 +377,42 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             }
         };
     })
-    .factory('socket', function (socketFactory, $cookieStore, principal) {
-        if ($cookieStore.get('jwt')) {
+    .factory('socket', function ($q, socketFactory, $cookieStore) {
+        var _mySocket = null;
 
-            var authSocket = io.connect('', {
-                query: 'token=' + $cookieStore.get('jwt'),
-            });
+        return {
 
-            mySocket = socketFactory({
-                ioSocket: authSocket
-            });
+            getSocket: function() {
+                var deferred = $q.defer();
 
-            return mySocket;
+                if (_mySocket != null) {
+                    deferred.resolve(_mySocket);
+                }
+                else if ($cookieStore.get('jwt')) {
 
-        } else {
-            console.log("Socket auth failed.");
-            return {};
+                    var authSocket = io.connect('', {
+                        query: 'token=' + $cookieStore.get('jwt')
+                    });
+
+                    _mySocket = socketFactory({
+                        ioSocket: authSocket
+                    });
+
+                    deferred.resolve(_mySocket);
+
+                } else {
+                    deferred.reject("Socket auth failed");
+                }
+                return deferred.promise;
+            }
         }
+
     })
     .factory('messageFactory', function($http, $q) {
-        var room = {};
-        var toUsers = null;
+        var _room = {};
+        var _toUsers = null;
+        var _allRooms = [];
+        var _userInfo = {};
 
         return {
             setRoom: function(room) {
@@ -406,7 +421,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             getRoom: function(userOrRoomId) {
                 var deferred = $q.defer();
 
-                console.log(userOrRoomId);
                 if (typeof userOrRoomId == "object") {
                     var user = userOrRoomId;
 
@@ -418,9 +432,9 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             toUserId: user._id
                         }
                     }).then(function(room) {
-                        this.room = room;
-                        this.toUsers = [user];
-                        deferred.resolve(this.room);
+                        _room = room;
+                        _toUsers = [user];
+                        deferred.resolve(_room);
                     });
 
                     return deferred.promise;
@@ -428,9 +442,8 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                 } else {
                     var roomId = userOrRoomId;
-                    console.log(roomId);
-                    if (this.room && roomId === this.room._id) {
-                        deferred.resolve(this.room);
+                    if (_room && roomId === _room.id) {
+                        deferred.resolve(_room);
                     } else {
                         $http({
                             url: '/api/rooms',
@@ -440,32 +453,72 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             }
                         }).then(function(response) {
                             console.log(response);
-                            this.room = response.data.room;
-                            deferred.resolve(this.room);
+                            _room = response.data.room;
+                            deferred.resolve(_room);
                         });
                     }
                     return deferred.promise;
 
                 }
-
-
             },
             setToUsers: function(users) {
-                this.toUsers = angular.copy(users);
+                _toUsers = angular.copy(users);
             },
             getToUsers: function(roomId) {
                 var deferred = $q.defer();
 
-                if (this.toUsers != null) {
-                    console.log("THIS TO USERS != NULL");
-                    deferred.resolve(this.toUsers);
+                if (_toUsers != null) {
+                    deferred.resolve(_toUsers);
                 } else {
                     this.getRoom(roomId).then(function(room) {
                         console.log(room);
-                        this.toUsers = room.toUsers;
-                        deferred.resolve(this.toUsers);
+                        _room = room;
+                        _toUsers = room.toUsers;
+                        deferred.resolve(_toUsers);
                     })
                 }
+                return deferred.promise;
+            },
+            getAllRooms : function(me) {
+                var deferred = $q.defer();
+
+                $http({
+                    url: '/api/rooms',
+                    method: 'GET'
+                }).then(function(response) {
+                    _allRooms = response.data.rooms;
+                    deferred.resolve(_allRooms);
+                });
+                return deferred.promise;
+
+            },
+            getUserInfo: function(userIds) {
+                var deferred = $q.defer();
+                var temp = [];
+                for (var u in userIds) {
+                    if (!_userInfo[userIds[u]] && temp.indexOf(userIds[u]) == -1) {
+                        temp.push(userIds[u]);
+                    }
+                }
+                if (temp.length) {
+                    $http({
+                        url: '/api/user/info',
+                        method: 'GET',
+                        params: {
+                            users: temp
+                        }
+                    }).then(function(response) {
+                        for (var u in response.data.users) {
+                            var user = response.data.users[u];
+                            user.picture = user.picture != '' ? user.picture : '/img/generic_avatar.gif';
+                            _userInfo[user._id] = user;
+                        }
+                        deferred.resolve(_userInfo);
+                    });
+                } else {
+                    deferred.resolve(_userInfo);
+                }
+
                 return deferred.promise;
             }
         }

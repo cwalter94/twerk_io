@@ -171,6 +171,7 @@ app.post('/register', apiController.register);
 app.get('/verify/:code', apiController.verifyEmail);
 
 app.get('/api/user', apiController.getUser);
+app.get('/api/user/info', apiController.getUserInfo);
 app.get('/api/userprofile', apiController.getUserProfile);
 app.post('/api/userprofile', apiController.postUserProfile);
 app.post('/api/userpicture', apiController.postUserPicture);

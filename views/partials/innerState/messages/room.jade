@@ -1,17 +1,17 @@
 .container.content-container#chat-container
     .chat-profile-container.offline
         i(ng-show="toUser.online").glyphicon.glyphicon-comment
-        .col-xs-2.img-col
+        .col-md-2.col-xs-3.img-col
             img(once-src="toUser.picture || '/img/generic_avatar.gif'")
-        .col-xs-10.name-col
+        .col-md-10.col-xs-9.name-col
             .text-left
                 h5.name(once-text="toUser.name")
             .text-left(once-text="toUser.classesString")
             .text-left {{toUser.status || 'No status to display.'}}
     .chat-message-display-container
-        .chat-message(ng-repeat="m in messages")
-            .chat-date(once-text="m.createdAt")
-            .chat-text(once-text="m.text")
+        .chat-message(ng-repeat="m in room.messages")
+            strong.chat-date(once-text="formatDate(m.created).time", once-class="{'text-right' : m.from == me.id}")
+            .chat-text(once-text="m.text", once-class="{'text-right' : m.from == me.id}")
     .chat-input-container
         .row
             .col-xs-11

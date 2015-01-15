@@ -1,4 +1,4 @@
-var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, flash, $state, $stateParams, socket, me, messageFactory, toUser) {
+var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, flash, $state, $stateParams, siteSocket, me, messageFactory, toUser) {
 
     $scope.search = "";
 
@@ -7,7 +7,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     $scope.toUser.classesString = $scope.toUser.classes.length ? $scope.toUser.classes.join(', ') : "No classes.";
     $scope.me = me;
 
-    $scope.socket = socket;
+    $scope.siteSocket = siteSocket;
     $scope.room = null;
 
     $scope.selectedSearchCat = 'Name';
@@ -16,23 +16,35 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
         return $location.path();
     };
 
-    $scope.messages = {};
+    messageFactory.getRoom($scope.roomId).then(function(room) {
+        $scope.room = room;
+        console.log($scope.room);
+    });
 
-    $scope.message = {rows: 1, from: $scope.me._id, to: $scope.roomId, toEmail: $scope.toUser.email};
+    $scope.message = {rows: 1, from: $scope.me.id, to: $scope.roomId, toEmail: $scope.toUser.email};
     $scope.searchFocus = true;
 
     $scope.searchCats = ['Name', 'Email', 'Major', 'Minor', 'Status', 'Classes'];
 
 
+    $scope.formatDate = function(dateString) {
+        var date = new Date(dateString);
 
+        return {
+            year : date.getFullYear(),
+            month: date.getMonth() + 1,
+            day: date.getDate(),
+            time: date.getHours() + ":" + date.getMinutes()
+        }
+    };
 
-    socket.on('user:offline', function(email) {
+    siteSocket.on('user:offline', function(email) {
         if (email == $scope.toUser.email) {
             $scope.toUser.online = false;
         }
     });
 
-    socket.on('user:online', function(email) {
+    siteSocket.on('user:online', function(email) {
         if (email == $scope.toUser.email) {
             $scope.toUser.online = false;
         }
@@ -41,35 +53,25 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
 
 
     $scope.sendMessage = function() {
-        console.log($scope.message);
         if ($scope.message.to && $scope.message.from && $scope.message.text && $scope.message.toEmail) {
-
-            socket.emit('send:message', $scope.message);
-            if ($scope.messages[$scope.message.to]) {
-                $scope.messages[$scope.message.to].push($scope.message);
-            } else {
-                $scope.messages[$scope.message.to] = [];
-                $scope.messages[$scope.message.to].push($scope.message);
-            }
-            $scope.message = {toEmail: $scope.message.toEmail, rows: 1, from: $scope.me.id, to: $scope.room};
+            $scope.message.created = Date.now();
+            siteSocket.emit('send:message', $scope.message);
+            $scope.room.messages.push($scope.message);
+            $scope.message = {toEmail: $scope.message.toEmail, rows: 1, from: $scope.me.id, to: $scope.roomId};
 
         } else if ($scope.message.text) {
             flash.error = 'An unknown error occurred. Please try again later.';
         }
     };
 
-    socket.on('send:message', function(message) {
+    siteSocket.on('send:message', function(message) {
+
         if ($scope.room != message.to) {
             $scope.$parent.newMessages += 1;
+        } else {
+            $scope.room.messages.push(message);
         }
 
-        if ($scope.messages[message.to]) {
-            $scope.messages[message.to].push(message);
-        } else {
-            $scope.messages[message.to] = [];
-            $scope.messages[message.to].push(message);
-        }
-        $scope.message = {rows: 1, from: $scope.me.id, to: $scope.room};
     });
 
 });

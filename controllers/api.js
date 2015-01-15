@@ -26,6 +26,7 @@ var Mailgun = require('mailgun-js');
 AWS.config.loadFromPath('./config/aws.json');
 var Room = require('../models/Room');
 var Message = require('../models/Message');
+var mongoose = require('mongoose');
 /**
  * GET /api
  * List of API examples.
@@ -94,12 +95,11 @@ exports.getBrowse = function(req, res) {
 
 exports.getRooms = function(req, res) {
     if (req.query.toUserName && req.query.toUserId) {
-        console.log("TO USERNAME TO USERID");
         Room.findOne({users: {"$size" : 2}, users: req.user._id, users: req.params.toUserId}, 'usersNames messages', function(err, room) {
             if (err) {
                 console.log(err);
             } else if (room) {
-                Message.find({id: {'$in' : room.messages}}, 'from text', '-time', function(err, messages) {
+                Message.find({_id: {'$in' : room.messages}}).select('from text created').sort('-time').exec(function(err, messages) {
                     if (err) console.log(err);
                     if (messages.length > 0) {
                         var tempRoom = {
@@ -113,7 +113,7 @@ exports.getRooms = function(req, res) {
                 });
             } else {
                 var newRoom = new Room({
-                    users: [req.user._id, req.query.toUserId],
+                    users: [req.user._id, mongoose.Types.ObjectId(req.query.toUserId)],
                     usersNames: [req.user.name, req.query.toUserName]
                 });
                 newRoom.save(function(err) {
@@ -131,8 +131,6 @@ exports.getRooms = function(req, res) {
                 console.log(err);
                 return res.status(401).end('An error occurred while finding this chat.');
             } else if (room) {
-                console.log("ROOM");
-                console.log(room);
                 User.find({_id : {"$in" : room.users}}, function(err, users) {
                     var user = {};
                     for (var i in users) {
@@ -144,9 +142,10 @@ exports.getRooms = function(req, res) {
                         console.log(err);
                         return res.status(401).end('An error occurred while retrieving users for this chat.');
                     }
-                    if (room.messages.length) {
-                        Message.find({_id: {'$in' : room.messages}}, 'from text', '-time', function(err, messages) {
+                    if (room.messages.length > 0) {
+                        Message.find({_id: {'$in' : room.messages}}).select('from text created').sort('-time').exec(function(err, messages) {
                             if (err) console.log(err);
+                            console.log(messages);
                             if (messages.length > 0) {
                                 var tempRoom = {
                                     _id : room._id,
@@ -185,7 +184,7 @@ exports.getRooms = function(req, res) {
 
             } else {
                 var newRoom = new Room({
-                    users: [req.user._id, req.query.toUserId],
+                    users: [req.user._id, mongoose.Types.ObjectId(req.query.toUserId)],
                     usersNames: [req.user.name, req.query.toUserName]
                 });
                 newRoom.save(function(err) {
@@ -198,11 +197,25 @@ exports.getRooms = function(req, res) {
             }
         });
     } else {
-        Room.find({users: req.user._id, messages: {"$not" : {"$size" : 0}}}, 'id lastMessage users usersNames', function(err, rooms) {
+        Room.find({users: req.user._id, messages: {"$not" : {"$size" : 0}}}, 'id lastMessage lastMessageCreated users usersNames', function(err, rooms) {
             if (err) return res.status(401).end('An unknown error occurred. Please try again later.');
-            return res.json({token: req.token, rooms: rooms})
+
+
+            return res.json({token: req.token, rooms: rooms});
+
+
         });
 
+    }
+};
+
+exports.getUserInfo = function(req, res) {
+    if (req.query.users) {
+        User.find({_id : {"$in" : req.query.users}}).select('_id picture name email status classes').exec(function(err, users) {
+            return res.json({token: req.token, users: users});
+        })
+    } else {
+        return res.status(401).end('An error occurred while fetching user pictures');
     }
 };
 

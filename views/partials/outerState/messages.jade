@@ -2,28 +2,21 @@ div.container#messages-container
     .row
         .messages-col.col-xs-5
             nav.nav-messages
-                .search-box-outer.row
-                    input(type="hidden", name="selectedSearchCat", value="{{selectedSearchCat}}", ng-model="selectedSearchCat")
+                .search-box-outer
                     i.fa.fa-search.search-icon
-                    .search-cat-select-col
-                        button.btn.btn-default(type='button', ng-model='selectedSearchCat',
-                        data-html='1', ng-options='searchCat as searchCat for searchCat in searchCats',
-                        bs-select='')
-                            span.caret
-                    .search-col
-                        input.search-box-inner(ng-model="search", ng-focus="searchFocus")
-
+                    input.search-box-inner(ng-model="search", ng-focus="searchFocus")
+            .clearfix
 
             .messages-inner-container
-                a.messages-sm-container.full-width(ng-repeat="room in rooms")
-                    .row
-                        .col-xs-4
-                            img(src="{{user.picture || '/img/generic_avatar.gif'}}")
-                        .col-xs-8
-                            h5.text-left {{user.name || 'Unknown Name'}}
-                            .text-left {{user.status}}
-                            .text-left {{(user.pledgeclassSeason && user.pledgeclassYear) ? user.pledgeclassSeason + ' ' + user.pledgeclassYear : 'Unknown pledge class'}}
-                            .text-left {{user.major ? user.major : 'Unknown major' }}
+                a.messages-sm-container(ng-repeat="room in rooms", ng-click="goToRoom(room._id, userInfo[room.toUser])")
+                    i(ng-show="room.online").glyphicon.glyphicon-comment
+                    .col-md-2.col-xs-3.img-col
+                        img(once-src="userInfo[room.toUser].picture")
+                    .col-md-10.col-xs-9.name-col
+                        .text-left
+                            h5.name(once-text="userInfo[room.toUser].name")
+                        .last-message-col.text-left
+                            | {{room.lastMessage}}
 
 
 

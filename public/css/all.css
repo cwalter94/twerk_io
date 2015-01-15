@@ -308,7 +308,8 @@ html body {
         border: 1px solid #DDD;
         border-radius: 2px;
         background: #fff;
-        width: 100%; }
+        width: 100%;
+        height: 100%; }
         html body #browse-container .nav-browse .search-box-outer .search-icon, html body #browse-container .nav-messages .search-box-outer .search-icon, html body #messages-container .nav-browse .search-box-outer .search-icon, html body #messages-container .nav-messages .search-box-outer .search-icon {
           position: absolute;
           top: 0;
@@ -397,10 +398,8 @@ html body {
             display: none; }
           html body #browse-container .scroll-container .browse-inner-container .browse-sm-container.message-sm-container, html body #browse-container .scroll-container .messages-inner-container .browse-sm-container.message-sm-container, html body #messages-container .scroll-container .browse-inner-container .browse-sm-container.message-sm-container, html body #messages-container .scroll-container .messages-inner-container .browse-sm-container.message-sm-container {
             height: 380px; }
-            html body #browse-container .scroll-container .browse-inner-container .browse-sm-container.message-sm-container.online .profile-info-container, html body #browse-container .scroll-container .messages-inner-container .browse-sm-container.message-sm-container.online .profile-info-container, html body #messages-container .scroll-container .browse-inner-container .browse-sm-container.message-sm-container.online .profile-info-container, html body #messages-container .scroll-container .messages-inner-container .browse-sm-container.message-sm-container.online .profile-info-container {
-              background: #81B3E3; }
-          html body #browse-container .scroll-container .browse-inner-container .browse-sm-container.online, html body #browse-container .scroll-container .messages-inner-container .browse-sm-container.online, html body #messages-container .scroll-container .browse-inner-container .browse-sm-container.online, html body #messages-container .scroll-container .messages-inner-container .browse-sm-container.online {
-            border-left: 5px solid lightgreen; }
+          html body #browse-container .scroll-container .browse-inner-container .browse-sm-container.online .profile-info-container, html body #browse-container .scroll-container .messages-inner-container .browse-sm-container.online .profile-info-container, html body #messages-container .scroll-container .browse-inner-container .browse-sm-container.online .profile-info-container, html body #messages-container .scroll-container .messages-inner-container .browse-sm-container.online .profile-info-container {
+            background: #81B3E3; }
           html body #browse-container .scroll-container .browse-inner-container .browse-sm-container:hover, html body #browse-container .scroll-container .messages-inner-container .browse-sm-container:hover, html body #messages-container .scroll-container .browse-inner-container .browse-sm-container:hover, html body #messages-container .scroll-container .messages-inner-container .browse-sm-container:hover {
             cursor: pointer; }
           html body #browse-container .scroll-container .browse-inner-container .browse-sm-container .btn-message, html body #browse-container .scroll-container .messages-inner-container .browse-sm-container .btn-message, html body #messages-container .scroll-container .browse-inner-container .browse-sm-container .btn-message, html body #messages-container .scroll-container .messages-inner-container .browse-sm-container .btn-message {
@@ -418,12 +417,48 @@ html body {
     padding: 0px;
     height: calc(100% - 50px); }
     html body #browse-container .scroll-container .content-container {
-      padding-top: 0px; }
+      padding-top: 0px;
+      overflow: auto; }
     html body #browse-container.shrink {
       height: calc(100% - 350px) !important; }
   html body #messages-container {
     padding-top: 50px;
-    height: 100%; }
+    height: calc(100% - 50px); }
+    html body #messages-container .nav-messages {
+      width: 100%;
+      left: 0px;
+      position: relative;
+      display: block; }
+      html body #messages-container .nav-messages .search-box-outer .search-icon {
+        position: absolute;
+        top: 3px;
+        left: 0;
+        width: 50px;
+        text-align: center; }
+      html body #messages-container .nav-messages .search-box-outer .search-box-inner {
+        width: 100%;
+        padding: 5px;
+        padding-left: 50px; }
+    html body #messages-container .messages-inner-container {
+      height: 100%;
+      padding-top: 40px;
+      width: 100%; }
+      html body #messages-container .messages-inner-container .messages-sm-container {
+        width: 100%;
+        height: 75px;
+        float: left;
+        text-effect: none; }
+        html body #messages-container .messages-inner-container .messages-sm-container :hover * {
+          text-effect: none; }
+        html body #messages-container .messages-inner-container .messages-sm-container .name-col {
+          padding: 10px;
+          padding-left: 20px; }
+          html body #messages-container .messages-inner-container .messages-sm-container .name-col .name {
+            margin-bottom: 0px; }
+        html body #messages-container .messages-inner-container .messages-sm-container .img-col {
+          height: 60px; }
+          html body #messages-container .messages-inner-container .messages-sm-container .img-col img {
+            height: 100%; }
   html body #chat-container {
     display: block;
     height: 100%;
@@ -431,7 +466,7 @@ html body {
     width: 100%; }
     html body #chat-container .chat-profile-container {
       height: 100px;
-      background: #E3819C; }
+      background: #a27ebc; }
       html body #chat-container .chat-profile-container .img-col {
         padding: 5px;
         height: 100%; }
@@ -450,7 +485,15 @@ html body {
         display: none; }
     html body #chat-container .chat-message-display-container {
       height: calc(100% - 192px);
-      background: #fdfdfd; }
+      background: #fdfdfd;
+      overflow-y: scroll; }
+      html body #chat-container .chat-message-display-container .chat-message {
+        padding: 5px; }
+        html body #chat-container .chat-message-display-container .chat-message .chat-date {
+          display: block;
+          font-size: 12px; }
+        html body #chat-container .chat-message-display-container .chat-message .chat-text {
+          display: block; }
     html body #chat-container .chat-input-container {
       height: 80px;
       width: 100%;
