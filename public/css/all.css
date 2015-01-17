@@ -530,6 +530,9 @@ html body {
         color: #666; }
   html body #account-container .col-xs-12 .btn-save {
     margin-top: 10px; }
+  html body #account-container textarea {
+    margin: 0px 15px;
+    resize: none; }
   html body #account-container .btn-save {
     -webkit-transition: all .5s;
     -moz-transition: all .5s;

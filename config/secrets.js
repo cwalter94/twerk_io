@@ -22,6 +22,11 @@ module.exports = {
     jwt: process.env.JWT_SECRET || 'Kanye west is the best rapper alive.',
     admin_pw: process.env.ADMIN_PW || 'adminpasswordchangethis',
     sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
+    berkeley: {
+        appId: '2e2a3e6e',
+        url: 'https://apis-dev.berkeley.edu/cxf/asws/course?termYear=2015&term=Spring&_type=json',
+        appKey: '2c132785f8434f0e6b3a49c28895645f'
+    },
 
     mailgun: {
         user: process.env.MAILGUN_USER || 'admin@twerk.io',

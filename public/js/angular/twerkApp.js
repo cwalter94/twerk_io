@@ -370,6 +370,9 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     return deferred.promise;
 
                 },
+                updateIdentity: function (newIdentity) {
+                  _identity = newIdentity;
+                },
                 login: function (credentials) {
                     var deferred = $q.defer();
 
@@ -476,7 +479,8 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
     .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
         return {
             request: function (config) {
-                if (config.url.indexOf('http://maps.googleapis.com/maps/api/geocode/json?') > -1) return config;
+                if (config.url.indexOf('http://maps.googleapis.com/maps/api/geocode/json?') > -1
+                || config.url.indexOf('apis-dev.berkeley.edu') > -1) return config;
 
                 config.headers = config.headers || {};
 
@@ -668,6 +672,33 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             return results;
         }
     })
+    .filter('classFilter', function () {
+        return function (classes, search) {
+            if (search == null) return classes;
+            var results = [];
+            for (var c in classes) {
+                var tempClass = classes[c];
+                // no UID = class was added manually - necessary to see saved classes
+                if (!tempClass['classUID']) {
+                    results.push(tempClass);
+                } else {
+                    var classString = (tempClass.departmentCode + ' ' + tempClass.courseNumber).toLowerCase();
+                    var regExp = /([^\d\s]+)\s*(\d{1,3}\D{0,2})/;
+                    var match = regExp.exec(search);
+                    if (match) {
+                        if ((match[1] == 'CS' || classString.indexOf(match[1].toLowerCase()) > -1) && classString.indexOf(match[2].toLowerCase()) > -1) {
+
+                            results.push(tempClass);
+                        }
+                    }
+                }
+
+
+            }
+            return results;
+        }
+    })
+
     .run(['$rootScope', '$state', '$stateParams', 'authorization', 'principal', 'editableOptions',
         function ($rootScope, $state, $stateParams, authorization, principal, editableOptions) {
             editableOptions.theme = 'bs3';

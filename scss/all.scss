@@ -890,6 +890,12 @@ html {
         }
       }
 
+      textarea {
+        margin: 0px 15px;
+        resize: none;
+
+      }
+
       .btn-save {
         -webkit-transition: all .5s;
         -moz-transition: all .5s;

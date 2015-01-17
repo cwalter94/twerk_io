@@ -40,7 +40,7 @@ exports.getApi = function(req, res) {
 
 exports.getUser = function(req, res) {
     if (req.user && req.user.email) {
-        User.findOne({email: req.user.email}, 'email name roles classes major minor verified', function (err, user) {
+        User.findOne({email: req.user.email}, 'email name status statusCreated roles classes major minor verified', function (err, user) {
 
             if (err) {
                 console.log(err);
@@ -300,7 +300,7 @@ exports.authenticate = function(req, res, next) {
         return res.status(401).end('An error occurred during login. Please verify your credentials and try again.');
     }
 
-    User.findOne({email: email}, 'email classes verified major minor', function (err, user) {
+    User.findOne({email: email}, 'email name status classes verified major minor', function (err, user) {
 
         if (err) {
             console.log(err);
@@ -414,10 +414,14 @@ exports.postUserProfile = function(req, res, next) {
 
         user.email = userUpdate.email || user.email;
         user.status = userUpdate.status || user.status;
+        if (user.status == userUpdate.status) {
+            user.statusCreated = Date.now();
+        }
         user.name = userUpdate.name || user.name;
         user.major = userUpdate.major || user.major;
         user.minor = userUpdate.minor || user.minor;
         user.roles = userUpdate.roles || user.roles;
+        user.classes = userUpdate.classes || user.classes;
 
         user.save(function (err) {
             if (err) return res.status(401).end('An error occurred. Please try again later.');
