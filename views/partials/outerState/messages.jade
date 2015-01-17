@@ -1,22 +1,23 @@
 div.container#messages-container
     .row
         .messages-col.col-xs-5
-            nav.nav-messages
-                .search-box-outer
-                    i.fa.fa-search.search-icon
-                    input.search-box-inner(ng-model="search", ng-focus="searchFocus")
-            .clearfix
+            .messages-outer-container
+                nav.nav-messages
+                    .search-box-outer
+                        i.fa.fa-search.search-icon
+                        input.search-box-inner(ng-model="search", ng-focus="searchFocus")
+                .clearfix
 
-            .messages-inner-container
-                a.messages-sm-container(ng-repeat="room in rooms", ng-click="goToRoom(room._id, userInfo[room.toUser])")
-                    i(ng-show="room.online").glyphicon.glyphicon-comment
-                    .col-md-2.col-xs-3.img-col
-                        img(once-src="userInfo[room.toUser].picture")
-                    .col-md-10.col-xs-9.name-col
-                        .text-left
-                            h5.name(once-text="userInfo[room.toUser].name")
-                        .last-message-col.text-left
-                            | {{room.lastMessage}}
+                .messages-inner-container
+                    a.messages-sm-container(ng-repeat="room in rooms", ng-click="goToRoom(room._id, userInfo[room.toUser])")
+                        i(ng-show="room.online").glyphicon.glyphicon-comment
+                        .col-md-2.col-xs-3.img-col
+                            img(once-src="userInfo[room.toUser].picture")
+                        .col-md-10.col-xs-9.name-col
+                            .text-left
+                                h5.name(once-text="userInfo[room.toUser].name")
+                            .last-message-col.text-left
+                                | {{room.lastMessage}}
 
 
 

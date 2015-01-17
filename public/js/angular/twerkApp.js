@@ -10,7 +10,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         $httpProvider.interceptors.push('authInterceptor');
         flashProvider.errorClassnames.push('alert-danger');
         flashProvider.successClassnames.push('alert-success');
-        cfpLoadingBarProvider.latencyThreshold = 0;
+        cfpLoadingBarProvider.latencyThreshold = 50;
 
         $stateProvider.state('site', {
             abstract: true,
@@ -18,22 +18,13 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             controller: 'siteCtrl',
             url: '',
             resolve: {
-                authorize: ['authorization',
-                    function (authorization) {
-                        return authorization.authorize();
-                    }
-                ],
                 siteSocket: ['socket', function(socket) {
                     return socket.getSocket().then(function(s) {
                         return s;
-                    })
-                }],
-                me: ['principal', function (principal) {
-                    return principal.identity().then(function (identity) {
-                        return identity;
+                    }, function(err) {
+                        return null;
                     })
                 }]
-
             }
         })
             .state('site.home', {
@@ -55,6 +46,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 templateUrl: '/partials/outer/login',
                 controller: 'loginCtrl'
             })
+
 
             .state('site.home.register', {
                 url: 'register',
@@ -79,41 +71,121 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 templateUrl: '/partials/inner/register/form-repassword'
             })
 
-            .state('site.home.verify', {
-                url: 'verify',
-                templateUrl: '/partials/outer/verify'
+
+
+
+            .state('site.auth', {
+                abstract: true,
+                templateUrl: '/partials/outer/auth',
+                resolve: {
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                               return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
+                        }
+                    ]
+                },
+                controller: function($scope, $state) {
+
+                }
+            })
+            .state('site.auth.verify', {
+                url: '/verify',
+                templateUrl: '/partials/outer/verify',
+                resolve: {
+                    sendEmailFn: ['$http', 'flash', function($http, flash) {
+                        return function() {
+                            $http.get('api/verify/send')
+                                .success(function (data) {
+                                    flash.success = 'An email was sent to '  + data.email + '.';
+                                })
+                                .error(function (err) {
+                                    flash.error = err;
+                                });
+                        }
+
+                    }],
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
+                        }
+
+
+                    ]
+
+                },
+                controller: function($scope, $http, flash, sendEmailFn) {
+                    $scope.sendEmail = sendEmailFn;
+
+                }
+            })
+            .state('site.auth.verify.confirm', {
+                url: '/:code',
+                templateUrl: '/partials/outer/verifyconfirm',
+                resolve: {
+                    verified: ['$http', 'principal', '$stateParams', function($http, principal, $stateParams) {
+
+                        return $http({
+                            url: '/api/verify/confirm',
+                            method: 'GET',
+                            params: {
+                                code: $stateParams.code
+                            }
+                        }).then(function(response) {
+                                return principal.identity().then(function (identity) {
+                                    principal.verifyIdentity(identity);
+                                    return true;
+                                });
+                            }
+                            , function(err) {
+                                console.log(err);
+                                return false;
+                            })
+                    }]
+
+                },
+                controller: function($scope, verified, sendEmailFn) {
+                    $scope.verified = verified;
+                    $scope.sendEmail = sendEmailFn;
+                }
             })
 
-            .state('site.home.checkVerification', {
-                url: 'verify/:code',
-                templateUrl: '/partials/outer/checkVerification'
-            })
-
-
-            .state('site.profile', {
+            .state('site.auth.profile', {
                 url: '/profile',
-                templateUrl: '/partials/outer/account',
+                templateUrl: '/partials/outer/profile',
                 controller: 'accountCtrl',
                 resolve: {
-                    user: ['$http',
-                        function ($http) {
-                            return $http.get('/api/userprofile/')
-                                .then(function (response) {
-                                    return response.data.user;
-                                });
-
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                if (!identity.verified) {
+                                    $state.transitionTo('site.auth.verify');
+                                }
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
                         }
+
+
                     ]
                 }
             })
 
 
-            .state('site.dashboard', {
+            .state('site.auth.dashboard', {
                 url: '/dashboard',
                 templateUrl: '/partials/outer/dashboard',
                 abstract: true
             })
-            .state('site.dashboard.users', {
+            .state('site.auth.dashboard.users', {
                 url: '/users',
                 controller: 'dashboardCtrl',
 
@@ -124,16 +196,46 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             .then(function (response) {
                                 return response.data.users;
                             });
-                    }]
+                    }],
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                if (!identity.verified) {
+                                    $state.transitionTo('site.auth.verify');
+                                }
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
+                        }
+
+
+                    ]
                 }
             })
 
-            .state('site.messages', {
+            .state('site.auth.messages', {
                 url: '/messages',
                 controller: 'messagesCtrl',
-                templateUrl: '/partials/outer/messages'
+                templateUrl: '/partials/outer/messages',
+                resolve: {
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                if (!identity.verified) {
+                                    $state.transitionTo('site.auth.verify');
+                                }
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
+                        }
+
+
+                    ]
+                }
             })
-            .state('site.messages.room', {
+            .state('site.auth.messages.room', {
                 url: '/{roomId}',
                 templateUrl: '/partials/inner/messages/room',
                 controller: 'roomCtrl',
@@ -144,15 +246,44 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             .then(function(toUsers) {
                                 return toUsers[0];
                             });
-                    }]
+                    }],
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                if (!identity.verified) {
+                                    $state.transitionTo('site.auth.verify');
+                                }
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
+                        }
+
+
+                    ]
                 }
             })
 
 
-            .state('site.browse', {
+            .state('site.auth.browse', {
                 url: '/browse',
                 templateUrl: '/partials/outer/browse',
-                controller: 'browseCtrl'
+                controller: 'browseCtrl',
+                resolve: {
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                if (identity && !identity.verified) {
+                                    $state.transitionTo('site.auth.verify');
+                                }
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                                return null;
+                            });
+                        }
+                    ]
+                }
             });
 
 
@@ -173,10 +304,12 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         guest: 'guest'
     })
 
-    .factory('principal', ['$q', '$http', '$timeout', '$window', '$cookieStore', '$location',
-        function ($q, $http, $timeout, $window, $cookieStore, socket) {
+    .factory('principal', ['$q', '$http', '$timeout', '$window', '$cookieStore', '$state',
+        function ($q, $http, $timeout, $window, $cookieStore, $state, socket) {
+
             var _identity = undefined,
-                _authenticated = false;
+                _authenticated = false,
+                _verified = false;
 
             return {
                 isIdentityResolved: function () {
@@ -185,6 +318,11 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                 isAuthenticated: function () {
                     return _authenticated;
+                },
+
+                isVerified: function() {
+                    if (angular.isDefined(_identity)) return _identity.verified || false;
+                    return false;
                 },
 
                 isInRole: function (role) {
@@ -213,7 +351,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     // check and see if we have retrieved the identity data from the server. if we have, reuse it by immediately resolving
                     if (angular.isDefined(_identity)) {
                         deferred.resolve(_identity);
-                        return deferred.promise;
                     }
                     else {
 
@@ -224,16 +361,13 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 deferred.resolve(_identity);
                             })
                             .error(function (err) {
-                                console.log(err);
                                 _identity = null;
                                 _authenticated = false;
-                                deferred.resolve(_identity);
+                                deferred.reject(err);
                             });
 
-
-                        return deferred.promise;
                     }
-
+                    return deferred.promise;
 
                 },
                 login: function (credentials) {
@@ -246,9 +380,10 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             $cookieStore.put('jwt', data.token);
                             _authenticated = true;
                             deferred.resolve(_identity);
+
                         })
                         .error(function (err) {
-                            _identity = null;
+                            _identity = undefined;
                             _authenticated = false;
                             $cookieStore.put('jwt', null);
                             deferred.reject(err);
@@ -262,14 +397,14 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                     $http.get('/api/logout')
                         .success(function (data) {
-                            _identity = null;
+                            _identity = undefined;
                             $cookieStore.put('jwt', null);
                             $cookieStore.put('username', null);
                             _authenticated = false;
                             deferred.resolve(_identity);
                         })
                         .error(function (err) {
-                            _identity = null;
+                            _identity = undefined;
                             _authenticated = false;
                             $cookieStore.put('jwt', null);
                             $cookieStore.put('username', null);
@@ -290,7 +425,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             deferred.resolve(_identity);
                         })
                         .error(function (err) {
-                            _identity = null;
+                            _identity = undefined;
                             _authenticated = false;
                             $cookieStore.put('jwt', null);
                             deferred.reject(err);
@@ -317,35 +452,22 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         });
 
                     return deferred.promise;
+                },
+                verifyIdentity: function(temp) {
+                    if (temp === _identity) {
+                        _identity.verified = true;
+                    }
                 }
             };
         }
     ])
-    .factory('authorization', ['$rootScope', '$state', 'principal', '$location',
-        function ($rootScope, $state, principal, $location) {
+    .factory('authorization', ['$rootScope', '$state', 'principal',
+        function ($rootScope, $state, principal) {
             return {
                 authorize: function () {
                     return principal.identity()
                         .then(function () {
-
-                            var isAuthenticated = principal.isAuthenticated();
-                            if (
-                                ($rootScope.toState.data && $rootScope.toState.data.roles
-                                && $rootScope.toState.data.roles.length > 0
-                                && !principal.isInAnyRole($rootScope.toState.data.roles))) {
-
-                                if (!isAuthenticated) {
-                                    // user is not authenticated. stow the state they wanted before you
-                                    // send them to the signin state, so you can return them when you're done
-                                    $rootScope.returnToState = $rootScope.toState;
-                                    $rootScope.returnToStateParams = $rootScope.toStateParams;
-
-                                    // now, send them to the signin state so they can log in
-                                    $location.path('/login')
-                                }
-                            } else if (isAuthenticated && $rootScope.toState && $rootScope.toState.name.indexOf('home') > -1) {
-                                $location.path('/browse');
-                            }
+                            return principal.isAuthenticated();
                         });
                 }
             };
@@ -360,8 +482,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                 if ($cookieStore.get('jwt')) {
                     config.headers.Authorization = 'Bearer ' + $cookieStore.get('jwt');
-                } else if ($location.path() === '/account/profile' || $location.path().indexOf('/browse') > -1) {
-                    $location.path('/login');
                 }
                 return config;
             },

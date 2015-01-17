@@ -24,8 +24,10 @@ module.exports = {
     sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',
 
     mailgun: {
-        user: process.env.MAILGUN_USER || 'postmaster@sandbox697fcddc09814c6b83718b9fd5d4e5dc.mailgun.org',
-        password: process.env.MAILGUN_PASSWORD || '29eldds1uri6'
+        user: process.env.MAILGUN_USER || 'admin@twerk.io',
+        password: process.env.MAILGUN_PASSWORD || 'mailgunadminpassword',
+        apiKey: process.env.MAILGUN_API_KEY || 'key-3fd41b1df6301ef53382901f944d28a5',
+        url: process.env.MAILGUN_URL || 'api.mailgun.net/v2/twerk.io'
     },
 
     mandrill: {

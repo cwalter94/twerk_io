@@ -40,14 +40,14 @@ exports.getApi = function(req, res) {
 
 exports.getUser = function(req, res) {
     if (req.user && req.user.email) {
-        User.findOne({email: req.user.email}, function (err, user) {
+        User.findOne({email: req.user.email}, 'email name roles classes major minor verified', function (err, user) {
 
             if (err) {
                 console.log(err);
                 return res.send(401);
             }
 
-            return res.json({user: {email: req.user.email, roles: user.roles, id: user._id}, token:req.token});
+            return res.json({user: user, token:req.token});
 
         });
     } else {
@@ -293,11 +293,11 @@ exports.authenticate = function(req, res, next) {
 
 
         if (email == '' || password == '') {
-            return res.send(401);
+            return res.status(401).end('Email and password are required.');
         }
 
     } else {
-        return res.send(401);
+        return res.status(401).end('An error occurred during login. Please verify your credentials and try again.');
     }
 
     User.findOne({email: email}, 'email classes verified major minor', function (err, user) {
@@ -323,17 +323,6 @@ exports.authenticate = function(req, res, next) {
 };
 
 exports.register = function(req, res, next) {
-    function genCode() {
-        var i, possible, text;
-        text = "";
-        possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-        i = 0;
-        while (i < 15) {
-            text += possible.charAt(Math.floor(Math.random() * possible.length));
-            i++;
-        }
-        return text;
-    }
 
     var email = req.body.email || '';
     var password = req.body.password || '';
@@ -343,10 +332,13 @@ exports.register = function(req, res, next) {
     var classes = req.body.classes || [];
     var roles = req.body.roles || [];
     var expiredTokens = [];
-    var code = genCode();
 
-    if (email == '' || password == '' || email.indexOf('berkeley.edu') == -1) {
+    if (email == '' || password == '') {
         return res.status(401).end('Valid email and password required.');
+    } else if (password !== req.body.repassword) {
+        return res.status(401).end('Password and confirmation must match.');
+    } else if (email.indexOf('@berkeley.edu') == -1) {
+        return res.status(401).end('Only berkeley.edu emails are accepted at this time.')
     }
 
     var user = new User({
@@ -357,32 +349,30 @@ exports.register = function(req, res, next) {
         major: major,
         minor: minor,
         roles: roles,
-        verificationCode: code,
         verified: false
     });
 
     user.save(function (err) {
         if (err) return res.status(401).end('User with that email already exists.');
 
-        var mailgun = new Mailgun({apiKey: secrets.mailgunKey, domain: secrets.mailgunUrl});
+        var mailgun = new Mailgun({apiKey: secrets.mailgun.apiKey, domain: 'twerk.io'});
 
         var emaildata = {
             //Specify email data
             from: 'admin@twerk.io',
             //The email to contact
-            to: req.query.email,
+            to: email,
             //Subject and text data
-            subject: 'Your Twerk.io Verification',
-            text: 'Keep twerking hard! Use the following link to verify your email account: <a href="www.twerk.io/verify/' + code + '"</a>'
+            subject: 'Twerk.io Account Verification',
+            text: 'Thanks for signing up for twerk.io! Navigate to the following URL to verify your email account: www.twerk.io/verify/' + user._id
         };
 
         mailgun.messages().send(emaildata, function (err, body) {
             //If there is an error, render the error page
             if (err) {
                 console.log(err);
-
+                return res.status(401).end('An error occurred while sending the registration email. Please try again later.');
             }
-            //Else we can greet    and leave
             else {
                 var token = jwt.sign({email: user.email, roles: user.roles, verified: false}, secrets.jwt, { expiresInDays: 7 });
                 return res.json({token:token, user: {email: email, classes: classes, roles: roles, major: major, minor: minor}});
@@ -393,9 +383,9 @@ exports.register = function(req, res, next) {
 
 exports.getUserProfile = function(req, res, next) {
 
-    if (req.user && req.user.verified) {
+    if (req.user) {
         User.findOne({email: req.user.email},
-            'email status roles name email picture major minor',
+            'email status roles name email picture major minor verified',
 
             function (err, user) {
 
@@ -406,10 +396,9 @@ exports.getUserProfile = function(req, res, next) {
             return res.json({user : user, token: req.token});
 
         });
-    } else if (req.user && !req.user.verified) {
-        return res.status(401).end('Email needs to be verified.');
+
     } else {
-        return res.status(401).end('An unkonwn problem occurred. Please try again later.')
+        return res.status(401).end('An unknown problem occurred. Please try again later.')
     }
 };
 
@@ -525,22 +514,62 @@ exports.getMessages = function(req, res, next) {
 };
 
 exports.verifyEmail = function(req, res, next){
-    User.findOne({verificationCode: req.params.code, verified: false}, 'email major minor picture status classes', function (err, user) {
+    console.log(req.query.code);
+    User.findOne({_id: req.query.code}, '_id', function (err, user) {
 
         if (err) {
             console.log(err);
             return res.status(401).end('An unknown error occurred. Please try again later.');
         }
 
-        if (user) {
+        if (user && !user.verified) {
             user.verified = true;
+            user.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    return res.status(401).end('An unknown error occurred. Please try again later.');
+                }
+                var token = jwt.sign({email: user.email, roles: user.roles}, secrets.jwt, { expiresInDays: 7 });
+                return res.json({token:token});
+            })
 
-            var token = jwt.sign({email: user.email, roles: user.roles, verified: true}, secrets.jwt, { expiresInDays: 7 });
-            return res.json({token:token, user: {email: user.email, classes: user.classes, roles: user.roles, major: user.major, minor: user.minor}});
+        } else if (user && user.verified) {
+            return res.status(401).end('User already verified.');
+        } else {
+            return res.status(401).end('An unknown error occurred. Please try again later.');
+
         }
-        return res.status(401).end('User already verified.');
-
     });
+};
+
+exports.sendEmail = function(req, res, next) {
+    if (req.user) {
+        var mailgun = new Mailgun({apiKey: secrets.mailgun.apiKey, domain: 'twerk.io'});
+
+        var emaildata = {
+            //Specify email data
+            from: 'admin@twerk.io',
+            //The email to contact
+            to: req.user.email,
+            //Subject and text data
+            subject: 'Twerk.io Account Verification',
+            text: 'Thanks for signing up for twerk.io! Navigate to the following URL to verify your email account: www.twerk.io/verify/' + req.user._id
+        };
+
+        mailgun.messages().send(emaildata, function (err, body) {
+            //If there is an error, render the error page
+            if (err) {
+                console.log(err);
+                return res.status(401).end('An error occurred while sending the verification email. Please try again later.');
+            }
+            else {
+                var token = jwt.sign({email: req.user.email, roles: req.user.roles, verified: req.user.verified}, secrets.jwt, { expiresInDays: 7 });
+                return res.json({token:token, email: req.user.email});
+            }
+        });
+    } else {
+        res.status(401).end('Please login and reload this page before trying to send another verification email.')
+    }
 };
 /**
  * DO NOT USE THIS FUNCTION FOR ANYTHING EXCEPT DEBUGGING

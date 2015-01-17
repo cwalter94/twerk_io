@@ -3,21 +3,21 @@ nav.navbar.navbar-custom.navbar-fixed-top(role="navigation", ng-class="{'transpa
         .navbar-header.page-scroll
             button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-main-collapse")
                 i.fa.fa-bars
-            a.navbar-brand(ui-sref="{{principal.isAuthenticated() ? 'site.browse' : 'site.home.intro'}}")
+            a.navbar-brand(ui-sref="{{principal.isAuthenticated() ? 'site.auth.browse' : 'site.home.intro'}}")
                 h1 Twerk.io
         // Collect the nav links, forms, and other content for toggling
         .collapse.navbar-collapse.navbar-right.navbar-main-collapse
             ul.nav.navbar-nav
 
                 li.float-right(ng-if="principal.isAuthenticated()")
-                    a(ui-sref="site.messages", ng-click="messages.new = ''")
+                    a(ui-sref="site.auth.messages", ng-click="messages.new = ''")
                         div Messages
                         div.message-indicator(ng-class="{'visible' : newMessages > 0}") {{newMessages > 0 ? ' ' + newMessages : ''}}
                 li(ng-if="principal.isAuthenticated() && principal.isInRole('Admin')")
-                    a(ui-sref="site.dashboard.users") Dashboard
+                    a(ui-sref="site.auth.dashboard.users") Dashboard
 
                 li.float-right(ng-if="principal.isAuthenticated()")
-                    a(ui-sref="site.account.profile") Profile
+                    a(ui-sref="site.auth.profile") Profile
 
                 li.float-right(ng-if="principal.isAuthenticated()")
                     a(ng-click="logout()") Logout

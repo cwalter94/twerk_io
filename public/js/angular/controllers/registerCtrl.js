@@ -11,24 +11,27 @@ var registerCtrl = app.controller('registerCtrl', function($scope, $http, $locat
 
 
     $scope.processRegForm = function() {
+
         if ($scope.formData.email && $scope.formData.password && $scope.formData.password === $scope.formData.repassword) {
-            principal.register($scope.formData).then(function(data) {
-                $location.path('/account/profile');
-             }, function(error, data) {
-                flash.error = error;
-            });
-        } else {
-            if (angular.isUndefined($scope.formData.email)) {
+            if ($scope.formData.email.indexOf('@berkeley.edu') == -1) {
                 flash.error = 'You must provide a valid Berkeley email.';
-            }
-            else if ($scope.formData.password !== $scope.formData.repassword) {
-                flash.error = 'Passwords must match.';
             } else if (!$scope.formData.password){
                 flash.error = 'You must provide a password.';
             } else {
-                flash.error = 'Something went wrong. Please try again later.';
+                principal.register($scope.formData).then(function(data) {
+                    $state.transitionTo('site.home.verify', { reload: false, inherit: true, notify: true });
+                }, function(error, data) {
+                    flash.error = error;
+                });
             }
 
+
+        } else if ($scope.formData.password !== $scope.formData.repassword){
+            flash.error = 'Passwords must match.';
+        } else if (!$scope.formData.email) {
+            flash.error = 'You must provide a valid Berkeley email.';
+        } else {
+            flash.error = 'An unknown error occurred. Please try again later.';
         }
 
     };

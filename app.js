@@ -97,6 +97,10 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
 (function seed () {
 
+    //User.findOne({email: 'cwalter94@berkeley.edu'}).remove(function(err) {
+    //    console.log("user remove");
+    //    console.log(err);
+    //});
 
 
     User.findOne({email: 'admin@twerk.io'},
@@ -151,6 +155,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
                 console.log("Mongo connection success. No seed data necessary.");
             }
         });
+
 }) ();
 
 /**
@@ -168,14 +173,13 @@ app.get('/partials/inner/:dir/:name', function(req, res) {
 
 app.post('/authenticate', apiController.authenticate);
 app.post('/register', apiController.register);
-app.get('/verify/:code', apiController.verifyEmail);
-
 app.get('/api/user', apiController.getUser);
 app.get('/api/user/info', apiController.getUserInfo);
 app.get('/api/userprofile', apiController.getUserProfile);
 app.post('/api/userprofile', apiController.postUserProfile);
 app.post('/api/userpicture', apiController.postUserPicture);
-
+app.get('/api/verify/send', apiController.sendEmail);
+app.get('/api/verify/confirm', apiController.verifyEmail);
 app.get('/api/messages', apiController.getMessages);
 app.get('/api/messages/:roomId', apiController.getMessages);
 

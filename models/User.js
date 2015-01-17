@@ -7,7 +7,7 @@ var userSchema = new mongoose.Schema({
     email: { type: String, unique: true, lowercase: true},
     password: String,
     status: {type: String, default: ''},
-    verified: {type: Boolean, default: false},
+    verified: {type: Boolean, default: false, required: true},
     roles: {type: Array, default: ['User']},
     lastOnline: {type: Date, default: Date.now, required: true},
     unreadRooms: {type: [mongoose.Schema.Types.objectId], default: []},
@@ -20,8 +20,6 @@ var userSchema = new mongoose.Schema({
     minor: {type: Array, default: []},
     classes: {type: [String], default: []},
     phone: String,
-    verificationCode: String,
-
     resetPasswordToken: String,
     resetPasswordExpires: Date
 });
