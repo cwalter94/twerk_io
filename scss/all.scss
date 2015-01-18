@@ -621,9 +621,13 @@ html {
               padding: 10px;
               width: 100%;
 
+              >.row {
+                height: 70px;
+                overflow-y: hidden;
+              }
+
               .img-col {
                 width: 100px;
-                overflow-y: hidden;
 
                 img {
                   width: 100%;

@@ -393,9 +393,11 @@ html body {
           html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container {
             padding: 10px;
             width: 100%; }
-            html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .img-col, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .img-col {
-              width: 100px;
+            html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container > .row, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container > .row {
+              height: 70px;
               overflow-y: hidden; }
+            html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .img-col, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .img-col {
+              width: 100px; }
               html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .img-col img, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .img-col img {
                 width: 100%; }
             html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col {

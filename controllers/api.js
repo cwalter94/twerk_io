@@ -87,7 +87,7 @@ exports.getUsersForBrowse = function (req, res) {
 };
 
 exports.getAllRoomsForReqUser = function (req, res) {
-    Room.find({users: req['user']['_id']}, '_id users messages lastMessage lastMessageCreated', function (err, rooms) {
+    Room.find({users: req.user._id}, '_id users messages lastMessage lastMessageCreated', function (err, rooms) {
         console.log("ROOMS");
         console.log(rooms);
         console.log(req.user._id);
@@ -132,7 +132,7 @@ exports.getRoomForRoomId = function (req, res) {
 exports.getRoomForUserIdAndReqUser = function (req, res) {
     if (req.params.userId) {
         console.log(req.params.userId);
-        Room.findOne({users: req.user._id, users: req.params.userId}, function (err, room) {
+        Room.findOne({users: req.user._id, users: mongoose.Types.ObjectId.fromString(req.params.userId)}, function (err, room) {
             if (err) {
                 console.log(err);
                 return res.status(401).end('An error occurred while locating this message thread.');
@@ -144,7 +144,7 @@ exports.getRoomForUserIdAndReqUser = function (req, res) {
             } else {
 
                 var newRoom = new Room({
-                    users: [req.user._id, req.params.userId]
+                    users: [req.user._id, mongoose.Types.ObjectId.fromString(req.params.userId)]
                 });
                 newRoom.save(function (err) {
                     if (err) {
@@ -174,15 +174,19 @@ exports.getRoomToUsersForRoomId = function (req, res) {
     } else {
         return res.status(401).end('Room id is required to retrieve user info.');
     }
-}
+};
 
 exports.getUsersForUserIdsArr = function (req, res) {
     if (req.query.userIds) {
         if (typeof req.query.userIds != "object") {
             req.query.userIds = [req.query.userIds];
         }
+        var userObjectIds = [];
 
-        User.find({_id: {"$in": req.query.userIds}}, 'email status roles name email classes picture major minor', function (err, users) {
+        for (var i in req.query.userIds) {
+            userObjectIds.push(mongoose.Types.ObjectId.fromString(req.query.userIds[i]))
+        }
+        User.find({_id: {"$in": userObjectIds}}, 'email status roles name email classes picture major minor', function (err, users) {
             if (err) {
                 console.log(err);
                 return res.status(401).end('An unknown error occurred while finding user data.');
@@ -433,8 +437,12 @@ exports.postUserPicture = function (req, res, next) {
         var fileName = uuid.v4() + extension;
 
         var newSize = 512;
+        var thumbnailSize = 100;
+
         var compressionAlg = "";
         var newPath = tmpPath.substring(0, tmpPath.lastIndexOf('/') + 1) + fileName;
+        var thumbnailPath = tmpPath.substring(0, tmpPath.lastIndexOf('/') + 1) + 'thumbnail' + extension;
+
         if (contentType == 'image/jpeg') {
             gm(tmpPath)
                 .resize(newSize, newSize)
@@ -444,85 +452,19 @@ exports.postUserPicture = function (req, res, next) {
                         console.log(err);
                         return res.status(401).end('An error occurred during image upload. Please try again later.');
                     }
-                    var bucket = new AWS.S3({params: {Bucket: 'twerk.io/img/members'}});
-                    var stream = fs.createReadStream(newPath);
-                    var data = {Key: fileName, Body: stream};
-
-                    bucket.putObject(data, function (err, data) {
-                        if (err) {
-                            console.log(err);
-                            return res.status(401).end("Image could not be saved. Please try again later.");
-                        }
-                        var oldPic = "", delParams = null, deleteOldPic = true;
-
-                        if (req.user.picture && req.user.picture != '/img/generic_avatar.gif') {
-                            oldPic = req.user.picture.substring(req.user.picture.lastIndexOf('/') + 1);
-                            delParams = {Key: oldPic};
-                        } else {
-                            deleteOldPic = false;
-                        }
-
-
-                        User.findOne({_id: req.user._id}, 'picture', function (err, user) {
-                            if (err || user == null) {
-                                console.log(err);
-                                return res.status(401).end('Image could not be updated. Please try again later.');
-                            }
-                            ;
-
-                            var url = 'https://s3-us-west-1.amazonaws.com/twerk.io/img/members/' + fileName;
-                            console.log(url);
-                            user.picture = url;
-                            user.save(function (err) {
-                                if (err) {
-                                    console.log(err);
-                                    return res.status(401).end('Image could not be updated. Please try again later.')
-                                }
-                                ;
-
-                                if (deleteOldPic) {
-                                    bucket.deleteObject(delParams, function (err, data) {
-                                        if (err) {
-                                            return res.status(401).end('Old image could not be deleted. Please try again later.');
-                                        }
-
-                                        return res.json({picture: url, token: req.token});
-                                    });
-                                } else {
-                                    return res.json({picture: url, token: req.token});
-
-                                }
-
-                            });
-
-
-                        });
-                    });
-                });
-        }
-        else {
-            //resize with gm and minify with imagemin
-            gm(tmpPath)
-                .resize(newSize, newSize)
-                .write(newPath, function (err) {
-                    if (err) {
-                        console.log(err);
-                        return res.status(401).end('An error occurred during image upload. Please try again later.');
-                    }
-                    var imagemin = new Imagemin()
-                        .src(newPath)
-                        .dest(tmpPath.substring(0, tmpPath.lastIndexOf('/') - 1))
-                        .use(rename('imagemin.png'))
-                        .use(Imagemin.pngquant())
-                        .run(function (err, files) {
-                            if (err) {
-                                console.log(err);
-                                return res.status(401).end('An error occurred during image upload. Please try again later.');
-                            }
+                    gm(newPath)
+                        .resize(thumbnailSize, thumbnailSize)
+                        .compress('JPEG')
+                        .write(thumbnailPath, function(err) {
 
                             var bucket = new AWS.S3({params: {Bucket: 'twerk.io/img/members'}});
-                            var stream = fs.createReadStream(tmpPath.substring(0, tmpPath.lastIndexOf('/') - 1) + 'imagemin.png');
+                            var thumbnailBucket = new AWS.S3({params: {Bucket: 'twerk.io/img/members/thumbnails'}});
+
+                            var stream = fs.createReadStream(newPath);
+                            var thumbnailStream = fs.createReadStream(thumbnailPath);
+
                             var data = {Key: fileName, Body: stream};
+                            var thumbnailData = {Key: fileName, Body: thumbnailStream};
 
                             bucket.putObject(data, function (err, data) {
                                 if (err) {
@@ -538,44 +480,163 @@ exports.postUserPicture = function (req, res, next) {
                                     deleteOldPic = false;
                                 }
 
-
-                                User.findOne({_id: req.user._id}, 'picture', function (err, user) {
-                                    if (err || user == null) {
+                                thumbnailBucket.putObject(thumbnailData, function (err, data) {
+                                    if (err) {
                                         console.log(err);
-                                        return res.status(401).end('Image could not be updated. Please try again later.');
+                                        return res.status(401).end("Thumbnail could not be saved. Please try again later.");
                                     }
-                                    ;
 
-                                    var url = 'https://s3-us-west-1.amazonaws.com/twerk.io/img/members/' + fileName;
-                                    console.log(url);
-                                    user.picture = url;
-                                    user.save(function (err) {
-                                        if (err) {
+                                    User.findOne({_id: req.user._id}, 'picture', function (err, user) {
+                                        if (err || user == null) {
                                             console.log(err);
-                                            return res.status(401).end('Image could not be updated. Please try again later.')
+                                            return res.status(401).end('Image could not be updated. Please try again later.');
                                         }
-                                        ;
 
-                                        if (deleteOldPic) {
-                                            bucket.deleteObject(delParams, function (err, data) {
-                                                if (err) {
-                                                    return res.status(401).end('Old image could not be deleted. Please try again later.');
-                                                }
 
+                                        var url = 'https://s3-us-west-1.amazonaws.com/twerk.io/img/members/' + fileName;
+                                        user.picture = url;
+                                        user.save(function (err) {
+                                            if (err) {
+                                                console.log(err);
+                                                return res.status(401).end('Image could not be updated. Please try again later.')
+                                            }
+
+
+
+                                            if (deleteOldPic) {
+                                                bucket.deleteObject(delParams, function (err, data) {
+                                                    if (err) {
+                                                        return res.status(401).end('Old image could not be deleted. Please try again later.');
+                                                    }
+                                                    thumbnailBucket.deleteObject(delParams, function (err, data) {
+                                                        if (err) {
+                                                            return res.status(401).end('Old thumbnail could not be removed. Please try again later.');
+                                                        }
+
+                                                        return res.json({picture: url, token: req.token});
+                                                    });
+                                                });
+
+                                            } else {
                                                 return res.json({picture: url, token: req.token});
-                                            });
-                                        } else {
-                                            return res.json({picture: url, token: req.token});
 
-                                        }
+                                            }
+
+                                        });
 
                                     });
-
-
                                 });
-                            });
                         });
+                    });
 
+                });
+        }
+        else {
+            //resize with gm and minify with imagemin
+            gm(tmpPath)
+                .resize(newSize, newSize)
+                .write(newPath, function (err) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(401).end('An error occurred during image upload. Please try again later.');
+                    }
+
+                    gm(newPath)
+                        .resize(thumbnailSize, thumbnailSize)
+                        .write(thumbnailPath, function(err) {
+                            var imagemin = new Imagemin()
+                                .src(newPath)
+                                .dest(tmpPath.substring(0, tmpPath.lastIndexOf('/') + 1))
+                                .use(rename('imagemin.png'))
+                                .use(Imagemin.pngquant())
+                                .run(function (err, files) {
+                                    if (err) {
+                                        console.log(err);
+                                        return res.status(401).end('An error occurred during image upload. Please try again later.');
+                                    }
+                                    imagemin = new Imagemin()
+                                        .src(thumbnailPath)
+                                        .dest(tmpPath.substring(0, tmpPath.lastIndexOf('/') + 1))
+                                        .use(rename('imageminthumbnail.png'))
+                                        .use(Imagemin.pngquant())
+                                        .run(function (err, thumbnailFiles) {
+
+
+                                            var bucket = new AWS.S3({params: {Bucket: 'twerk.io/img/members'}});
+                                            var thumbnailBucket = new AWS.S3({params: {Bucket: 'twerk.io/img/members/thumbnails'}});
+
+                                            var stream = fs.createReadStream(tmpPath.substring(0, tmpPath.lastIndexOf('/') + 1) + 'imagemin.png');
+                                            var thumbnailStream = fs.createReadStream(tmpPath.substring(0, tmpPath.lastIndexOf('/') + 1) + 'imageminthumbnail.png');
+
+                                            var data = {Key: fileName, Body: stream};
+                                            var thumbnailData = {Key: fileName, Body: thumbnailStream};
+
+                                            bucket.putObject(data, function (err, data) {
+                                                if (err) {
+                                                    console.log(err);
+                                                    return res.status(401).end("Image could not be saved. Please try again later.");
+                                                }
+                                                var oldPic = "", delParams = null, deleteOldPic = true;
+
+                                                if (req.user.picture && req.user.picture != '/img/generic_avatar.gif') {
+                                                    oldPic = req.user.picture.substring(req.user.picture.lastIndexOf('/') + 1);
+                                                    delParams = {Key: oldPic};
+                                                } else {
+                                                    deleteOldPic = false;
+                                                }
+
+                                                thumbnailBucket.putObject(thumbnailData, function (err, data) {
+                                                    if (err) {
+                                                        console.log(err);
+                                                        return res.status(401).end('An error occurred during thumbnail upload. Please try again later.');
+                                                    }
+
+                                                    User.findOne({_id: req.user._id}, 'picture', function (err, user) {
+                                                        if (err || user == null) {
+                                                            console.log(err);
+                                                            return res.status(401).end('Image could not be updated. Please try again later.');
+                                                        }
+
+
+                                                        var url = 'https://s3-us-west-1.amazonaws.com/twerk.io/img/members/' + fileName;
+                                                        user.picture = url;
+                                                        user.save(function (err) {
+                                                            if (err) {
+                                                                console.log(err);
+                                                                return res.status(401).end('Image could not be updated. Please try again later.')
+                                                            }
+
+                                                            if (deleteOldPic) {
+                                                                bucket.deleteObject(delParams, function (err, data) {
+                                                                    if (err) {
+                                                                        return res.status(401).end('Old thumbnail could not be deleted. Please try again later.');
+                                                                    }
+                                                                    thumbnailBucket.deleteObject(delParams, function (err, data) {
+                                                                        if (err) {
+                                                                            return res.status(401).end('Old thumbnail could not be removed. Please try again later.');
+                                                                        }
+
+                                                                        return res.json({
+                                                                            picture: url,
+                                                                            token: req.token
+                                                                        });
+                                                                    });
+                                                                });
+                                                            } else {
+                                                                return res.json({picture: url, token: req.token});
+
+                                                            }
+
+                                                        });
+
+
+                                                    });
+
+                                                })
+                                            });
+                                        });
+                                });
+                        });
 
                 });
 
