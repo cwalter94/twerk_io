@@ -150,14 +150,52 @@ html {
 
         li {
           height: 50px;
+          width: 90px;
 
           a {
             height: 100%;
             color: #ffffff !important;
+            background: transparent !important;
+            overflow: hidden;
 
+            .nav-icon {
+              -webkit-transition: all .3s;
+              -moz-transition: all .3s;
+              -ms-transition: all .3s;
+              -o-transition: all .3s;
+              transition: all .3s;
+
+              text-align: center;
+              width: 100%;
+              left: 0;
+              top: 0;
+              font-size: 24px;
+            }
+
+            .nav-icon-text {
+              -webkit-transition: all .3s;
+              -moz-transition: all .3s;
+              -ms-transition: all .3s;
+              -o-transition: all .3s;
+              transition: all .3s;
+
+              font-size: 8px;
+              width: 100%;
+              text-align: center;
+              bottom: -20px;
+              left: 0;
+            }
 
             &:hover {
-              background: rgba(255, 255, 255, .1);
+              background: transparent !important;
+
+              .nav-icon {
+                top: -12px;
+              }
+
+              .nav-icon-text {
+                bottom: 10px;
+              }
             }
           }
 
@@ -491,235 +529,228 @@ html {
 
     }
 
-    #browse-container, #messages-container {
-
+    #browse-container {
       height: 100%;
+      padding-top: 70px;
 
-      >.row {
+
+      .browse-outer-container {
         height: 100%;
-      }
 
-      .nav-browse, .nav-messages {
-        height: 50px;
-        width: 100%;
-        top: 40px;
-        position: absolute;
-        background: transparent;
-
-        .search-box-outer {
-          border: 1px solid #DDD;
-          border-radius: 2px;
-          background: #fff;
+        .browse-search-container {
+          position: relative;
           width: 100%;
-          height: 100%;
+          height: 50px;
+          float: left;
 
-          .search-icon {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 24px;
-            height: 100%;
-            line-height: 40px;
-            vertical-align: middle;
-            font-size: 24px;
-
-          }
-
-          .search-cat-select-col, .search-col {
-            width: auto;
-            float: left;
-            padding-left: 32px;
-            vertical-align: middle;
-            line-height: 40px;
-            background: transparent;
-
-            button {
-              background: transparent;
-              border: none;
-              color: #333;
-            }
-          }
-
-          .search-col {
-            padding-left: 5px;
-            min-width: 200px;
-            width: calc(100% - 135px);
-          }
-
-          .search-box-inner {
-            font-size: 24px;
-            border: none;
+          .search-box-outer {
+            border: 2px solid #ccc;
+            border-radius: 2px;
+            background: #fff;
             width: 100%;
             height: 100%;
 
-          }
-        }
-      }
-
-      .nav-messages {
-        width: calc(100% - 40px);
-        left: 40px;
-      }
-      .messages-col {
-        height: 100%;
-      }
-
-      .scroll-container {
-          margin-top: 100px;
-          height: calc(100% - 100px);
-
-
-          .browse-col {
-
-            float: left;
-            height: 100%;
-
-            -webkit-transition: all 1s;
-            -moz-transition: all 1s;
-            -ms-transition: all 1s;
-            -o-transition: all 1s;
-            transition: all 1s;
-
-            &.shrink {
-              width: 66.66%;
+            .search-icon {
+              position: absolute;
+              top: 4px;
+              left: 10px;
+              width: 40px;
+              height: 100%;
+              line-height: 40px;
+              vertical-align: middle;
+              font-size: 24px;
+              color: #52008C;
 
             }
-          }
 
-          .browse-inner-container, .messages-inner-container {
-              margin-top: 0px;
+            input {
+              width: 100%;
+              padding: 2px;
+              padding-left: 40px;
               height: 100%;
+              font-size: 24px;
+              border: none;
+              box-shadow: none;
 
-              .browse-sm-container {
-                float: left;
-                width: 360px;
-                height: 180px;
-                overflow: hidden;
-                border-radius: 2px;
-                margin: 10px;
-                border-left: 0px solid;
-                color: #666;
-
-                -webkit-transition: all .5s;
-                -moz-transition: all .5s;
-                -ms-transition: all .5s;
-                -o-transition: all .5s;
-                transition: all .5s;
-
-                background: rgba(255, 255, 255, 1);
-                background: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-                background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(50%, rgba(252, 252, 252, 1)), color-stop(100%, rgba(252, 252, 252, 1)));
-                background: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-                background: -o-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-                background: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-                background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fcfcfc', GradientType=1);
-
-                .profile-info-container {
-                  padding: 10px;
-                  width: 100%;
-
-                  .img-col {
-                    width: 100px;
-                    overflow-y: hidden;
-
-                    img {
-                      width: 100%;
-                    }
-                  }
-                  .status-col {
-                    display: inline-block;
-                  }
-                  .name-col {
-                    display: none;
-                  }
-
-                }
-                .chat-container {
-                  display: none;
-                }
-
-
-
-                &.message-sm-container {
-                  height: 380px;
-                }
-
-                &.online {
-                  .profile-info-container {
-                    background: #81B3E3;
-
-                  }
-                }
-
-                &:hover {
-                  cursor: pointer;
-
-                }
-                .btn-message {
-                  height: 50px;
-                  border-top: 1px solid #999;
-                  background-color: #FFF;
-                  margin-top: 15px;
-
-
-                  i {
-                    margin-right: 10px;
-
-                  }
-
-                  &:hover {
-                  }
-                }
-
-                h5 {
-                  margin-top: 10px;
-                  margin-bottom: 5px;
-                }
+              &:hover, &:focus {
+                border: none;
+                box-shadow: none;
 
               }
             }
 
           }
-
-
-    }
-
-
-    #browse-container {
-      width: 100%;
-      padding: 0px;
-      height: calc(100% - 50px);
-      .scroll-container {
-        .content-container {
-          padding-top: 0px;
-          overflow: auto;
-
         }
-      }
 
-      &.shrink {
-        height: calc(100% - 350px) !important;
+        .browse-inner-container, .messages-inner-container {
+          overflow: scroll;
+          height: calc(100% - 100px);
+          width: 100%;
+          float: left;
+          background: #eee;
+          border: 1px solid #ccc;
+          border-top: 0px;
+
+
+          .browse-sm-container {
+            float: left;
+            width: 360px;
+            height: 180px;
+            overflow: hidden;
+            border-radius: 2px;
+            margin: 9px;
+            border: 1px solid #ccc;
+            color: #666;
+
+            -webkit-transition: all .5s;
+            -moz-transition: all .5s;
+            -ms-transition: all .5s;
+            -o-transition: all .5s;
+            transition: all .5s;
+
+            background: rgba(255, 255, 255, 1);
+            background: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+            background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(50%, rgba(252, 252, 252, 1)), color-stop(100%, rgba(252, 252, 252, 1)));
+            background: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+            background: -o-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+            background: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+            background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fcfcfc', GradientType=1);
+
+            .profile-info-container {
+              padding: 10px;
+              width: 100%;
+
+              .img-col {
+                width: 100px;
+                overflow-y: hidden;
+
+                img {
+                  width: 100%;
+                }
+              }
+              .status-col {
+                display: inline-block;
+              }
+              .name-col {
+                display: none;
+
+              }
+
+            }
+            .chat-container {
+              display: none;
+            }
+
+            &.message-sm-container {
+              height: 380px;
+            }
+
+            &.online {
+              .profile-info-container {
+                background: #81B3E3;
+
+              }
+            }
+
+            &:hover {
+              cursor: pointer;
+
+            }
+            .btn-message {
+              height: 50px;
+              border-top: 1px solid #999;
+              background-color: #FFF;
+              margin-top: 15px;
+
+              i {
+                margin-right: 10px;
+
+              }
+
+              &:hover {
+              }
+            }
+
+            .name {
+              margin-top: 10px;
+              margin-bottom: 5px;
+              color: #1391DB;
+            }
+
+          }
+        }
+
       }
 
     }
-
 
 
     #messages-container {
       padding-top: 50px;
       height: calc(100% - 50px);
 
+      > .row {
+        height: 100%;
+      }
+      .messages-col {
+        height: 100%;
 
-
+      }
       .messages-outer-container {
-
 
         height: calc(100% - 40px);
         width: 100%;
         border: 1px solid #ccc;
         background: #ebebeb;
         margin-top: 40px;
+        .nav-messages {
+          height: 50px;
+          width: calc(100% - 40px);
+          left: 40px;
+          top: 40px;
+          position: absolute;
+          background: transparent;
+
+          .search-box-outer {
+            border: 1px solid #DDD;
+            border-radius: 2px;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+
+            .search-icon {
+              position: absolute;
+              top: 4px;
+              left: 10px;
+              width: 40px;
+              height: 100%;
+              line-height: 40px;
+              vertical-align: middle;
+              font-size: 24px;
+              color: #52008C;
+
+            }
+
+            input {
+              width: 100%;
+              padding: 2px;
+              padding-left: 40px;
+              height: 100%;
+              font-size: 24px;
+              border: none;
+              box-shadow: none;
+
+              &:hover, &:focus {
+                border: none;
+                box-shadow: none;
+
+              }
+            }
+
+          }
+
+        }
 
         .nav-messages {
           width: 100%;
@@ -727,7 +758,6 @@ html {
           top: 0;
           position: relative;
           display: block;
-
 
           .search-box-outer {
             .search-icon {
@@ -749,7 +779,6 @@ html {
           height: 100%;
           padding-top: 0px;
           width: 100%;
-
 
           .messages-sm-container {
             width: 100%;
@@ -827,8 +856,6 @@ html {
           display: none;
         }
 
-
-
       }
 
       .chat-message-display-container {
@@ -857,15 +884,14 @@ html {
         padding-top: 12px;
         border: 1px solid #ccc;
 
-
         textarea {
           border: 1px solid #ccc;
           resize: none;
           background: white;
           font-size: 16px;
-          -webkit-box-shadow: none ;
-          -moz-box-shadow: none ;
-          box-shadow: none ;
+          -webkit-box-shadow: none;
+          -moz-box-shadow: none;
+          box-shadow: none;
           outline: none;
           padding: 5px;
           height: 100%;
@@ -881,7 +907,6 @@ html {
       }
 
     }
-
 
     #account-container {
       .col-xs-12 {
