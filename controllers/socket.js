@@ -1,6 +1,7 @@
 var Message = require('../models/Message');
 var Room = require('../models/Room');
 var User = require('../models/User');
+var mongoose = require('mongoose');
 
 exports.socketHandler = function (allUsers) {
     return function (socket) {
@@ -11,7 +12,6 @@ exports.socketHandler = function (allUsers) {
             socket.emit('user:init', allUsers);
             socket.join(email);
             User.findOne({email: email}, 'lastOnline', function(err, user) {
-                console.log(user);
                 user.lastOnline = Date.now();
                 user.save(function(err) {
                     console.log(err);
@@ -35,8 +35,8 @@ exports.socketHandler = function (allUsers) {
         socket.on("send:message", function(msg) {
             if (msg.from && msg.to && msg.toEmail && msg.text !== '') {
                 var message = new Message({
-                    from: msg.from,
-                    to: msg.to,
+                    from: mongoose.Schema.Types.ObjectId(msg.from),
+                    to: mongoose.Schema.Types.ObjectId(msg.to),
                     text: msg.text
                 });
 
@@ -45,7 +45,7 @@ exports.socketHandler = function (allUsers) {
                         console.log(err);
                         socket.emit('error', 'An error occurred when saving this message');
                     } else {
-                        Room.findOne({_id: msg.to}, 'messages', function(err, room) {
+                        Room.findById(mongoose.Types.ObjectId(msg.to), 'messages', function(err, room) {
                             if (err) {
                                 console.log(err);
                                 socket.emit('error', 'An error occurred when saving this message');

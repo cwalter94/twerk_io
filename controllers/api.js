@@ -77,7 +77,6 @@ exports.getUsersForBrowse = function (req, res) {
                     console.log(err);
                     return res.status(401).end('An unknown error occurred. Please try again later.');
                 }
-                console.log(users);
                 return res.json({token: req.token, users: users});
             });
 
@@ -88,9 +87,6 @@ exports.getUsersForBrowse = function (req, res) {
 
 exports.getAllRoomsForReqUser = function (req, res) {
     Room.find({users: req.user._id}, '_id users messages lastMessage lastMessageCreated', function (err, rooms) {
-        console.log("ROOMS");
-        console.log(rooms);
-        console.log(req.user._id);
         if (err) {
             console.log(err);
             return res.status(401).end('An error occurred while retrieving message threads.');
@@ -102,7 +98,7 @@ exports.getAllRoomsForReqUser = function (req, res) {
 
 exports.getMessagesForRoomId = function (req, res) {
     if (req.params.roomId) {
-        Message.find({to: req.params.roomId}, 'from created text read', function (err, messages) {
+        Message.find({to: mongoose.Types.ObjectId(req.params.roomId)}, 'from created text read', function (err, messages) {
             if (err) {
                 console.log(err);
                 return res.status(401).end('An error occurred while retrieving messages for this thread.');
@@ -116,7 +112,7 @@ exports.getMessagesForRoomId = function (req, res) {
 
 exports.getRoomForRoomId = function (req, res) {
     if (req.params.roomId) {
-        Room.findOne({_id: req.params.roomId}, function (err, room) {
+        Room.findById(mongoose.Types.ObjectId(req.params.roomId), function (err, room) {
             if (err) {
                 console.log(err);
                 return res.status(401).end('An error occurred while locating this message thread.');
@@ -131,28 +127,24 @@ exports.getRoomForRoomId = function (req, res) {
 
 exports.getRoomForUserIdAndReqUser = function (req, res) {
     if (req.params.userId) {
-        console.log(req.params.userId);
-        Room.findOne({users: req.user._id, users: mongoose.Types.ObjectId.fromString(req.params.userId)}, function (err, room) {
+        Room.findOne({users: req.user._id, users: mongoose.Types.ObjectId(req.params.userId)}, function (err, room) {
             if (err) {
                 console.log(err);
                 return res.status(401).end('An error occurred while locating this message thread.');
             }
             if (room) {
-                console.log("NO NEW ROOM");
-                console.log(room);
+                console.log("ROOM", room);
                 return res.json({token: req.token, room: room})
             } else {
 
                 var newRoom = new Room({
-                    users: [req.user._id, mongoose.Types.ObjectId.fromString(req.params.userId)]
+                    users: [req.user._id, mongoose.Types.ObjectId(req.params.userId)]
                 });
                 newRoom.save(function (err) {
                     if (err) {
                         console.log(err);
                         return res.status(401).end('An error occurred while locating this message thread.');
                     }
-                    console.log("NEW ROOM");
-                    console.log(newRoom);
                     return res.json({
                         token: req.token, room: {
                             _id: newRoom._id,
@@ -184,7 +176,7 @@ exports.getUsersForUserIdsArr = function (req, res) {
         var userObjectIds = [];
 
         for (var i in req.query.userIds) {
-            userObjectIds.push(mongoose.Types.ObjectId.fromString(req.query.userIds[i]))
+            userObjectIds.push(mongoose.Types.ObjectId(req.query.userIds[i]))
         }
         User.find({_id: {"$in": userObjectIds}}, 'email status roles name email classes picture major minor', function (err, users) {
             if (err) {

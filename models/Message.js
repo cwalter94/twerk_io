@@ -2,7 +2,7 @@ var mongoose = require('mongoose');
 
 var messageSchema = new mongoose.Schema({
     from: { type: mongoose.Schema.Types.ObjectId, required: true},
-    to: {type: String, required: true},
+    to: {type: mongoose.Schema.Types.ObjectId, required: true},
     created: {type: Date, default: Date.now},
     text: {type: String, required: true},
     fromSocket: {type: String, default: ''},
