@@ -1,45 +1,39 @@
-var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $location, flash, $state, siteSocket, messageFactory, me) {
+var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $location, flash, $state, $stateParams, siteSocket, messageFactory, me, allRooms) {
     $scope.search = "";
     $scope.siteSocket = siteSocket;
     $scope.room = null;
     $scope.toUsers = {};
     $scope.selectedSearchCat = 'Name';
-
     $scope.getUrl = function() {
         return $location.path();
     };
     $scope.userInfo = {};
-    $scope.rooms = {};
+    $scope.rooms = allRooms;
+    $scope.roomsArr = [];
 
-    messageFactory.getAllRooms().then(function(allRooms) {
-        $scope.rooms = allRooms;
-        var userIds = [];
-        for (var r in $scope.rooms) {
-            $scope.rooms[r].users.splice($scope.rooms[r].users.indexOf(me.id), 1)
-            $scope.rooms[r].toUser = $scope.rooms[r].users[0];
-            userIds = userIds.concat($scope.rooms[r].users);
+    var roomIds = [];
+    for (var r in allRooms) {
+        if (allRooms[r].messages.length > 0) {
+            roomIds.push(r);
         }
+        $scope.roomsArr.push($scope.rooms[r]);
+    }
+    if (roomIds.length > 0) {
+        messageFactory.getMultipleRoomsToUsers(roomIds, me)
+            .then(function(roomsIdsToUserArr) {
+                for (var r in roomsIdsToUserArr) {
+                    $scope.rooms[r].toUserArr = roomsIdsToUserArr[r];
+                }
+                console.log($scope.rooms);
+            }, function(err) {
+                console.log(err);
+            });
+    }
 
-        messageFactory.getUserInfo(userIds).then(function(info) {
-            for (var i in info) {
-                $scope.userInfo[i] = info[i];
-            }
-            console.log($scope.userInfo);
-            console.log($scope.rooms);
-        })
-    });
-
-    $scope.goToRoom = function(roomId, user) {
-        messageFactory.setToUsers([user]);
-        console.log(roomId, user);
-        $state.transitionTo('site.messages.room', {'roomId': roomId}, { reload: false, inherit: true, notify: true });
-
+    $scope.goToRoom = function(roomId) {
+        console.log(roomId);
+        $state.transitionTo('site.auth.messages.room', {'roomId': roomId}, { reload: false, inherit: true, notify: true });
     };
-
-    $scope.searchFocus = true;
-
-    $scope.searchCats = ['Name', 'Email', 'Major', 'Minor', 'Status', 'Classes'];
-
 
     siteSocket.on('user:init', function(allUsers) {
         for (key in allUsers) {
@@ -61,9 +55,6 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
             $scope.users[email].online = true;
         }
     });
-
-
-
 
 
     siteSocket.on('send:message', function(message) {

@@ -9,13 +9,13 @@ div.container#messages-container
                 .clearfix
 
                 .messages-inner-container
-                    a.messages-sm-container(ng-repeat="room in rooms", ng-click="goToRoom(room._id, userInfo[room.toUser])")
+                    a.messages-sm-container(ng-show="room.messages.length > 0 || room.selected", ng-repeat="room in roomsArr | filter: search | orderBy: 'lastMessageCreated' : true", ng-click="goToRoom(room._id, userInfo[room.toUser])")
                         i(ng-show="room.online").glyphicon.glyphicon-comment
                         .col-md-2.col-xs-3.img-col
-                            img(once-src="userInfo[room.toUser].picture")
+                            img(once-src="room.toUserArr[0].picture || '/img/generic_avatar.gif'")
                         .col-md-10.col-xs-9.name-col
                             .text-left
-                                h5.name(once-text="userInfo[room.toUser].name")
+                                h5.name(once-text="room.toUserArr[0].name")
                             .last-message-col.text-left
                                 | {{room.lastMessage}}
 

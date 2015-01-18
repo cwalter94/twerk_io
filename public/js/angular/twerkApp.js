@@ -232,7 +232,14 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         }
 
 
-                    ]
+                    ],
+                    allRooms: ['messageFactory', function(messageFactory) {
+                        return messageFactory.getRooms().then(function(data) {
+                            return data;
+                        }, function(err) {
+                            console.log(err);
+                        })
+                    }]
                 }
             })
             .state('site.auth.messages.room', {
@@ -240,13 +247,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 templateUrl: '/partials/inner/messages/room',
                 controller: 'roomCtrl',
                 resolve: {
-
-                    toUser: ['messageFactory', '$stateParams', function(messageFactory, $stateParams) {
-                        return messageFactory.getToUsers($stateParams.roomId)
-                            .then(function(toUsers) {
-                                return toUsers[0];
-                            });
-                    }],
                     me: ['principal', '$location', '$state',
                         function (principal, $location, $state) {
                             return principal.identity().then(function(identity) {
@@ -258,9 +258,17 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 $location.path('/login');
                             });
                         }
+                    ],
+                    messages: ['messageFactory', '$stateParams',
+                        function(messageFactory, $stateParams) {
+                            return messageFactory.getMessages($stateParams.roomId).then(function(data) {
+                                return data;
+                            }, function(err) {
+                                return null;
+                            })
+                    }]
 
 
-                    ]
                 }
             })
 
@@ -533,115 +541,194 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
     })
     .factory('messageFactory', function($http, $q) {
-        var _room = {};
-        var _toUsers = null;
-        var _allRooms = [];
-        var _userInfo = {};
+        var _currRoom = null, _allRooms = null;
 
         return {
-            setRoom: function(room) {
-                this.room = room;
-            },
-            getRoom: function(userOrRoomId) {
+            getRooms: function() {
                 var deferred = $q.defer();
-
-                if (typeof userOrRoomId == "object") {
-                    var user = userOrRoomId;
+                if (_allRooms != null) {
+                    deferred.resolve(_allRooms);
+                } else {
 
                     $http({
-                        url: '/api/rooms',
-                        method: 'GET',
-                        params : {
-                            toUserName: user.name,
-                            toUserId: user._id
+                        url: '/api/room/all',
+                        method: 'GET'
+                    }).success(function(data) {
+                        _allRooms = {};
+                        console.log(data);
+                        for (var r in data.allRooms) {
+                            _allRooms[data.allRooms[r]._id] = data.allRooms[r];
                         }
-                    }).then(function(room) {
-                        _room = room;
-                        _toUsers = [user];
-                        deferred.resolve(_room);
+                        deferred.resolve(_allRooms);
+                    }).error(function(err) {
+                        deferred.reject(err);
                     });
-
-                    return deferred.promise;
-
-
-                } else {
-                    var roomId = userOrRoomId;
-                    if (_room && roomId === _room.id) {
-                        deferred.resolve(_room);
-                    } else {
-                        $http({
-                            url: '/api/rooms',
-                            method: 'GET',
-                            params : {
-                                roomId: roomId
-                            }
-                        }).then(function(response) {
-                            console.log(response);
-                            _room = response.data.room;
-                            deferred.resolve(_room);
-                        });
-                    }
-                    return deferred.promise;
-
-                }
-            },
-            setToUsers: function(users) {
-                _toUsers = angular.copy(users);
-            },
-            getToUsers: function(roomId) {
-                var deferred = $q.defer();
-
-                if (_toUsers != null) {
-                    deferred.resolve(_toUsers);
-                } else {
-                    this.getRoom(roomId).then(function(room) {
-                        console.log(room);
-                        _room = room;
-                        _toUsers = room.toUsers;
-                        deferred.resolve(_toUsers);
-                    })
                 }
                 return deferred.promise;
+
             },
-            getAllRooms : function(me) {
+            getMessages: function(roomId) {
                 var deferred = $q.defer();
 
-                $http({
-                    url: '/api/rooms',
-                    method: 'GET'
-                }).then(function(response) {
-                    _allRooms = response.data.rooms;
-                    deferred.resolve(_allRooms);
+                this.getRooms().then(function(response) {
+                    if (_allRooms[roomId].messageArr && _allRooms[roomId].needsUpdate == false) {
+                        deferred.resolve(_allRooms[roomId].messageArr);
+                    } else {
+                        $http({
+                            url: '/api/room/' + roomId + '/messages',
+                            method: 'GET'
+                        }).success(function(data) {
+                            _allRooms[roomId].messageArr = data.messageArr;
+                            _allRooms[roomId].needsUpdate = false;
+                            deferred.resolve(_allRooms[roomId].messageArr);
+                        }).error(function(err) {
+                            deferred.reject(err);
+                        })
+                    }
+
+                }, function(err) {
+                    deferred.reject(err);
+                });
+
+                return deferred.promise;
+            },
+
+            getRoomToUsers: function(roomId, me) {
+                var deferred = $q.defer();
+                this.getRooms().then(function(response) {
+                    var temp = [];
+                    for (var u in _allRooms[roomId].users) {
+
+                        if (_allRooms[roomId].users[u] !== me._id) {
+                            temp.push(_allRooms[roomId].users[u]);
+                        }
+                    }
+
+                    if (_allRooms[roomId].toUserArr) {
+                        deferred.resolve(_allRooms[roomId].toUserArr);
+                    } else {
+                        $http({
+                            url: '/api/users',
+                            method: 'GET',
+                            params: {
+                                userIds: temp
+                            }
+                        }).success(function (data) {
+                            _allRooms[roomId].toUserArr = data.users;
+                            deferred.resolve(_allRooms[roomId].toUserArr);
+                        }).error(function (err) {
+                            deferred.reject(err);
+                        })
+                    }
+
+
+                }, function(err) {
+                   deferred.reject(err);
+                });
+                return deferred.promise;
+            },
+
+            getRoomId: function(user) {
+                var deferred = $q.defer();
+                var roomId = null;
+                this.getRooms().then(function(response) {
+                    for (var r in _allRooms) {
+                        var temp = _allRooms[r].users;
+                        if (temp.length == 2 && temp.indexOf(user.id) > -1) {
+                            roomId = r;
+                            break;
+                        }
+                    }
+
+                    if (roomId) {
+                        if (!_allRooms[roomId].toUserArr) _allRooms[roomId].toUserArr = [user];
+                        deferred.resolve(roomId);
+                    } else {
+                        // get new room from api
+                        $http({
+                            url: '/api/room/user/' + user._id,
+                            method: 'GET'
+                        }).success(function(data) {
+                            _allRooms[data.room._id] = data.room;
+                            _allRooms[data.room._id].needsUpdate = false;
+                            deferred.resolve(_allRooms[data.room._id]);
+                        }).error(function(err) {
+                            deferred.reject(err);
+                        })
+                    }
+                }, function(err) {
+                    deferred.reject(err);
+                });
+
+                return deferred.promise;
+
+
+            },
+
+            getMultipleRoomsToUsers: function(roomIds, me) {
+                var deferred = $q.defer();
+                var usersToRooms = {};
+                var result = {}; //map roomId to toUserArr
+
+                this.getRooms().then(function(response) {
+                    var neededUserIds = [];
+
+                    for (var r in roomIds) {
+                        var roomId = roomIds[r];
+
+                        if (_allRooms[roomId].toUserArr) {
+                            result[roomId] = _allRooms[roomId].toUserArr;
+                        } else {
+                            for (var u in _allRooms[roomId].users) {
+                                if (_allRooms[roomId].users[u] != me._id) {
+                                    neededUserIds.push(_allRooms[roomId].users[u]);
+                                    usersToRooms[_allRooms[roomId].users[u]] = roomId;
+                                }
+                            }
+                        }
+                    }
+
+                    if (neededUserIds.length > 0) {
+                        $http({
+                            url: '/api/users',
+                            method: 'GET',
+                            params: {
+                                userIds: neededUserIds
+                            }
+                        }).success(function(data) {
+                            for (var u in data.users) {
+                                var user = data.users[u];
+                                if (!_allRooms[usersToRooms[user._id]].toUserArr) {
+                                    _allRooms[usersToRooms[user._id]].toUserArr = [];
+                                }
+                                if (!result[usersToRooms[user._id]]) {
+                                    result[usersToRooms[user._id]] = [];
+                                }
+                                _allRooms[usersToRooms[user._id]].toUserArr.push(user);
+                                result[usersToRooms[user._id]].push(user);
+                            }
+
+                            deferred.resolve(result);
+                        }).error(function(err) {
+                            deferred.reject(err);
+                        })
+                    }
                 });
                 return deferred.promise;
 
             },
-            getUserInfo: function(userIds) {
+
+            addMessage: function(roomId, message) {
                 var deferred = $q.defer();
-                var temp = [];
-                for (var u in userIds) {
-                    if (!_userInfo[userIds[u]] && temp.indexOf(userIds[u]) == -1) {
-                        temp.push(userIds[u]);
-                    }
-                }
-                if (temp.length) {
-                    $http({
-                        url: '/api/user/info',
-                        method: 'GET',
-                        params: {
-                            users: temp
-                        }
-                    }).then(function(response) {
-                        for (var u in response.data.users) {
-                            var user = response.data.users[u];
-                            user.picture = user.picture != '' ? user.picture : '/img/generic_avatar.gif';
-                            _userInfo[user._id] = user;
-                        }
-                        deferred.resolve(_userInfo);
-                    });
-                } else {
-                    deferred.resolve(_userInfo);
-                }
+
+                this.getRooms().then(function(data) {
+                    _allRooms[roomId].messageArr.push(message);
+                    _allRooms[roomId].lastMessage = message.text;
+                    _allRooms[roomId].lastMessageCreated = message.created;
+                    deferred.resolve(_allRooms[roomId].messageArr);
+                }, function(err) {
+                    deferred.reject(err);
+                });
 
                 return deferred.promise;
             }

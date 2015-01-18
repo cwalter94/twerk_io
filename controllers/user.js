@@ -36,11 +36,11 @@ exports.validateToken = function(req, res, next) {
     try {
         jwt.verify(token, secrets.jwt, {}, function(err, decoded) {
             if (err) {
-                return res.status(401).end();
+                return res.status(401).end('Invalid auth token');
                 //return next(new UnauthorizedError('invalid_token', err));
             }
             if (decoded) {
-                User.findOne({email: decoded.email}, function (err, user) {
+                User.findOne({_id:decoded._id}, function (err, user) {
 
                     if (err) {
                         console.log(err);
@@ -72,7 +72,7 @@ exports.validateToken = function(req, res, next) {
                         if ((Math.floor((new Date())/1000) - decoded.iat) > 1*1000*3600) { // if token age > 1 hour
                             user.expiredtokens.push({token: token, issued_at: decoded.iat});
                             req['user'] = user;
-                            var newtoken = jwt.sign({email: decoded.email, name: decoded.name, roles: decoded.roles, verified: decoded.verified}, secrets.jwt, { expiresInDays: 7});
+                            var newtoken = jwt.sign({_id: decoded._id, email: decoded.email, name: decoded.name, roles: decoded.roles, verified: decoded.verified}, secrets.jwt, { expiresInDays: 7});
                             req['token'] = newtoken;
                             return next();
                         }
@@ -80,6 +80,7 @@ exports.validateToken = function(req, res, next) {
                         req['user'] = user;
                         req['token'] = token;
                         return next();
+
                     } else {
                         return res.status(401).end('Authorization error occurred.');
                     }

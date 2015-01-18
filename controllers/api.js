@@ -39,8 +39,8 @@ exports.getApi = function(req, res) {
 };
 
 exports.getUser = function(req, res) {
-    if (req.user && req.user.email) {
-        User.findOne({email: req.user.email}, 'email name status statusCreated roles classes major minor verified', function (err, user) {
+    if (req.user) {
+        User.findOne({_id: req.user._id}, 'email name status statusCreated roles classes major minor verified', function (err, user) {
 
             if (err) {
                 console.log(err);
@@ -56,7 +56,7 @@ exports.getUser = function(req, res) {
 };
 
 exports.getBrowse = function(req, res) {
-        var selectString = '_id name email picture status major minor classes lastOnline';
+        var selectString = '_id name email picture status major minor classes statusCreated lastOnline';
 
         if (req.query.start && req.query.limit && req.query.sortBy) {
             var temp = req.query.sortBy;
@@ -93,129 +93,110 @@ exports.getBrowse = function(req, res) {
 
 };
 
-exports.getRooms = function(req, res) {
-    if (req.query.toUserName && req.query.toUserId) {
-        Room.findOne({users: {"$size" : 2}, users: req.user._id, users: req.params.toUserId}, 'usersNames messages', function(err, room) {
+exports.getAllRoomsForReqUser = function(req, res) {
+    Room.find({users: req['user']['_id']}, '_id users messages lastMessage lastMessageCreated', function(err, rooms) {
+        console.log("ROOMS");
+        console.log(rooms);
+        console.log(req.user._id);
+        if (err) {
+            console.log(err);
+            return res.status(401).end('An error occurred while retrieving message threads.');
+        }
+        return res.json({token: req.token, allRooms: rooms});
+    });
+
+};
+
+exports.getMessagesForRoomId = function(req, res) {
+    if (req.params.roomId) {
+        Message.find({to: req.params.roomId}, 'from created text read', function(err, messages) {
             if (err) {
                 console.log(err);
-            } else if (room) {
-                Message.find({_id: {'$in' : room.messages}}).select('from text created').sort('-time').exec(function(err, messages) {
-                    if (err) console.log(err);
-                    if (messages.length > 0) {
-                        var tempRoom = {
-                            _id: room._id,
-                            users: room.users,
-                            messages: messages
-                        };
-                        return res.json({token: req.token, room: tempRoom});
-                    }
-                    return res.status(401).end('An unknown error occurred while finding messages');
-                });
-            } else {
-                var newRoom = new Room({
-                    users: [req.user._id, mongoose.Types.ObjectId(req.query.toUserId)],
-                    usersNames: [req.user.name, req.query.toUserName]
-                });
-                newRoom.save(function(err) {
-                    if (err) {
-                        console.log(err);
-                        return res.json({token: req.token, room: null, messages: null});
-                    }
-                    return res.json({token: req.token, room: newRoom, messages: []});
-                });
+                return res.status(401).end('An error occurred while retrieving messages for this thread.');
             }
-        });
-    } else if (req.query.roomId) {
-        Room.findOne({_id : req.query.roomId}, 'usersNames messages users', function(err, room) {
+            return res.json({token: req.token, messageArr: messages});
+        })
+    } else {
+        return res.status(401).end('Room id is required.');
+    }
+};
+
+exports.getRoomForRoomId = function(req, res) {
+    if (req.params.roomId) {
+        Room.findOne({_id: req.params.roomId}, function(err, room) {
             if (err) {
                 console.log(err);
-                return res.status(401).end('An error occurred while finding this chat.');
-            } else if (room) {
-                User.find({_id : {"$in" : room.users}}, function(err, users) {
-                    var user = {};
-                    for (var i in users) {
-                        if (users[i]._id != req.user._id) {
-                            user = users[i];
-                        }
-                    }
-                    if (err) {
-                        console.log(err);
-                        return res.status(401).end('An error occurred while retrieving users for this chat.');
-                    }
-                    if (room.messages.length > 0) {
-                        Message.find({_id: {'$in' : room.messages}}).select('from text created').sort('-time').exec(function(err, messages) {
-                            if (err) console.log(err);
-                            console.log(messages);
-                            if (messages.length > 0) {
-                                var tempRoom = {
-                                    _id : room._id,
-                                    toUsers: [{
-                                        email: user.email,
-                                        name: user.name,
-                                        _id: user._id,
-                                        classes: user.classes,
-                                        status: user.status
-                                    }],
-                                    messages: messages
-                                };
-
-                                return res.json({token: req.token, room: tempRoom});
-                            }
-                            return res.status(401).end('An unknown error occurred while finding messages');
-                        });
-                    } else {
-                        var tempRoom = {
-                            _id : room._id,
-                            toUsers: [{
-                                email: user.email,
-                                name: user.name,
-                                _id: user._id,
-                                classes: user.classes,
-                                status: user.status
-                            }],
-                            messages: []
-                        };
-
-                        return res.json({token: req.token, room: tempRoom});
-                    }
-
-
-                })
-
-            } else {
-                var newRoom = new Room({
-                    users: [req.user._id, mongoose.Types.ObjectId(req.query.toUserId)],
-                    usersNames: [req.user.name, req.query.toUserName]
-                });
-                newRoom.save(function(err) {
-                    if (err) {
-                        console.log(err);
-                        return res.json({token: req.token, room: null, messages: null});
-                    }
-                    return res.json({token: req.token, room: newRoom, messages: []});
-                });
+                return res.status(401).end('An error occurred while locating this message thread.');
             }
+            return res.json({token: req.token, room: room})
         });
     } else {
-        Room.find({users: req.user._id, messages: {"$not" : {"$size" : 0}}}, 'id lastMessage lastMessageCreated users usersNames', function(err, rooms) {
-            if (err) return res.status(401).end('An unknown error occurred. Please try again later.');
-
-
-            return res.json({token: req.token, rooms: rooms});
-
-
-        });
+        return res.status(401).end('Room id is required to retrieve room info.');
 
     }
 };
 
-exports.getUserInfo = function(req, res) {
-    if (req.query.users) {
-        User.find({_id : {"$in" : req.query.users}}).select('_id picture name email status classes').exec(function(err, users) {
-            return res.json({token: req.token, users: users});
+exports.getRoomForUserIdAndReqUser = function(req, res) {
+    if (req.params.userId) {
+        console.log(req.params.userId);
+        Room.findOne({users: req.user._id, users: req.params.userId}, function(err, room) {
+            if (err) {
+                console.log(err);
+                return res.status(401).end('An error occurred while locating this message thread.');
+            }
+            if (room) {
+                console.log("NO NEW ROOM");
+                console.log(room);
+                return res.json({token: req.token, room: room})
+            } else {
+
+                var newRoom = new Room({
+                    users: [req.user._id, req.params.userId]
+                });
+                newRoom.save(function(err) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(401).end('An error occurred while locating this message thread.');
+                    }
+                    console.log("NEW ROOM");
+                    console.log(newRoom);
+                    return res.json({token: req.token, room: {
+                        _id: newRoom._id,
+                        users: newRoom.users,
+                        messages: newRoom.messages
+                    }});
+                });
+            }
         })
     } else {
-        return res.status(401).end('An error occurred while fetching user pictures');
+        return res.status(401).end('A second user ID must be supplied.');
+    }
+};
+
+exports.getRoomToUsersForRoomId = function(req, res) {
+    if (req.params.roomId) {
+
+    } else {
+        return res.status(401).end('Room id is required to retrieve user info.');
+    }
+}
+
+exports.getUsersForUserIdsArr = function(req, res) {
+    if (req.query.userIds) {
+        if (typeof req.query.userIds != "object") {
+            req.query.userIds = [req.query.userIds];
+        }
+
+        User.find({_id : {"$in" : req.query.userIds}}, 'email status roles name email classes picture major minor', function(err, users) {
+            if (err) {
+                console.log(err);
+                return res.status(401).end('An unknown error occurred while finding user data.');
+            }
+            return res.json({token: req.token, users: users});
+        });
+
+    } else {
+        return res.status(401).end('User ids must be supplied as a query parameter.');
     }
 };
 
@@ -315,7 +296,7 @@ exports.authenticate = function(req, res, next) {
                 return res.status(401).end('Incorrect email or password.');
             }
 
-            var token = jwt.sign({email: user.email}, secrets.jwt, { expiresInDays: 7 });
+            var token = jwt.sign({_id : user._id, email: user.email}, secrets.jwt, { expiresInDays: 7 });
             return res.json({user : user, token: token});
         });
 
@@ -385,7 +366,7 @@ exports.getUserProfile = function(req, res, next) {
 
     if (req.user) {
         User.findOne({email: req.user.email},
-            'email status roles name email picture major minor verified',
+            'email status roles name email classes picture major minor verified',
 
             function (err, user) {
 

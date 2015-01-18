@@ -19,7 +19,7 @@ var registerCtrl = app.controller('registerCtrl', function($scope, $http, $locat
                 flash.error = 'You must provide a password.';
             } else {
                 principal.register($scope.formData).then(function(data) {
-                    $state.transitionTo('site.home.verify', { reload: false, inherit: true, notify: true });
+                    $state.transitionTo('site.auth.verify', { reload: false, inherit: true, notify: true });
                 }, function(error, data) {
                     flash.error = error;
                 });

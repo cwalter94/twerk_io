@@ -97,10 +97,19 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
 (function seed () {
 
-    //User.findOne({email: 'cwalter94@berkeley.edu'}).remove(function(err) {
-    //    console.log("user remove");
-    //    console.log(err);
+    //User.find({email: 'cwalter94@berkeley.edu'}).remove(function(err) {
+    //    if (err) console.log("err in user removal");
+    //    console.log("user removal");
     //});
+    //
+    //Room.find({}).remove(function(err) {
+    //    if (err) console.log("err in room removal");
+    //    console.log("room removal");
+    //});
+
+
+
+
 
 
     User.findOne({email: 'admin@twerk.io'},
@@ -173,21 +182,24 @@ app.get('/partials/inner/:dir/:name', function(req, res) {
 
 app.post('/authenticate', apiController.authenticate);
 app.post('/register', apiController.register);
+
 app.get('/api/user', apiController.getUser);
-app.get('/api/user/info', apiController.getUserInfo);
+app.get('/api/users', apiController.getUsersForUserIdsArr);
 app.get('/api/userprofile', apiController.getUserProfile);
 app.post('/api/userprofile', apiController.postUserProfile);
 app.post('/api/userpicture', apiController.postUserPicture);
+
 app.get('/api/verify/send', apiController.sendEmail);
 app.get('/api/verify/confirm', apiController.verifyEmail);
-app.get('/api/messages', apiController.getMessages);
-app.get('/api/messages/:roomId', apiController.getMessages);
+
 
 app.get('/api/browse', apiController.getBrowse);
 app.get('/api/browse/:roomId', apiController.getBrowse);
 
-app.get('/api/rooms', apiController.getRooms);
-app.get('/api/rooms/:roomId', apiController.getMessages);
+app.get('/api/room/all', apiController.getAllRoomsForReqUser);
+app.get('/api/room/user/:userId', apiController.getRoomForUserIdAndReqUser);
+app.get('/api/room/:roomId', apiController.getRoomForRoomId);
+app.get('/api/room/:roomId/messages', apiController.getMessagesForRoomId);
 
 app.get('/api/admin/allusers', apiController.adminAllUsers);
 app.post('/api/admin/saveuser', apiController.adminSaveUser);
