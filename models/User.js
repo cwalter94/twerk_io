@@ -7,7 +7,7 @@ var userSchema = new mongoose.Schema({
     email: { type: String, unique: true, lowercase: true},
     password: String,
     status: {type: String, default: ''},
-    statusCreated: {type: Date, default: Date.now},
+    statusCreated: {type: Date, default: Date.now, required: true},
     verified: {type: Boolean, default: false, required: true},
     roles: {type: Array, default: ['User']},
     lastOnline: {type: Date, default: Date.now, required: true},
@@ -32,6 +32,7 @@ var userSchema = new mongoose.Schema({
 
 userSchema.pre('save', function (next) {
     var user = this;
+    user.lastOnline = Date.now();
     if (!user.isModified('password')) return next();
 
     bcrypt.genSalt(5, function (err, salt) {

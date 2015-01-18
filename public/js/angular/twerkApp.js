@@ -290,7 +290,12 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 return null;
                             });
                         }
-                    ]
+                    ],
+                    users: ['userFactory', function(userFactory) {
+                        return userFactory.getUsers().then(function(allUsers) {
+                            return allUsers;
+                        });
+                    }]
                 }
             });
 
@@ -734,29 +739,111 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             }
         }
     })
+    .factory('userFactory', function($http, $q) {
+        var _allUsers = null, _allUsersArr = [], _sortBy = 'lastOnline';
+
+        return {
+            getUsers: function() {
+                var deferred = $q.defer();
+
+                if (_allUsers) {
+                    deferred.resolve(_allUsers);
+                } else {
+                    $http({
+                        url: '/api/users/browse',
+                        method: 'GET',
+                        params: {
+                            num: 20,
+                            sortBy: _sortBy,
+                            start: 0
+                        }
+                    }).success(function(data) {
+                        if (!_allUsers) _allUsers = {};
+
+                        for (var u in data.users) {
+                            var user = data.users[u];
+                            _allUsers[user._id] = user;
+                            _allUsersArr.push(_allUsers[user._id]);
+                        }
+                        _allUsersArr.sort(function(a, b) {
+                            return a[_sortBy] - b[_sortBy];
+                        });
+                        deferred.resolve(_allUsersArr);
+
+                    }).error(function(err) {
+                        deferred.reject(err);
+                    })
+                }
+                return deferred.promise;
+            },
+            getMoreUsers: function(sortBy) {
+                var deferred = $q.defer();
+                var start = 0;
+
+                if (!sortBy || sortBy == _sortBy) {
+                    start = _allUsersArr.length;
+                }
+
+                _sortBy = sortBy;
+
+                this.getUsers().then(function(data) {
+                    $http({
+                        url: '/api/users/browse',
+                        method: 'GET',
+                        params: {
+                            num: 10,
+                            sortBy: _sortBy,
+                            start: start
+                        }
+                    }).success(function(data) {
+                        for (var u in data.users) {
+                            var user = data.users[u];
+                            if (!_allUsers[user._id]) {
+                                _allUsersArr.push(user);
+                            }
+                            _allUsers[user._id] = user;
+                        }
+                        _allUsersArr.sort(_sortBy);
+                        deferred.resolve(_allUsersArr);
+                    }).error(function(err) {
+                        deferred.reject(err);
+                    })
+                }, function(err) {
+                    deferred.reject(err);
+                });
+
+                return deferred.promise;
+            }
+        }
+    })
     .filter('browseFilter', function () {
         return function (users, search) {
+            console.log(users, search);
             if (search == null) return users;
             var results = {};
+            var resultsArr = [];
 
-            for (var email in users) {
-                var user = users[email];
-                var userString = email + ' ' + user.name + ' ' + user.status;
-                if (user.classes && user.classes.length) userString += ' ' + user.classes.join(' ');
-                if (user.major && user.major.length) userString += ' ' + user.major.join(' ');
-                if (user.minor && user.minor.length) userString += ' ' + user.minor.join(' ');
+            for (var u in users) {
+                var user = users[u];
+                var searchStrings = search.split(', ');
+                var returnUser = false;
 
-                var searchStrings = search.split(' ');
-                for (var i = 0; i < searchStrings.length; i++) {
+                var userString = user.name + ' ' + user.status + user.classes.join(' ');
+
+                for (var i in searchStrings) {
                     if (userString.toLowerCase().indexOf(searchStrings[i].toLowerCase()) > -1) {
-                        results[email] = user;
-                    } else {
-                        delete results[email];
-                        break;
+                        results[user._id] = user;
                     }
                 }
             }
-            return results;
+
+            for (var key in results) {
+                resultsArr.push(results[key]);
+            }
+
+
+            return resultsArr;
+
         }
     })
     .filter('classFilter', function () {

@@ -185,16 +185,13 @@ app.post('/register', apiController.register);
 
 app.get('/api/user', apiController.getUser);
 app.get('/api/users', apiController.getUsersForUserIdsArr);
+app.get('/api/users/browse', apiController.getUsersForBrowse); // params = num, start, sortBy
 app.get('/api/userprofile', apiController.getUserProfile);
 app.post('/api/userprofile', apiController.postUserProfile);
 app.post('/api/userpicture', apiController.postUserPicture);
 
 app.get('/api/verify/send', apiController.sendEmail);
 app.get('/api/verify/confirm', apiController.verifyEmail);
-
-
-app.get('/api/browse', apiController.getBrowse);
-app.get('/api/browse/:roomId', apiController.getBrowse);
 
 app.get('/api/room/all', apiController.getAllRoomsForReqUser);
 app.get('/api/room/user/:userId', apiController.getRoomForUserIdAndReqUser);
