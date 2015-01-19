@@ -112,7 +112,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
 
 
-    User.findOne({email: 'admin@twerk.io'},
+    User.findOne({email: 'user26@berkeley.edu'},
         function (err, existingUser) {
             if (err) console.log(err);
 
