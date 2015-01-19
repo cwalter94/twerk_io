@@ -88,8 +88,29 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         }
                     ]
                 },
-                controller: function($scope, $state) {
+                controller: function($scope, $state, me, siteSocket, userFactory) {
+                    console.log("INIT", me._id);
+                    siteSocket.emit('user:init', me._id);
 
+                    siteSocket.on('user:offline', function(userId) {
+                        userFactory.userOffline(userId).then(function(data) {
+
+                        }, function(err) {
+
+                        })
+                    });
+
+                    siteSocket.on('user:online', function(userId) {
+                        userFactory.userOnline(userId).then(function(data) {
+
+                        }, function(err) {
+
+                        })
+                    });
+
+                    siteSocket.on('user:init', function(userOnlineStatus) {
+                        userFactory.allUserOnlineStatus(userOnlineStatus);
+                    });
                 }
             })
             .state('site.auth.verify', {
@@ -154,6 +175,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 controller: function($scope, verified, sendEmailFn) {
                     $scope.verified = verified;
                     $scope.sendEmail = sendEmailFn;
+
                 }
             })
 
@@ -740,7 +762,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         }
     })
     .factory('userFactory', function($http, $q) {
-        var _allUsers = null, _allUsersArr = [], _sortBy = 'lastOnline';
+        var _allUsers = null, _allUsersArr = [], _sortBy = 'lastOnline', _usersOnlineStatus = {};
 
         return {
             getUsers: function() {
@@ -763,6 +785,8 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         for (var u in data.users) {
                             var user = data.users[u];
                             _allUsers[user._id] = user;
+                            _allUsers[user._id].online = _usersOnlineStatus[user._id] != null ? _usersOnlineStatus[user._id].online :  _allUsers[user._id].online;
+                            _allUsers[user._id].lastOnline = _usersOnlineStatus[user._id] != null ? _usersOnlineStatus[user._id].lastOnline :  _allUsers[user._id].lastOnline;
                             _allUsersArr.push(_allUsers[user._id]);
                         }
                         _allUsersArr.sort(function(a, b) {
@@ -803,7 +827,9 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             }
                             _allUsers[user._id] = user;
                         }
-                        _allUsersArr.sort(_sortBy);
+                        _allUsersArr.sort(function(a, b) {
+                            return a[_sortBy] - b[_sortBy];
+                        });
                         deferred.resolve(_allUsersArr);
                     }).error(function(err) {
                         deferred.reject(err);
@@ -813,12 +839,62 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 });
 
                 return deferred.promise;
+            },
+            userOnline: function(userId) {
+                var deferred = $q.defer();
+
+                this.getUsers().then(function(allUsers) {
+                    if (_allUsers[userId]) {
+                        _allUsers[userId].online = true;
+                        _allUsers[userId].lastOnline = Date.now();
+                    } else {
+                        _usersOnlineStatus[userId] = {online: true, lastOnline: Date.now()};
+                    }
+
+                    deferred.resolve(_allUsersArr);
+                }, function(err) {
+                    deferred.reject(err);
+                });
+
+                return deferred.promise;
+            },
+            userOffline: function(userId) {
+                var deferred = $q.defer();
+
+                this.getUsers().then(function(allUsers) {
+                    if (_allUsers[userId]) {
+                        _allUsers[userId].online = false;
+                        _allUsers[userId].lastOnline = Date.now();
+                    } else {
+                        _usersOnlineStatus[userId] = {online: false, lastOnline: Date.now()};
+                    }
+                }, function(err) {
+                    deferred.reject(err);
+                });
+
+                return deferred.promise;
+            },
+            allUserOnlineStatus: function(userObj) {
+                var deferred = $q.defer();
+                this.getUsers().then(function(allUsers) {
+                    for (var userId in userObj) {
+                        if (_allUsers[userId]) {
+                            _allUsers[userId].online = userObj[userId].online;
+                            _allUsers[userId].lastOnline = userObj[userId].lastOnline;
+                        } else {
+                            _usersOnlineStatus[userId] = userObj[userId];
+                        }
+                    }
+
+                }, function(err) {
+                    deferred.reject(err);
+                });
+
             }
         }
     })
     .filter('browseFilter', function () {
         return function (users, search) {
-            console.log(users, search);
             if (search == null) return users;
             var results = {};
             var resultsArr = [];

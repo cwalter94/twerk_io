@@ -1,4 +1,4 @@
-var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $location, flash, $state, $stateParams, siteSocket, messageFactory, me, allRooms) {
+var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $location, flash, $state, $stateParams, siteSocket, messageFactory, userFactory, me, allRooms) {
     $scope.search = "";
     $scope.siteSocket = siteSocket;
     $scope.room = null;
@@ -43,38 +43,12 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
         }
     });
 
-    siteSocket.on('user:offline', function(email) {
-        if ($scope.users[email]) {
-            $scope.users[email].online = false;
-
-        }
-    });
-
-    siteSocket.on('user:online', function(email) {
-        if ($scope.users[email]) {
-            $scope.users[email].online = true;
-        }
-    });
-
 
     siteSocket.on('send:message', function(message) {
         if ($scope.room != message.to) {
             $scope.$parent.newMessages += 1;
         }
-
-        if ($scope.messages[message.to]) {
-            $scope.messages[message.to].push(message);
-        } else {
-            $scope.messages[message.to] = [];
-            $scope.messages[message.to].push(message);
-        }
-        $scope.message = {rows: 1, from: $scope.me.id, to: $scope.room};
-    });
-
-    siteSocket.on('join:room', function(room) {
-        console.log("joined " + room);
-        $scope.room = room;
-        $scope.message = {rows: 1, from: $scope.me.id, to: $scope.room, toEmail: $scope.message.toEmail};
+        messageFactory.addMessage(message);
     });
 
 });

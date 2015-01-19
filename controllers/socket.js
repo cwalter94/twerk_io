@@ -6,17 +6,28 @@ var mongoose = require('mongoose');
 exports.socketHandler = function (allUsers) {
     return function (socket) {
 
-        socket.on('user:init', function(email) {
-            socket.email = email;
-            allUsers[email] = {online : true};
+        socket.on('user:init', function(userId) {
+            socket.userId = userId;
+            allUsers[userId] = {online : true, lastOnline: Date.now()};
             socket.emit('user:init', allUsers);
-            socket.join(email);
-            User.findOne({email: email}, 'lastOnline', function(err, user) {
-                user.lastOnline = Date.now();
-                user.save(function(err) {
+            socket.join(userId);
+            User.findById(userId, 'lastOnline', function(err, user) {
+                if (err) {
                     console.log(err);
-                    socket.broadcast.emit('user:online', email);
-                })
+                    socket.emit('error', err);
+                } else {
+                    user.lastOnline = Date.now();
+                    user.save(function(err) {
+                        if (err) {
+                            console.log(err);
+                            socket.emit('error', err);
+                        } else {
+                            socket.broadcast.emit('user:online', userId);
+
+                        }
+                    })
+                }
+
             })
 
         });
@@ -35,8 +46,8 @@ exports.socketHandler = function (allUsers) {
         socket.on("send:message", function(msg) {
             if (msg.from && msg.to && msg.toEmail && msg.text !== '') {
                 var message = new Message({
-                    from: mongoose.Schema.Types.ObjectId(msg.from),
-                    to: mongoose.Schema.Types.ObjectId(msg.to),
+                    from: mongoose.Types.ObjectId(msg.from),
+                    to: mongoose.Types.ObjectId(msg.to),
                     text: msg.text
                 });
 
@@ -78,10 +89,10 @@ exports.socketHandler = function (allUsers) {
 
         socket.on("disconnect", function() {
 
-            allUsers[socket.email] = {online : false, lastOnline: Date.now()};
+            allUsers[socket.userId] = {online : false, lastOnline: Date.now()};
 
             var temp = [];
-            socket.broadcast.emit('user:offline', socket.email);
+            socket.broadcast.emit('user:offline', socket.userId);
         });
 
     }
