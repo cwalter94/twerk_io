@@ -34,6 +34,10 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
         console.log(roomId);
         $state.transitionTo('site.auth.messages.room', {'roomId': roomId}, { reload: false, inherit: true, notify: true });
     };
+    $scope.getThumbnail = function(picUrl) {
+        if (!picUrl || picUrl == "" || picUrl == '/img/generic_avatar.gif') return '/img/generic_avatar.gif';
+        return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
+    };
 
     siteSocket.on('user:init', function(allUsers) {
         for (key in allUsers) {
@@ -42,6 +46,7 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
             }
         }
     });
+
 
 
     siteSocket.on('send:message', function(message) {

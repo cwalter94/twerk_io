@@ -593,6 +593,7 @@ html {
 
 
           .browse-sm-container {
+            position: relative;
             float: left;
             width: 360px;
             height: 180px;
@@ -619,11 +620,16 @@ html {
 
             .profile-info-container {
               padding: 10px;
-              width: 100%;
+              height: 100%;
+              padding-bottom: 0;
 
-              >.row {
-                height: 70px;
-                overflow-y: hidden;
+              width: 100%;
+              height: 100%;
+              overflow-y: hidden;
+
+              > .row {
+                margin-left: -10px;
+                margin-right: 10px;
               }
 
               .img-col {
@@ -636,26 +642,31 @@ html {
               .status-col {
                 display: inline-block;
               }
-              .name-col {
-                display: none;
-
-              }
 
             }
             .chat-container {
               display: none;
             }
 
+            &.online {
+              .glyphicon-comment {
+                display: block;
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                color: #63b2ff;
+              }
+            }
+
             &.message-sm-container {
               height: 380px;
             }
 
-            &.online {
-              .profile-info-container {
-                background: #81B3E3;
-
-              }
+            .glyphicon-comment {
+              display: none;
             }
+
+
 
             &:hover {
               cursor: pointer;
@@ -679,7 +690,8 @@ html {
             .name {
               margin-top: 10px;
               margin-bottom: 5px;
-              color: #1391DB;
+              color: #2E22A1;
+              font-size: 16px;
             }
 
           }

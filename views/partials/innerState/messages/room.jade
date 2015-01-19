@@ -2,7 +2,7 @@
     .chat-profile-container.offline
         i(ng-show="toUser.online").glyphicon.glyphicon-comment
         .col-md-2.col-xs-3.img-col
-            img(once-src="toUser.picture || '/img/generic_avatar.gif'")
+            img(once-src="getThumbnail(toUser.picture)")
         .col-md-10.col-xs-9.name-col
             .text-left
                 h5.name(once-text="toUser.name")

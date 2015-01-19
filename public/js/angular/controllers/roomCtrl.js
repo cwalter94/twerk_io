@@ -35,6 +35,11 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
         }
     };
 
+    $scope.getThumbnail = function(picUrl) {
+        if (!picUrl || picUrl == "" || picUrl == '/img/generic_avatar.gif') return '/img/generic_avatar.gif';
+        return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
+    };
+
 
     $scope.sendMessage = function() {
         if ($scope.message.to && $scope.message.from && $scope.message.text && $scope.message.toEmail) {
