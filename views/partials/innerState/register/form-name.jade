@@ -1,0 +1,19 @@
+.col-xs-12(ng-init="visitedForms.push('name')")
+    .row
+        .col-lg-6.col-lg-offset-3.col-xs-8.col-xs-offset-2
+            .form-group.form-group-lg
+                .input-group-lg.row
+                    .col-xs-12
+                        label.input-lg Name:
+                    .col-xs-12
+                        input.form-control.input-lg(ng-model="formData.name", ng-focus="true")
+
+    .row.form-control-row
+        .col-xs-6.text-center
+            a.btn-form(ui-sref='site.home.register.email')
+                i.fa.fa-angle-left
+                span Back
+        .col-xs-6.text-center
+            a.btn-form(ui-sref='site.home.register.password')
+                span Next
+                i.fa.fa-angle-right

@@ -1,0 +1,14 @@
+.col-xs-12
+    .row
+        .col-lg-6.col-lg-offset-3.col-xs-8.col-xs-offset-2
+            .form-group.form-group-lg.row
+                .col-xs-12
+                    label.input-lg Email:
+                .col-xs-12
+                    input.form-control.input-lg(type="email", ng-model="formData.email", ng-class="{'error': formData.username.$error.$email}")
+
+    .row.form-control-row
+        .col-xs-6.col-xs-offset-6.text-center
+            a.btn-form(ui-sref='site.home.register.name')
+                span Next
+                i.fa.fa-angle-right

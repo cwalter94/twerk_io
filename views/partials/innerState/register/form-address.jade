@@ -1,0 +1,22 @@
+.col-xs-12(ng-init="visitedForms.push('address')")
+    .row
+        .col-md-8.col-md-offset-2.col-xs-10.col-xs-offset-1
+            .form-group.form-group-lg
+                .input-group-lg.row
+                    label.col-xs-1.input-lg(for='address') Address
+                    input(type="hidden", ng-model="address.selected.formatted_address")
+                    ui-select.input-lg.col-xs-12.address-select(ng-model='address.selected', theme='selectize', ng-disabled='disabled', reset-search-input='false')
+                        ui-select-match(placeholder='Enter your address', style="padding-right: 20px", ng-init="$select.search=user.address") {{$select.selected.formatted_address}}
+                        ui-select-choices(repeat='address in addresses track by $index', refresh='refreshAddresses($select.search)', refresh-delay='0')
+                            div(ng-bind-html='address.formatted_address | highlight: $select.search')
+
+
+    .row.form-control-row
+        .col-xs-6.text-center
+            a.btn-form(ui-sref='site.register.phone')
+                i.fa.fa-angle-left
+                span Back
+        .col-xs-6.text-center
+            a.btn-form(ui-sref='site.register.membership')
+                span Next
+                i.fa.fa-angle-right
