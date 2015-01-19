@@ -86,10 +86,17 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 $location.path('/login');
                             });
                         }
-                    ]
+                    ],
+                    siteSocket: ['socket', function(socket) {
+                        return socket.getSocket().then(function(s) {
+                            return s;
+                        }, function(err) {
+                            return null;
+                        })
+                    }]
                 },
                 controller: function($scope, $state, me, siteSocket, userFactory) {
-                    console.log("INIT", me._id);
+
                     siteSocket.emit('user:init', me._id);
 
                     siteSocket.on('user:offline', function(userId) {
@@ -582,7 +589,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         method: 'GET'
                     }).success(function(data) {
                         _allRooms = {};
-                        console.log(data);
                         for (var r in data.allRooms) {
                             _allRooms[data.allRooms[r]._id] = data.allRooms[r];
                         }
