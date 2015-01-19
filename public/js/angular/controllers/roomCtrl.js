@@ -9,7 +9,6 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUsersArr) {
         $scope.toUser = toUsersArr[0];
         $scope.toUser.classesString = $scope.toUser.classes.length ? $scope.toUser.classes.join(', ') : "No classes.";
-        console.log($scope.toUser);
         $scope.message = {rows: 1, from: $scope.me._id, to: $stateParams.roomId, toEmail: $scope.toUser.email};
     }, function(err) {
         flash.error = err;

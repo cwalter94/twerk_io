@@ -16,16 +16,19 @@ exports.socketHandler = function (allUsers) {
                     console.log(err);
                     socket.emit('error', err);
                 } else {
-                    user.lastOnline = Date.now();
-                    user.save(function(err) {
-                        if (err) {
-                            console.log(err);
-                            socket.emit('error', err);
-                        } else {
-                            socket.broadcast.emit('user:online', userId);
+                    if (user) {
+                        user.lastOnline = Date.now();
+                        user.save(function(err) {
+                            if (err) {
+                                console.log(err);
+                                socket.emit('error', err);
+                            } else {
+                                socket.broadcast.emit('user:online', userId);
 
-                        }
-                    })
+                            }
+                        })
+                    }
+
                 }
 
             })

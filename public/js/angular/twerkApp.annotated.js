@@ -86,10 +86,17 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 $location.path('/login');
                             });
                         }
-                    ]
+                    ],
+                    siteSocket: ['socket', function(socket) {
+                        return socket.getSocket().then(function(s) {
+                            return s;
+                        }, function(err) {
+                            return null;
+                        })
+                    }]
                 },
                 controller: ['$scope', '$state', 'me', 'siteSocket', 'userFactory', function($scope, $state, me, siteSocket, userFactory) {
-                    console.log("INIT", me._id);
+
                     siteSocket.emit('user:init', me._id);
 
                     siteSocket.on('user:offline', function(userId) {
@@ -1605,7 +1612,6 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
     messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUsersArr) {
         $scope.toUser = toUsersArr[0];
         $scope.toUser.classesString = $scope.toUser.classes.length ? $scope.toUser.classes.join(', ') : "No classes.";
-        console.log($scope.toUser);
         $scope.message = {rows: 1, from: $scope.me._id, to: $stateParams.roomId, toEmail: $scope.toUser.email};
     }, function(err) {
         flash.error = err;
