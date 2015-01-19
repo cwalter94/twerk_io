@@ -1,0 +1,25 @@
+.col-xs-8.col-xs-offset-2
+    .row
+        .col-xs-12
+            .form-group.row#tagSelection
+                label.input-lg.col-xs-12 College:
+                ui-select.input-lg(multiple, ng-model="user.colleges", theme="select2", style="width: 100%;")
+                    ui-select-match(placeholder="Select college(s)") {{$item}}
+                    ui-select-choices(repeat="college in allColleges | filter: $select.search") {{college}}
+            .form-group.row
+                input.input-lg(type="hidden", name="season", value="{{user.gradclassSeason}}", ng-model="user.gradclassSeason")
+                label.input-lg.col-xs-12 Graduating Class
+                .col-xs-3
+                    button.input-lg.btn.btn-default(type='button', ng-model='user.gradclassSeason',
+                    ng-options="s as s for s in ['Fall', 'Spring', 'Summer']", bs-select='',
+                    placeholder="Semester", style="font-size: 18px;")
+                        span.caret
+                .col-xs-3.col-xs-offset-1
+                    input.input-lg.form-control.btn.btn-default(ng-model="user.gradclassYear", ui-mask="9999", style="font-size: 18px;")
+
+            .form-group.row
+                label.input-lg.col-xs-12 Major(s):
+                input.input-lg.col-xs-12.form-control(ng-model="user.major", placeholder="comma-separated")
+            .form-group.row
+                label.input-lg.col-xs-12 Minor(s):
+                input.input-lg.col-xs-12.form-control(ng-model="user.minor", placeholder="comma-separated")

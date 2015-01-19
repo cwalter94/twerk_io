@@ -1,0 +1,19 @@
+.container.content-container#dashboard-container
+    .row.page-header
+        .col-xs-12
+            div.alert-warn.fade(flash-alert="error", active-class='in alert')
+                strong.alert-message {{flash.message}}
+            div.alert-warn.fade(flash-alert='success', active-class='in alert')
+                strong.alert-message {{flash.message}}
+            .row
+                .col-xs-5
+                    h3 Admin Dashboard
+
+                .col-xs-7
+                    #statusButtons.dashboard-btn.text-right
+                        a(ui-sref-active="active", ui-sref="site.dashboard.users") Users
+                        a(ui-sref-active="active") Statistics
+
+    .row
+        div.col-xs-12
+            .ui-view#formViews

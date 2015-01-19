@@ -1,0 +1,48 @@
+table.table.table-striped(st-table='users')
+    thead
+        tr
+            th
+            th Email
+            th Status
+            th House Pts
+            th House Positions
+            th Website Permissions
+            th Save
+            th Del
+        tbody
+            tr(ng-repeat='user in users', ng-init="user.checked = false")
+                td(ng-init="user.dataChanged = false;")
+                    i.fa(ng-class="{'fa-square-o' : !user.checked, 'fa-check-square-o' : user.checked}"
+                        ng-click="user.checked = !user.checked")
+
+                td {{user.email}}
+
+                td
+                    button.btn.btn-default.ng-dirty(type='button', ng-model='user.status',
+                    ng-options="s as s for s in ['Pledge', 'Active', 'Alumni']", bs-select='', style="width: 100px;"
+                    )
+                        span.caret
+                td
+                    input.form-control(ng-init="user.housePoints ? user.housePoints : 0", ng-show="user.status === 'Active'", ng-model="user.housePoints")
+                    .form-control(ng-show="user.status !== 'Active'") N/A
+                td
+                    .form-group
+                        ui-select(multiple, on-remove="openPosition($item, user)",
+                        on-select="takePosition($item,user)", ng-model="user.housePositions",
+                        reset-search-input="true",
+                        theme="select2", style="width: 250px;")
+
+                            ui-select-match {{$item}}
+                            ui-select-choices(repeat="pos in allPositions | housePositionsFilter:openPositions:user.housePositions:$select.search | orderBy: pos : false") {{pos}}
+
+                td
+                    .form-group
+                        ui-select(multiple, reset-search-input="true", ng-model="user.roles", theme="select2", style="width: 350px;")
+                            ui-select-match {{$item}}
+                            ui-select-choices(repeat="role in allRoles | filter: $select.search") {{role}}
+                td
+                    .btn.btn-warning(ng-show="user.needsSave", ng-click="saveUser(user)")
+                        i.fa.fa-save
+                td
+                    .btn.btn-danger(ng-click="deleteUser(user)")
+                        i.fa.fa-times

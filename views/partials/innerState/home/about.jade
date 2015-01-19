@@ -1,0 +1,104 @@
+section#about.home-section.text-center
+    .heading-about
+        .container
+            .row
+                .col-lg-8.col-lg-offset-2
+                    .wow.bounceInDown(data-wow-delay="0.1s")
+                        .section-heading
+                            h2 Exec Board
+                            i.fa.fa-2x.fa-angle-down
+    .container
+        .row
+            .col-lg-2.col-lg-offset-5
+                hr.marginbot-50
+        .row.marginbot-50
+            .col-xs-6.col-sm-4.col-md-4
+                .wow.fadeInUp(data-wow-delay="0.2s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.president.name || 'Unknown'}}
+                            p.subtitle President
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.president.picture}}", alt="", style="width:100%")
+            .col-xs-6.col-sm-4.col-md-4
+                .wow.fadeInUp(data-wow-delay="0.2s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.vpfinance.name || 'Unknown'}}
+                            p.subtitle VP Finance
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.vpfinance.picture}}", alt="", style="width:100%")
+            .col-xs-6.col-sm-4.col-md-4
+                .wow.fadeInUp(data-wow-delay="0.2s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.vplossprevention.name|| 'Unknown'}}
+                            p.subtitle VP Loss Prevention
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.vplossprevention.picture}}", alt="", style="width:100%")
+        .row.marginbot-50
+            .col-xs-6.col-sm-3.col-md-3
+                .wow.fadeInUp(data-wow-delay="0.2s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.vpacademicexcellence.name|| 'Unknown'}}
+                            p.subtitle VP Academic Excellence
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.vpacademicexcellence.picture}}", alt="")
+            .col-xs-6.col-sm-3.col-md-3
+                .wow.fadeInUp(data-wow-delay="0.4s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.internalsocialchair.name|| 'Unknown'}}
+                            p.subtitle Internal Social Chair
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.internalsocialchair.picture}}", alt="")
+            .col-xs-6.col-sm-3.col-md-3
+                .wow.fadeInUp(data-wow-delay="0.4s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.vpexternalrelations.name || 'Unknown'}}
+                            p.subtitle VP External Relations
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.vpexternalrelations.picture}}", alt="")
+            .col-xs-6.col-sm-3.col-md-3
+                .wow.fadeInUp(data-wow-delay="0.4s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.vpadministration.name || 'Unknown'}}
+                            p.subtitle VP Administration
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.vpadministration.picture}}", alt="")
+        .row
+            .col-xs-6.col-sm-3.col-md-3
+                .wow.fadeInUp(data-wow-delay="0.8s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.associatemembereducator.name}}
+                            p.subtitle Associate Member Educator
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.associatemembereducator.picture}}", alt="")
+            .col-xs-6.col-sm-3.col-md-3
+                .wow.fadeInUp(data-wow-delay="0.8s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.houseimprovementchair.name}}
+                            p.subtitle House Improvement Chair
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.houseimprovementchair.picture}}", alt="")
+            .col-xs-6.col-sm-3.col-md-3
+                .wow.fadeInUp(data-wow-delay="0.8s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.vpmembereducation.name}}
+                            p.subtitle VP Member Education
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.vpmembereducation.picture}}", alt="")
+            .col-xs-6.col-sm-3.col-md-3
+                .wow.fadeInUp(data-wow-delay="0.8s")
+                    .team.boxed-grey
+                        .inner
+                            h5 {{data.excomm.vpmembereducationtwo.name}}
+                            p.subtitle VP Member Education
+                            .avatar
+                                img.img-responsive.img-circle(ng-src="{{data.excomm.vpmembereducationtwo.picture}}", alt="")

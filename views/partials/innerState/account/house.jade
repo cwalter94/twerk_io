@@ -1,0 +1,25 @@
+.col-xs-12
+    .row
+        .col-md-6.col-xs-12
+            .form-group.row
+                input(type="hidden", name="season", value="{{user.pledgeclassSeason}}", ng-model="user.pledgeclassSeason")
+                label.col-lg-12.col-xs-12.input-lg Pledge Class
+
+                .col-lg-4
+                    button.btn.btn-default.input-lg(type='button', ng-model='user.pledgeclassSeason',
+                    ng-options="s as s for s in ['Fall', 'Spring']", bs-select='', style="width: 100%;"
+                    placeholder="Semester")
+                        span.caret
+
+                .col-lg-4
+                    input.form-control.input-lg.btn.btn-default(ng-model="user.pledgeclassYear", ui-mask="9999")
+        .col-md-6.col-xs-12.col-xs-offset-0
+            .form-group.form-group-lg
+                label.col-xs-12.input-lg House Name:
+                input.col-xs-12.form-control.input-lg(ng-model="user.houseName")
+
+    .form-group.form-group-lg.row#tagSelection
+        label.input-lg.col-xs-12 Past House Positions:
+        ui-select.col-xs-12(multiple, ng-model="user.pastHousePositions", theme="select2", style="width: 100%;")
+            ui-select-match(placeholder="Select Positions") {{$item}}
+            ui-select-choices(repeat="position in allPositions | filter: $select.search") {{position}}

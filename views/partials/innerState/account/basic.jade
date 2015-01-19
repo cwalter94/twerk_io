@@ -1,0 +1,47 @@
+.col-xs-12
+    .row
+
+        .col-xs-8
+            .form-group.row
+                label.col-sm-2.control-label(for='email') Contact Email
+                .col-sm-6
+                    input.form-control(type='email', name='email', id='email', ng-model="user.email")
+            .form-group.row
+                label.col-sm-2.control-label(for='email') Username
+                .col-sm-6
+                    input.form-control(type='email', name='email', id='email', ng-model="user.username")
+            .form-group.row
+                label.col-sm-2.control-label(for='name') Name
+                .col-sm-6
+                    input.form-control(type='text', name='name', id='name', ng-model="user.name")
+            .form-group.row
+                input(type="hidden", name="status", value="{{user.status}}", ng-model="user.status")
+                label.col-sm-2.control-label Status 
+                .col-sm-6
+                    button.btn.btn-default(type='button', ng-model='user.status', data-html='1', ng-options='status as status for status in statuses', bs-select='')
+                        | Select
+                        span.caret
+
+
+            .form-group.row
+                label.col-xs-2 Phone
+                .col-xs-6
+                    input.form-control(ng-model="user.phone", ui-mask="(999) 999-9999", style="font-size: 18px; text-align: center;")
+
+            .form-group.row(ng-init="address.selected.formatted_address=user.address")
+                label.col-sm-2.control-label(for='address') Address
+                input(type="hidden", ng-model="address.selected.formatted_address",
+                ng-init="refreshAddresses(user.address)")
+                ui-select.col-sm-6.address-select(ng-model='address.selected', theme='selectize', ng-disabled='disabled', reset-search-input='false')
+                    ui-select-match(placeholder='Enter an address...', style="padding-right: 20px", ng-init="$select.search=user.address") {{$select.selected.formatted_address}}
+                    ui-select-choices(repeat='address in addresses track by $index', refresh='refreshAddresses($select.search)', refresh-delay='0')
+                        div(ng-bind-html='address.formatted_address | highlight: $select.search')
+
+    .page-header
+        h3 Delete Account
+        p You can delete your account, but keep in mind this action is irreversible.
+        form(ng-submit="deleteAccount()")
+            input(type='hidden', name='_csrf', value=_csrf)
+            button.btn.btn-danger(type='submit')
+                span.ion-trash-b
+                | Delete my account
