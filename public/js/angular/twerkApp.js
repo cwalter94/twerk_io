@@ -46,9 +46,9 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     me: ['principal', '$location', '$state',
                         function (principal, $location, $state) {
                             return principal.identity().then(function(identity) {
-                                //if (identity != null) {
-                                //    $location.path('/browse');
-                                //}
+                                if (identity != null) {
+                                    $state.transitionTo('/browse');
+                                }
                                 return identity;
                             }, function(err) {
                                 $location.path('/login');
