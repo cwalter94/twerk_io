@@ -108,62 +108,65 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
     //});
 
 
+    User.findOne({testData: true}).remove(function(err) {
+        if (err) console.log("error in removing testdata");
+        console.log("testdata remove");
+    });
+
+
+
+     // User.findOne({email: 'user26@berkeley.edu'},
+     //    function (err, existingUser) {
+     //        if (err) console.log(err);
+
+     //        if (existingUser == null) {
+     //            console.log("Mongo connection success.");
+
+     //            User.remove({testData: true}, function(err) {
+     //                User.find({}, function(err, users) {
+     //                    console.log(users.length);
+     //                    var departments = ['Math', 'CS', 'Econ', 'African American Studies', 'Stat', 'Geology', 'Bio', 'Chem'];
+     //                    var names = ['Sally Janeperson', 'John Doesomething'];
+
+     //                    for (var i = 26; i < 3000; i++) {
+     //                        var classes = new Array();
+     //                        for (var j = 0; j < Math.round(Math.random() * 5); j++) {
+     //                            classes.push(departments[Math.floor(Math.random() * (departments.length - 1))]  + ' ' + Math.floor(Math.random() * 210))
+     //                        }
+     //                        var minor = Math.random() < 0.2 ? departments[Math.floor(Math.random() * (departments.length - 1))] : null;
+
+     //                        var user = new User({
+     //                            email: 'user' + i + '@berkeley.edu',
+     //                            name: names[Math.floor(Math.random() * 2)] + ' ' + i,
+     //                            password: secrets.admin_pw,
+     //                            roles: ['User'],
+     //                            verified: true,
+     //                            testData: true,
+     //                            classes: classes,
+     //                            major: departments[Math.floor(Math.random() * (departments.length - 1))],
+     //                            minor: minor,
+     //                            lastOnline: Date.now()
+     //                        });
+
+     //                        user.save(function (err) {
+     //                            if (err) console.log(err);
+     //                            console.log(user);
+     //                            console.log("Seed data " + i + " success.");
+     //                        })
+     //                    }
+
+
+     //                });
+
+     //            });
 
 
 
 
-    User.findOne({email: 'user26@berkeley.edu'},
-        function (err, existingUser) {
-            if (err) console.log(err);
-
-            if (existingUser == null) {
-                console.log("Mongo connection success.");
-
-                User.remove({testData: true}, function(err) {
-                    User.find({}, function(err, users) {
-                        console.log(users.length);
-                        var departments = ['Math', 'CS', 'Econ', 'African American Studies', 'Stat', 'Geology', 'Bio', 'Chem'];
-                        var names = ['Sally Janeperson', 'John Doesomething'];
-
-                        for (var i = 26; i < 3000; i++) {
-                            var classes = new Array();
-                            for (var j = 0; j < Math.round(Math.random() * 5); j++) {
-                                classes.push(departments[Math.floor(Math.random() * (departments.length - 1))]  + ' ' + Math.floor(Math.random() * 210))
-                            }
-                            var minor = Math.random() < 0.2 ? departments[Math.floor(Math.random() * (departments.length - 1))] : null;
-
-                            var user = new User({
-                                email: 'user' + i + '@berkeley.edu',
-                                name: names[Math.floor(Math.random() * 2)] + ' ' + i,
-                                password: secrets.admin_pw,
-                                roles: ['User'],
-                                verified: true,
-                                testData: true,
-                                classes: classes,
-                                major: departments[Math.floor(Math.random() * (departments.length - 1))],
-                                minor: minor,
-                                lastOnline: Date.now()
-                            });
-
-                            user.save(function (err) {
-                                if (err) console.log(err);
-                                console.log(user);
-                                console.log("Seed data " + i + " success.");
-                            })
-                        }
-
-
-                    });
-
-                });
-
-
-
-
-            } else {
-                console.log("Mongo connection success. No seed data necessary.");
-            }
-        });
+     //        } else {
+     //            console.log("Mongo connection success. No seed data necessary.");
+     //        }
+     //    });
 
 }) ();
 
@@ -189,6 +192,7 @@ app.get('/api/users/browse', apiController.getUsersForBrowse); // params = num, 
 app.get('/api/userprofile', apiController.getUserProfile);
 app.post('/api/userprofile', apiController.postUserProfile);
 app.post('/api/userpicture', apiController.postUserPicture);
+app.get('/api/user/deletepicture', apiController.deletePictureForReqUser);
 
 app.get('/api/verify/send', apiController.sendEmail);
 app.get('/api/verify/confirm', apiController.verifyEmail);

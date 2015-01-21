@@ -191,6 +191,43 @@ exports.getUsersForUserIdsArr = function (req, res) {
     }
 };
 
+exports.deletePictureForReqUser = function (req, res) {
+    var bucket = new AWS.S3({params: {Bucket: 'twerk.io/img/members'}});
+    var thumbnailBucket = new AWS.S3({params: {Bucket: 'twerk.io/img/members/thumbnails'}});
+    var oldPic = req.user.picture.substring(req.user.picture.lastIndexOf('/') + 1);
+    var delParams = {Key: oldPic};
+    User.findById(req.user._id, 'picture', function (err, user) {
+        if (err || user == null) {
+            console.log(err);
+            return res.status(401).end('Image could not be deleted. Please try again later.');
+        }
+
+        user.picture = "";
+
+        user.save(function (err) {
+            if (err) {
+                console.log(err);
+                return res.status(401).end('Image could not be updated. Please try again later.')
+            }
+
+            bucket.deleteObject(delParams, function (err, data) {
+                if (err) {
+                    return res.status(401).end('Image could not be deleted. Please try again later.');
+                }
+                thumbnailBucket.deleteObject(delParams, function (err, data) {
+                    if (err) {
+                        return res.status(401).end('Thumbnail could not be removed. Please try again later.');
+                    }
+
+                    return res.json({picture: '/img/generic_avatar.gif', token: req.token});
+                });
+            });
+
+        });
+
+    });
+}
+
 exports.adminAllUsers = function (req, res) {
     if (req.user && req.user.roles && req.user.roles.indexOf('Admin') > -1) {
         User.find({}, 'email email roles status housePositions', function (err, users) {

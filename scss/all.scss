@@ -1056,16 +1056,103 @@ html {
     }
 
     #account-container {
-      .col-xs-12 {
-        .btn-save {
-          margin-top: 10px;
+
+      #profile-container {
+        min-height: 400px;
+        width: 100%;
+        border: 1px solid #ccc;
+        background: #fff;
+        padding: 15px;
+
+        .col-xs-12 {
+          .btn-save {
+            margin-top: 10px;
+          }
+
+        }
+
+        .picture-col {
+          min-height: 350px;
+
+          .profile-picture {
+            min-height: 380px;
+
+
+            &.empty {
+              border: 5px dashed #ccc;
+            }
+
+            .picture-controls {
+              opacity: 0;
+              position: absolute;
+              top: 5px;
+              left: 15px;
+              width: 100px;
+              height: 50px;
+
+              -webkit-transition: all .3s;
+              -moz-transition: all .3s;
+              -ms-transition: all .3s;
+              -o-transition: all .3s;
+              transition: all .3s;
+
+              i {
+                color: white;
+                position: relative;
+                font-size: 24px;
+                float: left;
+                width: 30px;
+                height: 50px;
+
+              }
+
+
+            }
+
+            .picture-upload {
+              opacity: 1;
+              position: absolute;
+              top: calc(50% - 40px);
+              left: 15px;
+              width: calc(100% - 30px);
+              height: 40px;
+              background: rgba(255, 255, 255, .8);
+              text-align: center;
+              font-size: 24px;
+              color: rgba(82, 0, 140, 1);
+
+              -webkit-transition: all .3s;
+              -moz-transition: all .3s;
+              -ms-transition: all .3s;
+              -o-transition: all .3s;
+              transition: all .3s;
+            }
+
+            &:hover {
+              .picture-controls {
+                opacity: 1;
+              }
+
+              .picture-upload {
+                background: rgba(255, 255, 255, 1);
+              }
+            }
+
+
+          }
+
+        }
+
+        .info-col {
+          .select2-drop, .select2-drop-active, .select2-with-searchbox {
+            position: relative;
+          }
         }
       }
 
-      textarea {
-        margin: 0px 15px;
-        resize: none;
 
+      textarea {
+        resize: none;
       }
 
       .btn-save {
