@@ -4,6 +4,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     $scope.toUser = {};
     $scope.message = {};
     $scope.me = me;
+
     for (var r in allRooms) {
         allRooms[r].selected = false;
     }
@@ -26,6 +27,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     $scope.messages = messages;
 
     $scope.roomId = $stateParams.roomId;
+    $scope.$parent.roomIds.push($scope.roomId);
 
     $scope.siteSocket = siteSocket;
 

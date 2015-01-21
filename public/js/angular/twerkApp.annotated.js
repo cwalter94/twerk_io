@@ -653,17 +653,19 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             getRoomToUsers: function(roomId, me) {
                 var deferred = $q.defer();
                 this.getRooms().then(function(response) {
-                    var temp = [];
-                    for (var u in _allRooms[roomId].users) {
 
-                        if (_allRooms[roomId].users[u] !== me._id) {
-                            temp.push(_allRooms[roomId].users[u]);
-                        }
-                    }
 
                     if (_allRooms[roomId].toUserArr) {
                         deferred.resolve(_allRooms[roomId].toUserArr);
                     } else {
+                        var temp = [];
+                        for (var u in _allRooms[roomId].users) {
+
+                            if (_allRooms[roomId].users[u] !== me._id) {
+                                temp.push(_allRooms[roomId].users[u]);
+                            }
+                        }
+
                         $http({
                             url: '/api/users',
                             method: 'GET',
@@ -691,7 +693,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 this.getRooms().then(function(response) {
                     for (var r in _allRooms) {
                         var temp = _allRooms[r].users;
-                        if (temp.length == 2 && temp.indexOf(user.id) > -1) {
+                        if (temp.length == 2 && temp.indexOf(user._id) > -1) {
                             roomId = r;
                             break;
                         }
@@ -699,7 +701,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                     if (roomId) {
                         if (!_allRooms[roomId].toUserArr) _allRooms[roomId].toUserArr = [user];
-                        deferred.resolve(roomId);
+                        deferred.resolve(_allRooms[roomId]);
                     } else {
                         // get new room from api
                         $http({
@@ -1492,8 +1494,10 @@ var messagesCtrl = app.controller('messagesCtrl', ['$scope', '$http', '$location
         if (oldRoomId) {
             allRooms[oldRoomId].selected = false;
         } else {
-            for (var r in allRooms) {
-                allRooms[r].selected = false;
+            for (var r in $scope.rooms) {
+                console.log($scope.rooms[r]);
+                console.log($scope.roomsArr);
+                $scope.rooms[r].selected = false;
             }
         }
         $state.transitionTo('site.auth.messages.room', {'roomId': roomId}, { reload: false, inherit: true, notify: true });
@@ -1514,7 +1518,7 @@ var messagesCtrl = app.controller('messagesCtrl', ['$scope', '$http', '$location
 
 
     siteSocket.on('send:message', function(message) {
-        if ($scope.room != message.to) {
+        if ($scope.room._id != message.to) {
             $scope.$parent.newMessages += 1;
         }
         messageFactory.addMessage(message);
@@ -1656,9 +1660,12 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
     $scope.room = allRooms[$stateParams.roomId];
     $scope.room.selected = true;
 
-    messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUsersArr) {
-        $scope.toUser = toUsersArr[0];
+    messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUserArr) {
+        $scope.toUser = toUserArr[0];
         $scope.toUser.classesString = $scope.toUser.classes.length ? $scope.toUser.classes.join(', ') : "No classes.";
+        if ($scope.$parent.rooms[$stateParams.roomId]) {
+            $scope.$parent.rooms[$stateParams.roomId].toUserArr = toUserArr;
+        }
         $scope.message = {rows: 1, from: $scope.me._id, to: $stateParams.roomId, toEmail: $scope.toUser.email};
     }, function(err) {
         flash.error = err;
@@ -1700,6 +1707,8 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
                 $scope.messages = messages;
                 $scope.$parent.rooms[$scope.roomId].lastMessage = $scope.message.text;
                 $scope.$parent.rooms[$scope.roomId].lastMessageCreated = $scope.message.created;
+                $scope.$parent.rooms[$scope.roomId].messages = messages;
+
                 $scope.message = {toEmail: $scope.message.toEmail, rows: 1, from: $scope.me._id, to: $scope.roomId};
 
             }, function(err) {
@@ -1721,6 +1730,7 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
 
         messageFactory.addMessage($scope.roomId, message).then(function(messages) {
             $scope.messages = messages;
+            $scope.$parent.rooms[$scope.roomId].messageArr = messages;
         }, function(err) {
             flash.err = err;
         });
