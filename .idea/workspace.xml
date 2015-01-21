@@ -3,9 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="638d5d45-97e7-4d8a-9320-b6af04ec080c" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/api.js" afterPath="$PROJECT_DIR$/controllers/api.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/partials/navbar.jade" afterPath="$PROJECT_DIR$/views/partials/navbar.jade" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/controllers/siteCtrl.js" afterPath="$PROJECT_DIR$/public/js/angular/controllers/siteCtrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/twerkApp.js" afterPath="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="twerk_io.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -106,8 +104,8 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4245">
-              <caret line="83" column="27" selection-start-line="83" selection-start-column="27" selection-end-line="83" selection-end-column="27" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="3336" max-vertical-offset="4245">
+              <caret line="104" column="6" selection-start-line="104" selection-start-column="6" selection-end-line="104" selection-end-column="6" />
               <folding />
             </state>
           </provider>
@@ -116,16 +114,16 @@
       <file leaf-file-name="api.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/api.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.73129255" vertical-offset="6480" max-vertical-offset="16695">
-              <caret line="763" column="115" selection-start-line="763" selection-start-column="115" selection-end-line="763" selection-end-column="115" />
+            <state vertical-scroll-proportion="3.8265307" vertical-offset="3750" max-vertical-offset="16695">
+              <caret line="763" column="122" selection-start-line="763" selection-start-column="122" selection-end-line="763" selection-end-column="122" />
               <folding>
                 <element signature="e#6681#6815#0" expanded="false" />
                 <element signature="e#10910#11346#0" expanded="false" />
                 <element signature="e#15002#15481#0" expanded="false" />
                 <element signature="e#16496#29243#0" expanded="false" />
                 <element signature="e#29746#30719#0" expanded="false" />
-                <element signature="e#32096#32267#0" expanded="false" />
-                <element signature="e#32324#32734#0" expanded="false" />
+                <element signature="e#32103#32274#0" expanded="false" />
+                <element signature="e#32331#32741#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -196,10 +194,10 @@
         <option value="$PROJECT_DIR$/public/js/angular/controllers/messagesCtrl.js" />
         <option value="$PROJECT_DIR$/controllers/user.js" />
         <option value="$PROJECT_DIR$/views/partials/outerState/verifyconfirm.jade" />
-        <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/views/partials/navbar.jade" />
         <option value="$PROJECT_DIR$/public/js/angular/controllers/siteCtrl.js" />
         <option value="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
+        <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/controllers/api.js" />
       </list>
     </option>
@@ -863,12 +861,12 @@
       <workItem from="1421702713684" duration="486000" />
       <workItem from="1421844476956" duration="7853000" />
       <workItem from="1421856732805" duration="7395000" />
-      <workItem from="1421869560105" duration="1595000" />
+      <workItem from="1421869560105" duration="1742000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="240522000" />
+    <option name="totallyTimeSpent" value="240669000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1676" height="1027" extended-state="6" />
@@ -1240,14 +1238,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="4245">
-          <caret line="83" column="27" selection-start-line="83" selection-start-column="27" selection-end-line="83" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/browseCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="21" max-vertical-offset="1185">
@@ -1291,18 +1281,26 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="3336" max-vertical-offset="4245">
+          <caret line="104" column="6" selection-start-line="104" selection-start-column="6" selection-end-line="104" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/api.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.73129255" vertical-offset="6480" max-vertical-offset="16695">
-          <caret line="763" column="115" selection-start-line="763" selection-start-column="115" selection-end-line="763" selection-end-column="115" />
+        <state vertical-scroll-proportion="3.8265307" vertical-offset="3750" max-vertical-offset="16695">
+          <caret line="763" column="122" selection-start-line="763" selection-start-column="122" selection-end-line="763" selection-end-column="122" />
           <folding>
             <element signature="e#6681#6815#0" expanded="false" />
             <element signature="e#10910#11346#0" expanded="false" />
             <element signature="e#15002#15481#0" expanded="false" />
             <element signature="e#16496#29243#0" expanded="false" />
             <element signature="e#29746#30719#0" expanded="false" />
-            <element signature="e#32096#32267#0" expanded="false" />
-            <element signature="e#32324#32734#0" expanded="false" />
+            <element signature="e#32103#32274#0" expanded="false" />
+            <element signature="e#32331#32741#0" expanded="false" />
           </folding>
         </state>
       </provider>
