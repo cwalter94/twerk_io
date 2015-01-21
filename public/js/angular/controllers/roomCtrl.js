@@ -4,7 +4,11 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     $scope.toUser = {};
     $scope.message = {};
     $scope.me = me;
+    for (var r in allRooms) {
+        allRooms[r].selected = false;
+    }
     $scope.room = allRooms[$stateParams.roomId];
+    $scope.room.selected = true;
 
     messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUsersArr) {
         $scope.toUser = toUsersArr[0];
@@ -13,6 +17,8 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     }, function(err) {
         flash.error = err;
     });
+
+
 
     $scope.messages = messages;
 

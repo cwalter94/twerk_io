@@ -1,6 +1,6 @@
 var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap',
     'mgcrea.ngStrap', 'xeditable', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table',
-    'btford.socket-io', 'once', 'infinite-scroll'], function () {
+    'btford.socket-io', 'once', 'infinite-scroll', 'luegg.directives'], function () {
 
 })
     .config(['uiSelectConfig', 'flashProvider', '$httpProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', 'cfpLoadingBarProvider', function (uiSelectConfig, flashProvider, $httpProvider, $stateProvider, $urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
@@ -1455,14 +1455,19 @@ var messagesCtrl = app.controller('messagesCtrl', ['$scope', '$http', '$location
                 for (var r in roomsIdsToUserArr) {
                     $scope.rooms[r].toUserArr = roomsIdsToUserArr[r];
                 }
-                console.log($scope.rooms);
             }, function(err) {
                 console.log(err);
             });
     }
 
-    $scope.goToRoom = function(roomId) {
-        console.log(roomId);
+    $scope.goToRoom = function(roomId, oldRoomId) {
+        if (oldRoomId) {
+            allRooms[oldRoomId].selected = false;
+        } else {
+            for (var r in allRooms) {
+                allRooms[r].selected = false;
+            }
+        }
         $state.transitionTo('site.auth.messages.room', {'roomId': roomId}, { reload: false, inherit: true, notify: true });
     };
     $scope.getThumbnail = function(picUrl) {
@@ -1617,7 +1622,11 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
     $scope.toUser = {};
     $scope.message = {};
     $scope.me = me;
+    for (var r in allRooms) {
+        allRooms[r].selected = false;
+    }
     $scope.room = allRooms[$stateParams.roomId];
+    $scope.room.selected = true;
 
     messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUsersArr) {
         $scope.toUser = toUsersArr[0];
@@ -1626,6 +1635,8 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
     }, function(err) {
         flash.error = err;
     });
+
+
 
     $scope.messages = messages;
 

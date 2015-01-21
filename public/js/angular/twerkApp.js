@@ -1,6 +1,6 @@
 var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap',
     'mgcrea.ngStrap', 'xeditable', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table',
-    'btford.socket-io', 'once', 'infinite-scroll'], function () {
+    'btford.socket-io', 'once', 'infinite-scroll', 'luegg.directives'], function () {
 
 })
     .config(function (uiSelectConfig, flashProvider, $httpProvider, $stateProvider, $urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {

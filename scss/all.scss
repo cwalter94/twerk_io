@@ -935,10 +935,15 @@ html {
             margin-top: 1px;
             padding-top: 5px;
             background: #fcfcfc;
+            border: 1px solid transparent;
 
             :hover * {
               text-effect: none;
 
+            }
+
+            &.selected {
+              border: 1px solid #5200BC;
             }
 
             .name-col {

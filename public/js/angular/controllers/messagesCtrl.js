@@ -24,14 +24,19 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
                 for (var r in roomsIdsToUserArr) {
                     $scope.rooms[r].toUserArr = roomsIdsToUserArr[r];
                 }
-                console.log($scope.rooms);
             }, function(err) {
                 console.log(err);
             });
     }
 
-    $scope.goToRoom = function(roomId) {
-        console.log(roomId);
+    $scope.goToRoom = function(roomId, oldRoomId) {
+        if (oldRoomId) {
+            allRooms[oldRoomId].selected = false;
+        } else {
+            for (var r in allRooms) {
+                allRooms[r].selected = false;
+            }
+        }
         $state.transitionTo('site.auth.messages.room', {'roomId': roomId}, { reload: false, inherit: true, notify: true });
     };
     $scope.getThumbnail = function(picUrl) {
