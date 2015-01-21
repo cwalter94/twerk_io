@@ -8,7 +8,7 @@
                 h5.name(once-text="toUser.name")
             .text-left(once-text="toUser.classesString")
             .text-left {{toUser.status || 'No status to display.'}}
-    .chat-message-display-container
+    .chat-message-display-container(scroll-glue="true")
         .chat-message(ng-repeat="m in messages track by m.created")
             strong.chat-date(once-text="formatDate(m.created).time", once-class="{'text-right' : m.from == me._id}")
             .chat-text(once-text="m.text", once-class="{'text-right' : m.from == me._id}")

@@ -601,9 +601,20 @@ html body {
           text-effect: none;
           margin-top: 1px;
           padding-top: 5px;
-          background: #fcfcfc; }
+          background: #fcfcfc;
+          border: 1px solid transparent; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container :hover * {
             text-effect: none; }
+          html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .glyphicon-comment {
+            display: none; }
+          html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container.online .glyphicon-comment {
+            display: block;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #63b2ff; }
+          html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container.selected {
+            border: 1px solid #5200BC; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .name-col {
             padding: 10px;
             padding-left: 20px; }
@@ -683,7 +694,7 @@ html body {
     html body #account-container #profile-container .picture-col {
       min-height: 350px; }
       html body #account-container #profile-container .picture-col .profile-picture {
-        min-height: 380px; }
+        min-height: 339px; }
         html body #account-container #profile-container .picture-col .profile-picture.empty {
           border: 5px dashed #ccc; }
         html body #account-container #profile-container .picture-col .profile-picture .picture-controls {

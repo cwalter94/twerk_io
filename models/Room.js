@@ -10,6 +10,7 @@ var roomSchema = new mongoose.Schema({
     created: {type: Date, default: Date.now, required: true},
     lastMessage: {type: String, default: ''},
     usersNames: {type: [String], default:''},
+    unreadMessages: {type: Number, default: 0, required: true},
     lastMessageCreated: {type: Date, default: Date.now, required: true}
 });
 

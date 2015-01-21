@@ -20,6 +20,7 @@ var expressValidator = require('express-validator');
 var connectAssets = require('connect-assets');
 var User = require('./models/User');
 var Room = require('./models/Room');
+var Message = require('./models/Message');
 var expressJwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var socketioJwt = require('socketio-jwt');
@@ -108,10 +109,50 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
     //});
 
 
-    User.findOne({testData: true}).remove(function(err) {
-        if (err) console.log("error in removing testdata");
-        console.log("testdata remove");
+    //User.findOne({testData: true}).remove(function(err) {
+    //    if (err) console.log("error in removing testdata");
+    //    console.log("testdata remove");
+    //});
+
+    User.findOne({email: 'test@berkeley.edu'}, function(err, user) {
+        if (err) console.log("error in seeding test user.")
+        if (!user) {
+            var testuser = new User({
+                testData: true,
+                name: 'Test User',
+                email: 'test@berkeley.edu',
+                classes: ['COMPSCI 161', 'COMPSCI 170', 'MATH 110'],
+                major: 'Computer Science',
+                verified: true,
+                password: 'kanye1234'
+            });
+
+            testuser.save(function(err) {
+                if (err) console.log("error in saving test user.");
+                console.log("test user success.");
+            })
+        } else {
+            //user.remove();
+        }
     });
+
+    User.findOne({email: 'cwalter94@berkeley.edu'}, function(err, user) {
+        if (err) {
+            console.log("err in deleting cwalter94");
+            return;
+        }
+
+        //user.remove();
+    });
+    //
+    //
+    //Room.find({}).remove(function(err) {
+    //    if (err) console.log(err);
+    //});
+    //Message.find({}).remove(function(err) {
+    //    if (err) console.log(err);
+    //});
+
 
 
 

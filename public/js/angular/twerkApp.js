@@ -1,6 +1,6 @@
 var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap',
     'mgcrea.ngStrap', 'xeditable', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table',
-    'btford.socket-io', 'once', 'infinite-scroll'], function () {
+    'btford.socket-io', 'once', 'infinite-scroll', 'luegg.directives'], function () {
 
 })
     .config(function (uiSelectConfig, flashProvider, $httpProvider, $stateProvider, $urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
@@ -18,6 +18,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             controller: 'siteCtrl',
             url: '',
             resolve: {
+
                 siteSocket: ['socket', function(socket) {
                     return socket.getSocket().then(function(s) {
                         return s;
@@ -29,6 +30,20 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         })
             .state('site.home', {
                 templateUrl: '/partials/outer/home',
+                resolve: {
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                //if (identity != null) {
+                                //    $location.path('/browse');
+                                //}
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
+                        }
+                    ]
+                },
                 controller: function ($scope) {
 
                 },
@@ -158,6 +173,17 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/:code',
                 templateUrl: '/partials/outer/verifyconfirm',
                 resolve: {
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
+                        }
+
+
+                    ],
                     verified: ['$http', 'principal', '$stateParams', function($http, principal, $stateParams) {
 
                         return $http({
@@ -627,17 +653,19 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             getRoomToUsers: function(roomId, me) {
                 var deferred = $q.defer();
                 this.getRooms().then(function(response) {
-                    var temp = [];
-                    for (var u in _allRooms[roomId].users) {
 
-                        if (_allRooms[roomId].users[u] !== me._id) {
-                            temp.push(_allRooms[roomId].users[u]);
-                        }
-                    }
 
                     if (_allRooms[roomId].toUserArr) {
                         deferred.resolve(_allRooms[roomId].toUserArr);
                     } else {
+                        var temp = [];
+                        for (var u in _allRooms[roomId].users) {
+
+                            if (_allRooms[roomId].users[u] !== me._id) {
+                                temp.push(_allRooms[roomId].users[u]);
+                            }
+                        }
+
                         $http({
                             url: '/api/users',
                             method: 'GET',
@@ -665,7 +693,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 this.getRooms().then(function(response) {
                     for (var r in _allRooms) {
                         var temp = _allRooms[r].users;
-                        if (temp.length == 2 && temp.indexOf(user.id) > -1) {
+                        if (temp.length == 2 && temp.indexOf(user._id) > -1) {
                             roomId = r;
                             break;
                         }
@@ -673,7 +701,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                     if (roomId) {
                         if (!_allRooms[roomId].toUserArr) _allRooms[roomId].toUserArr = [user];
-                        deferred.resolve(roomId);
+                        deferred.resolve(_allRooms[roomId]);
                     } else {
                         // get new room from api
                         $http({

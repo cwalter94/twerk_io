@@ -32,9 +32,9 @@ div.container.content-container#account-container
                         .col-md-4.col-xs-4.picture-col
 
                             .profile-picture(ng-file-drop='onFileSelect($files)',
-                            ng-file-drop-available="dropSupported=true", ng-file-drag-over-delay='100', ng-class="{'empty' : me.picture == '' || me.picture == '/img/generic_avatar.gif'}")
+                            ng-file-drop-available="dropSupported=true", ng-file-drag-over-delay='100', ng-class="{'empty' : me.picture == null || me.picture == '' || me.picture == '/img/generic_avatar.gif'}")
                                 img(src="{{me.picture}}", width='100%')
-                                .picture-controls(ng-show="me.picture != '/img/generic_avatar.gif'")
+                                .picture-controls(ng-show="me.picture && me.picture != '/img/generic_avatar.gif'")
                                     i.trash-btn.glyphicon.glyphicon-trash(ng-click="deletePicture()")
 
                                 .picture-upload

@@ -11,27 +11,35 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
     $scope.rooms = allRooms;
     $scope.roomsArr = [];
 
-    var roomIds = [];
+    $scope.roomIds = [];
     for (var r in allRooms) {
         if (allRooms[r].messages.length > 0) {
-            roomIds.push(r);
+            $scope.roomIds.push(r);
         }
+        allRooms[r].selected = false;
         $scope.roomsArr.push($scope.rooms[r]);
     }
-    if (roomIds.length > 0) {
-        messageFactory.getMultipleRoomsToUsers(roomIds, me)
+    if ($scope.roomIds.length > 0) {
+        messageFactory.getMultipleRoomsToUsers($scope.roomIds, me)
             .then(function(roomsIdsToUserArr) {
                 for (var r in roomsIdsToUserArr) {
                     $scope.rooms[r].toUserArr = roomsIdsToUserArr[r];
                 }
-                console.log($scope.rooms);
             }, function(err) {
                 console.log(err);
             });
     }
 
-    $scope.goToRoom = function(roomId) {
-        console.log(roomId);
+    $scope.goToRoom = function(roomId, oldRoomId) {
+        if (oldRoomId) {
+            allRooms[oldRoomId].selected = false;
+        } else {
+            for (var r in $scope.rooms) {
+                console.log($scope.rooms[r]);
+                console.log($scope.roomsArr);
+                $scope.rooms[r].selected = false;
+            }
+        }
         $state.transitionTo('site.auth.messages.room', {'roomId': roomId}, { reload: false, inherit: true, notify: true });
     };
     $scope.getThumbnail = function(picUrl) {
@@ -50,7 +58,7 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
 
 
     siteSocket.on('send:message', function(message) {
-        if ($scope.room != message.to) {
+        if ($scope.room._id != message.to) {
             $scope.$parent.newMessages += 1;
         }
         messageFactory.addMessage(message);

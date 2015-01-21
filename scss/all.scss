@@ -935,10 +935,29 @@ html {
             margin-top: 1px;
             padding-top: 5px;
             background: #fcfcfc;
+            border: 1px solid transparent;
 
             :hover * {
               text-effect: none;
 
+            }
+
+            .glyphicon-comment {
+              display: none;
+            }
+
+            &.online {
+              .glyphicon-comment {
+                display: block;
+                position: absolute;
+                top: 5px;
+                right: 5px;
+                color: #63b2ff;
+              }
+            }
+
+            &.selected {
+              border: 1px solid #5200BC;
             }
 
             .name-col {
@@ -1075,7 +1094,7 @@ html {
           min-height: 350px;
 
           .profile-picture {
-            min-height: 380px;
+            min-height: 339px;
 
 
             &.empty {

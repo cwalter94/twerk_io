@@ -86,7 +86,7 @@ exports.getUsersForBrowse = function (req, res) {
 };
 
 exports.getAllRoomsForReqUser = function (req, res) {
-    Room.find({users: req.user._id}, '_id users messages lastMessage lastMessageCreated', function (err, rooms) {
+    Room.find({users: req.user._id}, '_id users messages lastMessage lastMessageCreated unreadMessages', function (err, rooms) {
         if (err) {
             console.log(err);
             return res.status(401).end('An error occurred while retrieving message threads.');
@@ -98,13 +98,37 @@ exports.getAllRoomsForReqUser = function (req, res) {
 
 exports.getMessagesForRoomId = function (req, res) {
     if (req.params.roomId) {
-        Message.find({to: mongoose.Types.ObjectId(req.params.roomId)}, 'from created text read', function (err, messages) {
+        Room.findById(mongoose.Types.ObjectId(req.params.roomId), 'users unreadMessages', function(err, room) {
             if (err) {
                 console.log(err);
                 return res.status(401).end('An error occurred while retrieving messages for this thread.');
             }
-            return res.json({token: req.token, messageArr: messages});
-        })
+            console.log("ROOM", room);
+            console.log("USERID", req.user._id);
+            if (room && room.users.indexOf(req.user._id) > -1) {
+                room.unreadMessages = 0;
+                room.save(function(err) {
+                    Message.find({to: mongoose.Types.ObjectId(req.params.roomId)}, 'from created text read', function (err, messages) {
+                        if (err) {
+                            console.log(err);
+                            return res.status(401).end('An error occurred while retrieving messages for this thread.');
+                        }
+
+                        if (messages) {
+                            return res.json({token: req.token, messageArr: messages});
+
+                        } else {
+                            return res.status(401).end("Sorry, we couldn't retrieve the messages for this thread");
+                        }
+                    });
+
+                });
+            } else {
+                res.status(401).end("Sorry, we couldn't find that room");
+            }
+
+        });
+
     } else {
         return res.status(401).end('Room id is required.');
     }
@@ -127,13 +151,14 @@ exports.getRoomForRoomId = function (req, res) {
 
 exports.getRoomForUserIdAndReqUser = function (req, res) {
     if (req.params.userId) {
-        Room.findOne({users: req.user._id, users: mongoose.Types.ObjectId(req.params.userId)}, function (err, room) {
+        Room.findOne({"$and" : [{users: req.user._id}, {users: mongoose.Types.ObjectId(req.params.userId)}]}, function (err, room) {
+
             if (err) {
                 console.log(err);
                 return res.status(401).end('An error occurred while locating this message thread.');
             }
             if (room) {
-                console.log("ROOM", room);
+
                 return res.json({token: req.token, room: room})
             } else {
 
@@ -693,33 +718,6 @@ exports.getUserLogout = function (req, res, next) {
 
 
     });
-};
-
-exports.getMessages = function (req, res, next) {
-    if (req.params.roomId) {
-        Room.findOne({_id: req.params.roomId}, 'messages', function (err, room) {
-            if (err) {
-                console.log(err);
-            } else {
-                Message.find({id: {'$in': room.messages}}, 'from text', '-time', function (err, messages) {
-                    if (err) console.log(err);
-                    if (messages.length > 0) {
-                        return res.json({token: req.token, room: room._id, messages: messages});
-                    }
-                });
-            }
-        });
-    } else {
-        Room.find({
-            users: req.user._id,
-            messages: {"$not": {"$size": 0}}
-        }, 'id lastMessage users usersNames', function (err, rooms) {
-            if (err) return res.status(401).end('An unknown error occurred. Please try again later.');
-            console.log(rooms);
-            return res.json({token: req.token, rooms: rooms})
-        });
-
-    }
 };
 
 exports.verifyEmail = function (req, res, next) {

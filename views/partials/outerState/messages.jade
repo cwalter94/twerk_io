@@ -9,8 +9,11 @@ div.container#messages-container
                 .clearfix
 
                 .messages-inner-container
-                    a.messages-sm-container(ng-show="room.messages.length > 0 || room.selected", ng-repeat="room in roomsArr | filter: search | orderBy: 'lastMessageCreated' : true", ng-click="goToRoom(room._id, userInfo[room.toUser])")
-                        i(ng-show="room.online").glyphicon.glyphicon-comment
+                    a.messages-sm-container(ng-show="room.messages.length > 0 || room.selected",
+                    ng-repeat="room in roomsArr | filter: search | orderBy: 'lastMessageCreated' : true",
+                    ng-click="goToRoom(room._id, userInfo[room.toUser])",
+                    ng-class="{'selected' : room.selected, 'online' : room.toUserArr[0].online}")
+                        i.glyphicon.glyphicon-comment
                         .col-md-2.col-xs-3.img-col
                             img(once-src="getThumbnail(room.toUserArr[0].picture)")
                         .col-md-10.col-xs-9.name-col
@@ -18,10 +21,9 @@ div.container#messages-container
                                 h5.name(once-text="room.toUserArr[0].name")
                             .last-message-col.text-left
                                 | {{room.lastMessage}}
-
+                    .no-message(ng-show="roomIds.length == 0", style="position: absolute; width: 100%; height: 100%; text-align: center; font-size: 24px; top: calc(50% - 30px)") No messages.
 
 
         .messages-col.right-pane.col-xs-7
             .ui-view#messagesView
-                .jumbotron(style="width: 100%; height: 100%; margin: 15px;")
-                    h1 Nothing to display
+                .no-message(style="position: absolute; width: 100%; text-align: center; font-size: 24px; top: calc(50% - 30px)") Click on a thread to view messages.
