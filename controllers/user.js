@@ -40,7 +40,7 @@ exports.validateToken = function(req, res, next) {
                 //return next(new UnauthorizedError('invalid_token', err));
             }
             if (decoded) {
-                User.findOne({_id:decoded._id}, function (err, user) {
+                User.findById(decoded._id, function (err, user) {
 
                     if (err) {
                         console.log(err);

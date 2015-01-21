@@ -410,12 +410,13 @@ exports.register = function (req, res, next) {
             else {
                 var token = jwt.sign({
                     email: user.email,
+                    _id: user._id,
                     roles: user.roles,
                     verified: false
                 }, secrets.jwt, {expiresInDays: 7});
                 return res.json({
                     token: token,
-                    user: {email: email, classes: classes, roles: roles, major: major, minor: minor}
+                    user: {_id: user._id, classes: classes, roles: roles}
                 });
             }
         });
