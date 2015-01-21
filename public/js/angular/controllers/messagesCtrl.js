@@ -16,6 +16,7 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
         if (allRooms[r].messages.length > 0) {
             roomIds.push(r);
         }
+        allRooms[r].selected = false;
         $scope.roomsArr.push($scope.rooms[r]);
     }
     if (roomIds.length > 0) {
@@ -55,7 +56,7 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
 
 
     siteSocket.on('send:message', function(message) {
-        if ($scope.room != message.to) {
+        if ($scope.room._id != message.to) {
             $scope.$parent.newMessages += 1;
         }
         messageFactory.addMessage(message);

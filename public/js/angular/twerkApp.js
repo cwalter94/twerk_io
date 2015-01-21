@@ -653,17 +653,19 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             getRoomToUsers: function(roomId, me) {
                 var deferred = $q.defer();
                 this.getRooms().then(function(response) {
-                    var temp = [];
-                    for (var u in _allRooms[roomId].users) {
 
-                        if (_allRooms[roomId].users[u] !== me._id) {
-                            temp.push(_allRooms[roomId].users[u]);
-                        }
-                    }
 
                     if (_allRooms[roomId].toUserArr) {
                         deferred.resolve(_allRooms[roomId].toUserArr);
                     } else {
+                        var temp = [];
+                        for (var u in _allRooms[roomId].users) {
+
+                            if (_allRooms[roomId].users[u] !== me._id) {
+                                temp.push(_allRooms[roomId].users[u]);
+                            }
+                        }
+
                         $http({
                             url: '/api/users',
                             method: 'GET',
@@ -689,6 +691,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 var deferred = $q.defer();
                 var roomId = null;
                 this.getRooms().then(function(response) {
+                    console.log("ALL ROOMS GET ROOM ID", _allRooms);
                     for (var r in _allRooms) {
                         var temp = _allRooms[r].users;
                         if (temp.length == 2 && temp.indexOf(user.id) > -1) {

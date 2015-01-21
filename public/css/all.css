@@ -605,6 +605,14 @@ html body {
           border: 1px solid transparent; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container :hover * {
             text-effect: none; }
+          html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .glyphicon-comment {
+            display: none; }
+          html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container.online .glyphicon-comment {
+            display: block;
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            color: #63b2ff; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container.selected {
             border: 1px solid #5200BC; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .name-col {

@@ -123,13 +123,16 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
                 email: 'test@berkeley.edu',
                 classes: ['COMPSCI 161', 'COMPSCI 170', 'MATH 110'],
                 major: 'Computer Science',
-                verified: true
+                verified: true,
+                password: 'kanye1234'
             });
 
             testuser.save(function(err) {
                 if (err) console.log("error in saving test user.");
                 console.log("test user success.");
             })
+        } else {
+            //user.remove();
         }
     });
 
@@ -139,10 +142,16 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
             return;
         }
 
-        //Room.find({}).remove();
-        //Message.find({}).remove();
         //user.remove();
     });
+
+    //
+    //Room.find({}).remove(function(err) {
+    //    if (err) console.log(err);
+    //});
+    //Message.find({}).remove(function(err) {
+    //    if (err) console.log(err);
+    //});
 
 
 

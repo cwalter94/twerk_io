@@ -43,6 +43,7 @@ exports.socketHandler = function (allUsers) {
 
         socket.on("join:room", function(room) {
             socket.join(room);
+            socket.room = room;
             socket.emit('join:room', room);
         });
 
@@ -93,9 +94,25 @@ exports.socketHandler = function (allUsers) {
         socket.on("disconnect", function() {
 
             allUsers[socket.userId] = {online : false, lastOnline: Date.now()};
-
-            var temp = [];
             socket.broadcast.emit('user:offline', socket.userId);
+
+            User.findById(socket.userId, function(err, user) {
+               if (err) {
+                   console.log(err);
+                   socket.emit('error', err);
+               } else if (user) {
+                   user.lastOnline = Date.now();
+                   user.save(function(err) {
+                       if (err) {
+                           console.log(err);
+                       }
+                   });
+               } else {
+                   console.log("disconnected user not found");
+               }
+            });
+
+
         });
 
     }

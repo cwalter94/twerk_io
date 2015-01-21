@@ -10,9 +10,12 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     $scope.room = allRooms[$stateParams.roomId];
     $scope.room.selected = true;
 
-    messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUsersArr) {
-        $scope.toUser = toUsersArr[0];
+    messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUserArr) {
+        $scope.toUser = toUserArr[0];
         $scope.toUser.classesString = $scope.toUser.classes.length ? $scope.toUser.classes.join(', ') : "No classes.";
+        if ($scope.$parent.rooms[$stateParams.roomId]) {
+            $scope.$parent.rooms[$stateParams.roomId].toUserArr = toUserArr;
+        }
         $scope.message = {rows: 1, from: $scope.me._id, to: $stateParams.roomId, toEmail: $scope.toUser.email};
     }, function(err) {
         flash.error = err;

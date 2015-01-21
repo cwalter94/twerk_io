@@ -11,7 +11,6 @@ var userSchema = new mongoose.Schema({
     verified: {type: Boolean, default: false, required: true},
     roles: {type: Array, default: ['User']},
     lastOnline: {type: Date, default: Date.now, required: true},
-    unreadRooms: {type: [mongoose.Schema.Types.objectId], default: []},
     expiredtokens: {type: Array, default: []},
     socket: {type: String, default: ''},
     testData: {type: Boolean, default: false},

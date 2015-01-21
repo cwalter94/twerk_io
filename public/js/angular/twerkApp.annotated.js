@@ -1474,6 +1474,7 @@ var messagesCtrl = app.controller('messagesCtrl', ['$scope', '$http', '$location
         if (allRooms[r].messages.length > 0) {
             roomIds.push(r);
         }
+        allRooms[r].selected = false;
         $scope.roomsArr.push($scope.rooms[r]);
     }
     if (roomIds.length > 0) {
