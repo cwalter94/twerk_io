@@ -998,6 +998,7 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
     $scope.me.selectedClasses = [];
 
     $scope.allClasses = [];
+    $scope.loadingClasses = [{departmentCode: 'Loading classes...', courseNumber: ''}];
 
     for (var i in me.classes) {
         var temp = me.classes[i];
@@ -1015,7 +1016,6 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
     $scope.dropSupported = true;
     $scope.disabled = undefined;
 
-    $scope.allColleges = ['Engineering', 'Letters & Science', 'Chemistry', 'Natural Resources', 'Environmental Design', 'Haas School of Business'];
     $scope.search = "";
 
     $scope.$watch('me', function(newval, oldval) {
@@ -1039,6 +1039,7 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
                     }
                 }
                 if (match && match[2]) {
+
                     $http({
                         url: 'https://apis-dev.berkeley.edu/cxf/asws/classoffering',
                         method: 'GET',
@@ -1073,6 +1074,19 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
             }
 
     };
+
+    $scope.deletePicture = function() {
+        $http({
+            url: '/api/user/deletepicture',
+            method: 'GET'
+        }).success(function(data) {
+            $scope.origMe.picture = data.picture;
+            $scope.me.picture = data.picture;
+            $scope.dataHasChanged = angular.equals($scope.me, $scope.origMe);
+        }).error(function(err) {
+            flash.err = err;
+        });
+    }
 
     $scope.resetSearchInput = function($select) {
         $select.search = "";
