@@ -398,7 +398,7 @@ exports.register = function (req, res, next) {
             to: email,
             //Subject and text data
             subject: 'Twerk.io Account Verification',
-            text: 'Thanks for signing up for twerk.io! Navigate to the following URL to verify your email account: twerk.io/verify/' + user._id
+            text: 'Thanks for signing up for twerk.io! Navigate to the following URL to verify your email account: http://twerk.io/verify/' + user._id
         };
 
         mailgun.messages().send(emaildata, function (err, body) {
