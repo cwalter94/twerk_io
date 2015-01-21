@@ -691,10 +691,9 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 var deferred = $q.defer();
                 var roomId = null;
                 this.getRooms().then(function(response) {
-                    console.log("ALL ROOMS GET ROOM ID", _allRooms);
                     for (var r in _allRooms) {
                         var temp = _allRooms[r].users;
-                        if (temp.length == 2 && temp.indexOf(user.id) > -1) {
+                        if (temp.length == 2 && temp.indexOf(user._id) > -1) {
                             roomId = r;
                             break;
                         }
@@ -702,7 +701,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                     if (roomId) {
                         if (!_allRooms[roomId].toUserArr) _allRooms[roomId].toUserArr = [user];
-                        deferred.resolve(roomId);
+                        deferred.resolve(_allRooms[roomId]);
                     } else {
                         // get new room from api
                         $http({

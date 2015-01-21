@@ -2,24 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="638d5d45-97e7-4d8a-9320-b6af04ec080c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.sass-cache/3d6d2d7499b0adade37e798aaa19de993ab8ea36/all.scssc" afterPath="$PROJECT_DIR$/.sass-cache/3d6d2d7499b0adade37e798aaa19de993ab8ea36/all.scssc" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/Room.js" afterPath="$PROJECT_DIR$/models/Room.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/models/User.js" afterPath="$PROJECT_DIR$/models/User.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/all.css" afterPath="$PROJECT_DIR$/public/css/all.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/all.min.css" afterPath="$PROJECT_DIR$/public/css/all.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scss/all.scss" afterPath="$PROJECT_DIR$/scss/all.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/api.js" afterPath="$PROJECT_DIR$/controllers/api.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/application.min.css" afterPath="$PROJECT_DIR$/public/css/application.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/application.min.js.map" afterPath="$PROJECT_DIR$/public/js/application.min.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/application.min.js" afterPath="$PROJECT_DIR$/public/js/application.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/partials/outerState/messages.jade" afterPath="$PROJECT_DIR$/views/partials/outerState/messages.jade" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/controllers/messagesCtrl.js" afterPath="$PROJECT_DIR$/public/js/angular/controllers/messagesCtrl.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js" afterPath="$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/socket.js" afterPath="$PROJECT_DIR$/controllers/socket.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/twerkApp.annotated.js" afterPath="$PROJECT_DIR$/public/js/angular/twerkApp.annotated.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/twerkApp.js" afterPath="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="twerk_io.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,8 +43,8 @@
       <file leaf-file-name="twerkApp.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/angular/twerkApp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-10.888889" vertical-offset="9096" max-vertical-offset="14505">
-              <caret line="666" column="25" selection-start-line="666" selection-start-column="25" selection-end-line="666" selection-end-column="25" />
+            <state vertical-scroll-proportion="-11.444445" vertical-offset="10821" max-vertical-offset="14490">
+              <caret line="782" column="53" selection-start-line="782" selection-start-column="53" selection-end-line="782" selection-end-column="53" />
               <folding>
                 <element signature="e#9171#9310#0" expanded="false" />
                 <element signature="e#14166#14450#0" expanded="false" />
@@ -72,17 +58,17 @@
       <file leaf-file-name="messagesCtrl.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/messagesCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-2.2222223" vertical-offset="0" max-vertical-offset="1065">
-              <caret line="4" column="24" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
+            <state vertical-scroll-proportion="-21.11111" vertical-offset="0" max-vertical-offset="1095">
+              <caret line="38" column="45" selection-start-line="38" selection-start-column="45" selection-end-line="38" selection-end-column="45" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="socket.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="socket.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/controllers/socket.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="6" max-vertical-offset="1875">
+            <state vertical-scroll-proportion="1.8085809" vertical-offset="6" max-vertical-offset="1875">
               <caret line="110" column="62" selection-start-line="110" selection-start-column="62" selection-end-line="110" selection-end-column="62" />
               <folding />
             </state>
@@ -92,17 +78,27 @@
       <file leaf-file-name="roomCtrl.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1395">
-              <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="486" max-vertical-offset="1440">
+              <caret line="59" column="72" selection-start-line="59" selection-start-column="72" selection-end-line="59" selection-end-column="72" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="room.jade" pinned="false" current-in-tab="true">
+      <file leaf-file-name="messages.jade" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/partials/outerState/messages.jade">
+          <provider selected="true" editor-type-id="text-editor">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+              <caret line="0" column="29" selection-start-line="0" selection-start-column="29" selection-end-line="0" selection-end-column="29" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="room.jade" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/views/partials/innerState/messages/room.jade">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.2310231" vertical-offset="0" max-vertical-offset="909">
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
               <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
               <folding />
             </state>
@@ -122,11 +118,11 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-15.444445" vertical-offset="1893" max-vertical-offset="4245">
-              <caret line="154" column="0" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
+            <state vertical-scroll-proportion="-10.444445" vertical-offset="1893" max-vertical-offset="4245">
+              <caret line="145" column="7" selection-start-line="145" selection-start-column="7" selection-end-line="145" selection-end-column="7" />
               <folding>
-                <marker date="1421861995000" expanded="true" signature="3968:4014" placeholder="{...}" />
-                <marker date="1421861995000" expanded="true" signature="4061:4107" placeholder="{...}" />
+                <marker date="1421863735000" expanded="true" signature="3974:4020" placeholder="{...}" />
+                <marker date="1421863735000" expanded="true" signature="4067:4113" placeholder="{...}" />
               </folding>
             </state>
           </provider>
@@ -186,12 +182,12 @@
         <option value="$PROJECT_DIR$/models/User.js" />
         <option value="$PROJECT_DIR$/models/Room.js" />
         <option value="$PROJECT_DIR$/scss/all.scss" />
-        <option value="$PROJECT_DIR$/public/js/angular/controllers/messagesCtrl.js" />
         <option value="$PROJECT_DIR$/views/partials/outerState/messages.jade" />
-        <option value="$PROJECT_DIR$/app.js" />
-        <option value="$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js" />
-        <option value="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
         <option value="$PROJECT_DIR$/controllers/api.js" />
+        <option value="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
+        <option value="$PROJECT_DIR$/public/js/angular/controllers/messagesCtrl.js" />
+        <option value="$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js" />
+        <option value="$PROJECT_DIR$/app.js" />
       </list>
     </option>
   </component>
@@ -453,7 +449,7 @@
     <property name="options.searchVisible" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="browse&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/browseCtrl.js&#10;twerkApp.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;roomCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;room&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/messages/room.jade&#10;messages.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;all.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;app.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;messagesCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;api&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/api.js&#10;User.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/User.js&#10;twerkAp&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;Room&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/Room.js&#10;siteCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;navbar&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/navbar.jade&#10;socket.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;browse.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/browse.jade&#10;messages&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;profile&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/profile.jade&#10;acco&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;app.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;head&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/head.jade&#10;twerk&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;twerkA&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;grunt&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;mess&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;accountCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;gruntfile&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;socket&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;sitect&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;message&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;all.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;form.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/form.scss&#10;aws.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/config/aws.json&#10;package&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/package.json&#10;intro&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/home/intro.jade&#10;gruntFil&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;app.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;roomCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;room.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/messages/room.jade&#10;messagesCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;browseCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/browseCtrl.js&#10;browse.ja&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/browse.jade&#10;siteCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;twerkApp&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;api.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/api.js&#10;.json&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/package.json&#10;Message&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/Message.js&#10;user.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/user.js&#10;acc&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js" />
+    <property name="SearchEverywhereHistoryKey" value="messages&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;browse&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/browseCtrl.js&#10;twerkApp.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;roomCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;room&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/messages/room.jade&#10;messages.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;all.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;app.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;messagesCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;api&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/api.js&#10;User.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/User.js&#10;twerkAp&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;Room&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/Room.js&#10;siteCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;navbar&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/navbar.jade&#10;socket.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;browse.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/browse.jade&#10;profile&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/profile.jade&#10;acco&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;app.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;head&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/head.jade&#10;twerk&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;twerkA&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;grunt&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;mess&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;accountCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;gruntfile&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;socket&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;sitect&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;message&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;all.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;form.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/form.scss&#10;aws.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/config/aws.json&#10;package&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/package.json&#10;intro&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/home/intro.jade&#10;gruntFil&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;app.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;roomCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;room.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/messages/room.jade&#10;messagesCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;browseCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/browseCtrl.js&#10;browse.ja&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/browse.jade&#10;siteCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;twerkApp&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;api.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/api.js&#10;.json&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/package.json&#10;Message&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/Message.js&#10;user.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/user.js&#10;acc&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js" />
     <property name="FullScreen" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="LayoutCode.rearrangeEntriesSCSS" value="false" />
@@ -853,12 +849,12 @@
       <workItem from="1421682277352" duration="7113000" />
       <workItem from="1421702713684" duration="486000" />
       <workItem from="1421844476956" duration="7853000" />
-      <workItem from="1421856732805" duration="4978000" />
+      <workItem from="1421856732805" duration="6057000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="236510000" />
+    <option name="totallyTimeSpent" value="237589000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1676" height="1027" extended-state="6" />
@@ -1216,59 +1212,11 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/controllers/socket.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="6" max-vertical-offset="1875">
-          <caret line="110" column="62" selection-start-line="110" selection-start-column="62" selection-end-line="110" selection-end-column="62" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/messagesCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-2.2222223" vertical-offset="0" max-vertical-offset="1065">
-          <caret line="4" column="24" selection-start-line="4" selection-start-column="0" selection-end-line="5" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-15.444445" vertical-offset="1893" max-vertical-offset="4245">
-          <caret line="154" column="0" selection-start-line="154" selection-start-column="0" selection-end-line="154" selection-end-column="0" />
-          <folding>
-            <marker date="1421861995000" expanded="true" signature="3968:4014" placeholder="{...}" />
-            <marker date="1421861995000" expanded="true" signature="4061:4107" placeholder="{...}" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/browseCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="21" max-vertical-offset="1185">
           <caret line="51" column="60" selection-start-line="51" selection-start-column="60" selection-end-line="51" selection-end-column="60" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1395">
-          <caret line="12" column="25" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/angular/twerkApp.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-10.888889" vertical-offset="9096" max-vertical-offset="14505">
-          <caret line="666" column="25" selection-start-line="666" selection-start-column="25" selection-end-line="666" selection-end-column="25" />
-          <folding>
-            <element signature="e#9171#9310#0" expanded="false" />
-            <element signature="e#14166#14450#0" expanded="false" />
-            <element signature="e#14480#14578#0" expanded="false" />
-            <element signature="e#23903#24922#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -1299,18 +1247,66 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/partials/outerState/messages.jade">
+    <entry file="file://$PROJECT_DIR$/views/partials/innerState/messages/room.jade">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.42517006" vertical-offset="0" max-vertical-offset="882">
-          <caret line="25" column="0" selection-start-line="25" selection-start-column="0" selection-end-line="25" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
+          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/partials/innerState/messages/room.jade">
+    <entry file="file://$PROJECT_DIR$/public/js/angular/twerkApp.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.2310231" vertical-offset="0" max-vertical-offset="909">
-          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
+        <state vertical-scroll-proportion="-11.444445" vertical-offset="10821" max-vertical-offset="14490">
+          <caret line="782" column="53" selection-start-line="782" selection-start-column="53" selection-end-line="782" selection-end-column="53" />
+          <folding>
+            <element signature="e#9171#9310#0" expanded="false" />
+            <element signature="e#14166#14450#0" expanded="false" />
+            <element signature="e#14480#14578#0" expanded="false" />
+            <element signature="e#23903#24922#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/views/partials/outerState/messages.jade">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="510">
+          <caret line="0" column="29" selection-start-line="0" selection-start-column="29" selection-end-line="0" selection-end-column="29" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/messagesCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-21.11111" vertical-offset="0" max-vertical-offset="1095">
+          <caret line="38" column="45" selection-start-line="38" selection-start-column="45" selection-end-line="38" selection-end-column="45" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="486" max-vertical-offset="1440">
+          <caret line="59" column="72" selection-start-line="59" selection-start-column="72" selection-end-line="59" selection-end-column="72" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="-10.444445" vertical-offset="1893" max-vertical-offset="4245">
+          <caret line="145" column="7" selection-start-line="145" selection-start-column="7" selection-end-line="145" selection-end-column="7" />
+          <folding>
+            <marker date="1421863735000" expanded="true" signature="3974:4020" placeholder="{...}" />
+            <marker date="1421863735000" expanded="true" signature="4067:4113" placeholder="{...}" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/controllers/socket.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="1.8085809" vertical-offset="6" max-vertical-offset="1875">
+          <caret line="110" column="62" selection-start-line="110" selection-start-column="62" selection-end-line="110" selection-end-column="62" />
           <folding />
         </state>
       </provider>

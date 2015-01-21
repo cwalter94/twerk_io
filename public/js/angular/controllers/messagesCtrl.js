@@ -34,8 +34,10 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
         if (oldRoomId) {
             allRooms[oldRoomId].selected = false;
         } else {
-            for (var r in allRooms) {
-                allRooms[r].selected = false;
+            for (var r in $scope.rooms) {
+                console.log($scope.rooms[r]);
+                console.log($scope.roomsArr);
+                $scope.rooms[r].selected = false;
             }
         }
         $state.transitionTo('site.auth.messages.room', {'roomId': roomId}, { reload: false, inherit: true, notify: true });

@@ -57,6 +57,8 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
                 $scope.messages = messages;
                 $scope.$parent.rooms[$scope.roomId].lastMessage = $scope.message.text;
                 $scope.$parent.rooms[$scope.roomId].lastMessageCreated = $scope.message.created;
+                $scope.$parent.rooms[$scope.roomId].messages = messages;
+
                 $scope.message = {toEmail: $scope.message.toEmail, rows: 1, from: $scope.me._id, to: $scope.roomId};
 
             }, function(err) {
@@ -78,6 +80,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
 
         messageFactory.addMessage($scope.roomId, message).then(function(messages) {
             $scope.messages = messages;
+            $scope.$parent.rooms[$scope.roomId].messageArr = messages;
         }, function(err) {
             flash.err = err;
         });
