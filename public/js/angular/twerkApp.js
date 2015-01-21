@@ -25,7 +25,19 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     }, function(err) {
                         return null;
                     })
-                }]
+                }],
+                me: ['principal', '$location', '$state',
+                    function (principal, $location, $state) {
+                        return principal.identity().then(function(identity) {
+                            //if (identity != null) {
+                            //    $location.path('/browse');
+                            //}
+                            return identity;
+                        }, function(err) {
+                            $location.path('/login');
+                        });
+                    }
+                ]
             }
         })
             .state('site.home', {
@@ -426,6 +438,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         $http.get('/api/user')
                             .success(function (data) {
                                 _identity = data.user;
+                                $cookieStore.put('jwt', data.token);
                                 _authenticated = true;
                                 deferred.resolve(_identity);
                             })

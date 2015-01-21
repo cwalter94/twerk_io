@@ -14,5 +14,5 @@ div#home-container
                                 p(ng-if="!verified").text-center Sorry, that verification URL didn't match your account. Would you like us to send you another verification email?
 
                                 div(style="width: 100%").text-center
-                                    button.btn.btn-default.btn-main(ng-if="verified", ui-sref="site.auth.profile") Start Your Profile
+                                    button.btn.btn-default.btn-main(ng-if="verified", ui-sref="site.auth.profile") Update Profile
                                     button.btn.btn-default.btn-main(ng-if="!verified", ng-click="sendEmail()") Send Again

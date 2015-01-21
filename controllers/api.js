@@ -783,6 +783,8 @@ exports.sendEmail = function (req, res, next) {
         res.status(401).end('Please login and reload this page before trying to send another verification email.')
     }
 };
+
+
 /**
  * DO NOT USE THIS FUNCTION FOR ANYTHING EXCEPT DEBUGGING
  * (used for resetting password manually, if password is lost)
@@ -790,7 +792,6 @@ exports.sendEmail = function (req, res, next) {
  * @param res
  * @param next
  */
-
 exports.manualResetPassword = function (req, res, next) {
     if (req.body.password === undefined) {
         return res.status(401).end();
