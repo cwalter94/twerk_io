@@ -1471,16 +1471,16 @@ var messagesCtrl = app.controller('messagesCtrl', ['$scope', '$http', '$location
     $scope.rooms = allRooms;
     $scope.roomsArr = [];
 
-    var roomIds = [];
+    $scope.roomIds = [];
     for (var r in allRooms) {
         if (allRooms[r].messages.length > 0) {
-            roomIds.push(r);
+            $scope.roomIds.push(r);
         }
         allRooms[r].selected = false;
         $scope.roomsArr.push($scope.rooms[r]);
     }
-    if (roomIds.length > 0) {
-        messageFactory.getMultipleRoomsToUsers(roomIds, me)
+    if ($scope.roomIds.length > 0) {
+        messageFactory.getMultipleRoomsToUsers($scope.roomIds, me)
             .then(function(roomsIdsToUserArr) {
                 for (var r in roomsIdsToUserArr) {
                     $scope.rooms[r].toUserArr = roomsIdsToUserArr[r];
@@ -1654,6 +1654,7 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
     $scope.toUser = {};
     $scope.message = {};
     $scope.me = me;
+
     for (var r in allRooms) {
         allRooms[r].selected = false;
     }
@@ -1676,6 +1677,7 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
     $scope.messages = messages;
 
     $scope.roomId = $stateParams.roomId;
+    $scope.$parent.roomIds.push($scope.roomId);
 
     $scope.siteSocket = siteSocket;
 
