@@ -14,7 +14,7 @@ app.controller('siteCtrl', function ($scope, $location, principal, siteSocket, $
 
     $scope.principal = principal;
     $scope.newMessages = 0;
-
+    $scope.userAuthenticated = principal.isAuthenticated();
 
     $scope.getUrl = function() {
         return '' + $location.path();

@@ -123,6 +123,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     }]
                 },
                 controller: function($scope, $state, me, siteSocket, userFactory) {
+                    $scope.$parent.userAuthenticated = true;
 
                     siteSocket.emit('user:init', me._id);
 
@@ -143,6 +144,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     });
 
                     siteSocket.on('user:init', function(userOnlineStatus) {
+
                         userFactory.allUserOnlineStatus(userOnlineStatus);
                     });
                 }
