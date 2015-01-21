@@ -672,10 +672,62 @@ html body {
         right: 2px;
         top: 8px;
         color: #666; }
-  html body #account-container .col-xs-12 .btn-save {
-    margin-top: 10px; }
+  html body #account-container #profile-container {
+    min-height: 400px;
+    width: 100%;
+    border: 1px solid #ccc;
+    background: #fff;
+    padding: 15px; }
+    html body #account-container #profile-container .col-xs-12 .btn-save {
+      margin-top: 10px; }
+    html body #account-container #profile-container .picture-col {
+      min-height: 350px; }
+      html body #account-container #profile-container .picture-col .profile-picture {
+        min-height: 380px; }
+        html body #account-container #profile-container .picture-col .profile-picture.empty {
+          border: 5px dashed #ccc; }
+        html body #account-container #profile-container .picture-col .profile-picture .picture-controls {
+          opacity: 0;
+          position: absolute;
+          top: 5px;
+          left: 15px;
+          width: 100px;
+          height: 50px;
+          -webkit-transition: all .3s;
+          -moz-transition: all .3s;
+          -ms-transition: all .3s;
+          -o-transition: all .3s;
+          transition: all .3s; }
+          html body #account-container #profile-container .picture-col .profile-picture .picture-controls i {
+            color: white;
+            position: relative;
+            font-size: 24px;
+            float: left;
+            width: 30px;
+            height: 50px; }
+        html body #account-container #profile-container .picture-col .profile-picture .picture-upload {
+          opacity: 1;
+          position: absolute;
+          top: calc(50% - 40px);
+          left: 15px;
+          width: calc(100% - 30px);
+          height: 40px;
+          background: rgba(255, 255, 255, 0.8);
+          text-align: center;
+          font-size: 24px;
+          color: #52008c;
+          -webkit-transition: all .3s;
+          -moz-transition: all .3s;
+          -ms-transition: all .3s;
+          -o-transition: all .3s;
+          transition: all .3s; }
+        html body #account-container #profile-container .picture-col .profile-picture:hover .picture-controls {
+          opacity: 1; }
+        html body #account-container #profile-container .picture-col .profile-picture:hover .picture-upload {
+          background: white; }
+    html body #account-container #profile-container .info-col .select2-drop, html body #account-container #profile-container .info-col .select2-drop-active, html body #account-container #profile-container .info-col .select2-with-searchbox {
+      position: relative; }
   html body #account-container textarea {
-    margin: 0px 15px;
     resize: none; }
   html body #account-container .btn-save {
     -webkit-transition: all .5s;

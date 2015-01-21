@@ -1,5 +1,5 @@
-var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap', 'ngSanitize',
-    'mgcrea.ngStrap', 'textAngular', 'xeditable', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table',
+var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap',
+    'mgcrea.ngStrap', 'xeditable', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table',
     'btford.socket-io', 'once', 'infinite-scroll'], function () {
 
 })
@@ -359,7 +359,8 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 },
 
                 isAuthenticated: function () {
-                    return _authenticated;
+                   return _authenticated;
+
                 },
 
                 isVerified: function() {
@@ -510,10 +511,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         function ($rootScope, $state, principal) {
             return {
                 authorize: function () {
-                    return principal.identity()
-                        .then(function () {
-                            return principal.isAuthenticated();
-                        });
+                        return principal.isAuthenticated();
                 }
             };
         }
@@ -900,6 +898,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         }
     })
     .filter('browseFilter', function () {
+
         return function (users, search) {
             if (search == null) return users;
             var results = {};

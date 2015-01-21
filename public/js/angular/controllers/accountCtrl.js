@@ -1,11 +1,11 @@
 var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal) {
 
-    console.log(me);
     $scope.me = me;
 
     $scope.me.selectedClasses = [];
 
     $scope.allClasses = [];
+    $scope.loadingClasses = [{departmentCode: 'Loading classes...', courseNumber: ''}];
 
     for (var i in me.classes) {
         var temp = me.classes[i];
@@ -16,7 +16,6 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
         $scope.allClasses.push(newClass);
         $scope.me.selectedClasses.push(newClass);
     }
-    console.log($scope.me);
     $scope.origMe = angular.copy($scope.me);
     $scope.initialComparison = !angular.equals($scope.me, $scope.origMe);
     $scope.dataHasChanged = angular.copy($scope.initialComparison);
@@ -24,7 +23,6 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
     $scope.dropSupported = true;
     $scope.disabled = undefined;
 
-    $scope.allColleges = ['Engineering', 'Letters & Science', 'Chemistry', 'Natural Resources', 'Environmental Design', 'Haas School of Business'];
     $scope.search = "";
 
     $scope.$watch('me', function(newval, oldval) {
@@ -48,6 +46,7 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
                     }
                 }
                 if (match && match[2]) {
+
                     $http({
                         url: 'https://apis-dev.berkeley.edu/cxf/asws/classoffering',
                         method: 'GET',
@@ -82,6 +81,19 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
             }
 
     };
+
+    $scope.deletePicture = function() {
+        $http({
+            url: '/api/user/deletepicture',
+            method: 'GET'
+        }).success(function(data) {
+            $scope.origMe.picture = data.picture;
+            $scope.me.picture = data.picture;
+            $scope.dataHasChanged = angular.equals($scope.me, $scope.origMe);
+        }).error(function(err) {
+            flash.err = err;
+        });
+    }
 
     $scope.resetSearchInput = function($select) {
         $select.search = "";

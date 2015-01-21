@@ -1,5 +1,5 @@
-var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap', 'ngSanitize',
-    'mgcrea.ngStrap', 'textAngular', 'xeditable', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table',
+var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap',
+    'mgcrea.ngStrap', 'xeditable', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table',
     'btford.socket-io', 'once', 'infinite-scroll'], function () {
 
 })
@@ -359,7 +359,8 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 },
 
                 isAuthenticated: function () {
-                    return _authenticated;
+                   return _authenticated;
+
                 },
 
                 isVerified: function() {
@@ -510,10 +511,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         function ($rootScope, $state, principal) {
             return {
                 authorize: function () {
-                    return principal.identity()
-                        .then(function () {
-                            return principal.isAuthenticated();
-                        });
+                        return principal.isAuthenticated();
                 }
             };
         }
@@ -589,7 +587,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         method: 'GET'
                     }).success(function(data) {
                         _allRooms = {};
-                        console.log(data);
                         for (var r in data.allRooms) {
                             _allRooms[data.allRooms[r]._id] = data.allRooms[r];
                         }
@@ -901,6 +898,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         }
     }])
     .filter('browseFilter', function () {
+
         return function (users, search) {
             if (search == null) return users;
             var results = {};
@@ -995,7 +993,6 @@ var aboutCtrl = app.controller('aboutCtrl', ['$scope', '$http', '$upload', 'exco
 }]);
 var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '$location', 'me', 'flash', '$cookieStore', 'principal', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal) {
 
-    console.log(me);
     $scope.me = me;
 
     $scope.me.selectedClasses = [];
@@ -1011,7 +1008,6 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
         $scope.allClasses.push(newClass);
         $scope.me.selectedClasses.push(newClass);
     }
-    console.log($scope.me);
     $scope.origMe = angular.copy($scope.me);
     $scope.initialComparison = !angular.equals($scope.me, $scope.origMe);
     $scope.dataHasChanged = angular.copy($scope.initialComparison);
