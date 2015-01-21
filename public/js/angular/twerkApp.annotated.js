@@ -18,6 +18,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             controller: 'siteCtrl',
             url: '',
             resolve: {
+
                 siteSocket: ['socket', function(socket) {
                     return socket.getSocket().then(function(s) {
                         return s;
@@ -29,6 +30,20 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         })
             .state('site.home', {
                 templateUrl: '/partials/outer/home',
+                resolve: {
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                //if (identity != null) {
+                                //    $location.path('/browse');
+                                //}
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
+                        }
+                    ]
+                },
                 controller: ['$scope', function ($scope) {
 
                 }],
@@ -158,6 +173,17 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/:code',
                 templateUrl: '/partials/outer/verifyconfirm',
                 resolve: {
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                            });
+                        }
+
+
+                    ],
                     verified: ['$http', 'principal', '$stateParams', function($http, principal, $stateParams) {
 
                         return $http({
@@ -994,6 +1020,7 @@ var aboutCtrl = app.controller('aboutCtrl', ['$scope', '$http', '$upload', 'exco
 var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '$location', 'me', 'flash', '$cookieStore', 'principal', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal) {
 
     $scope.me = me;
+    console.log($scope.me);
 
     $scope.me.selectedClasses = [];
 

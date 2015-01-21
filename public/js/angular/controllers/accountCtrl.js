@@ -1,6 +1,7 @@
 var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal) {
 
     $scope.me = me;
+    console.log($scope.me);
 
     $scope.me.selectedClasses = [];
 
