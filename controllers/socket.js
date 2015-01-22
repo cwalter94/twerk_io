@@ -8,7 +8,7 @@ exports.socketHandler = function (allUsers) {
 
         socket.on('user:init', function(userId) {
             socket.userId = userId;
-            allUsers[userId] = {online : true, lastOnline: Date.now()};
+            allUsers[userId] = {online : true, lastOnline: Date.now(), currRoomId: null};
             socket.emit('user:init', allUsers);
             socket.join(userId);
             User.findById(userId, 'lastOnline', function(err, user) {
@@ -37,57 +37,55 @@ exports.socketHandler = function (allUsers) {
 
         socket.on('join:room:arr', function(roomIds) {
             for(var r in roomIds) {
-                socket.join('' + roomIds[r]);
+                socket.join(roomIds[r]);
             }
         });
 
-        socket.on('set:current:room', function(roomId) {
-            if (roomId != null) {
-                Room.findById(mongoose.Types.ObjectId(roomId), 'unreadMessages', function(err, room) {
+        socket.on('set:current:room', function(data) {
+            var roomId = data.roomId;
+            var userId = data.userId;
+            console.log("DATA", data);
+
+            if (roomId != '') {
+                Room.findById(mongoose.Types.ObjectId(roomId), 'unreadMessages users', function(err, room) {
                     if (err) {
                         console.log(err);
                         socket.emit('error', 'An error occurred when saving this message');
                     } else if (room) {
-                        room.unreadMessages[socket.userId] = 0;
-                        room.save(function(err) {
-                            if (err) {
-                                console.log(err);
-                                socket.emit('error', 'Room unread messages could not be updated.');
+
+                        var newArr = [];
+
+                        for (var i = 0; i < room.unreadMessages.length; i++) {
+                            var m = room.unreadMessages[i];
+                            console.log("THIS IS M", m);
+                            if (m.indexOf(socket.userId) > -1) {
+                                newArr.push(m.substring(0, m.lastIndexOf('.'))+ '.0');
+
+                            } else {
+                                newArr.push(m);
                             }
-                        });
+                        }
+
+                        console.log("NEW ARR", newArr);
+                        if (newArr.length > 0) {
+                            room.unreadMessages = newArr;
+                            room.save(function(err) {
+                                if (err) {
+                                    console.log(err);
+                                    socket.emit('error', 'Room unread messages could not be updated.');
+                                }
+                            });
+                        }
+
+
                     } else {
                         console.log('no room found');
                     }
                 });
             }
 
-            socket.currRoomId = roomId;
+            allUsers[userId] != null ? allUsers[userId].currRoomId = roomId : allUsers[userId] = {currRoomId: null};
         });
-
-
-        socket.on("join:room", function(roomId) {
-            Room.findById(mongoose.Types.ObjectId(roomId), 'unreadMessages', function(err, room) {
-                if (err) {
-                    console.log(err);
-                    socket.emit('error', 'An error occurred when saving this message');
-                } else if (room) {
-                    room.unreadMessages[socket.userId] = 0;
-                    room.save(function(err) {
-                        if (err) {
-                            console.log(err);
-                            socket.emit('error', 'Room unread messages could not be updated.');
-                        }
-                    });
-                } else {
-                    console.log('no room found');
-                }
-            });
-
-            socket.join(roomId);
-            socket.currRoomId = roomId;
-            socket.emit('join:room', roomId);
-        });
-
 
         socket.on("send:message", function(msg) {
             if (msg.from && msg.to && msg.toEmail && msg.text !== '') {
@@ -102,26 +100,54 @@ exports.socketHandler = function (allUsers) {
                         console.log(err);
                         socket.emit('error', 'An error occurred when saving this message');
                     } else {
-                        Room.findById(mongoose.Types.ObjectId(msg.to), 'messages unreadMessages', function(err, room) {
+                        Room.findById(mongoose.Types.ObjectId(msg.to), 'messages unreadMessages users', function (err, room) {
                             if (err) {
                                 console.log(err);
                                 socket.emit('error', 'An error occurred when saving this message');
                             } else if (room) {
+                                var userId;
+
+                                for (var u = 0; u < room.users.length; u++) {
+                                    if (room.users[u] != socket.userId) {
+                                        userId = room.users[u];
+                                        break;
+                                    }
+                                }
                                 room.messages.push(message._id);
                                 room.lastMessage = message.text;
-                                if (socket.currRoomId !== msg.to) {
-                                    room.unreadMessages[socket.userId] == null ? room.unreadMessages[socket.userId] = 1 : room.unreadMessages[socket.userId] += 1;
-                                }
-                                room.save(function(err) {
-                                    if (err) {
-                                        console.log(err);
-                                    } else {
-                                        socket.broadcast.to('' + msg.to).emit("send:message", message);
+                                var newArr = [];
+
+                                if (!allUsers[userId] || allUsers[userId].currRoomId == null || allUsers[userId].currRoomId != msg.to) {
+                                    for (var i = 0; i < room.unreadMessages.length; i++) {
+                                        if (room.unreadMessages[i].indexOf('' + socket.userId) == -1) {
+                                            var index = room.unreadMessages[i].lastIndexOf('.') + 1;
+                                            var temp = Number(room.unreadMessages[i].substring(index));
+                                            temp += 1;
+
+                                            newArr.push(room.unreadMessages[i].substring(0, index) + temp);
+
+                                        } else {
+                                            newArr.push(room.unreadMessages[i]);
+                                        }
                                     }
 
-                                });
-                            } else {
-                                console.log('no room found');
+                                    room.unreadMessages = newArr;
+                                    room.save(function (err) {
+                                        if (err) {
+                                            console.log(err);
+                                        } else {
+                                            console.log("ROOM SAVE", room);
+                                            return socket.broadcast.to('' + msg.to).emit("send:message", message);
+                                        }
+                                    });
+
+
+                                } else {
+                                    console.log('no room found');
+                                }
+
+
+
                             }
                         });
                     }
@@ -134,7 +160,7 @@ exports.socketHandler = function (allUsers) {
 
         socket.on("disconnect", function() {
 
-            allUsers[socket.userId] = {online : false, lastOnline: Date.now()};
+            allUsers[socket.userId] = {online : false, lastOnline: Date.now(), currRoomId: null};
             socket.broadcast.emit('user:offline', socket.userId);
 
             User.findById(socket.userId, function(err, user) {

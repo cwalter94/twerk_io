@@ -11,13 +11,7 @@ app.controller('siteCtrl', function ($scope, $location, principal, siteSocket, $
         $scope.unreadMessages = data;
     });
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, err) {
-        if (toState.name.indexOf('site.auth.messages.room') == -1) {
-            messageFactory.setCurrentRoom(null).then(function(currRoom) {
-                siteSocket.emit('set:current:room', null);
-            });
-        }
-    });
+
 
     $rootScope.$on('$stateChangeError',
         function(event, toState, toParams, fromState, fromParams, error){

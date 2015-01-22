@@ -11,7 +11,7 @@ var roomSchema = new mongoose.Schema({
     lastMessage: {type: String, default: ''},
     usersNames: {type: [String], default:''},
     lastMessageCreated: {type: Date, default: Date.now, required: true},
-    unreadMessages: {type: Object, default: {}, required: true} // map room users to unread messages
+    unreadMessages: {type: [String], default: [''], required: true}// encoded strings: roomId.num
 });
 
 roomSchema.pre('save', function (next) {

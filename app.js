@@ -148,9 +148,11 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
     //
     //Room.find({}).remove(function(err) {
     //    if (err) console.log(err);
+    //    console.log("room removal");
     //});
     //Message.find({}).remove(function(err) {
     //    if (err) console.log(err);
+    //    console.log("message removal");
     //});
 
 

@@ -128,7 +128,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     }]
                 },
                 controller: function($scope, $state, $rootScope, me, siteSocket, userFactory, messageFactory, allRooms) {
-                    $scope.$parent.userAuthenticated = true;
 
                     siteSocket.emit('user:init', me._id);
                     var temp = [];
@@ -138,6 +137,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                     siteSocket.emit('join:room:arr', temp);
                     messageFactory.getUnreadMessages(me._id).then(function(unreadMessages) {
+                        console.log("UNREAD MESSAGES AUTH CTRL", unreadMessages);
                         $rootScope.$emit('updateUnreadMessages', unreadMessages);
                     });
 
@@ -160,6 +160,14 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     siteSocket.on('user:init', function(userOnlineStatus) {
 
                         userFactory.allUserOnlineStatus(userOnlineStatus);
+                    });
+
+                    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams, err) {
+                        if (toState.name.indexOf('site.auth.messages.room') == -1) {
+                            messageFactory.setCurrentRoom(null).then(function(currRoom) {
+                                siteSocket.emit('set:current:room', {roomId: "", userId: me._id});
+                            });
+                        }
                     });
 
                     siteSocket.on('send:message', function(message) {
@@ -649,12 +657,18 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             for (var r in data.allRooms) {
                                 _allRooms[data.allRooms[r]._id] = data.allRooms[r];
 
-                                if (!data.allRooms[r].unreadMessages || !data.allRooms[r].unreadMessages[me._id]) {
-                                    data.allRooms[r].unreadMessages = {};
-                                    data.allRooms[r].unreadMessages[me._id] = 0;
+                                var temp = 0;
+                                console.log("BEFORE BEFORE TEMP", data.allRooms[r].unreadMessages);
+                                for (var i = 0; i < data.allRooms[r].unreadMessages.length; i++) {
+                                    console.log("BEFORE TEMP", data.allRooms[r].unreadMessages[i]);
+                                    if (data.allRooms[r].unreadMessages[i].indexOf('' + me._id) > -1) {
+                                        temp = Number(data.allRooms[r].unreadMessages[i].substring(data.allRooms[r].unreadMessages[i].lastIndexOf('.') + 1));
+                                        console.log("TEMP", temp);
+                                        _allRooms[data.allRooms[r]._id].unreadMessages = temp;
+                                        console.log("UPDATED UNREAD MESSAGES", _allRooms[data.allRooms[r]._id].unreadMessages);
+                                        break;
+                                    }
                                 }
-
-                                _allRooms[data.allRooms[r]._id].unreadMessages = data.allRooms[r].unreadMessages;
                             }
                             deferred.resolve(_allRooms);
                         }).error(function(err) {
@@ -726,7 +740,15 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             method: 'GET'
                         }).success(function(data) {
                             _allRooms[data.room._id] = data.room;
-                            _allRooms[data.room._id].needsUpdate = false;
+                            console.log("NEW ROOM UNREAD MESSAGES", data.room.unreadMessages);
+                            for (var i = 0; i < data.room.unreadMessages.length; i++){
+                                console.log("NEW ROOM USER ID", user._id);
+                                console.log("NEW ROOM INDEX OF USER ID", data.room.unreadMessages[i].indexOf(user._id));
+                                if (data.room.unreadMessages[i].indexOf(user._id) > -1) {
+                                    var temp = Number(data.room.unreadMessages[i].substring(data.room.unreadMessages[i].lastIndexOf('.') + 1));
+                                    _allRooms[data.room._id].unreadMessages = temp;
+                                }
+                            }
                             deferred.resolve(_allRooms[data.room._id]);
                         }).error(function(err) {
                             deferred.reject(err);
@@ -809,11 +831,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     console.log("MESSAGE", message);
 
                     if (!_currRoom || _currRoom._id != roomId) {
-                        if (_allRooms[roomId].unreadMessages == null) {
-                            _allRooms[roomId].unreadMessages = {};
-                            _allRooms[roomId].unreadMessages[meId] = 0;
-                        }
-                        _allRooms[roomId].unreadMessages[meId] += 1;
+                        _allRooms[roomId].unreadMessages += 1;
                         console.log("MESSAGE TO ROOM", _allRooms[roomId]);
                         console.log("MESSAGE TO ROOM MEID", meId);
 
@@ -840,15 +858,12 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         _currRoom = _allRooms[roomId];
 
                         console.log("UNREAD MESSAGES", _unreadMessages);
-                        console.log("SELECTED ROOM", _currRoom);
-                        if (_currRoom.unreadMessages[userId] == null) {
-                            _currRoom.unreadMessages[userId] = 0;
-                        }
-                        _unreadMessages -= _currRoom.unreadMessages[userId];
+                        console.log("MINUS CURR ROOM", _currRoom.unreadMessages);
+                        _unreadMessages -= _currRoom.unreadMessages;
                         $rootScope.$emit('updateUnreadMessages', _unreadMessages);
-                        _currRoom.unreadMessages[userId] = 0;
+                        _currRoom.unreadMessages = 0;
                         deferred.resolve(_currRoom);
-                        siteSocket.emit('set:current:room', roomId);
+                        siteSocket.emit('set:current:room', {roomId: roomId, userId: userId});
                     });
                 }
 
@@ -893,11 +908,8 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     console.log(_allRooms);
                     for (var r in _allRooms) {
                         var room = _allRooms[r];
-                        if (room.unreadMessages == null) {
-                            room.unreadMessages = {};
-                            room.unreadMessages[meId] = 0;
-                        }
-                        _unreadMessages += room.unreadMessages[meId];
+                        console.log(room);
+                        _unreadMessages += room.unreadMessages;
                     }
                     deferred.resolve(_unreadMessages);
                 });

@@ -104,11 +104,8 @@ exports.getMessagesForRoomId = function (req, res) {
                 console.log(err);
                 return res.status(401).end('An error occurred while retrieving messages for this thread.');
             }
-            console.log("ROOM", room);
-            console.log("USERID", req.user._id);
+            console.log("API MESSAGES ROOM", room);
             if (room && room.users.indexOf(req.user._id) > -1) {
-                room.unreadMessages = 0;
-                room.save(function(err) {
                     Message.find({to: mongoose.Types.ObjectId(req.params.roomId)}, 'from created text read', function (err, messages) {
                         if (err) {
                             console.log(err);
@@ -122,8 +119,6 @@ exports.getMessagesForRoomId = function (req, res) {
                             return res.status(401).end("Sorry, we couldn't retrieve the messages for this thread");
                         }
                     });
-
-                });
             } else {
                 res.status(401).end("Sorry, we couldn't find that room");
             }
@@ -142,6 +137,7 @@ exports.getRoomForRoomId = function (req, res) {
                 console.log(err);
                 return res.status(401).end('An error occurred while locating this message thread.');
             }
+            console.log("API ROOM", room);
             return res.json({token: req.token, room: room})
         });
     } else {
@@ -159,23 +155,29 @@ exports.getRoomForUserIdAndReqUser = function (req, res) {
                 return res.status(401).end('An error occurred while locating this message thread.');
             }
             if (room) {
-
+                console.log("API ROOM", room);
                 return res.json({token: req.token, room: room})
             } else {
 
+
                 var newRoom = new Room({
-                    users: [req.user._id, mongoose.Types.ObjectId(req.params.userId)]
+                    users: [req.user._id, mongoose.Types.ObjectId(req.params.userId)],
+                    unreadMessages: ['' + req.user._id + '.0', '' + mongoose.Types.ObjectId(req.params.userId) + '.0']
                 });
+
                 newRoom.save(function (err) {
                     if (err) {
                         console.log(err);
                         return res.status(401).end('An error occurred while locating this message thread.');
                     }
+                    console.log("NEW ROOM", newRoom);
+
                     return res.json({
                         token: req.token, room: {
                             _id: newRoom._id,
                             users: newRoom.users,
-                            messages: newRoom.messages
+                            messages: newRoom.messages,
+                            unreadMessages: newRoom.unreadMessages
                         }
                     });
                 });
