@@ -289,7 +289,53 @@ html {
             background: transparent !important;
             overflow: hidden;
 
-            .nav-icon {
+            .message-icon-container {
+              width: 100%;
+
+              position: relative;
+              float: left;
+
+              .glyphicon-envelope {
+                width: 90px;
+                position: relative;
+                text-align: center;
+                height: 100%;
+
+                -webkit-transition: all .25s;
+                -moz-transition: all .25s;
+                -ms-transition: all .25s;
+                -o-transition: all .25s;
+                transition: all .25s;
+
+                &.left {
+                  width:50px;
+                }
+              }
+
+              .message-indicator {
+                width: 0;
+                position: relative;
+                float: left;
+                text-align: center;
+                background: transparent;
+                font-size: 18px;
+                color: #fff;
+                line-height: 27px;
+                padding: 0;
+
+                -webkit-transition: all .25s;
+                -moz-transition: all .25s;
+                -ms-transition: all .25s;
+                -o-transition: all .25s;
+                transition: all .25s;
+
+                &.visible {
+                  width: 20px;
+                }
+              }
+            }
+
+            .nav-icon, .message-icon-container {
               -webkit-transition: all .3s;
               -moz-transition: all .3s;
               -ms-transition: all .3s;
@@ -320,8 +366,13 @@ html {
             &:hover {
               background: transparent !important;
 
-              .nav-icon {
+              .nav-icon, .message-icon-container {
                 top: -12px;
+
+                &.glyphicon-envelope {
+                  top: 0;
+                }
+
               }
 
               .nav-icon-text {

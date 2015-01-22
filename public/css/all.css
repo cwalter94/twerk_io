@@ -193,7 +193,40 @@ html body {
           color: #ffffff !important;
           background: transparent !important;
           overflow: hidden; }
-          html body nav ul.nav li a .nav-icon {
+          html body nav ul.nav li a .message-icon-container {
+            width: 100%;
+            position: relative;
+            float: left; }
+            html body nav ul.nav li a .message-icon-container .glyphicon-envelope {
+              width: 90px;
+              position: relative;
+              text-align: center;
+              height: 100%;
+              -webkit-transition: all .25s;
+              -moz-transition: all .25s;
+              -ms-transition: all .25s;
+              -o-transition: all .25s;
+              transition: all .25s; }
+              html body nav ul.nav li a .message-icon-container .glyphicon-envelope.left {
+                width: 50px; }
+            html body nav ul.nav li a .message-icon-container .message-indicator {
+              width: 0;
+              position: relative;
+              float: left;
+              text-align: center;
+              background: transparent;
+              font-size: 18px;
+              color: #fff;
+              line-height: 27px;
+              padding: 0;
+              -webkit-transition: all .25s;
+              -moz-transition: all .25s;
+              -ms-transition: all .25s;
+              -o-transition: all .25s;
+              transition: all .25s; }
+              html body nav ul.nav li a .message-icon-container .message-indicator.visible {
+                width: 20px; }
+          html body nav ul.nav li a .nav-icon, html body nav ul.nav li a .message-icon-container {
             -webkit-transition: all .3s;
             -moz-transition: all .3s;
             -ms-transition: all .3s;
@@ -217,8 +250,10 @@ html body {
             left: 0; }
           html body nav ul.nav li a:hover {
             background: transparent !important; }
-            html body nav ul.nav li a:hover .nav-icon {
+            html body nav ul.nav li a:hover .nav-icon, html body nav ul.nav li a:hover .message-icon-container {
               top: -12px; }
+              html body nav ul.nav li a:hover .nav-icon.glyphicon-envelope, html body nav ul.nav li a:hover .message-icon-container.glyphicon-envelope {
+                top: 0; }
             html body nav ul.nav li a:hover .nav-icon-text {
               bottom: 10px; }
     html body nav li.dropdown {
