@@ -496,7 +496,9 @@ html body {
               margin-left: -10px;
               margin-right: 10px; }
             html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .img-col, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .img-col {
-              width: 100px; }
+              width: 100px;
+              max-height: 70px;
+              overflow-y: hidden; }
               html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .img-col img, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .img-col img {
                 width: 100%; }
             html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col {
@@ -598,6 +600,7 @@ html body {
           width: 100%;
           height: 75px;
           float: left;
+          position: relative;
           text-effect: none;
           margin-top: 1px;
           padding-top: 5px;
@@ -631,12 +634,17 @@ html body {
     width: 100%; }
     html body #chat-container .chat-profile-container {
       height: 100px;
-      background: #a27ebc; }
+      background: #a27ebc;
+      position: relative; }
       html body #chat-container .chat-profile-container .img-col {
         padding: 5px;
         height: 100%; }
         html body #chat-container .chat-profile-container .img-col img {
           height: 100%; }
+      html body #chat-container .chat-profile-container .glyphicon-comment {
+        position: absolute;
+        top: 5px;
+        right: 5px; }
       html body #chat-container .chat-profile-container .name-col {
         color: white;
         float: left;

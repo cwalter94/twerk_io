@@ -35,17 +35,59 @@ exports.socketHandler = function (allUsers) {
 
         });
 
-        //
-        //socket.on("typing", function(data) {
-        //    if (typeof people[socket.id] !== "undefined")
-        //        io.sockets.in(socket.room).emit("isTyping", {isTyping: data, person: people[socket.id].name});
-        //});
-
-        socket.on("join:room", function(room) {
-            socket.join(room);
-            socket.room = room;
-            socket.emit('join:room', room);
+        socket.on('join:room:arr', function(roomIds) {
+            for(var r in roomIds) {
+                socket.join('' + roomIds[r]);
+            }
         });
+
+        socket.on('set:current:room', function(roomId) {
+            if (roomId != null) {
+                Room.findById(mongoose.Types.ObjectId(roomId), 'unreadMessages', function(err, room) {
+                    if (err) {
+                        console.log(err);
+                        socket.emit('error', 'An error occurred when saving this message');
+                    } else if (room) {
+                        room.unreadMessages[socket.userId] = 0;
+                        room.save(function(err) {
+                            if (err) {
+                                console.log(err);
+                                socket.emit('error', 'Room unread messages could not be updated.');
+                            }
+                        });
+                    } else {
+                        console.log('no room found');
+                    }
+                });
+            }
+
+            socket.currRoomId = roomId;
+        });
+
+
+        socket.on("join:room", function(roomId) {
+            Room.findById(mongoose.Types.ObjectId(roomId), 'unreadMessages', function(err, room) {
+                if (err) {
+                    console.log(err);
+                    socket.emit('error', 'An error occurred when saving this message');
+                } else if (room) {
+                    room.unreadMessages[socket.userId] = 0;
+                    room.save(function(err) {
+                        if (err) {
+                            console.log(err);
+                            socket.emit('error', 'Room unread messages could not be updated.');
+                        }
+                    });
+                } else {
+                    console.log('no room found');
+                }
+            });
+
+            socket.join(roomId);
+            socket.currRoomId = roomId;
+            socket.emit('join:room', roomId);
+        });
+
 
         socket.on("send:message", function(msg) {
             if (msg.from && msg.to && msg.toEmail && msg.text !== '') {
@@ -60,22 +102,21 @@ exports.socketHandler = function (allUsers) {
                         console.log(err);
                         socket.emit('error', 'An error occurred when saving this message');
                     } else {
-                        Room.findById(mongoose.Types.ObjectId(msg.to), 'messages', function(err, room) {
+                        Room.findById(mongoose.Types.ObjectId(msg.to), 'messages unreadMessages', function(err, room) {
                             if (err) {
                                 console.log(err);
                                 socket.emit('error', 'An error occurred when saving this message');
                             } else if (room) {
                                 room.messages.push(message._id);
                                 room.lastMessage = message.text;
-
+                                if (socket.currRoomId !== msg.to) {
+                                    room.unreadMessages[socket.userId] == null ? room.unreadMessages[socket.userId] = 1 : room.unreadMessages[socket.userId] += 1;
+                                }
                                 room.save(function(err) {
                                     if (err) {
                                         console.log(err);
                                     } else {
                                         socket.broadcast.to('' + msg.to).emit("send:message", message);
-                                        if (allUsers[msg.toEmail] && allUsers[msg.toEmail].online) {
-                                            socket.broadcast.to('' + msg.toEmail).emit("new:message");
-                                        }
                                     }
 
                                 });

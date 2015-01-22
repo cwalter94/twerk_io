@@ -47,7 +47,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         function (principal, $location, $state) {
                             return principal.identity().then(function(identity) {
                                 if (identity != null) {
-                                    $state.transitionTo('/browse');
+                                    $state.transitionTo('site.auth.browse');
                                 }
                                 return identity;
                             }, function(err) {
@@ -120,12 +120,26 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         }, function(err) {
                             return null;
                         })
+                    }],
+                    allRooms: ['messageFactory', function(messageFactory) {
+                        return messageFactory.getRooms().then(function(allRooms) {
+                            return allRooms;
+                        });
                     }]
                 },
-                controller: function($scope, $state, me, siteSocket, userFactory) {
+                controller: function($scope, $state, $rootScope, me, siteSocket, userFactory, messageFactory, allRooms) {
                     $scope.$parent.userAuthenticated = true;
 
                     siteSocket.emit('user:init', me._id);
+                    var temp = [];
+                    for (var r in allRooms) {
+                        temp.push(r);
+                    }
+
+                    siteSocket.emit('join:room:arr', temp);
+                    messageFactory.getUnreadMessages(me._id).then(function(unreadMessages) {
+                        $rootScope.$emit('updateUnreadMessages', unreadMessages);
+                    });
 
                     siteSocket.on('user:offline', function(userId) {
                         userFactory.userOffline(userId).then(function(data) {
@@ -147,6 +161,11 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                         userFactory.allUserOnlineStatus(userOnlineStatus);
                     });
+
+                    siteSocket.on('send:message', function(message) {
+                        messageFactory.addMessage(message.to, message, me._id);
+                    });
+
                 }
             })
             .state('site.auth.verify', {
@@ -299,16 +318,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 $location.path('/login');
                             });
                         }
-
-
-                    ],
-                    allRooms: ['messageFactory', function(messageFactory) {
-                        return messageFactory.getRooms().then(function(data) {
-                            return data;
-                        }, function(err) {
-                            console.log(err);
-                        })
-                    }]
+                    ]
                 }
             })
             .state('site.auth.messages.room', {
@@ -328,9 +338,16 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             });
                         }
                     ],
-                    messages: ['messageFactory', '$stateParams',
-                        function(messageFactory, $stateParams) {
-                            return messageFactory.getMessages($stateParams.roomId).then(function(data) {
+                    siteSocket: ['socket', function(socket) {
+                        return socket.getSocket().then(function(s) {
+                            return s;
+                        }, function(err) {
+                            return null;
+                        })
+                    }],
+                    messages: ['messageFactory', '$stateParams', 'me', 'siteSocket',
+                        function(messageFactory, $stateParams, me, siteSocket) {
+                            return messageFactory.getMessages($stateParams.roomId, me._id, siteSocket).then(function(data) {
                                 return data;
                             }, function(err) {
                                 return null;
@@ -613,56 +630,41 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         }
 
     })
-    .factory('messageFactory', function($http, $q) {
-        var _currRoom = null, _allRooms = null;
+    .factory('messageFactory', function($http, $q, $rootScope, socket, principal) {
+        var _currRoom = null, _allRooms = null, _unreadMessages = 0;
 
         return {
             getRooms: function() {
                 var deferred = $q.defer();
-                if (_allRooms != null) {
-                    deferred.resolve(_allRooms);
-                } else {
-
-                    $http({
-                        url: '/api/room/all',
-                        method: 'GET'
-                    }).success(function(data) {
-                        _allRooms = {};
-                        for (var r in data.allRooms) {
-                            _allRooms[data.allRooms[r]._id] = data.allRooms[r];
-                        }
+                principal.identity().then(function(me) {
+                    if (_allRooms != null) {
                         deferred.resolve(_allRooms);
-                    }).error(function(err) {
-                        deferred.reject(err);
-                    });
-                }
-                return deferred.promise;
-
-            },
-            getMessages: function(roomId) {
-                var deferred = $q.defer();
-
-                this.getRooms().then(function(response) {
-                    if (_allRooms[roomId].messageArr && _allRooms[roomId].needsUpdate == false) {
-                        deferred.resolve(_allRooms[roomId].messageArr);
                     } else {
+
                         $http({
-                            url: '/api/room/' + roomId + '/messages',
+                            url: '/api/room/all',
                             method: 'GET'
                         }).success(function(data) {
-                            _allRooms[roomId].messageArr = data.messageArr;
-                            _allRooms[roomId].needsUpdate = false;
-                            deferred.resolve(_allRooms[roomId].messageArr);
+                            _allRooms = {};
+                            for (var r in data.allRooms) {
+                                _allRooms[data.allRooms[r]._id] = data.allRooms[r];
+
+                                if (!data.allRooms[r].unreadMessages || !data.allRooms[r].unreadMessages[me._id]) {
+                                    data.allRooms[r].unreadMessages = {};
+                                    data.allRooms[r].unreadMessages[me._id] = 0;
+                                }
+
+                                _allRooms[data.allRooms[r]._id].unreadMessages = data.allRooms[r].unreadMessages;
+                            }
+                            deferred.resolve(_allRooms);
                         }).error(function(err) {
                             deferred.reject(err);
-                        })
+                        });
                     }
-
-                }, function(err) {
-                    deferred.reject(err);
                 });
 
                 return deferred.promise;
+
             },
 
             getRoomToUsers: function(roomId, me) {
@@ -792,18 +794,113 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
             },
 
-            addMessage: function(roomId, message) {
+            addMessage: function(roomId, message, meId) {
                 var deferred = $q.defer();
 
                 this.getRooms().then(function(data) {
+
+                    if (angular.isUndefined(_allRooms[roomId].messageArr)) {
+                        _allRooms[roomId].messageArr = [];
+                    }
                     _allRooms[roomId].messageArr.push(message);
                     _allRooms[roomId].lastMessage = message.text;
                     _allRooms[roomId].lastMessageCreated = message.created;
+                    console.log("CURR ROOM", _currRoom);
+                    console.log("MESSAGE", message);
+
+                    if (!_currRoom || _currRoom._id != roomId) {
+                        if (_allRooms[roomId].unreadMessages == null) {
+                            _allRooms[roomId].unreadMessages = {};
+                            _allRooms[roomId].unreadMessages[meId] = 0;
+                        }
+                        _allRooms[roomId].unreadMessages[meId] += 1;
+                        console.log("MESSAGE TO ROOM", _allRooms[roomId]);
+                        console.log("MESSAGE TO ROOM MEID", meId);
+
+                        _unreadMessages += 1;
+                        $rootScope.$emit('updateUnreadMessages', _unreadMessages);
+
+                    }
                     deferred.resolve(_allRooms[roomId].messageArr);
                 }, function(err) {
                     deferred.reject(err);
                 });
 
+                return deferred.promise;
+            },
+
+
+            setCurrentRoom: function(roomId, userId, siteSocket) {
+                var deferred = $q.defer();
+                if (roomId == null) {
+                    _currRoom = null;
+                    deferred.resolve(_currRoom);
+                } else {
+                    this.getRooms().then(function(data) {
+                        _currRoom = _allRooms[roomId];
+
+                        console.log("UNREAD MESSAGES", _unreadMessages);
+                        console.log("SELECTED ROOM", _currRoom);
+                        if (_currRoom.unreadMessages[userId] == null) {
+                            _currRoom.unreadMessages[userId] = 0;
+                        }
+                        _unreadMessages -= _currRoom.unreadMessages[userId];
+                        $rootScope.$emit('updateUnreadMessages', _unreadMessages);
+                        _currRoom.unreadMessages[userId] = 0;
+                        deferred.resolve(_currRoom);
+                        siteSocket.emit('set:current:room', roomId);
+                    });
+                }
+
+                return deferred.promise;
+            },
+
+
+            getMessages: function(roomId, userId, siteSocket) {
+                var deferred = $q.defer();
+                var obj = this;
+
+                this.getRooms().then(function(response) {
+                    obj.setCurrentRoom(roomId, userId, siteSocket).then(function(response) {
+                        if (_allRooms[roomId].messageArr) {
+                            deferred.resolve(_allRooms[roomId].messageArr);
+                        } else {
+                            $http({
+                                url: '/api/room/' + roomId + '/messages',
+                                method: 'GET'
+                            }).success(function(data) {
+                                _allRooms[roomId].messageArr = data.messageArr;
+                                _allRooms[roomId].needsUpdate = false;
+                                deferred.resolve(_allRooms[roomId].messageArr);
+                            }).error(function(err) {
+                                deferred.reject(err);
+                            })
+                        }
+                    });
+
+                }, function(err) {
+                    deferred.reject(err);
+                });
+
+                return deferred.promise;
+            },
+
+
+            getUnreadMessages: function(meId) {
+                var deferred = $q.defer();
+
+                this.getRooms().then(function(data) {
+                    console.log(_allRooms);
+                    for (var r in _allRooms) {
+                        var room = _allRooms[r];
+                        if (room.unreadMessages == null) {
+                            room.unreadMessages = {};
+                            room.unreadMessages[meId] = 0;
+                        }
+                        _unreadMessages += room.unreadMessages[meId];
+                    }
+                    deferred.resolve(_unreadMessages);
+                });
                 return deferred.promise;
             }
         }

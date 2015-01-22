@@ -4,12 +4,15 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     $scope.toUser = {};
     $scope.message = {};
     $scope.me = me;
+    $scope.roomId = $stateParams.roomId;
 
     for (var r in allRooms) {
         allRooms[r].selected = false;
     }
     $scope.room = allRooms[$stateParams.roomId];
     $scope.room.selected = true;
+
+    messageFactory.setCurrentRoom($scope.roomId, $scope.me._id, siteSocket);
 
     messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUserArr) {
         $scope.toUser = toUserArr[0];
@@ -26,7 +29,6 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
 
     $scope.messages = messages;
 
-    $scope.roomId = $stateParams.roomId;
     $scope.$parent.roomIds.push($scope.roomId);
 
     $scope.siteSocket = siteSocket;
@@ -72,21 +74,21 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
         }
     };
 
-    siteSocket.on('send:message', function(message) {
-        if ($scope.roomId != message.to) {
-            $scope.$parent.newMessages += 1;
-        }
-
-        $scope.$parent.rooms[$scope.roomId].lastMessage = message.text;
-        $scope.$parent.rooms[$scope.roomId].lastMessageCreated = message.created;
-
-        messageFactory.addMessage($scope.roomId, message).then(function(messages) {
-            $scope.messages = messages;
-            $scope.$parent.rooms[$scope.roomId].messageArr = messages;
-        }, function(err) {
-            flash.err = err;
-        });
-    });
+    //siteSocket.on('send:message', function(message) {
+    //    if ($scope.roomId != message.to) {
+    //        $scope.$parent.newMessages += 1;
+    //    }
+    //
+    //    $scope.$parent.rooms[$scope.roomId].lastMessage = message.text;
+    //    $scope.$parent.rooms[$scope.roomId].lastMessageCreated = message.created;
+    //
+    //    messageFactory.addMessage($scope.roomId, message).then(function(messages) {
+    //        $scope.messages = messages;
+    //        $scope.$parent.rooms[$scope.roomId].messageArr = messages;
+    //    }, function(err) {
+    //        flash.err = err;
+    //    });
+    //});
 
 
 });

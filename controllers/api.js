@@ -85,6 +85,7 @@ exports.getUsersForBrowse = function (req, res) {
     }
 };
 
+
 exports.getAllRoomsForReqUser = function (req, res) {
     Room.find({users: req.user._id}, '_id users messages lastMessage lastMessageCreated unreadMessages', function (err, rooms) {
         if (err) {
@@ -251,7 +252,7 @@ exports.deletePictureForReqUser = function (req, res) {
         });
 
     });
-}
+};
 
 exports.adminAllUsers = function (req, res) {
     if (req.user && req.user.roles && req.user.roles.indexOf('Admin') > -1) {
@@ -334,7 +335,7 @@ exports.authenticate = function (req, res, next) {
         return res.status(401).end('An error occurred during login. Please verify your credentials and try again.');
     }
 
-    User.findOne({email: email}, 'email name status classes verified major minor', function (err, user) {
+    User.findOne({email: email}, 'email name status classes verified statusCreated picture lastOnline', function (err, user) {
 
         if (err) {
             console.log(err);
@@ -411,12 +412,11 @@ exports.register = function (req, res, next) {
                 var token = jwt.sign({
                     email: user.email,
                     _id: user._id,
-                    roles: user.roles,
                     verified: false
                 }, secrets.jwt, {expiresInDays: 7});
                 return res.json({
                     token: token,
-                    user: {_id: user._id, classes: classes, roles: roles}
+                    user: {_id: user._id, classes: classes, roles: roles, verified: false}
                 });
             }
         });
@@ -722,7 +722,6 @@ exports.getUserLogout = function (req, res, next) {
 };
 
 exports.verifyEmail = function (req, res, next) {
-    console.log(req.query.code);
     User.findOne({_id: req.query.code}, '_id', function (err, user) {
 
         if (err) {
@@ -737,7 +736,7 @@ exports.verifyEmail = function (req, res, next) {
                     console.log(err);
                     return res.status(401).end('An unknown error occurred. Please try again later.');
                 }
-                var token = jwt.sign({email: user.email, roles: user.roles}, secrets.jwt, {expiresInDays: 7});
+                var token = jwt.sign({email: user.email, _id: user._id}, secrets.jwt, {expiresInDays: 7});
                 return res.json({token: token});
             })
 

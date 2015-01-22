@@ -243,6 +243,7 @@ app.get('/api/room/user/:userId', apiController.getRoomForUserIdAndReqUser);
 app.get('/api/room/:roomId', apiController.getRoomForRoomId);
 app.get('/api/room/:roomId/messages', apiController.getMessagesForRoomId);
 
+
 app.get('/api/admin/allusers', apiController.adminAllUsers);
 app.post('/api/admin/saveuser', apiController.adminSaveUser);
 app.post('/api/admin/deleteuser', apiController.adminDeleteUser);
