@@ -136,21 +136,23 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
         }
     });
 
-    User.findOne({email: 'cwalter94@berkeley.edu'}, function(err, user) {
-        if (err) {
-            console.log("err in deleting cwalter94");
-            return;
-        }
-
-        //user.remove();
-    });
+    //User.findOne({email: 'cwalter94@berkeley.edu'}, function(err, user) {
+    //    if (err) {
+    //        console.log("err in deleting cwalter94");
+    //        return;
+    //    }
+    //
+    //    //user.remove();
+    //});
     //
     //
     //Room.find({}).remove(function(err) {
     //    if (err) console.log(err);
+    //    console.log("room removal");
     //});
     //Message.find({}).remove(function(err) {
     //    if (err) console.log(err);
+    //    console.log("message removal");
     //});
 
 
@@ -242,6 +244,7 @@ app.get('/api/room/all', apiController.getAllRoomsForReqUser);
 app.get('/api/room/user/:userId', apiController.getRoomForUserIdAndReqUser);
 app.get('/api/room/:roomId', apiController.getRoomForRoomId);
 app.get('/api/room/:roomId/messages', apiController.getMessagesForRoomId);
+
 
 app.get('/api/admin/allusers', apiController.adminAllUsers);
 app.post('/api/admin/saveuser', apiController.adminSaveUser);

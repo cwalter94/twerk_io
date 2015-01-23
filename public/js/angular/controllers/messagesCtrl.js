@@ -35,8 +35,6 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
             allRooms[oldRoomId].selected = false;
         } else {
             for (var r in $scope.rooms) {
-                console.log($scope.rooms[r]);
-                console.log($scope.roomsArr);
                 $scope.rooms[r].selected = false;
             }
         }
@@ -53,15 +51,6 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
                 $scope.users[key].online = allUsers[key];
             }
         }
-    });
-
-
-
-    siteSocket.on('send:message', function(message) {
-        if ($scope.room._id != message.to) {
-            $scope.$parent.newMessages += 1;
-        }
-        messageFactory.addMessage(message);
     });
 
 });

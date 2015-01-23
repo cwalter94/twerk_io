@@ -289,7 +289,53 @@ html {
             background: transparent !important;
             overflow: hidden;
 
-            .nav-icon {
+            .message-icon-container {
+              width: 100%;
+
+              position: relative;
+              float: left;
+
+              .glyphicon-envelope {
+                width: 90px;
+                position: relative;
+                text-align: center;
+                height: 100%;
+
+                -webkit-transition: all .25s;
+                -moz-transition: all .25s;
+                -ms-transition: all .25s;
+                -o-transition: all .25s;
+                transition: all .25s;
+
+                &.left {
+                  width:50px;
+                }
+              }
+
+              .message-indicator {
+                width: 0;
+                position: relative;
+                float: left;
+                text-align: center;
+                background: transparent;
+                font-size: 18px;
+                color: #fff;
+                line-height: 27px;
+                padding: 0;
+
+                -webkit-transition: all .25s;
+                -moz-transition: all .25s;
+                -ms-transition: all .25s;
+                -o-transition: all .25s;
+                transition: all .25s;
+
+                &.visible {
+                  width: 20px;
+                }
+              }
+            }
+
+            .nav-icon, .message-icon-container {
               -webkit-transition: all .3s;
               -moz-transition: all .3s;
               -ms-transition: all .3s;
@@ -320,8 +366,13 @@ html {
             &:hover {
               background: transparent !important;
 
-              .nav-icon {
+              .nav-icon, .message-icon-container {
                 top: -12px;
+
+                &.glyphicon-envelope {
+                  top: 0;
+                }
+
               }
 
               .nav-icon-text {
@@ -703,6 +754,9 @@ html {
               border: none;
               box-shadow: none;
 
+              font-family: Helvetica, sans-serif !important;
+              font-weight: 200 !important;
+
               &:hover, &:focus {
                 border: none;
                 box-shadow: none;
@@ -760,11 +814,15 @@ html {
 
               > .row {
                 margin-left: -10px;
-                margin-right: 10px;
+                margin-right: -10px;
+                max-height: 75px;
+                overflow-y: hidden;
               }
 
               .img-col {
                 width: 100px;
+                max-height: 70px;
+                overflow-y: hidden;
 
                 img {
                   width: 100%;
@@ -772,6 +830,34 @@ html {
               }
               .status-col {
                 display: inline-block;
+                background: #FFD2CF;
+                border-radius: 3px;
+                font-weight: 500;
+                font-size: 13px;
+                height: 59px;
+                overflow: scroll;
+
+                &.transparent-background {
+                  background: transparent;
+                }
+
+                > .row {
+                  padding: 7px;
+                }
+
+
+              }
+              .status-date {
+                height: 11px;
+                float: left;
+                position: relative;
+                font-size: 10px;
+                font-weight: 700;
+                padding-left: 5px;
+                padding-right: 5px;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                background:#FFD2CF;
               }
 
             }
@@ -780,13 +866,15 @@ html {
             }
 
             &.online {
-              .glyphicon-comment {
-                display: block;
-                position: absolute;
-                top: 5px;
-                right: 5px;
-                color: #63b2ff;
+              .status-col {
+                background: #CFEEFF;
+
+
               }
+              .status-date {
+                background: #CFEEFF;
+              }
+
             }
 
             &.message-sm-container {
@@ -876,7 +964,6 @@ html {
               vertical-align: middle;
               font-size: 24px;
               color: #52008C;
-
             }
 
             input {
@@ -887,10 +974,13 @@ html {
               font-size: 24px;
               border: none;
               box-shadow: none;
+              font-family: Helvetica, sans-serif !important;
+              font-weight: 200 !important;
 
               &:hover, &:focus {
                 border: none;
                 box-shadow: none;
+
 
               }
             }
@@ -931,6 +1021,7 @@ html {
             width: 100%;
             height: 75px;
             float: left;
+            position: relative;
             text-effect: none;
             margin-top: 1px;
             padding-top: 5px;
@@ -992,6 +1083,7 @@ html {
       .chat-profile-container {
         height: 100px;
         background: #a27ebc;
+        position: relative;
 
         .img-col {
           padding: 5px;
@@ -1001,6 +1093,12 @@ html {
             height: 100%;
           }
 
+        }
+
+        .glyphicon-comment {
+          position: absolute;
+          top: 5px;
+          right: 5px;
         }
 
         .name-col {

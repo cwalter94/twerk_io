@@ -1,9 +1,17 @@
-app.controller('siteCtrl', function ($scope, $location, principal, siteSocket, $rootScope, $state) {
+app.controller('siteCtrl', function ($scope, $location, principal, siteSocket, $rootScope, $state, messageFactory) {
     $scope.users = {};
 
     $scope.setCurrentUser = function (user) {
         $scope.currentUser = user;
     };
+
+    $scope.unreadMessages = 0;
+
+    $rootScope.$on('updateUnreadMessages', function(event, data) {
+        $scope.unreadMessages = data;
+    });
+
+
 
     $rootScope.$on('$stateChangeError',
         function(event, toState, toParams, fromState, fromParams, error){

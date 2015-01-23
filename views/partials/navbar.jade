@@ -14,9 +14,10 @@ nav.navbar.navbar-custom.navbar-fixed-top(role="navigation", ng-class="{'transpa
                         div.nav-icon-text Browse
 
                 li.float-right(ng-show="principal.isAuthenticated()")
-                    a(ui-sref="site.auth.messages", ng-click="messages.new = ''")
-                        div.nav-icon.glyphicon.glyphicon-envelope
-                        div.message-indicator(ng-class="{'visible' : newMessages > 0}") {{newMessages > 0 ? ' ' + newMessages : ''}}
+                    a(ui-sref="site.auth.messages", style="padding-left: 0px; padding-right: 0px;")
+                        div.message-icon-container
+                            div.nav-icon.glyphicon.glyphicon-envelope(ng-class="{'left' : unreadMessages > 0}")
+                            div.message-indicator(ng-class="{'visible' : unreadMessages > 0}") {{unreadMessages}}
                         div.nav-icon-text Messages
 
 

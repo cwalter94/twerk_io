@@ -10,8 +10,8 @@ var roomSchema = new mongoose.Schema({
     created: {type: Date, default: Date.now, required: true},
     lastMessage: {type: String, default: ''},
     usersNames: {type: [String], default:''},
-    unreadMessages: {type: Number, default: 0, required: true},
-    lastMessageCreated: {type: Date, default: Date.now, required: true}
+    lastMessageCreated: {type: Date, default: Date.now, required: true},
+    unreadMessages: {type: [String], default: [''], required: true}// encoded strings: roomId.num
 });
 
 roomSchema.pre('save', function (next) {

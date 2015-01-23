@@ -21,7 +21,8 @@ var userSchema = new mongoose.Schema({
     classes: {type: [String], default: []},
     phone: String,
     resetPasswordToken: String,
-    resetPasswordExpires: Date
+    resetPasswordExpires: Date,
+    unreadRooms: {type: Object, default: {}, required: true}
 });
 
 /**

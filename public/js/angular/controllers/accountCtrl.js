@@ -1,4 +1,4 @@
-var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal) {
+var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal, siteSocket) {
 
     $scope.me = me;
     console.log($scope.me);
@@ -94,7 +94,7 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
         }).error(function(err) {
             flash.err = err;
         });
-    }
+    };
 
     $scope.resetSearchInput = function($select) {
         $select.search = "";
@@ -110,10 +110,14 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
         }
         $http.post('/api/userprofile', {data: $scope.me})
             .success(function(response) {
+                if ($scope.origMe.status != $scope.me.status) {
+                    siteSocket.emit('update:status', {userId: $scope.me._id, status: $scope.me.status, statusCreated: Date.now()})
+                }
                 $scope.origMe = angular.copy($scope.me);
                 $scope.dataHasChanged = !angular.equals($scope.me, $scope.origMe);
                 principal.updateIdentity($scope.me);
                 flash.success = 'Profile saved.';
+
             })
             .error(function () {
                 flash.error = 'Profile could not be saved. Please try again later.';
