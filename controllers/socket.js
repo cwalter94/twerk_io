@@ -44,7 +44,6 @@ exports.socketHandler = function (allUsers) {
         socket.on('set:current:room', function(data) {
             var roomId = data.roomId;
             var userId = data.userId;
-            console.log("DATA", data);
 
             if (roomId != '') {
                 Room.findById(mongoose.Types.ObjectId(roomId), 'unreadMessages users', function(err, room) {
@@ -57,7 +56,6 @@ exports.socketHandler = function (allUsers) {
 
                         for (var i = 0; i < room.unreadMessages.length; i++) {
                             var m = room.unreadMessages[i];
-                            console.log("THIS IS M", m);
                             if (m.indexOf(socket.userId) > -1) {
                                 newArr.push(m.substring(0, m.lastIndexOf('.'))+ '.0');
 
@@ -66,7 +64,6 @@ exports.socketHandler = function (allUsers) {
                             }
                         }
 
-                        console.log("NEW ARR", newArr);
                         if (newArr.length > 0) {
                             room.unreadMessages = newArr;
                             room.save(function(err) {
@@ -136,7 +133,6 @@ exports.socketHandler = function (allUsers) {
                                         if (err) {
                                             console.log(err);
                                         } else {
-                                            console.log("ROOM SAVE", room);
                                             return socket.broadcast.to('' + msg.to).emit("send:message", message);
                                         }
                                     });
