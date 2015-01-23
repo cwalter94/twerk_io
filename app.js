@@ -136,14 +136,14 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
         }
     });
 
-    User.findOne({email: 'cwalter94@berkeley.edu'}, function(err, user) {
-        if (err) {
-            console.log("err in deleting cwalter94");
-            return;
-        }
-
-        //user.remove();
-    });
+    //User.findOne({email: 'cwalter94@berkeley.edu'}, function(err, user) {
+    //    if (err) {
+    //        console.log("err in deleting cwalter94");
+    //        return;
+    //    }
+    //
+    //    //user.remove();
+    //});
     //
     //
     //Room.find({}).remove(function(err) {
