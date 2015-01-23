@@ -754,6 +754,9 @@ html {
               border: none;
               box-shadow: none;
 
+              font-family: Helvetica, sans-serif !important;
+              font-weight: 200 !important;
+
               &:hover, &:focus {
                 border: none;
                 box-shadow: none;
@@ -811,7 +814,9 @@ html {
 
               > .row {
                 margin-left: -10px;
-                margin-right: 10px;
+                margin-right: -10px;
+                max-height: 75px;
+                overflow-y: hidden;
               }
 
               .img-col {
@@ -825,6 +830,34 @@ html {
               }
               .status-col {
                 display: inline-block;
+                background: #FFD2CF;
+                border-radius: 3px;
+                font-weight: 500;
+                font-size: 13px;
+                height: 59px;
+                overflow: scroll;
+
+                &.transparent-background {
+                  background: transparent;
+                }
+
+                > .row {
+                  padding: 7px;
+                }
+
+
+              }
+              .status-date {
+                height: 11px;
+                float: left;
+                position: relative;
+                font-size: 10px;
+                font-weight: 700;
+                padding-left: 5px;
+                padding-right: 5px;
+                border-top-left-radius: 3px;
+                border-top-right-radius: 3px;
+                background:#FFD2CF;
               }
 
             }
@@ -833,13 +866,15 @@ html {
             }
 
             &.online {
-              .glyphicon-comment {
-                display: block;
-                position: absolute;
-                top: 5px;
-                right: 5px;
-                color: #63b2ff;
+              .status-col {
+                background: #CFEEFF;
+
+
               }
+              .status-date {
+                background: #CFEEFF;
+              }
+
             }
 
             &.message-sm-container {
@@ -939,10 +974,13 @@ html {
               font-size: 24px;
               border: none;
               box-shadow: none;
+              font-family: Helvetica, sans-serif !important;
+              font-weight: 200 !important;
 
               &:hover, &:focus {
                 border: none;
                 box-shadow: none;
+
 
               }
             }

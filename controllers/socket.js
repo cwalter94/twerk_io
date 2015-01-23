@@ -158,6 +158,9 @@ exports.socketHandler = function (allUsers) {
             }
         });
 
+        socket.on('update:status', function(data) {
+            socket.broadcast.emit('update:status', data);
+        });
         socket.on("disconnect", function() {
 
             allUsers[socket.userId] = {online : false, lastOnline: Date.now(), currRoomId: null};

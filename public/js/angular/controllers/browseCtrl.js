@@ -1,6 +1,6 @@
-var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location, flash, $state, me, users, siteSocket, principal, messageFactory, userFactory) {
+var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location, flash, $state, me, users, usersObj, siteSocket, principal, messageFactory, userFactory) {
 
-    $scope.users = {};
+    $scope.users = usersObj;
     $scope.search = "";
     $scope.messageButtons = null;
     $scope.usersList = users;
@@ -9,15 +9,6 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
 
     $scope.me = me;
 
-    siteSocket.on('user:init', function(allUsers) {
-        for (var key in allUsers) {
-            if (!angular.isUndefined(key) && $scope.users[key]) {
-                $scope.users[key].online = allUsers[key];
-            } else if (!angular.isUndefined(key) && !$scope.users[key]){
-                $scope.users[key] = {online : allUsers[key]};
-            }
-        }
-    });
 
     $scope.displayUser = function(user) {
         user.majorString = user.major.length ? user.major.join(', ') : 'Unknown major.';
@@ -31,6 +22,28 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
         return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
     };
 
+    $scope.formatDate = function(date) {
+        var formatted = new Date(date);
+        var day = formatted.getDate();
+        var month = formatted.getMonth() + 1;
+        var time = formatted.getHours() + ':' + formatted.getMinutes();
+        return month + '/' + day + ' @ ' + time;
+    };
+
+    siteSocket.on('update:status', function(data) {
+        userFactory.updateUserStatus(data.userId, data.status, data.statusCreated).then(function(user) {
+            console.log("USER", user);
+            console.log($scope.users);
+            $scope.users[user._id].status = user.status;
+            $scope.users[user._id].statusCreated = user.statusCreated;
+            $scope.usersList.sort(function(a, b) {
+                return a['statusCreated'] - b['statusCreated'];
+            })
+
+        }, function(err) {
+
+        })
+    });
 
     $scope.me = me;
     $scope.siteSocket = siteSocket;

@@ -485,7 +485,9 @@ html body {
             height: 100%;
             font-size: 24px;
             border: none;
-            box-shadow: none; }
+            box-shadow: none;
+            font-family: Helvetica, sans-serif !important;
+            font-weight: 200 !important; }
             html body #browse-container .browse-outer-container .browse-search-container .search-box-outer input:hover, html body #browse-container .browse-outer-container .browse-search-container .search-box-outer input:focus {
               border: none;
               box-shadow: none; }
@@ -529,7 +531,9 @@ html body {
             overflow-y: hidden; }
             html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container > .row, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container > .row {
               margin-left: -10px;
-              margin-right: 10px; }
+              margin-right: -10px;
+              max-height: 75px;
+              overflow-y: hidden; }
             html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .img-col, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .img-col {
               width: 100px;
               max-height: 70px;
@@ -537,15 +541,34 @@ html body {
               html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .img-col img, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .img-col img {
                 width: 100%; }
             html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col {
-              display: inline-block; }
+              display: inline-block;
+              background: #FFD2CF;
+              border-radius: 3px;
+              font-weight: 500;
+              font-size: 13px;
+              height: 59px;
+              overflow: scroll; }
+              html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col.transparent-background, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col.transparent-background {
+                background: transparent; }
+              html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col > .row, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col > .row {
+                padding: 7px; }
+            html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-date, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-date {
+              height: 11px;
+              float: left;
+              position: relative;
+              font-size: 10px;
+              font-weight: 700;
+              padding-left: 5px;
+              padding-right: 5px;
+              border-top-left-radius: 3px;
+              border-top-right-radius: 3px;
+              background: #FFD2CF; }
           html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .chat-container, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .chat-container {
             display: none; }
-          html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container.online .glyphicon-comment, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container.online .glyphicon-comment {
-            display: block;
-            position: absolute;
-            top: 5px;
-            right: 5px;
-            color: #63b2ff; }
+          html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container.online .status-col, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container.online .status-col {
+            background: #CFEEFF; }
+          html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container.online .status-date, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container.online .status-date {
+            background: #CFEEFF; }
           html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container.message-sm-container, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container.message-sm-container {
             height: 380px; }
           html body #browse-container .browse-outer-container .browse-inner-container .browse-sm-container .glyphicon-comment, html body #browse-container .browse-outer-container .messages-inner-container .browse-sm-container .glyphicon-comment {
@@ -607,7 +630,9 @@ html body {
             height: 100%;
             font-size: 24px;
             border: none;
-            box-shadow: none; }
+            box-shadow: none;
+            font-family: Helvetica, sans-serif !important;
+            font-weight: 200 !important; }
             html body #messages-container .messages-outer-container .nav-messages .search-box-outer input:hover, html body #messages-container .messages-outer-container .nav-messages .search-box-outer input:focus {
               border: none;
               box-shadow: none; }

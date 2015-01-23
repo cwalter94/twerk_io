@@ -7,18 +7,18 @@ div#browse-container
                     strong.alert-message {{flash.message}}
                 .search-box-outer
                     i.fa.fa-search.search-icon
-                    input.search-box-inner(ng-model="search")
+                    input.search-box-inner(ng-model="search", placeholder="Filter by class, status updates, and name...")
             .browse-inner-container
-                a.browse-sm-container.offline(ng-repeat="user in usersList | browseFilter:search | orderBy: lastOnline: true",
+                a.browse-sm-container.offline(ng-repeat="user in usersList | browseFilter:search | orderBy: 'statusCreated' : true",
                 ng-class="{'online': user.online}", ng-click="goToMessages(user)")
                     i.glyphicon.glyphicon-comment
                     .profile-info-container
                         .row
                             .col-xs-4.img-col
                                 img(once-src="getThumbnail(user.picture)")
-                            .col-xs-7.status-col
+                            .status-date {{formatDate(user.statusCreated)}}
+                            .col-xs-8.status-col
                                 .row.text-left {{user.status || 'No status to display.'}}
-
                         .row.remove
                             .col-xs-12
                                 .name.text-left(once-text="user.name")
