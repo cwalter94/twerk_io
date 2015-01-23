@@ -74,22 +74,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
             flash.error = 'An unknown error occurred. Please try again later.';
         }
     };
-
-    //siteSocket.on('send:message', function(message) {
-    //    if ($scope.roomId != message.to) {
-    //        $scope.$parent.newMessages += 1;
-    //    }
-    //
-    //    $scope.$parent.rooms[$scope.roomId].lastMessage = message.text;
-    //    $scope.$parent.rooms[$scope.roomId].lastMessageCreated = message.created;
-    //
-    //    messageFactory.addMessage($scope.roomId, message).then(function(messages) {
-    //        $scope.messages = messages;
-    //        $scope.$parent.rooms[$scope.roomId].messageArr = messages;
-    //    }, function(err) {
-    //        flash.err = err;
-    //    });
-    //});
+    
 
 
 });

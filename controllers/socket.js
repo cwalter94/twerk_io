@@ -140,8 +140,8 @@ exports.socketHandler = function (allUsers) {
                                             return socket.broadcast.to('' + msg.to).emit("send:message", message);
                                         }
                                     });
-
-
+                                } else if (allUsers[userId].currRoomId == msg.to) {
+                                    return socket.broadcast.to('' + msg.to).emit("send:message", message);
                                 } else {
                                     console.log('no room found');
                                 }

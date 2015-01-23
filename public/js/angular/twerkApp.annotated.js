@@ -34,7 +34,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             //}
                             return identity;
                         }, function(err) {
-                            $location.path('/login');
+                            return null;
                         });
                     }
                 ]
@@ -51,7 +51,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 }
                                 return identity;
                             }, function(err) {
-                                $location.path('/login');
+                                return null;
                             });
                         }
                     ]
@@ -830,8 +830,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     _allRooms[roomId].messageArr.push(message);
                     _allRooms[roomId].lastMessage = message.text;
                     _allRooms[roomId].lastMessageCreated = message.created;
-                    console.log("CURR ROOM", _currRoom);
-                    console.log("MESSAGE", message);
 
                     if (!_currRoom || _currRoom._id != roomId) {
                         _allRooms[roomId].unreadMessages += 1;
@@ -857,7 +855,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 } else {
                     this.getRooms().then(function(data) {
                         _currRoom = _allRooms[roomId];
-                        console.log("INSIDE SET CURRENT ROOM", _currRoom);
                         _unreadMessages -= _currRoom.unreadMessages;
                         $rootScope.$emit('updateUnreadMessages', _unreadMessages);
 
@@ -1081,7 +1078,10 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 var searchStrings = search.split(', ');
                 var returnUser = false;
 
-                var userString = user.name + ' ' + user.status + user.classes.join(' ');
+                var userString = user.name + ' ' + user.status;
+                if (user.classes && user.classes.length > 0) {
+                    userString += ' ' + user.classes.join(' ');
+                }
 
                 for (var i in searchStrings) {
                     if (userString.toLowerCase().indexOf(searchStrings[i].toLowerCase()) > -1) {
@@ -1420,9 +1420,6 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
             console.log($scope.users);
             $scope.users[user._id].status = user.status;
             $scope.users[user._id].statusCreated = user.statusCreated;
-            $scope.usersList.sort(function(a, b) {
-                return a['statusCreated'] - b['statusCreated'];
-            })
 
         }, function(err) {
 
@@ -1454,7 +1451,15 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
 
     $scope.getMoreUsers = function() {
         userFactory.getMoreUsers($scope.sortBy).then(function(usersArr) {
-            $scope.usersList = usersArr;
+            for (var i = 0; i <  usersArr.length; i++) {
+                var elem = usersArr[i];
+                if ($scope.users[elem._id] == null) {
+                    $scope.users[elem._id] = elem;
+                    $scope.usersList.push(elem);
+                }
+            }
+            console.log(me._id);
+            console.log($scope.users);
         }, function(err) {
             flash.error = err;
         });
@@ -1622,6 +1627,7 @@ var loginCtrl = app.controller('loginCtrl', ['$scope', '$http', '$location', '$w
 var messagesCtrl = app.controller('messagesCtrl', ['$scope', '$http', '$location', 'flash', '$state', '$stateParams', 'siteSocket', 'messageFactory', 'userFactory', 'me', 'allRooms', function($scope, $http, $location, flash, $state, $stateParams, siteSocket, messageFactory, userFactory, me, allRooms) {
     $scope.search = "";
     $scope.siteSocket = siteSocket;
+    $scope.hideOnMobile = false;
     $scope.room = null;
     $scope.toUsers = {};
     $scope.selectedSearchCat = 'Name';
@@ -1799,6 +1805,7 @@ var registerCtrl = app.controller('registerCtrl', ['$scope', '$http', '$location
 
 }]);
 var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flash', '$state', '$stateParams', 'siteSocket', 'me', 'messageFactory', 'allRooms', 'messages', function($scope, $http, $location, flash, $state, $stateParams, siteSocket, me, messageFactory, allRooms, messages) {
+    $scope.$parent.hideOnMobile = true;
     siteSocket.emit('join:room', $stateParams.roomId);
     $scope.search = "";
     $scope.toUser = {};

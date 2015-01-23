@@ -74,8 +74,6 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
                     $scope.usersList.push(elem);
                 }
             }
-            console.log(me._id);
-            console.log($scope.users);
         }, function(err) {
             flash.error = err;
         });
