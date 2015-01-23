@@ -15,7 +15,7 @@
     .chat-input-container
         .row
             .col-md-11.col-xs-10
-                textarea.input(ng-model="message.text")
+                textarea.input(ng-model="message.text", ng-keypress="evalKeypress($event)")
             .col-md-1.col-xs-2
                 .btn.btn-send(ng-click="sendMessage()") SEND
 

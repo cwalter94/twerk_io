@@ -21,7 +21,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
         if ($scope.$parent.rooms[$stateParams.roomId]) {
             $scope.$parent.rooms[$stateParams.roomId].toUserArr = toUserArr;
         }
-        $scope.message = {rows: 1, from: $scope.me._id, to: $stateParams.roomId, toEmail: $scope.toUser.email};
+        $scope.message = {rows: 1, from: $scope.me._id, to: $stateParams.roomId, toEmail: $scope.toUser.email, text: ""};
     }, function(err) {
         flash.error = err;
     });
@@ -64,7 +64,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
                 $scope.$parent.rooms[$scope.roomId].lastMessageCreated = $scope.message.created;
                 $scope.$parent.rooms[$scope.roomId].messages = messages;
 
-                $scope.message = {toEmail: $scope.message.toEmail, rows: 1, from: $scope.me._id, to: $scope.roomId};
+                $scope.message = {toEmail: $scope.message.toEmail, rows: 1, from: $scope.me._id, to: $scope.roomId, text: ""};
 
             }, function(err) {
                 console.log(err);
@@ -74,7 +74,13 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
             flash.error = 'An unknown error occurred. Please try again later.';
         }
     };
-    
+
+    $scope.evalKeypress = function(event) {
+        if (event.keyCode == 13) {
+            $scope.sendMessage();
+            event.preventDefault();
+        }
+    }
 
 
 });

@@ -742,10 +742,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             method: 'GET'
                         }).success(function(data) {
                             _allRooms[data.room._id] = data.room;
-                            console.log("NEW ROOM UNREAD MESSAGES", data.room.unreadMessages);
                             for (var i = 0; i < data.room.unreadMessages.length; i++){
-                                console.log("NEW ROOM USER ID", user._id);
-                                console.log("NEW ROOM INDEX OF USER ID", data.room.unreadMessages[i].indexOf(user._id));
                                 if (data.room.unreadMessages[i].indexOf(user._id) > -1) {
                                     var temp = Number(data.room.unreadMessages[i].substring(data.room.unreadMessages[i].lastIndexOf('.') + 1));
                                     _allRooms[data.room._id].unreadMessages = temp;
@@ -1458,8 +1455,6 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
                     $scope.usersList.push(elem);
                 }
             }
-            console.log(me._id);
-            console.log($scope.users);
         }, function(err) {
             flash.error = err;
         });
@@ -1827,7 +1822,7 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
         if ($scope.$parent.rooms[$stateParams.roomId]) {
             $scope.$parent.rooms[$stateParams.roomId].toUserArr = toUserArr;
         }
-        $scope.message = {rows: 1, from: $scope.me._id, to: $stateParams.roomId, toEmail: $scope.toUser.email};
+        $scope.message = {rows: 1, from: $scope.me._id, to: $stateParams.roomId, toEmail: $scope.toUser.email, text: ""};
     }, function(err) {
         flash.error = err;
     });
@@ -1870,7 +1865,7 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
                 $scope.$parent.rooms[$scope.roomId].lastMessageCreated = $scope.message.created;
                 $scope.$parent.rooms[$scope.roomId].messages = messages;
 
-                $scope.message = {toEmail: $scope.message.toEmail, rows: 1, from: $scope.me._id, to: $scope.roomId};
+                $scope.message = {toEmail: $scope.message.toEmail, rows: 1, from: $scope.me._id, to: $scope.roomId, text: ""};
 
             }, function(err) {
                 console.log(err);
@@ -1881,21 +1876,12 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
         }
     };
 
-    //siteSocket.on('send:message', function(message) {
-    //    if ($scope.roomId != message.to) {
-    //        $scope.$parent.newMessages += 1;
-    //    }
-    //
-    //    $scope.$parent.rooms[$scope.roomId].lastMessage = message.text;
-    //    $scope.$parent.rooms[$scope.roomId].lastMessageCreated = message.created;
-    //
-    //    messageFactory.addMessage($scope.roomId, message).then(function(messages) {
-    //        $scope.messages = messages;
-    //        $scope.$parent.rooms[$scope.roomId].messageArr = messages;
-    //    }, function(err) {
-    //        flash.err = err;
-    //    });
-    //});
+    $scope.evalKeypress = function(event) {
+        if (event.keyCode == 13) {
+            $scope.sendMessage();
+            event.preventDefault();
+        }
+    }
 
 
 }]);

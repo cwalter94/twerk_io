@@ -2,12 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="638d5d45-97e7-4d8a-9320-b6af04ec080c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/application.min.js.map" afterPath="$PROJECT_DIR$/public/js/application.min.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/application.min.js" afterPath="$PROJECT_DIR$/public/js/application.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/controllers/browseCtrl.js" afterPath="$PROJECT_DIR$/public/js/angular/controllers/browseCtrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/partials/innerState/messages/room.jade" afterPath="$PROJECT_DIR$/views/partials/innerState/messages/room.jade" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js" afterPath="$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/socket.js" afterPath="$PROJECT_DIR$/controllers/socket.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/twerkApp.annotated.js" afterPath="$PROJECT_DIR$/public/js/angular/twerkApp.annotated.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/twerkApp.js" afterPath="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="twerk_io.iws" />
@@ -33,11 +30,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="twerkApp.js" pinned="false" current-in-tab="false">
+      <file leaf-file-name="twerkApp.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/js/angular/twerkApp.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-19.222221" vertical-offset="2046" max-vertical-offset="17250">
-              <caret line="171" column="69" selection-start-line="171" selection-start-column="69" selection-end-line="171" selection-end-column="69" />
+            <state vertical-scroll-proportion="0.50165015" vertical-offset="834" max-vertical-offset="17205">
+              <caret line="86" column="14" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
               <folding />
             </state>
           </provider>
@@ -103,21 +100,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="roomCtrl.js" pinned="false" current-in-tab="true">
+      <file leaf-file-name="roomCtrl.js" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.8349835" vertical-offset="381" max-vertical-offset="1290">
-              <caret line="76" column="4" selection-start-line="76" selection-start-column="4" selection-end-line="76" selection-end-column="4" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="456" max-vertical-offset="1380">
+              <caret line="80" column="35" selection-start-line="80" selection-start-column="35" selection-end-line="80" selection-end-column="35" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="siteCtrl.js" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/siteCtrl.js">
+      <file leaf-file-name="room.jade" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/views/partials/innerState/messages/room.jade">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="660">
-              <caret line="13" column="0" selection-start-line="13" selection-start-column="0" selection-end-line="13" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
+              <caret line="17" column="53" selection-start-line="17" selection-start-column="53" selection-end-line="17" selection-end-column="53" />
               <folding />
             </state>
           </provider>
@@ -178,7 +175,6 @@
         <option value="$PROJECT_DIR$/scss/form.scss" />
         <option value="$PROJECT_DIR$/views/partials/head.jade" />
         <option value="$PROJECT_DIR$/Gruntfile.js" />
-        <option value="$PROJECT_DIR$/views/partials/innerState/messages/room.jade" />
         <option value="$PROJECT_DIR$/views/partials/outerState/profile.jade" />
         <option value="$PROJECT_DIR$/views/partials/outerState/messages.jade" />
         <option value="$PROJECT_DIR$/controllers/user.js" />
@@ -196,8 +192,9 @@
         <option value="$PROJECT_DIR$/controllers/api.js" />
         <option value="$PROJECT_DIR$/public/js/angular/controllers/browseCtrl.js" />
         <option value="$PROJECT_DIR$/controllers/socket.js" />
-        <option value="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
+        <option value="$PROJECT_DIR$/views/partials/innerState/messages/room.jade" />
         <option value="$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js" />
+        <option value="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
       </list>
     </option>
   </component>
@@ -309,7 +306,7 @@
     <property name="options.searchVisible" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="api.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/api.js&#10;room&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;messages&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;app.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;socket&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;browse&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/browseCtrl.js&#10;accoun&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;api&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/api.js&#10;User&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/User.js&#10;.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;siteCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;twerk&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;navbar&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/navbar.jade&#10;app.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;socket.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;all.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;User.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/User.js&#10;site&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;Room&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/Room.js&#10;socketj&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;verify&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/verifyconfirm.jade&#10;twerkApp.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;roomCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;messages.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;messagesCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;User.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/User.js&#10;twerkAp&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;siteCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;browse.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/browse.jade&#10;profile&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/profile.jade&#10;acco&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;head&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/head.jade&#10;twerkA&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;grunt&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;mess&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;accountCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;gruntfile&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;sitect&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;message&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;all.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;form.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/form.scss&#10;aws.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/config/aws.json&#10;package&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/package.json&#10;intro&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/home/intro.jade&#10;gruntFil&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;app.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;roomCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;room.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/messages/room.jade&#10;messagesCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js" />
+    <property name="SearchEverywhereHistoryKey" value="room.jade&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/messages/room.jade&#10;api.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/api.js&#10;room&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;messages&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;app.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;socket&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;browse&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/browseCtrl.js&#10;accoun&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;api&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/api.js&#10;User&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/User.js&#10;.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;siteCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;twerk&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;navbar&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/navbar.jade&#10;app.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;socket.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;all.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;User.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/User.js&#10;site&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;Room&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/Room.js&#10;socketj&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/controllers/socket.js&#10;.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;verify&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/verifyconfirm.jade&#10;twerkApp.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;roomCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;messages.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;messagesCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;User.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/models/User.js&#10;twerkAp&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;siteCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;browse.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/browse.jade&#10;profile&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/profile.jade&#10;acco&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;head&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/head.jade&#10;twerkA&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/twerkApp.js&#10;grunt&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;mess&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/outerState/messages.jade&#10;accountCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;gruntfile&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;sitect&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/siteCtrl.js&#10;message&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/messagesCtrl.js&#10;all.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/all.scss&#10;form.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/scss/form.scss&#10;aws.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/config/aws.json&#10;package&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/package.json&#10;intro&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/home/intro.jade&#10;gruntFil&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/Gruntfile.js&#10;app.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/app.js&#10;roomCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/public/js/angular/controllers/roomCtrl.js&#10;room.&#9;FILE&#9;file:///Users/chriswalter/Desktop/twerk_io/views/partials/innerState/messages/room.jade" />
     <property name="FullScreen" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="LayoutCode.rearrangeEntriesSCSS" value="false" />
@@ -713,12 +710,12 @@
       <workItem from="1421869560105" duration="11258000" />
       <workItem from="1421890572965" duration="400000" />
       <workItem from="1421918740749" duration="169000" />
-      <workItem from="1421919178524" duration="32335000" />
+      <workItem from="1421919178524" duration="32953000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="283089000" />
+    <option name="totallyTimeSpent" value="283707000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1676" height="1027" extended-state="6" />
@@ -1000,13 +997,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/views/partials/innerState/messages/room.jade">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
-          <caret line="14" column="25" selection-start-line="14" selection-start-column="25" selection-end-line="14" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/user.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="445" max-vertical-offset="5115">
@@ -1138,18 +1128,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/angular/twerkApp.js">
+    <entry file="file://$PROJECT_DIR$/views/partials/innerState/messages/room.jade">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-19.222221" vertical-offset="2046" max-vertical-offset="17250">
-          <caret line="171" column="69" selection-start-line="171" selection-start-column="69" selection-end-line="171" selection-end-column="69" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="525">
+          <caret line="17" column="53" selection-start-line="17" selection-start-column="53" selection-end-line="17" selection-end-column="53" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/roomCtrl.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.8349835" vertical-offset="381" max-vertical-offset="1290">
-          <caret line="76" column="4" selection-start-line="76" selection-start-column="4" selection-end-line="76" selection-end-column="4" />
+        <state vertical-scroll-proportion="0.0" vertical-offset="456" max-vertical-offset="1380">
+          <caret line="80" column="35" selection-start-line="80" selection-start-column="35" selection-end-line="80" selection-end-column="35" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/angular/twerkApp.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.50165015" vertical-offset="834" max-vertical-offset="17205">
+          <caret line="86" column="14" selection-start-line="86" selection-start-column="14" selection-end-line="86" selection-end-column="14" />
           <folding />
         </state>
       </provider>

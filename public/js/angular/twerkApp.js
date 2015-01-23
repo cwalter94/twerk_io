@@ -742,10 +742,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             method: 'GET'
                         }).success(function(data) {
                             _allRooms[data.room._id] = data.room;
-                            console.log("NEW ROOM UNREAD MESSAGES", data.room.unreadMessages);
                             for (var i = 0; i < data.room.unreadMessages.length; i++){
-                                console.log("NEW ROOM USER ID", user._id);
-                                console.log("NEW ROOM INDEX OF USER ID", data.room.unreadMessages[i].indexOf(user._id));
                                 if (data.room.unreadMessages[i].indexOf(user._id) > -1) {
                                     var temp = Number(data.room.unreadMessages[i].substring(data.room.unreadMessages[i].lastIndexOf('.') + 1));
                                     _allRooms[data.room._id].unreadMessages = temp;
