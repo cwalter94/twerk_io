@@ -34,7 +34,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             //}
                             return identity;
                         }, function(err) {
-                            $location.path('/login');
+                            return null;
                         });
                     }
                 ]
@@ -51,7 +51,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 }
                                 return identity;
                             }, function(err) {
-                                $location.path('/login');
+                                return null;
                             });
                         }
                     ]
@@ -830,8 +830,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     _allRooms[roomId].messageArr.push(message);
                     _allRooms[roomId].lastMessage = message.text;
                     _allRooms[roomId].lastMessageCreated = message.created;
-                    console.log("CURR ROOM", _currRoom);
-                    console.log("MESSAGE", message);
 
                     if (!_currRoom || _currRoom._id != roomId) {
                         _allRooms[roomId].unreadMessages += 1;
@@ -857,7 +855,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 } else {
                     this.getRooms().then(function(data) {
                         _currRoom = _allRooms[roomId];
-                        console.log("INSIDE SET CURRENT ROOM", _currRoom);
                         _unreadMessages -= _currRoom.unreadMessages;
                         $rootScope.$emit('updateUnreadMessages', _unreadMessages);
 
@@ -1081,7 +1078,10 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 var searchStrings = search.split(', ');
                 var returnUser = false;
 
-                var userString = user.name + ' ' + user.status + user.classes.join(' ');
+                var userString = user.name + ' ' + user.status;
+                if (user.classes && user.classes.length > 0) {
+                    userString += ' ' + user.classes.join(' ');
+                }
 
                 for (var i in searchStrings) {
                     if (userString.toLowerCase().indexOf(searchStrings[i].toLowerCase()) > -1) {

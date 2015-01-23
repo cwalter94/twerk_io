@@ -1,4 +1,5 @@
 var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, flash, $state, $stateParams, siteSocket, me, messageFactory, allRooms, messages) {
+    $scope.$parent.hideOnMobile = true;
     siteSocket.emit('join:room', $stateParams.roomId);
     $scope.search = "";
     $scope.toUser = {};

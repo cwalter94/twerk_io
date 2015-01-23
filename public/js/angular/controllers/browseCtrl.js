@@ -36,9 +36,6 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
             console.log($scope.users);
             $scope.users[user._id].status = user.status;
             $scope.users[user._id].statusCreated = user.statusCreated;
-            $scope.usersList.sort(function(a, b) {
-                return a['statusCreated'] - b['statusCreated'];
-            })
 
         }, function(err) {
 
@@ -70,7 +67,15 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
 
     $scope.getMoreUsers = function() {
         userFactory.getMoreUsers($scope.sortBy).then(function(usersArr) {
-            $scope.usersList = usersArr;
+            for (var i = 0; i <  usersArr.length; i++) {
+                var elem = usersArr[i];
+                if ($scope.users[elem._id] == null) {
+                    $scope.users[elem._id] = elem;
+                    $scope.usersList.push(elem);
+                }
+            }
+            console.log(me._id);
+            console.log($scope.users);
         }, function(err) {
             flash.error = err;
         });
