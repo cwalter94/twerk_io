@@ -15,7 +15,7 @@ div.container#messages-container
                     ng-class="{'selected' : room.selected, 'online' : room.toUserArr[0].online}")
                         i.glyphicon.glyphicon-comment
                         .col-md-2.col-xs-3.img-col
-                            img(once-src="getThumbnail(room.toUserArr[0].picture)")
+                            img(src="{{getThumbnail(room.toUserArr[0].picture)}}")
                         .col-md-10.col-xs-9.name-col
                             .text-left
                                 h5.name(once-text="room.toUserArr[0].name")

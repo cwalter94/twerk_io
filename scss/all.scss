@@ -1025,7 +1025,7 @@ html {
             text-effect: none;
             margin-top: 1px;
             padding-top: 5px;
-            background: #fcfcfc;
+            background: #FFD2CF;
             border: 1px solid transparent;
 
             :hover * {
@@ -1038,17 +1038,17 @@ html {
             }
 
             &.online {
-              .glyphicon-comment {
-                display: block;
-                position: absolute;
-                top: 5px;
-                right: 5px;
-                color: #63b2ff;
-              }
+              background: #CFEEFF;
             }
 
             &.selected {
-              border: 1px solid #5200BC;
+              background: #FFD2CF;
+              border: 1px solid #aaa;
+
+              &.online {
+                background: #CFEEFF;
+
+              }
             }
 
             .name-col {
@@ -1057,14 +1057,22 @@ html {
 
               .name {
                 margin-bottom: 0px;
+                color: #666;
               }
+            }
+
+            .last-message-col {
+              color: #999;
             }
 
             .img-col {
               height: 60px;
+              padding-left: 5px;
+              padding-right: 5px;
+              overflow-y: hidden;
 
               img {
-                height: 100%;
+                width: 100%;
               }
             }
 
@@ -1082,29 +1090,28 @@ html {
 
       .chat-profile-container {
         height: 100px;
-        background: #a27ebc;
+        background: #FFD2CF;
         position: relative;
+        border: 1px solid #aaa;
+
+        &.online {
+          background: #CFEEFF;
+        }
 
         .img-col {
           padding: 5px;
-          height: 100%;
+          height: calc(100% - 5px);
+          overflow-y: hidden;
 
           img {
-            height: 100%;
+            width: 100%;
           }
 
         }
 
-        .glyphicon-comment {
-          position: absolute;
-          top: 5px;
-          right: 5px;
-        }
-
         .name-col {
-          color: white;
           float: left;
-          padding: 5px;
+          padding: 10px;
 
           .name {
             margin: 0px;

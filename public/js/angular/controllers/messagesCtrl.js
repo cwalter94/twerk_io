@@ -1,6 +1,7 @@
 var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $location, flash, $state, $stateParams, siteSocket, messageFactory, userFactory, me, allRooms) {
     $scope.search = "";
     $scope.siteSocket = siteSocket;
+    $scope.hideOnMobile = false;
     $scope.room = null;
     $scope.toUsers = {};
     $scope.selectedSearchCat = 'Name';

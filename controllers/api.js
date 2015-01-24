@@ -104,7 +104,6 @@ exports.getMessagesForRoomId = function (req, res) {
                 console.log(err);
                 return res.status(401).end('An error occurred while retrieving messages for this thread.');
             }
-            console.log("API MESSAGES ROOM", room);
             if (room && room.users.indexOf(req.user._id) > -1) {
                     Message.find({to: mongoose.Types.ObjectId(req.params.roomId)}, 'from created text read', function (err, messages) {
                         if (err) {
@@ -137,7 +136,6 @@ exports.getRoomForRoomId = function (req, res) {
                 console.log(err);
                 return res.status(401).end('An error occurred while locating this message thread.');
             }
-            console.log("API ROOM", room);
             return res.json({token: req.token, room: room})
         });
     } else {
@@ -155,7 +153,6 @@ exports.getRoomForUserIdAndReqUser = function (req, res) {
                 return res.status(401).end('An error occurred while locating this message thread.');
             }
             if (room) {
-                console.log("API ROOM", room);
                 return res.json({token: req.token, room: room})
             } else {
 
@@ -170,7 +167,6 @@ exports.getRoomForUserIdAndReqUser = function (req, res) {
                         console.log(err);
                         return res.status(401).end('An error occurred while locating this message thread.');
                     }
-                    console.log("NEW ROOM", newRoom);
 
                     return res.json({
                         token: req.token, room: {
@@ -299,7 +295,6 @@ exports.adminSaveUser = function (req, res) {
 
             user.save(function (err) {
                 if (err) return res.status(401).end();
-                console.log(user);
                 return res.json({token: req.token});
             });
         })
