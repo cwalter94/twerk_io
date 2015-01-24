@@ -4,6 +4,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     $scope.search = "";
     $scope.toUser = {};
     $scope.message = {};
+    $scope.toUserPicture = "";
     $scope.me = me;
     $scope.roomId = $stateParams.roomId;
 
@@ -17,6 +18,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
 
     messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUserArr) {
         $scope.toUser = toUserArr[0];
+        $scope.toUserPicture = $scope.getThumbnail($scope.toUser.picture);
         $scope.toUser.classesString = $scope.toUser.classes.length ? $scope.toUser.classes.join(', ') : "No classes.";
         if ($scope.$parent.rooms[$stateParams.roomId]) {
             $scope.$parent.rooms[$stateParams.roomId].toUserArr = toUserArr;

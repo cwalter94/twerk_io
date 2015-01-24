@@ -1805,6 +1805,7 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
     $scope.search = "";
     $scope.toUser = {};
     $scope.message = {};
+    $scope.toUserPicture = "";
     $scope.me = me;
     $scope.roomId = $stateParams.roomId;
 
@@ -1818,6 +1819,7 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
 
     messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUserArr) {
         $scope.toUser = toUserArr[0];
+        $scope.toUserPicture = $scope.getThumbnail($scope.toUser.picture);
         $scope.toUser.classesString = $scope.toUser.classes.length ? $scope.toUser.classes.join(', ') : "No classes.";
         if ($scope.$parent.rooms[$stateParams.roomId]) {
             $scope.$parent.rooms[$stateParams.roomId].toUserArr = toUserArr;
@@ -1850,6 +1852,7 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
     };
 
     $scope.getThumbnail = function(picUrl) {
+        console.log("PIC URL", picUrl);
         if (!picUrl || picUrl == "" || picUrl == '/img/generic_avatar.gif') return '/img/generic_avatar.gif';
         return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
     };

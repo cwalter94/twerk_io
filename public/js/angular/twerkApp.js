@@ -644,7 +644,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
         }
 
     })
-    .factory('messageFactory', function($http, $q, $rootScope, socket, principal) {
+    .factory('messageFactory', function($http, $q, $rootScope, socket, principal, userFactory) {
         var _currRoom = null, _allRooms = null, _unreadMessages = 0;
 
         return {
@@ -672,6 +672,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                     }
                                 }
                             }
+
                             deferred.resolve(_allRooms);
                         }).error(function(err) {
                             deferred.reject(err);
@@ -689,6 +690,10 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
 
                     if (_allRooms[roomId].toUserArr) {
+                        var temp = _allRooms[roomId].toUserArr;
+                        userFactory.setUserWithArr(_allRooms[roomId].toUserArr).then(function(users) {
+                            console.log("SET USER WITH ARR, THEN", users);
+                        });
                         deferred.resolve(_allRooms[roomId].toUserArr);
                     } else {
                         var temp = [];
@@ -706,12 +711,17 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 userIds: temp
                             }
                         }).success(function (data) {
-                            _allRooms[roomId].toUserArr = data.users;
-                            deferred.resolve(_allRooms[roomId].toUserArr);
+                            userFactory.setUserWithArr(data.users).then(function(users) {
+                                _allRooms[roomId].toUserArr = users;
+                                deferred.resolve(_allRooms[roomId].toUserArr);
+                            });
+
+
                         }).error(function (err) {
                             deferred.reject(err);
                         })
                     }
+
 
 
                 }, function(err) {
@@ -769,12 +779,17 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                 this.getRooms().then(function(response) {
                     var neededUserIds = [];
+                    var unneededUsers = [];
 
                     for (var r in roomIds) {
                         var roomId = roomIds[r];
 
                         if (_allRooms[roomId].toUserArr) {
-                            result[roomId] = _allRooms[roomId].toUserArr;
+                            unneededUsers = unneededUsers.concat(_allRooms[roomId].toUserArr);
+                            for (var u in _allRooms[roomId].toUserArr) {
+                                usersToRooms[_allRooms[roomId].users[u]] = roomId;
+                            }
+
                         } else {
                             for (var u in _allRooms[roomId].users) {
                                 if (_allRooms[roomId].users[u] != me._id) {
@@ -793,8 +808,28 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 userIds: neededUserIds
                             }
                         }).success(function(data) {
-                            for (var u in data.users) {
-                                var user = data.users[u];
+                            userFactory.setUserWithArr(data.users.concat(unneededUsers)).then(function(users) {
+                                for (var u in users) {
+                                    var user = users[u];
+                                    if (!_allRooms[usersToRooms[user._id]].toUserArr) {
+                                        _allRooms[usersToRooms[user._id]].toUserArr = [];
+                                    }
+                                    if (!result[usersToRooms[user._id]]) {
+                                        result[usersToRooms[user._id]] = [];
+                                    }
+                                    _allRooms[usersToRooms[user._id]].toUserArr.push(user);
+                                    result[usersToRooms[user._id]].push(user);
+                                }
+                                deferred.resolve(result);
+                                console.log(result);
+                            });
+                        }).error(function(err) {
+                            deferred.reject(err);
+                        })
+                    } else {
+                        userFactory.setUserWithArr(unneededUsers).then(function(users) {
+                            for (var i = 0; i < users.length; i++) {
+                                var user = users[i];
                                 if (!_allRooms[usersToRooms[user._id]].toUserArr) {
                                     _allRooms[usersToRooms[user._id]].toUserArr = [];
                                 }
@@ -804,12 +839,11 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 _allRooms[usersToRooms[user._id]].toUserArr.push(user);
                                 result[usersToRooms[user._id]].push(user);
                             }
-
                             deferred.resolve(result);
-                        }).error(function(err) {
-                            deferred.reject(err);
-                        })
+                            console.log(result);
+                        });
                     }
+
                 });
                 return deferred.promise;
 
@@ -1038,15 +1072,52 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         if (_allUsers[userId]) {
                             _allUsers[userId].online = userObj[userId].online;
                             _allUsers[userId].lastOnline = userObj[userId].lastOnline;
-                        } else {
-                            _usersOnlineStatus[userId] = userObj[userId];
                         }
+                        _usersOnlineStatus[userId] = userObj[userId];
                     }
+                    deferred.resolve(_usersOnlineStatus);
 
                 }, function(err) {
                     deferred.reject(err);
                 });
 
+                return deferred.promise;
+
+            },
+            setUser: function(user) {
+                var deferred = $q.defer();
+                this.getUsers().then(function(allUsersArr) {
+                    if (!_allUsers[user._id]) {
+                        _allUsers[user._id] = user;
+                        _allUsers[user._id].online = _usersOnlineStatus[user._id] != null ? _usersOnlineStatus[user._id].online :  _allUsers[user._id].online;
+                        _allUsers[user._id].lastOnline = _usersOnlineStatus[user._id] != null ? _usersOnlineStatus[user._id].lastOnline :  _allUsers[user._id].lastOnline;
+                    }
+                    deferred.resolve(_allUsers[user._id]);
+
+                }, function(err) {
+                    deferred.reject(err);
+                });
+
+                return deferred.promise;
+            },
+            setUserWithArr: function(userArr) {
+                var deferred = $q.defer();
+                this.getUsers().then(function(allUsersArr) {
+                    var temp = [];
+                    for (var i = 0; i < userArr.length; i++ ){
+                        var user = userArr[i];
+                        if (!_allUsers[user._id]) {
+                            _allUsers[user._id] = user;
+                            _allUsers[user._id].online = _usersOnlineStatus[user._id] != null ? _usersOnlineStatus[user._id].online :  _allUsers[user._id].online;
+                            _allUsers[user._id].lastOnline = _usersOnlineStatus[user._id] != null ? _usersOnlineStatus[user._id].lastOnline :  _allUsers[user._id].lastOnline;
+                        }
+                        temp.push(_allUsers[user._id])
+                    }
+                    deferred.resolve(temp);
+                }, function(err) {
+                    deferred.reject(err);
+                });
+                return deferred.promise;
             },
             updateUserStatus: function(userId, status, statusCreated) {
                 var deferred = $q.defer();

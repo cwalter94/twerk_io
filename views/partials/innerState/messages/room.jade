@@ -1,8 +1,7 @@
 .container.content-container#chat-container
-    .chat-profile-container.offline
-        i(ng-show="toUser.online").glyphicon.glyphicon-comment
+    .chat-profile-container(ng-class="{'online' : toUser.online}")
         .col-md-2.col-xs-3.img-col
-            img(once-src="getThumbnail(toUser.picture)")
+            img(src="{{toUserPicture}}")
         .col-md-10.col-xs-9.name-col
             .text-left
                 h5.name(once-text="toUser.name")
