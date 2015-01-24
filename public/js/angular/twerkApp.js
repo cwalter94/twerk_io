@@ -821,7 +821,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                     result[usersToRooms[user._id]].push(user);
                                 }
                                 deferred.resolve(result);
-                                console.log(result);
                             });
                         }).error(function(err) {
                             deferred.reject(err);
@@ -840,7 +839,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 result[usersToRooms[user._id]].push(user);
                             }
                             deferred.resolve(result);
-                            console.log(result);
                         });
                     }
 
