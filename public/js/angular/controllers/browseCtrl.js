@@ -3,7 +3,11 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.users = usersObj;
     $scope.search = "";
     $scope.messageButtons = null;
-    $scope.usersList = users;
+    $scope.usersList = [];
+    for (var u in $scope.users) {
+        var user = $scope.users[u];
+        $scope.usersList.push(user);
+    }
     $scope.sortBy = 'lastOnline';
     $scope.busy = false;
     $scope.moreUsersDisabled = false;
@@ -33,10 +37,8 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
 
     siteSocket.on('update:status', function(data) {
         userFactory.updateUserStatus(data.userId, data.status, data.statusCreated).then(function(user) {
-            console.log("USER", user);
-            console.log($scope.users);
             $scope.users[user._id].status = user.status;
-            $scope.users[user._id].statusCreated = user.statusCreated;
+            $scope.users[user._id].statusCreated = new Date(user.statusCreated).toString();
 
         }, function(err) {
 

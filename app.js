@@ -135,6 +135,27 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
             //user.remove();
         }
     });
+    User.findOne({email: 'test2@berkeley.edu'}, function(err, user) {
+        if (err) console.log("error in seeding test user.")
+        if (!user) {
+            var testuser = new User({
+                testData: true,
+                name: 'Test User',
+                email: 'test2@berkeley.edu',
+                classes: ['COMPSCI 161', 'COMPSCI 189', 'MATH 110'],
+                major: 'Computer Science',
+                verified: true,
+                password: 'kanye1234'
+            });
+
+            testuser.save(function(err) {
+                if (err) console.log("error in saving test user.");
+                console.log("test user success.");
+            })
+        } else {
+            //user.remove();
+        }
+    });
 
     //User.findOne({email: 'cwalter94@berkeley.edu'}, function(err, user) {
     //    if (err) {
