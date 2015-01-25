@@ -10,7 +10,7 @@ div.container#messages-container
 
                 .messages-inner-container
                     a.messages-sm-container(ng-show="room.messages.length > 0 || room.selected",
-                    ng-repeat="room in roomsArr | filter: search | orderBy: 'lastMessageCreated' : true",
+                    ng-repeat="room in roomsArr | filter: search | orderBy: 'lastMessageCreated' : false track by room._id",
                     ng-click="goToRoom(room._id, userInfo[room.toUser])",
                     ng-class="{'selected' : room.selected, 'online' : room.toUserArr[0].online}")
                         i.glyphicon.glyphicon-comment
