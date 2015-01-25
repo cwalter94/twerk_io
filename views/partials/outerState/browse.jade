@@ -7,9 +7,9 @@ div#browse-container
                     strong.alert-message {{flash.message}}
                 .search-box-outer
                     i.fa.fa-search.search-icon
-                    input.search-box-inner(ng-model="search", placeholder="Filter by class, status updates, and name...")
+                    input.search-box-inner(ng-model="search", placeholder="Filter by class, status updates, and name")
             .browse-inner-container
-                a.browse-sm-container.offline(ng-repeat="user in usersList | browseFilter:search | orderBy: 'statusCreated' : true",
+                a.browse-sm-container.offline(ng-repeat="user in usersList | browseFilter:search | orderBy: 'statusCreated' : true track by user._id",
                 ng-class="{'online': user.online}", ng-click="goToMessages(user)")
                     i.glyphicon.glyphicon-comment
                     .profile-info-container
