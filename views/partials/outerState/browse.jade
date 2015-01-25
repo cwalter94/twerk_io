@@ -1,5 +1,5 @@
 div#browse-container
-    .browse-outer-container.container(infinite-scroll="getMoreUsers()")
+    .browse-outer-container.container(infinite-scroll="getMoreUsers()", infinite-scroll-disabled="newUsersDisabled")
 
 
             .browse-search-container
@@ -29,4 +29,5 @@ div#browse-container
 
                         .chat-input-container
                             textarea.input
+                .manual-load-button(ng-click="getMoreUsers()") {{ loadUsersButtonText }}
 

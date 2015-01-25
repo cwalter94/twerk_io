@@ -6,7 +6,8 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.usersList = users;
     $scope.sortBy = 'lastOnline';
     $scope.busy = false;
-
+    $scope.moreUsersDisabled = false;
+    $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
 
 
@@ -66,17 +67,26 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     };
 
     $scope.getMoreUsers = function() {
-        userFactory.getMoreUsers($scope.sortBy).then(function(usersArr) {
-            for (var i = 0; i <  usersArr.length; i++) {
-                var elem = usersArr[i];
-                if ($scope.users[elem._id] == null) {
-                    $scope.users[elem._id] = elem;
-                    $scope.usersList.push(elem);
+        if (!$scope.moreUsersDisabled) {
+            userFactory.getMoreUsers($scope.sortBy).then(function(usersArr) {
+                var newUsers = false;
+                for (var i = 0; i <  usersArr.length; i++) {
+                    var elem = usersArr[i];
+                    if ($scope.users[elem._id] == null) {
+                        newUsers = true;
+                        $scope.users[elem._id] = elem;
+                        $scope.usersList.push(elem);
+                    }
                 }
-            }
-        }, function(err) {
-            flash.error = err;
-        });
+                if (!newUsers) {
+                    $scope.newUsersDisabled = true;
+                    $scope.loadUsersButtonText = 'No more users to load.';
+                }
+            }, function(err) {
+                flash.error = err;
+            });
+        }
+
     };
 
     $scope.sortUsers = function(s) {

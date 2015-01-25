@@ -914,6 +914,17 @@ html {
             }
 
           }
+
+          .manual-load-button {
+            position: relative;
+            float: left;
+            height: 100px;
+            width: 100%;
+            padding: 20px;
+            font-size: 24px;
+            text-align: center;
+            cursor: pointer;
+          }
         }
 
       }
