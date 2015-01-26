@@ -9,11 +9,9 @@ div.container#messages-container
                 .clearfix
 
                 .messages-inner-container
-                    a.messages-sm-container(ng-show="room.messages.length > 0 || room.selected",
-                    ng-repeat="room in roomsArr | filter: search | orderBy: 'lastMessageCreated' : false track by room._id",
+                    a.messages-sm-container(ng-repeat="room in rooms | roomFilter:search | orderBy: 'lastMessageCreated' : false track by room._id",
                     ng-click="goToRoom(room._id, userInfo[room.toUser])",
-                    ng-class="{'selected' : room.selected, 'online' : room.toUserArr[0].online}")
-                        i.glyphicon.glyphicon-comment
+                    ng-class="{'selected' : room.selected, 'online' : room.toUserArr[0].onlineStatus.online}")
                         .col-md-2.col-xs-3.img-col
                             img(src="{{getThumbnail(room.toUserArr[0].picture)}}")
                         .col-md-10.col-xs-9.name-col
@@ -21,6 +19,9 @@ div.container#messages-container
                                 h5.name(once-text="room.toUserArr[0].name")
                             .last-message-col.text-left
                                 | {{room.lastMessage}}
+                        .unread-message-indicator(ng-show="room.unreadMessages > 0")
+                            i.glyphicon.glyphicon-envelope
+                            | {{room.unreadMessages}}
                     .no-message(ng-show="roomIds.length == 0", style="position: absolute; width: 100%; height: 100%; text-align: center; font-size: 24px; top: calc(50% - 30px)") No messages.
 
 

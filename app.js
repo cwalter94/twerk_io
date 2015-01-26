@@ -135,6 +135,27 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
             //user.remove();
         }
     });
+    User.findOne({email: 'test2@berkeley.edu'}, function(err, user) {
+        if (err) console.log("error in seeding test user.")
+        if (!user) {
+            var testuser = new User({
+                testData: true,
+                name: 'Test User',
+                email: 'test2@berkeley.edu',
+                classes: ['COMPSCI 161', 'COMPSCI 189', 'MATH 110'],
+                major: 'Computer Science',
+                verified: true,
+                password: 'kanye1234'
+            });
+
+            testuser.save(function(err) {
+                if (err) console.log("error in saving test user.");
+                console.log("test user success.");
+            })
+        } else {
+            //user.remove();
+        }
+    });
 
     //User.findOne({email: 'cwalter94@berkeley.edu'}, function(err, user) {
     //    if (err) {
@@ -146,7 +167,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
     //});
     //
     //
-    //Room.find({}).remove(function(err) {
+    //Room.findById('54c524ced5decc3f0f44d479').remove(function(err) {
     //    if (err) console.log(err);
     //    console.log("room removal");
     //});
@@ -249,6 +270,7 @@ app.get('/api/room/:roomId/messages', apiController.getMessagesForRoomId);
 app.get('/api/admin/allusers', apiController.adminAllUsers);
 app.post('/api/admin/saveuser', apiController.adminSaveUser);
 app.post('/api/admin/deleteuser', apiController.adminDeleteUser);
+
 
 app.get('/api/logout', apiController.getUserLogout);
 

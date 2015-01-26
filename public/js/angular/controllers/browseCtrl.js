@@ -1,14 +1,14 @@
-var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location, flash, $state, me, users, usersObj, siteSocket, principal, messageFactory, userFactory) {
+var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location, flash, $state, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
 
     $scope.users = usersObj;
     $scope.search = "";
     $scope.messageButtons = null;
-    $scope.usersList = users;
     $scope.sortBy = 'lastOnline';
     $scope.busy = false;
     $scope.moreUsersDisabled = false;
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
+
 
 
     $scope.displayUser = function(user) {
@@ -33,10 +33,8 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
 
     siteSocket.on('update:status', function(data) {
         userFactory.updateUserStatus(data.userId, data.status, data.statusCreated).then(function(user) {
-            console.log("USER", user);
-            console.log($scope.users);
             $scope.users[user._id].status = user.status;
-            $scope.users[user._id].statusCreated = user.statusCreated;
+            $scope.users[user._id].statusCreated = new Date(user.statusCreated).toString();
 
         }, function(err) {
 
@@ -60,9 +58,9 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.sortCats = ['Name', 'Email', 'Major', 'Minor', 'Status', 'Classes'];
 
     $scope.goToMessages = function(user) {
-        messageFactory.getRoomId(user).then(function(room) {
+        messageFactory.getRoomId(user, siteSocket).then(function(room) {
             $state.transitionTo('site.auth.messages.room', {'roomId': room._id}, { reload: false, inherit: true, notify: true });
-        })
+        });
 
     };
 

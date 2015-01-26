@@ -81,7 +81,14 @@ exports.socketHandler = function (allUsers) {
                 });
             }
 
-            allUsers[userId] != null ? allUsers[userId].currRoomId = roomId : allUsers[userId] = {currRoomId: null};
+            allUsers[userId] != null ? allUsers[userId].currRoomId = roomId : allUsers[userId] = {online: false, lastOnline: null, currRoomId: null};
+        });
+
+        socket.on('new:room', function(data) {
+            var roomId = data.roomId;
+            var userId = data.userId;
+            socket.join(roomId);
+            socket.broadcast.to('' + userId).emit('new:room', roomId);
         });
 
         socket.on("send:message", function(msg) {
@@ -133,11 +140,11 @@ exports.socketHandler = function (allUsers) {
                                         if (err) {
                                             console.log(err);
                                         } else {
-                                            return socket.broadcast.to('' + msg.to).emit("send:message", message);
+                                            return socket.broadcast.to(msg.to).emit("send:message", message);
                                         }
                                     });
                                 } else if (allUsers[userId].currRoomId == msg.to) {
-                                    return socket.broadcast.to('' + msg.to).emit("send:message", message);
+                                    return socket.broadcast.to(msg.to).emit("send:message", message);
                                 } else {
                                     console.log('no room found');
                                 }
@@ -157,6 +164,8 @@ exports.socketHandler = function (allUsers) {
         socket.on('update:status', function(data) {
             socket.broadcast.emit('update:status', data);
         });
+
+
         socket.on("disconnect", function() {
 
             allUsers[socket.userId] = {online : false, lastOnline: Date.now(), currRoomId: null};

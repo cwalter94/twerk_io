@@ -6,6 +6,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     $scope.message = {};
     $scope.toUserPicture = "";
     $scope.me = me;
+    $scope.mePicture = "";
     $scope.roomId = $stateParams.roomId;
 
     for (var r in allRooms) {
@@ -14,25 +15,18 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
     $scope.room = allRooms[$stateParams.roomId];
     $scope.room.selected = true;
 
-    messageFactory.setCurrentRoom($scope.roomId, $scope.me._id, siteSocket);
-
-    messageFactory.getRoomToUsers($stateParams.roomId, me).then(function(toUserArr) {
-        $scope.toUser = toUserArr[0];
+    messageFactory.setCurrentRoom($scope.roomId, $scope.me._id, siteSocket).then(function(room) {
+        $scope.toUser = room.toUserArr[0];
         $scope.toUserPicture = $scope.getThumbnail($scope.toUser.picture);
+        $scope.mePicture = $scope.getThumbnail($scope.me.picture);
         $scope.toUser.classesString = $scope.toUser.classes.length ? $scope.toUser.classes.join(', ') : "No classes.";
-        if ($scope.$parent.rooms[$stateParams.roomId]) {
-            $scope.$parent.rooms[$stateParams.roomId].toUserArr = toUserArr;
-        }
         $scope.message = {rows: 1, from: $scope.me._id, to: $stateParams.roomId, toEmail: $scope.toUser.email, text: ""};
-    }, function(err) {
-        flash.error = err;
+
     });
 
 
 
     $scope.messages = messages;
-
-    $scope.$parent.roomIds.push($scope.roomId);
 
     $scope.siteSocket = siteSocket;
 
@@ -60,14 +54,14 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
         if ($scope.message.to && $scope.message.from && $scope.message.text && $scope.message.toEmail) {
             $scope.message.created = Date.now();
             siteSocket.emit('send:message', $scope.message);
-            messageFactory.addMessage($scope.roomId, $scope.message).then(function(messages) {
+
+            messageFactory.addMessage($scope.roomId, $scope.message, $scope.me, siteSocket).then(function(messages) {
                 $scope.messages = messages;
                 $scope.$parent.rooms[$scope.roomId].lastMessage = $scope.message.text;
                 $scope.$parent.rooms[$scope.roomId].lastMessageCreated = $scope.message.created;
                 $scope.$parent.rooms[$scope.roomId].messages = messages;
 
                 $scope.message = {toEmail: $scope.message.toEmail, rows: 1, from: $scope.me._id, to: $scope.roomId, text: ""};
-
             }, function(err) {
                 console.log(err);
             });
