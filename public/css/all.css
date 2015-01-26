@@ -673,17 +673,24 @@ html body {
           text-effect: none;
           margin-top: 1px;
           padding-top: 5px;
-          background: #FFD2CF;
+          background: #fbfbfb;
           border: 1px solid transparent; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container :hover * {
             text-effect: none; }
-          html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .glyphicon-comment {
-            display: none; }
+          html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .unread-message-indicator {
+            display: block;
+            position: absolute;
+            top: 20px;
+            font-size: 20px;
+            right: 10px;
+            color: #ccc; }
+            html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .unread-message-indicator i {
+              margin-right: 5px; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container.online {
             background: #CFEEFF; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container.selected {
-            background: #FFD2CF;
-            border: 1px solid #aaa; }
+            background: #fbfbfb;
+            border: 2px solid #aaa; }
             html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container.selected.online {
               background: #CFEEFF; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .name-col {
@@ -693,7 +700,8 @@ html body {
               margin-bottom: 0px;
               color: #666; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .last-message-col {
-            color: #999; }
+            color: #999;
+            overflow: hidden; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .img-col {
             height: 60px;
             padding-left: 5px;
@@ -708,9 +716,9 @@ html body {
     width: 100%; }
     html body #chat-container .chat-profile-container {
       height: 100px;
-      background: #FFD2CF;
+      background: #EBEBEB;
       position: relative;
-      border: 1px solid #aaa; }
+      border: 2px solid #aaa; }
       html body #chat-container .chat-profile-container.online {
         background: #CFEEFF; }
       html body #chat-container .chat-profile-container .img-col {
@@ -734,12 +742,26 @@ html body {
       background: #fdfdfd;
       overflow-y: scroll; }
       html body #chat-container .chat-message-display-container .chat-message {
-        padding: 5px; }
+        padding: 5px;
+        width: 100%;
+        position: relative;
+        float: left;
+        display: block;
+        margin-top: 5px; }
         html body #chat-container .chat-message-display-container .chat-message .chat-date {
           display: block;
           font-size: 12px; }
         html body #chat-container .chat-message-display-container .chat-message .chat-text {
-          display: block; }
+          display: block;
+          word-wrap: break-word;
+          max-width: 100%; }
+        html body #chat-container .chat-message-display-container .chat-message .img-col {
+          overflow-y: hidden;
+          height: 50px;
+          padding-right: 0px;
+          padding-left: 5px; }
+          html body #chat-container .chat-message-display-container .chat-message .img-col img {
+            width: 100%; }
     html body #chat-container .chat-input-container {
       height: 80px;
       width: 100%;

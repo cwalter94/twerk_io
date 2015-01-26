@@ -1,4 +1,4 @@
-app.controller('siteCtrl', function ($scope, $location, principal, siteSocket, $rootScope, $state, messageFactory) {
+app.controller('siteCtrl', function ($scope, $location, principal, siteSocket, $rootScope, $state, messageFactory, userFactory) {
     $scope.users = {};
 
     $scope.setCurrentUser = function (user) {
@@ -10,7 +10,6 @@ app.controller('siteCtrl', function ($scope, $location, principal, siteSocket, $
     $rootScope.$on('updateUnreadMessages', function(event, data) {
         $scope.unreadMessages = data;
     });
-
 
 
     $rootScope.$on('$stateChangeError',

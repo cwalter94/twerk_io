@@ -1,18 +1,14 @@
-var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location, flash, $state, me, users, usersObj, siteSocket, principal, messageFactory, userFactory) {
+var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location, flash, $state, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
 
     $scope.users = usersObj;
     $scope.search = "";
     $scope.messageButtons = null;
-    $scope.usersList = [];
-    for (var u in $scope.users) {
-        var user = $scope.users[u];
-        $scope.usersList.push(user);
-    }
     $scope.sortBy = 'lastOnline';
     $scope.busy = false;
     $scope.moreUsersDisabled = false;
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
+
 
 
     $scope.displayUser = function(user) {
@@ -62,9 +58,9 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.sortCats = ['Name', 'Email', 'Major', 'Minor', 'Status', 'Classes'];
 
     $scope.goToMessages = function(user) {
-        messageFactory.getRoomId(user).then(function(room) {
+        messageFactory.getRoomId(user, siteSocket).then(function(room) {
             $state.transitionTo('site.auth.messages.room', {'roomId': room._id}, { reload: false, inherit: true, notify: true });
-        })
+        });
 
     };
 

@@ -11,25 +11,10 @@ var messagesCtrl = app.controller('messagesCtrl', function($scope, $http, $locat
     $scope.userInfo = {};
     $scope.rooms = allRooms;
     $scope.roomsArr = [];
+    for (var i in $scope.rooms){
+        $scope.roomsArr.push($scope.rooms[i]);
+    }
 
-    $scope.roomIds = [];
-    for (var r in allRooms) {
-        if (allRooms[r].messages.length > 0) {
-            $scope.roomIds.push(r);
-        }
-        allRooms[r].selected = false;
-        $scope.roomsArr.push($scope.rooms[r]);
-    }
-    if ($scope.roomIds.length > 0) {
-        messageFactory.getMultipleRoomsToUsers($scope.roomIds, me)
-            .then(function(roomsIdsToUserArr) {
-                for (var r in roomsIdsToUserArr) {
-                    $scope.rooms[r].toUserArr = roomsIdsToUserArr[r];
-                }
-            }, function(err) {
-                console.log(err);
-            });
-    }
 
     $scope.goToRoom = function(roomId, oldRoomId) {
         if (oldRoomId) {
