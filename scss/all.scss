@@ -715,7 +715,6 @@ html {
       height: 100%;
       padding-top: 70px;
 
-
       .browse-outer-container {
         height: 100%;
 
@@ -745,6 +744,8 @@ html {
 
             }
 
+
+
             input {
               width: 100%;
               padding: 2px;
@@ -762,6 +763,14 @@ html {
                 box-shadow: none;
 
               }
+            }
+
+            .search-box-selection {
+              position: absolute;
+              top: 0;
+              right: 0;
+              height: 50px;
+              border: 2px solid;
             }
 
           }

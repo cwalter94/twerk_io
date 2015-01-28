@@ -1,4 +1,4 @@
-var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location, flash, $state, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
+var browseClassCtrl = app.controller('browseClassCtrl', function($scope, $http, $location, flash, $state, $stateParams, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
 
     $scope.users = usersObj;
     $scope.search = "";
@@ -8,7 +8,8 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.moreUsersDisabled = false;
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
-    $scope.selectedClass = 'All';
+    $scope.filterByClass = $stateParams.class != 'all' ? $stateParams.class : null;
+
 
 
     $scope.displayUser = function(user) {
@@ -66,13 +67,14 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
 
     $scope.getMoreUsers = function() {
         if (!$scope.moreUsersDisabled) {
-            userFactory.getMoreUsers('statusCreated').then(function(usersArr) {
+            userFactory.getMoreUsers($scope.filterByClass).then(function(usersArr) {
                 var newUsers = false;
                 for (var i = 0; i <  usersArr.length; i++) {
                     var elem = usersArr[i];
                     if ($scope.users[elem._id] == null) {
                         newUsers = true;
                         $scope.users[elem._id] = elem;
+                        $scope.usersList.push(elem);
                     }
                 }
                 if (!newUsers) {

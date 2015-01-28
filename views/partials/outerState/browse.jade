@@ -1,33 +1,32 @@
 div#browse-container
     .browse-outer-container.container(infinite-scroll="getMoreUsers()", infinite-scroll-disabled="newUsersDisabled")
+        .browse-search-container
+            div.alert-warn.fade(flash-alert='error', active-class='in alert')
+                strong.alert-message {{flash.message}}
+            .search-box-outer
+                i.fa.fa-search.search-icon
+                input.search-box-inner(ng-model="search", placeholder="Filter by class, status updates, and name")
 
+        .browse-inner-container
+            a.browse-sm-container.offline(ng-repeat="user in users | browseFilter:search | orderBy: 'statusCreated' : true track by user._id",
+            ng-class="{'online': user.onlineStatus.online}", ng-click="goToMessages(user)")
+                i.glyphicon.glyphicon-comment
+                .profile-info-container
+                    .row
+                        .col-xs-4.img-col
+                            img(once-src="getThumbnail(user.picture)")
+                        .status-date {{formatDate(user.statusCreated)}}
+                        .col-xs-8.status-col
+                            .row.text-left {{user.status || 'No status to display.'}}
+                    .row.remove
+                        .col-xs-12
+                            .name.text-left(once-text="user.name")
+                            .text-left(once-text="user.classes.length ? user.classes.join(', ') : 'No classes.'")
+                .chat-container
+                    .chat-message-display-container
+                        .message-row(ng-repeat="message in user.messages", ng-class="{'me' : message.from != user._id")
 
-            .browse-search-container
-                div.alert-warn.fade(flash-alert='error', active-class='in alert')
-                    strong.alert-message {{flash.message}}
-                .search-box-outer
-                    i.fa.fa-search.search-icon
-                    input.search-box-inner(ng-model="search", placeholder="Filter by class, status updates, and name")
-            .browse-inner-container
-                a.browse-sm-container.offline(ng-repeat="user in users | browseFilter:search | orderBy: 'statusCreated' : true track by user._id",
-                ng-class="{'online': user.onlineStatus.online}", ng-click="goToMessages(user)")
-                    i.glyphicon.glyphicon-comment
-                    .profile-info-container
-                        .row
-                            .col-xs-4.img-col
-                                img(once-src="getThumbnail(user.picture)")
-                            .status-date {{formatDate(user.statusCreated)}}
-                            .col-xs-8.status-col
-                                .row.text-left {{user.status || 'No status to display.'}}
-                        .row.remove
-                            .col-xs-12
-                                .name.text-left(once-text="user.name")
-                                .text-left(once-text="user.classes.length ? user.classes.join(', ') : 'No classes.'")
-                    .chat-container
-                        .chat-message-display-container
-                            .message-row(ng-repeat="message in user.messages", ng-class="{'me' : message.from != user._id")
-
-                        .chat-input-container
-                            textarea.input
-                .manual-load-button(ng-click="getMoreUsers()") {{ loadUsersButtonText }}
+                    .chat-input-container
+                        textarea.input
+            .manual-load-button(ng-click="getMoreUsers()") {{ loadUsersButtonText }}
 

@@ -1,8 +1,6 @@
 var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal, siteSocket) {
 
     $scope.me = me;
-    console.log($scope.me);
-
     $scope.me.selectedClasses = [];
 
     $scope.allClasses = [];
@@ -37,7 +35,7 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
                 $scope.search = search;
                 var date = new Date();
                 var term = 'Spring';
-                var regExp = /([^\d\s]+)\s*(\d{1,3}\D{0,2})/;
+                var regExp = /([^\d\s]+)\s*(\d{0,3}\D{0,2})/;
                 var match = regExp.exec(search);
                 if (date.getMonth() > 5 || date.getMonth() == 5 && date.getDate() > 20) {
                     if (date.getMonth() > 8 || date.getMonth() == 8 && date.getDate() > 15) {
@@ -46,39 +44,35 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
                         term = 'Summer';
                     }
                 }
-                if (match && match[2]) {
+                if (match) {
+                    var params = match[2] ? {_type: 'json', departmentCode: match[1], courseNumber: match[2]} : {_type: 'json', departmentCode: match[1]};
 
                     $http({
-                        url: 'https://apis-dev.berkeley.edu/cxf/asws/classoffering',
+                        url: 'https://apis-dev.berkeley.edu/cxf/asws/course',
                         method: 'GET',
                         headers: {
                             app_key: '2c132785f8434f0e6b3a49c28895645f',
                             app_id: '2e2a3e6e'
                         },
-                        params: {
-                            termYear: date.getFullYear(),
-                            term: term,
-                            _type: 'json',
-                            departmentName: match[1],
-                            courseNumber: match[2]
-                        }
+                        params: params
                     }).then(function(response) {
 
                         //prevent previous network resolutions from overwriting newer ones (async issue)
                         match = regExp.exec($scope.search);
-                        var temp = response.data.ClassOffering[0];
+                        var temp = response.data.CanonicalCourse[0];
                         if (match && temp && temp.departmentCode && temp.courseNumber) {
                             if (temp.departmentCode.indexOf(match[1]) > -1 || ('' + temp.courseNumber).indexOf(match[2]) > -1) {
-                                $scope.allClasses = response.data.ClassOffering.concat($scope.me.selectedClasses);
+                                $scope.allClasses = response.data.CanonicalCourse.concat($scope.me.selectedClasses);
                             }
                         }
 
                     }, function(err) {
-                        //flash.error = 'An error occurred while autofilling classes.';
-                        //$scope.allClasses = [];
+
                     })
                 }
 
+            } else {
+                $scope.allClasses = $scope.me.selectedClasses;
             }
 
     };

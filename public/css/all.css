@@ -491,6 +491,12 @@ html body {
             html body #browse-container .browse-outer-container .browse-search-container .search-box-outer input:hover, html body #browse-container .browse-outer-container .browse-search-container .search-box-outer input:focus {
               border: none;
               box-shadow: none; }
+          html body #browse-container .browse-outer-container .browse-search-container .search-box-outer .search-box-selection {
+            position: absolute;
+            top: 0;
+            right: 0;
+            height: 50px;
+            border: 2px solid; }
       html body #browse-container .browse-outer-container .browse-inner-container, html body #browse-container .browse-outer-container .messages-inner-container {
         overflow: scroll;
         height: calc(100% - 100px);

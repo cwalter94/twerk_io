@@ -1224,8 +1224,6 @@ var aboutCtrl = app.controller('aboutCtrl', ['$scope', '$http', '$upload', 'exco
 var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '$location', 'me', 'flash', '$cookieStore', 'principal', 'siteSocket', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal, siteSocket) {
 
     $scope.me = me;
-    console.log($scope.me);
-
     $scope.me.selectedClasses = [];
 
     $scope.allClasses = [];
@@ -1260,7 +1258,7 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
                 $scope.search = search;
                 var date = new Date();
                 var term = 'Spring';
-                var regExp = /([^\d\s]+)\s*(\d{1,3}\D{0,2})/;
+                var regExp = /([^\d\s]+)\s*(\d{0,3}\D{0,2})/;
                 var match = regExp.exec(search);
                 if (date.getMonth() > 5 || date.getMonth() == 5 && date.getDate() > 20) {
                     if (date.getMonth() > 8 || date.getMonth() == 8 && date.getDate() > 15) {
@@ -1269,39 +1267,35 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
                         term = 'Summer';
                     }
                 }
-                if (match && match[2]) {
+                if (match) {
+                    var params = match[2] ? {_type: 'json', departmentCode: match[1], courseNumber: match[2]} : {_type: 'json', departmentCode: match[1]};
 
                     $http({
-                        url: 'https://apis-dev.berkeley.edu/cxf/asws/classoffering',
+                        url: 'https://apis-dev.berkeley.edu/cxf/asws/course',
                         method: 'GET',
                         headers: {
                             app_key: '2c132785f8434f0e6b3a49c28895645f',
                             app_id: '2e2a3e6e'
                         },
-                        params: {
-                            termYear: date.getFullYear(),
-                            term: term,
-                            _type: 'json',
-                            departmentName: match[1],
-                            courseNumber: match[2]
-                        }
+                        params: params
                     }).then(function(response) {
 
                         //prevent previous network resolutions from overwriting newer ones (async issue)
                         match = regExp.exec($scope.search);
-                        var temp = response.data.ClassOffering[0];
+                        var temp = response.data.CanonicalCourse[0];
                         if (match && temp && temp.departmentCode && temp.courseNumber) {
                             if (temp.departmentCode.indexOf(match[1]) > -1 || ('' + temp.courseNumber).indexOf(match[2]) > -1) {
-                                $scope.allClasses = response.data.ClassOffering.concat($scope.me.selectedClasses);
+                                $scope.allClasses = response.data.CanonicalCourse.concat($scope.me.selectedClasses);
                             }
                         }
 
                     }, function(err) {
-                        //flash.error = 'An error occurred while autofilling classes.';
-                        //$scope.allClasses = [];
+
                     })
                 }
 
+            } else {
+                $scope.allClasses = $scope.me.selectedClasses;
             }
 
     };
@@ -1449,7 +1443,7 @@ var authCtrl = app.controller('authCtrl', ['$scope', '$state', '$rootScope', 'me
 
 
 }]);
-var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', 'flash', '$state', 'me', 'usersObj', 'siteSocket', 'principal', 'messageFactory', 'userFactory', function($scope, $http, $location, flash, $state, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
+var browseClassCtrl = app.controller('browseClassCtrl', ['$scope', '$http', '$location', 'flash', '$state', '$stateParams', 'me', 'usersObj', 'siteSocket', 'principal', 'messageFactory', 'userFactory', function($scope, $http, $location, flash, $state, $stateParams, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
 
     $scope.users = usersObj;
     $scope.search = "";
@@ -1459,6 +1453,7 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
     $scope.moreUsersDisabled = false;
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
+    $scope.filterByClass = $stateParams.class != 'all' ? $stateParams.class : null;
 
 
 
@@ -1517,7 +1512,7 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
 
     $scope.getMoreUsers = function() {
         if (!$scope.moreUsersDisabled) {
-            userFactory.getMoreUsers($scope.sortBy).then(function(usersArr) {
+            userFactory.getMoreUsers($scope.filterByClass).then(function(usersArr) {
                 var newUsers = false;
                 for (var i = 0; i <  usersArr.length; i++) {
                     var elem = usersArr[i];
@@ -1525,6 +1520,103 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
                         newUsers = true;
                         $scope.users[elem._id] = elem;
                         $scope.usersList.push(elem);
+                    }
+                }
+                if (!newUsers) {
+                    $scope.newUsersDisabled = true;
+                    $scope.loadUsersButtonText = 'No more users to load.';
+                }
+            }, function(err) {
+                flash.error = err;
+            });
+        }
+
+    };
+
+    $scope.sortUsers = function(s) {
+        $scope.sortBy = s;
+        $scope.usersList.sort(function(a, b) {
+            return a[$scope.sortBy] - b[$scope.sortBy];
+        });
+    };
+
+}]);
+
+var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', 'flash', '$state', 'me', 'usersObj', 'siteSocket', 'principal', 'messageFactory', 'userFactory', function($scope, $http, $location, flash, $state, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
+
+    $scope.users = usersObj;
+    $scope.search = "";
+    $scope.messageButtons = null;
+    $scope.sortBy = 'lastOnline';
+    $scope.busy = false;
+    $scope.moreUsersDisabled = false;
+    $scope.loadUsersButtonText = 'Click to load more users.';
+    $scope.me = me;
+    $scope.selectedClass = 'All';
+
+
+    $scope.displayUser = function(user) {
+        user.majorString = user.major.length ? user.major.join(', ') : 'Unknown major.';
+        user.minorString = user.minor && user.minor.length ? user.minor.join(', ') : 'N/A';
+        user.name = user.name ? user.name : 'Unknown Name';
+        user.classesString = user.classes.length ? user.classes.join(', ') : 'No classes.';
+    };
+
+    $scope.getThumbnail = function(picUrl) {
+        if (!picUrl || picUrl == "" || picUrl == '/img/generic_avatar.gif') return '/img/generic_avatar.gif';
+        return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
+    };
+
+    $scope.formatDate = function(date) {
+        var formatted = new Date(date);
+        var day = formatted.getDate();
+        var month = formatted.getMonth() + 1;
+        var time = formatted.getHours() + ':' + formatted.getMinutes();
+        return month + '/' + day + ' @ ' + time;
+    };
+
+    siteSocket.on('update:status', function(data) {
+        userFactory.updateUserStatus(data.userId, data.status, data.statusCreated).then(function(user) {
+            $scope.users[user._id].status = user.status;
+            $scope.users[user._id].statusCreated = new Date(user.statusCreated).toString();
+
+        }, function(err) {
+
+        })
+    });
+
+    $scope.me = me;
+    $scope.siteSocket = siteSocket;
+    $scope.rooms = {};
+    $scope.quickMessageTo = null;
+    $scope.sortCat = 'Name';
+    $scope.getUrl = function() {
+        return $location.path();
+    };
+
+    $scope.messages = {};
+
+    $scope.message = {rows: 1, from: $scope.me.id, to: $scope.room, toEmail: ''};
+    $scope.searchFocus = true;
+
+    $scope.sortCats = ['Name', 'Email', 'Major', 'Minor', 'Status', 'Classes'];
+
+    $scope.goToMessages = function(user) {
+        messageFactory.getRoomId(user, siteSocket).then(function(room) {
+            $state.transitionTo('site.auth.messages.room', {'roomId': room._id}, { reload: false, inherit: true, notify: true });
+        });
+
+    };
+
+    $scope.getMoreUsers = function() {
+        if (!$scope.moreUsersDisabled) {
+            userFactory.getMoreUsers('statusCreated').then(function(usersArr) {
+                var newUsers = false;
+                for (var i = 0; i <  usersArr.length; i++) {
+                    var elem = usersArr[i];
+                    if ($scope.users[elem._id] == null) {
+                        newUsers = true;
+                        $scope.users[elem._id] = elem;
                     }
                 }
                 if (!newUsers) {
