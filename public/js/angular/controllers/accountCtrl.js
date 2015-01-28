@@ -140,7 +140,6 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
 //                console.log('percent: ' + parseInt(100.0 * evt.loaded / evt.total));
             }).success(function(data, status, headers, config) {
                 // file is uploaded successfully
-                console.log(data);
                 $scope.me.picture = data.picture;
                 $scope.origMe = angular.copy($scope.me);
                 $scope.dataHasChanged = !angular.equals($scope.me, $scope.origMe);

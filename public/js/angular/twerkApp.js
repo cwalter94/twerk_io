@@ -447,7 +447,10 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                 },
                 updateIdentity: function (newIdentity) {
-                  _identity = newIdentity;
+                    var deferred = $q.defer();
+                    _identity = newIdentity;
+                    deferred.resolve(_identity);
+                    return deferred.promise;
                 },
                 login: function (credentials) {
                     var deferred = $q.defer();

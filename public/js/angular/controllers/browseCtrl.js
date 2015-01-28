@@ -9,8 +9,20 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.overrideMoreUsersDisabled = false;
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
-    $scope.selectedClass = 'All';
 
+    $scope.formatDate = function(date) {
+        var formatted = new Date(date);
+        var day = formatted.getDate();
+        var month = formatted.getMonth() + 1;
+        var time = formatted.getHours() + ':' + formatted.getMinutes();
+        return month + '/' + day + ' @ ' + time;
+    };
+
+    $scope.me.statusDateFormatted = $scope.formatDate($scope.me.statusCreated);
+
+    $scope.selectedClass = 'All';
+    $scope.statusInput = "";
+    $scope.statusInputShow = false;
 
     $scope.displayUser = function(user) {
         user.majorString = user.major.length ? user.major.join(', ') : 'Unknown major.';
@@ -24,13 +36,7 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
         return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
     };
 
-    $scope.formatDate = function(date) {
-        var formatted = new Date(date);
-        var day = formatted.getDate();
-        var month = formatted.getMonth() + 1;
-        var time = formatted.getHours() + ':' + formatted.getMinutes();
-        return month + '/' + day + ' @ ' + time;
-    };
+
 
     siteSocket.on('update:status', function(data) {
         userFactory.updateUserStatus(data.userId, data.status, data.statusCreated).then(function(user) {
@@ -57,6 +63,30 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
            $scope.loadUsersButtonText = 'Click to load more users.';
        }
     });
+
+    $scope.cancelStatusUpdate = function() {
+        $scope.statusInput = "";
+        $scope.statusInputShow = false;
+    };
+
+    $scope.saveStatusUpdate = function() {
+        $scope.me.status = $scope.statusInput;
+        $scope.me.statusCreated = Date.now();
+
+        $http.post('/api/userprofile', {data: $scope.me})
+            .success(function(response) {
+                siteSocket.emit('update:status', {userId: $scope.me._id, status: $scope.me.status, statusCreated: Date.now()});
+                $scope.me.statusCreated = Date.now();
+                $scope.me.statusFormatted = $scope.formatDate($scope.me.statusCreated);
+                principal.updateIdentity($scope.me).then(function(response) {
+                    $scope.statusInput = "";
+                    $scope.statusInputShow = false;
+                })
+            })
+            .error(function () {
+                flash.error = 'Profile could not be saved. Please try again later.';
+            });
+    };
 
     $scope.messages = {};
 
