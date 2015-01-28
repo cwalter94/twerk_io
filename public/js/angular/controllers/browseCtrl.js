@@ -6,6 +6,7 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.sortBy = 'lastOnline';
     $scope.busy = false;
     $scope.moreUsersDisabled = false;
+    $scope.overrideMoreUsersDisabled = false;
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
     $scope.selectedClass = 'All';
@@ -50,6 +51,13 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
         return $location.path();
     };
 
+    $scope.$watch('search', function(newval, oldval) {
+       if (newval != '') {
+           $scope.overrideMoreUsersDisabled = true;
+           $scope.loadUsersButtonText = 'Click to load more users.';
+       }
+    });
+
     $scope.messages = {};
 
     $scope.message = {rows: 1, from: $scope.me.id, to: $scope.room, toEmail: ''};
@@ -65,7 +73,7 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     };
 
     $scope.getMoreUsers = function() {
-        if (!$scope.moreUsersDisabled) {
+        if (!$scope.moreUsersDisabled || $scope.overrideMoreUsersDisabled) {
             userFactory.getMoreUsers('statusCreated').then(function(usersArr) {
                 var newUsers = false;
                 for (var i = 0; i <  usersArr.length; i++) {
