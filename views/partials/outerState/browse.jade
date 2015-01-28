@@ -1,16 +1,18 @@
 div.container#browse-container
-        .row
+        .row(style="height: 100%;")
             .col-md-3.class-selection-col
-                .class-selection-container
+                .class-selection-container.clearfix
                     h4 My Classes
-                    a.class-container(ng-repeat="class in me.classes")
+                    div.no-class-message(ng-show="me.classes.length == 0") You have no classes! Add some on the profile page.
+                    a.class-container(ng-show="me.classes.length != 0", ng-click="filterByClass('All')", ng-class="{'selected' : currentClassFilter == ''}", style="border-bottom: 1px solid #ccc; height: 30px;") ALL
+                    a.class-container(ng-show="me.classes.length != 0", ng-repeat="class in me.classes", ng-click="filterByClass(class)", ng-class="{'selected' : class == currentClassFilter}")
                         div(once-text="class")
 
-            .col-md-9.browse-col
+            .col-md-8.browse-col
                 .my-profile-info-container.row
-                    .col-md-2.col-xs-3.img-col
+                    .col-md-2.img-col
                         img(once-src="me.picture || '/img/generic_avatar.gif'")
-                    .col-md-10.col-xs-9.name-col
+                    .col-md-10.name-col
                         .text-left
                             h2.name(once-text="me.name")
                         .btn.btn-main.btn-status(ng-click="statusInputShow = true;", ng-show="!statusInputShow")
@@ -36,20 +38,21 @@ div.container#browse-container
                             input.search-box-inner(ng-model="search", placeholder="Filter by class, status updates, and name")
 
                     .browse-inner-container
-                        a.browse-sm-container.offline(ng-repeat="user in users | browseFilter:search | orderBy: 'statusCreated' : true track by user._id",
+                        a.browse-sm-container.offline(ng-repeat="user in users | browseFilter:search:currentClassFilter | orderBy: 'statusCreated' : true track by user._id",
                         ng-class="{'online': user.onlineStatus.online}", ng-click="goToMessages(user)")
                             i.glyphicon.glyphicon-comment
                             .profile-info-container
                                 .row
-                                    .col-xs-4.img-col
+                                    .col-xs-2.img-col
                                         img(once-src="getThumbnail(user.picture)")
-                                    .status-date {{formatDate(user.statusCreated)}}
                                     .col-xs-8.status-col
-                                        .row.text-left {{user.status || 'No status to display.'}}
-                                .row.remove
-                                    .col-xs-12
                                         .name.text-left(once-text="user.name")
-                                        .text-left(once-text="user.classes.length ? user.classes.join(', ') : 'No classes.'")
+                                        .status-date {{formatDate(user.statusCreated)}}
+                                        .status.text-left {{user.status || 'No status to display.'}}
+                                    .col-xs-2.class-col
+                                        .text-left(ng-repeat="class in user.classes", once-text="class", once-if="user.classes.length > 0")
+                                        .text-left(once-if="user.classes.length == 0") No classes.
+
                             .chat-container
                                 .chat-message-display-container
                                     .message-row(ng-repeat="message in user.messages", ng-class="{'me' : message.from != user._id")

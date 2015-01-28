@@ -9,6 +9,7 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.overrideMoreUsersDisabled = false;
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
+    $scope.currentClassFilter = "";
 
     $scope.formatDate = function(date) {
         var formatted = new Date(date);
@@ -64,6 +65,11 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
        }
     });
 
+    $scope.$watch('currentClassFilter', function(newval, oldval) {
+        $scope.overrideMoreUsersDisabled = true;
+        $scope.loadUsersButtonText = 'Click to load more users.';
+    });
+
     $scope.cancelStatusUpdate = function() {
         $scope.statusInput = "";
         $scope.statusInputShow = false;
@@ -86,6 +92,14 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
             .error(function () {
                 flash.error = 'Profile could not be saved. Please try again later.';
             });
+    };
+
+    $scope.filterByClass = function(className) {
+        if (className == 'All') {
+            $scope.currentClassFilter = "";
+        } else {
+            $scope.currentClassFilter = className;
+        }
     };
 
     $scope.messages = {};
@@ -115,7 +129,11 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
                 }
                 if (!newUsers) {
                     $scope.newUsersDisabled = true;
-                    $scope.loadUsersButtonText = 'No more users to load.';
+                    if ($scope.currentClassFilter == "") {
+                        $scope.loadUsersButtonText = 'No more users to load.';
+                    } else {
+                        $scope.loadUsersButtonText = 'Whoops! It appears no one else in that class is on Twerk yet. Tell your classmates to try it out!';
+                    }
                 }
             }, function(err) {
                 flash.error = err;

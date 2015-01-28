@@ -1112,32 +1112,40 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
     })
     .filter('browseFilter', function () {
 
-        return function (users, search) {
-            if (search == null) {
+        return function (users, search, currentClassFilter) {
+            if (search == null && currentClassFilter == "") {
                 var resultArr = [];
+
                 for (var key in users) {
                     resultArr.push(users[key]);
                 }
                 return resultArr;
             }
+
             var results = {};
             var resultsArr = [];
 
             for (var u in users) {
                 var user = users[u];
-                var searchStrings = search.split(', ');
-                var returnUser = false;
-
-                var userString = user.name + ' ' + user.status;
-                if (user.classes && user.classes.length > 0) {
-                    userString += ' ' + user.classes.join(' ');
-                }
-
-                for (var i in searchStrings) {
-                    if (userString.toLowerCase().indexOf(searchStrings[i].toLowerCase()) > -1) {
+                if (currentClassFilter){
+                    if (user.classes.indexOf(currentClassFilter) > -1) {
                         results[user._id] = user;
                     }
+                } else if (!currentClassFilter && search != null) {
+                    var searchStrings = search.split(', ');
+
+                    var userString = user.name + ' ' + user.status;
+                    if (user.classes && user.classes.length > 0) {
+                        userString += ' ' + user.classes.join(' ');
+                    }
+
+                    for (var i in searchStrings) {
+                        if (userString.toLowerCase().indexOf(searchStrings[i].toLowerCase()) > -1) {
+                            results[user._id] = user;
+                        }
+                    }
                 }
+
             }
 
             for (var key in results) {

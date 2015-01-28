@@ -1112,32 +1112,40 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
     }])
     .filter('browseFilter', function () {
 
-        return function (users, search) {
-            if (search == null) {
+        return function (users, search, currentClassFilter) {
+            if (search == null && currentClassFilter == "") {
                 var resultArr = [];
+
                 for (var key in users) {
                     resultArr.push(users[key]);
                 }
                 return resultArr;
             }
+
             var results = {};
             var resultsArr = [];
 
             for (var u in users) {
                 var user = users[u];
-                var searchStrings = search.split(', ');
-                var returnUser = false;
-
-                var userString = user.name + ' ' + user.status;
-                if (user.classes && user.classes.length > 0) {
-                    userString += ' ' + user.classes.join(' ');
-                }
-
-                for (var i in searchStrings) {
-                    if (userString.toLowerCase().indexOf(searchStrings[i].toLowerCase()) > -1) {
+                if (currentClassFilter){
+                    if (user.classes.indexOf(currentClassFilter) > -1) {
                         results[user._id] = user;
                     }
+                } else if (!currentClassFilter && search != null) {
+                    var searchStrings = search.split(', ');
+
+                    var userString = user.name + ' ' + user.status;
+                    if (user.classes && user.classes.length > 0) {
+                        userString += ' ' + user.classes.join(' ');
+                    }
+
+                    for (var i in searchStrings) {
+                        if (userString.toLowerCase().indexOf(searchStrings[i].toLowerCase()) > -1) {
+                            results[user._id] = user;
+                        }
+                    }
                 }
+
             }
 
             for (var key in results) {
@@ -1555,6 +1563,7 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
     $scope.overrideMoreUsersDisabled = false;
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
+    $scope.currentClassFilter = "";
 
     $scope.formatDate = function(date) {
         var formatted = new Date(date);
@@ -1610,6 +1619,11 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
        }
     });
 
+    $scope.$watch('currentClassFilter', function(newval, oldval) {
+        $scope.overrideMoreUsersDisabled = true;
+        $scope.loadUsersButtonText = 'Click to load more users.';
+    });
+
     $scope.cancelStatusUpdate = function() {
         $scope.statusInput = "";
         $scope.statusInputShow = false;
@@ -1632,6 +1646,14 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
             .error(function () {
                 flash.error = 'Profile could not be saved. Please try again later.';
             });
+    };
+
+    $scope.filterByClass = function(className) {
+        if (className == 'All') {
+            $scope.currentClassFilter = "";
+        } else {
+            $scope.currentClassFilter = className;
+        }
     };
 
     $scope.messages = {};
@@ -1661,7 +1683,11 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
                 }
                 if (!newUsers) {
                     $scope.newUsersDisabled = true;
-                    $scope.loadUsersButtonText = 'No more users to load.';
+                    if ($scope.currentClassFilter == "") {
+                        $scope.loadUsersButtonText = 'No more users to load.';
+                    } else {
+                        $scope.loadUsersButtonText = 'Whoops! It appears no one else in that class is on Twerk yet. Tell your classmates to try it out!';
+                    }
                 }
             }, function(err) {
                 flash.error = err;
