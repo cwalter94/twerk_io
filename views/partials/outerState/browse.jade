@@ -19,11 +19,12 @@ div.container#browse-container
                     .col-md-10.col-xs-9.status-col
                         .status-date(ng-show="!statusInputShow") {{me.statusDateFormatted}}
                         .text-left.status(ng-show="!statusInputShow") {{me.status || "You don't have a status right now! Update your status to tell other users what you're working on."}}
-                        textarea.status-input(ng-model="statusInput", ng-show="statusInputShow")
-                        a.btn-status-save(ng-show="statusInputShow", ng-click="saveStatusUpdate()")
-                            i.glyphicon.glyphicon-ok
-                        a.btn-status-cancel(ng-show="statusInputShow", ng-click="cancelStatusUpdate()")
-                            i.glyphicon.glyphicon-remove
+                        .status-update(ng-show="statusInputShow")
+                            textarea.status-input(ng-model="statusInput")
+                            a.btn-status-save(ng-click="saveStatusUpdate()")
+                                i.glyphicon.glyphicon-ok
+                            a.btn-status-cancel(ng-click="cancelStatusUpdate()")
+                                i.glyphicon.glyphicon-remove
 
 
                 .browse-outer-container(infinite-scroll="getMoreUsers()", infinite-scroll-disabled="newUsersDisabled")

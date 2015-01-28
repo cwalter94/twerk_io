@@ -786,44 +786,48 @@ html {
 
             }
           }
-
-          .status-input {
-            border: 1px solid #ccc;
-            resize: none;
-            background: white;
-            font-size: 16px;
-            -webkit-box-shadow: none;
-            -moz-box-shadow: none;
-            box-shadow: none;
-            outline: none;
-            padding: 5px;
-            height: 100%;
+          .status-update {
             width: 100%;
-            padding-right: 50px;
+            height: 100%;
+            .status-input {
+              border: 1px solid #ccc;
+              resize: none;
+              background: white;
+              font-size: 16px;
+              -webkit-box-shadow: none;
+              -moz-box-shadow: none;
+              box-shadow: none;
+              outline: none;
+              padding: 5px;
+              height: 100%;
+              width: 100%;
+              padding-right: 50px;
 
+            }
+
+            .btn-status-save, .btn-status-cancel {
+              position: absolute;
+
+              right: 20px;
+              color: #CCC;
+              font-size: 24px;
+              width: 24px;
+              height: 24px;
+              padding: 0px;
+
+            }
+
+            .btn-status-cancel {
+              top: 0;
+            }
+
+            .btn-status-save {
+              bottom: 10px;
+              color: #A378C2;
+
+            }
           }
 
-          .btn-status-save, .btn-status-cancel {
-            position: absolute;
-
-            right: 20px;
-            color: #CCC;
-            font-size: 24px;
-            width: 24px;
-            height: 24px;
-            padding: 0px;
-
-          }
-
-          .btn-status-cancel {
-            top: 0;
-          }
-
-          .btn-status-save {
-            bottom: 10px;
-            color: #A378C2;
-
-          }
         }
 
         .browse-outer-container {
