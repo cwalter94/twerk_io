@@ -5,16 +5,14 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
 
     $scope.allClasses = [];
     $scope.loadingClasses = [{departmentCode: 'Loading classes...', courseNumber: ''}];
+    $scope.courseSearch = {departments: [], selectedDepartment: "", courses: [], selectedCourse: ""};
+    $http({
+        url: '/api/departments',
+        method: 'GET'
+    }).success(function(data) {
+        $scope.courseSearch.departments = data.departments;
+    });
 
-    for (var i in me.classes) {
-        var temp = me.classes[i];
-        var newClass = {
-            departmentCode: temp.substring(0, temp.lastIndexOf(' ')),
-            courseNumber : temp.substring(temp.lastIndexOf(' ') + 1)
-        };
-        $scope.allClasses.push(newClass);
-        $scope.me.selectedClasses.push(newClass);
-    }
     $scope.origMe = angular.copy($scope.me);
     $scope.initialComparison = !angular.equals($scope.me, $scope.origMe);
     $scope.dataHasChanged = angular.copy($scope.initialComparison);
@@ -30,52 +28,32 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
        }
     }, true);
 
-    $scope.getClasses = function(search) {
-            if (search.length > 1) {
-                $scope.search = search;
-                var date = new Date();
-                var term = 'Spring';
-                var regExp = /([^\d\s]+)\s*(\d{0,3}\D{0,2})/;
-                var match = regExp.exec(search);
-                if (date.getMonth() > 5 || date.getMonth() == 5 && date.getDate() > 20) {
-                    if (date.getMonth() > 8 || date.getMonth() == 8 && date.getDate() > 15) {
-                        term = 'Fall';
-                    } else {
-                        term = 'Summer';
-                    }
+    $scope.$watch('courseSearch.selectedDepartment', function(newval, oldval) {
+        if (newval != "") {
+            $scope.getCoursesForDepartment(newval);
+        }
+    });
+
+    $scope.addCourse = function() {
+        console.log($scope.courseSearch.selectedCourse);
+        $scope.me.classes.push($scope.courseSearch.selectedCourse);
+        $scope.courseSearch.courses = [];
+        $scope.courseSearch.selectedCourse = "";
+    };
+
+    $scope.getCoursesForDepartment = function(selectedDepartment) {
+            $http({
+                url: '/api/courses',
+                method: 'GET',
+                params: {
+                    department: selectedDepartment
                 }
-                if (match) {
-                    var params = match[2] ? {_type: 'json', departmentCode: match[1], courseNumber: match[2]} : {_type: 'json', departmentCode: match[1]};
-
-                    $http({
-                        url: 'https://apis-dev.berkeley.edu/cxf/asws/course',
-                        method: 'GET',
-                        headers: {
-                            app_key: '2c132785f8434f0e6b3a49c28895645f',
-                            app_id: '2e2a3e6e'
-                        },
-                        params: params
-                    }).then(function(response) {
-
-                        //prevent previous network resolutions from overwriting newer ones (async issue)
-                        match = regExp.exec($scope.search);
-                        var temp = response.data.CanonicalCourse[0];
-                        if (match && temp && temp.departmentCode && temp.courseNumber) {
-                            if (temp.departmentCode.indexOf(match[1]) > -1 || ('' + temp.courseNumber).indexOf(match[2]) > -1) {
-                                $scope.allClasses = response.data.CanonicalCourse.concat($scope.me.selectedClasses);
-                            }
-                        }
-
-                    }, function(err) {
-
-                    })
-                }
-
-            } else {
-                $scope.allClasses = $scope.me.selectedClasses;
-            }
+            }).success(function(data) {
+                $scope.courseSearch.courses = data.courses;
+            })
 
     };
+
 
     $scope.deletePicture = function() {
         $http({
@@ -90,6 +68,11 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
         });
     };
 
+    $scope.removeClass = function(className) {
+        var index = $scope.me.classes.indexOf(className);
+        $scope.me.classes.splice(index, 1);
+    };
+
     $scope.resetSearchInput = function($select) {
         $select.search = "";
         $scope.search = "";
@@ -97,11 +80,6 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
 
 
     $scope.processForm = function() {
-        $scope.me.classes = [];
-        for (var c in $scope.me.selectedClasses) {
-            var temp = $scope.me.selectedClasses[c];
-            $scope.me.classes.push(temp.departmentCode + ' ' + temp.courseNumber);
-        }
         $http.post('/api/userprofile', {data: $scope.me})
             .success(function(response) {
                 if ($scope.origMe.status != $scope.me.status) {

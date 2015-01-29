@@ -12,10 +12,10 @@ div.container.content-container#account-container
                 div.alert-warn.fade.row(flash-alert='success', active-class='in alert')
                     strong.alert-message {{flash.message}}
                 .row
-                    .col-md-11.col-xs-11
+                    .col-md-9.col-xs-9
                         h2 Profile Information
 
-                    .col-md-1.col-xs-1
+                    .col-md-3.col-xs-3
                         a(ng-click="processForm()", ng-show="dataHasChanged")
                             button.btn.btn-lg.btn-warning.btn-save(ng-show="dataHasChanged") Save Profile
                                 i.fa.fa-save
@@ -57,4 +57,25 @@ div.container.content-container#account-container
                                     .form-group.row
                                         label.col-xs-2.control-label Classes
                                         .col-xs-10
-                                            | Temporarily disabled - it appears the Berkeley Course API is down. In the meantime, you can search for users by Status updates!
+                                            .row(ng-repeat="class in me.classes", style="font-size: 18px;")
+                                                .col-xs-1(ng-click="removeClass(class)")
+                                                    .glyphicon.glyphicon-remove
+
+                                                .col-xs-11(once-text="class")
+
+                                            .row(style="margin-top: 10px;")
+                                                .col-xs-7(style="padding-right: 0px;")
+                                                    input(type="hidden", ng-model="courseSearch.selectedDepartment")
+                                                    ui-select.address-select(ng-model='courseSearch.selectedDepartment', theme='selectize')
+                                                        ui-select-match(placeholder='Department') {{courseSearch.selectedDepartment}}
+                                                        ui-select-choices(repeat='dept in courseSearch.departments | filter:$select.search | orderBy: dept : false')
+                                                            | {{dept}}
+                                                .col-xs-4(style="padding-left: 5px;")
+                                                    input(type="hidden", ng-model="courseSearch.selectedCourse")
+                                                    ui-select.address-select(ng-model='courseSearch.selectedCourse', theme='selectize')
+                                                        ui-select-match(placeholder='Course') {{courseSearch.selectedCourse}}
+                                                        ui-select-choices(repeat='course in courseSearch.courses | filter:$select.search | orderBy: course : false')
+                                                            | {{course}}
+                                                .col-xs-1(ng-show="courseSearch.selectedCourse != ''", style="padding: 5px; font-size: 24px; line-height: 24px;")
+                                                    a(ng-click="addCourse()")
+                                                        .glyphicon.glyphicon-plus

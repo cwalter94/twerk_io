@@ -30,6 +30,7 @@ var mongoose = require('mongoose');
 var gm = require('gm');
 var rename = require('gulp-rename');
 var Imagemin = require('imagemin');
+var courses = require('./courses.json');
 /**
  * GET /api
  * List of API examples.
@@ -246,6 +247,28 @@ exports.deletePictureForReqUser = function (req, res) {
         });
 
     });
+};
+
+exports.getCoursesForDepartment = function (req, res) {
+    if (req.query.department) {
+        for (var i = 0; i < courses.length; i++) {
+            if (req.query.department.indexOf(courses[i].name) > -1 || req.query.department.indexOf(courses[i].abbreviation) > -1) {
+                return res.json({token: req.token, courses: courses[i].courses})
+            }
+        }
+        return res.status(401).end('No courses found.');
+    }
+
+    return res.status(401).end('Department required.');
+};
+
+exports.getAllDepartments = function (req, res) {
+    var result = [];
+
+    for (var i = 0; i < courses.length; i++) {
+        result.push(courses[i].name + '(' + courses[i].abbreviation + ')');
+    }
+    return res.json({token: req.token, departments: result});
 };
 
 exports.adminAllUsers = function (req, res) {

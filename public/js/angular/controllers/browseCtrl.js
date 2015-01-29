@@ -83,7 +83,7 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
             .success(function(response) {
                 siteSocket.emit('update:status', {userId: $scope.me._id, status: $scope.me.status, statusCreated: Date.now()});
                 $scope.me.statusCreated = Date.now();
-                $scope.me.statusFormatted = $scope.formatDate($scope.me.statusCreated);
+                $scope.me.statusDateFormatted = $scope.formatDate($scope.me.statusCreated);
                 principal.updateIdentity($scope.me).then(function(response) {
                     $scope.statusInput = "";
                     $scope.statusInputShow = false;

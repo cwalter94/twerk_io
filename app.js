@@ -167,7 +167,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
     //});
     //
     //
-    //Room.findById('54c524ced5decc3f0f44d479').remove(function(err) {
+    //Room.findById('54c6bc376f9e0f462e891820').remove(function(err) {
     //    if (err) console.log(err);
     //    console.log("room removal");
     //});
@@ -266,6 +266,8 @@ app.get('/api/room/user/:userId', apiController.getRoomForUserIdAndReqUser);
 app.get('/api/room/:roomId', apiController.getRoomForRoomId);
 app.get('/api/room/:roomId/messages', apiController.getMessagesForRoomId);
 
+app.get('/api/departments', apiController.getAllDepartments);
+app.get('/api/courses', apiController.getCoursesForDepartment);
 
 app.get('/api/admin/allusers', apiController.adminAllUsers);
 app.post('/api/admin/saveuser', apiController.adminSaveUser);
