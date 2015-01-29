@@ -719,7 +719,9 @@ html {
       height: 100%;
       padding-top: 50px;
 
-      .class-selection-col {
+      .browse-left-col {
+        height: 100%;
+        overflow-y: scroll;
 
         .class-selection-container {
           background: #fff;
@@ -745,56 +747,30 @@ html {
             }
           }
         }
-      }
-
-      .browse-col {
-        height: calc(100% - 150px);
-
-        .my-profile-info-container {
-          height: 120px;
-          margin: 10px 0px;
-          padding: 5px;
-          border: 1px solid #ccc;
+        .status-container {
+          height: 240px;
+          position: relative;
+          float: left;
           background: #fff;
+          margin: 10px;
+          padding: 15px;
+          border: 1px solid #ccc;
 
-
-          .img-col {
-            padding-left: 0px;
-            height: 95px;
-            overflow-y: hidden;
-
-            img {
-              width: 100%;
-
-            }
-          }
-          .name-col {
-            height: 35px;
+          .btn-status {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            height: 30px;
+            width: 40px;
+            margin: 0;
+            font-size: 14px;
+            padding: 3px;
             color: #52008C;
-            padding-right: 100px;
 
-            .btn-status {
-              position: absolute;
-              top: 5px;
-              right: 15px;
-              margin: 0;
-              font-size: 12px;
-              font-weight: 700;
-              width: 110px;
-              border: 1px solid;
-              height: 30px;
-              line-height: 25px;
-              padding: 2px;
-
-              &:hover {
-                color: #52008C;
-                border-color: #52008C;
-              }
-
-            }
           }
 
-          .status-col {
+          .status-inner-container {
+            height: calc(100% - 80px);
 
             .status-date {
               float: left;
@@ -819,25 +795,6 @@ html {
               padding: 5px;
 
             }
-          }
-          .status-update {
-            width: 100%;
-            height: 100%;
-            .status-input {
-              border: 1px solid #ccc;
-              resize: none;
-              background: white;
-              font-size: 16px;
-              -webkit-box-shadow: none;
-              -moz-box-shadow: none;
-              box-shadow: none;
-              outline: none;
-              padding: 5px;
-              height: 100%;
-              width: 100%;
-              padding-right: 50px;
-
-            }
 
             .btn-status-save, .btn-status-cancel {
               position: absolute;
@@ -852,17 +809,51 @@ html {
             }
 
             .btn-status-cancel {
-              top: 0;
+              bottom:10px;
+              right: 60px;
             }
 
             .btn-status-save {
-              bottom: 10px;
+              bottom: 13px;
+              right: 20px;
               color: #A378C2;
+
+            }
+
+            .status-update {
+              width: 100%;
+              height: 100%;
+
+              .status-input {
+                border: 1px solid #ccc;
+                resize: none;
+                background: white;
+                font-size: 16px;
+                -webkit-box-shadow: none;
+                -moz-box-shadow: none;
+                box-shadow: none;
+                outline: none;
+                padding: 5px;
+                height: 100%;
+                width: 100%;
+                padding-right: 50px;
+
+              }
+
 
             }
           }
 
         }
+
+
+
+      }
+
+
+      .browse-right-col {
+        height: 100%;
+        padding-top: 10px;
 
         .browse-outer-container {
           height: 100%;
@@ -939,11 +930,12 @@ html {
             .browse-sm-container {
               position: relative;
               float: left;
-              width: 100%;
-              height: 110px;
+              width: calc(50% - 20px);
+              min-width: 316px;
+              height: 160px;
               overflow: hidden;
               border-radius: 2px;
-              margin: 5px 0px;
+              margin: 10px;
               border: 1px solid #ccc;
               color: #666;
 
@@ -973,28 +965,31 @@ html {
                   margin-left: -5px;
                   margin-right: -5px;
                   overflow-y: hidden;
+                  height: 80px;
                 }
 
 
 
                 .img-col {
-                  overflow-y: hidden;
-                  max-height: 105px;
+                  overflow-x: hidden;
+                  height: 100%;
 
                   img {
-                    width: 100%;
+                    height: 100%;
                   }
                 }
+
+                .name {
+                  padding: 5px 0px 0px;
+                }
+
                 .status-col {
 
                   font-weight: 500;
                   font-size: 13px;
                   overflow: scroll;
+                  height: 100%;
 
-                  .name {
-                    margin: 0px;
-                    padding: 5px;
-                  }
 
                   .status {
                     display: block;
@@ -1007,6 +1002,7 @@ html {
                     border-radius: 5px;
                     border-top-left-radius: 0px;
                     padding: 5px;
+                    height: calc(100% - 11px);
 
                   }
 
