@@ -116,6 +116,8 @@ html body {
     margin-top: 50px;
     overflow-y: scroll;
     height: calc(100% - 50px); }
+  html body ui-select-choices.selectize-dropdown {
+    position: relative !important; }
   html body input, html body ui-select, html body ui-select-multiple, html body .select2-choices {
     border-color: #adadad;
     border-radius: 2px !important;
@@ -482,7 +484,7 @@ html body {
         background: #fff; }
         html body #browse-container .browse-col .my-profile-info-container .img-col {
           padding-left: 0px;
-          height: 100%;
+          height: 95px;
           overflow-y: hidden; }
           html body #browse-container .browse-col .my-profile-info-container .img-col img {
             width: 100%; }
@@ -677,10 +679,10 @@ html body {
                 font-size: 12px; }
             html body #browse-container .browse-col .browse-outer-container .browse-inner-container .browse-sm-container .chat-container, html body #browse-container .browse-col .browse-outer-container .messages-inner-container .browse-sm-container .chat-container {
               display: none; }
-            html body #browse-container .browse-col .browse-outer-container .browse-inner-container .browse-sm-container.online .status-col, html body #browse-container .browse-col .browse-outer-container .messages-inner-container .browse-sm-container.online .status-col {
-              background: #CFEEFF; }
+            html body #browse-container .browse-col .browse-outer-container .browse-inner-container .browse-sm-container.online .status, html body #browse-container .browse-col .browse-outer-container .messages-inner-container .browse-sm-container.online .status {
+              background: #CFEEFF !important; }
             html body #browse-container .browse-col .browse-outer-container .browse-inner-container .browse-sm-container.online .status-date, html body #browse-container .browse-col .browse-outer-container .messages-inner-container .browse-sm-container.online .status-date {
-              background: #CFEEFF; }
+              background: #CFEEFF !important; }
             html body #browse-container .browse-col .browse-outer-container .browse-inner-container .browse-sm-container.message-sm-container, html body #browse-container .browse-col .browse-outer-container .messages-inner-container .browse-sm-container.message-sm-container {
               height: 380px; }
             html body #browse-container .browse-col .browse-outer-container .browse-inner-container .browse-sm-container .glyphicon-comment, html body #browse-container .browse-col .browse-outer-container .messages-inner-container .browse-sm-container .glyphicon-comment {
@@ -817,7 +819,7 @@ html body {
             width: 100%;
             padding-right: 30px;
             overflow-y: hidden;
-            max-height: 50px; }
+            max-height: 40px; }
           html body #messages-container .messages-outer-container .messages-inner-container .messages-sm-container .img-col {
             height: 60px;
             padding-left: 5px;
@@ -909,7 +911,8 @@ html body {
     background: #fff;
     padding: 15px; }
     html body #account-container #profile-container .col-xs-12 .btn-save {
-      margin-top: 10px; }
+      margin-top: 10px;
+      float: right; }
     html body #account-container #profile-container .picture-col {
       min-height: 350px; }
       html body #account-container #profile-container .picture-col .profile-picture {
