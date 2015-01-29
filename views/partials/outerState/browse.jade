@@ -2,7 +2,7 @@ div.container#browse-container
         .row(style="height: 100%;")
             .col-md-3.class-selection-col
                 .class-selection-container.clearfix
-                    h4 My Classes
+                    h4 Classes
                     div.no-class-message(ng-show="me.classes.length == 0") You have no classes! Add some on the profile page.
                     a.class-container(ng-show="me.classes.length != 0", ng-click="filterByClass('All')", ng-class="{'selected' : currentClassFilter == ''}", style="border-bottom: 1px solid #ccc; height: 30px;") ALL
                     a.class-container(ng-show="me.classes.length != 0", ng-repeat="class in me.classes", ng-click="filterByClass(class)", ng-class="{'selected' : class == currentClassFilter}")
