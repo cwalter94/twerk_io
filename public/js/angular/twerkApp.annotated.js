@@ -160,9 +160,32 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     ]
 
                 },
-                controller: ['$scope', '$http', 'flash', 'sendEmailFn', function($scope, $http, flash, sendEmailFn) {
+                controller: ['$scope', '$http', 'flash', 'sendEmailFn', 'principal', '$state', function($scope, $http, flash, sendEmailFn, principal, $state) {
                     $scope.sendEmail = sendEmailFn;
+                    $scope.verify = {code: ""};
 
+                    $scope.verifyCode = function() {
+                        $http({
+                            url: '/api/verify/confirm',
+                            method: 'GET',
+                            params: {
+                                code: $scope.verify.code
+                            }
+                        }).then(function(response) {
+                                principal.identity().then(function (identity) {
+                                    principal.verifyIdentity(identity);
+                                    flash.success = 'Account successfully verified.';
+                                    $scope.verified = true;
+                                    $state.transitionTo('site.auth.browse');
+                                });
+                            }
+                            , function(err) {
+                                console.log($scope.code);
+                                console.log(err);
+                                $scope.verified = false;
+                                flash.error = 'An error occurred in verification. Please try again later.'
+                            })
+                    }
                 }]
             })
             .state('site.auth.verify.confirm', {

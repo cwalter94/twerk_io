@@ -642,6 +642,8 @@ html body {
                   height: 100%; }
               html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .name, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .name {
                 padding: 5px 0px 0px; }
+              html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .classes, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .classes {
+                font-size: 12px; }
               html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col {
                 font-weight: 500;
                 font-size: 13px;

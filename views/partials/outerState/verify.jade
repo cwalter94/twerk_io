@@ -14,5 +14,11 @@
                                         p.text-left We need you to verify your account!
                                         p.text-left There should be an email at your berkeley.edu address with a link to verify your account. Please check your spam folder if you don't receive one within a day.
                                         p.text-left If you haven't received an email after 24 hours, you can send another email by clicking below.
-                                        div(style="width: 100%;").text-center
+                                        .text-center(style="width: 100%;")
                                             button.btn.btn-default.btn-main(ng-click="sendEmail()") Send Again
+                                        p.text-left Email link not working? Try inputting the verification code below:
+                                        .text-center(style="width: 100%")
+                                            .col-xs-9
+                                                input.input-lg.form-control(ng-model="verify.code")
+                                            .col-xs-3
+                                                button.btn.btn-default.btn-main.text-center(ng-click="verifyCode()", style="margin:0; height: 46px; font-size: 16px;") Verify
