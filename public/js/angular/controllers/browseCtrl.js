@@ -6,10 +6,24 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.sortBy = 'lastOnline';
     $scope.busy = false;
     $scope.moreUsersDisabled = false;
+    $scope.overrideMoreUsersDisabled = false;
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
+    $scope.currentClassFilter = "";
 
+    $scope.formatDate = function(date) {
+        var formatted = new Date(date);
+        var day = formatted.getDate();
+        var month = formatted.getMonth() + 1;
+        var time = formatted.getHours() + ':' + formatted.getMinutes();
+        return month + '/' + day + ' @ ' + time;
+    };
 
+    $scope.me.statusDateFormatted = $scope.formatDate($scope.me.statusCreated);
+
+    $scope.selectedClass = 'All';
+    $scope.statusInput = "";
+    $scope.statusInputShow = false;
 
     $scope.displayUser = function(user) {
         user.majorString = user.major.length ? user.major.join(', ') : 'Unknown major.';
@@ -23,13 +37,7 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
         return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
     };
 
-    $scope.formatDate = function(date) {
-        var formatted = new Date(date);
-        var day = formatted.getDate();
-        var month = formatted.getMonth() + 1;
-        var time = formatted.getHours() + ':' + formatted.getMinutes();
-        return month + '/' + day + ' @ ' + time;
-    };
+
 
     siteSocket.on('update:status', function(data) {
         userFactory.updateUserStatus(data.userId, data.status, data.statusCreated).then(function(user) {
@@ -50,6 +58,50 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
         return $location.path();
     };
 
+    $scope.$watch('search', function(newval, oldval) {
+       if (newval != '') {
+           $scope.overrideMoreUsersDisabled = true;
+           $scope.loadUsersButtonText = 'Click to load more users.';
+       }
+    });
+
+    $scope.$watch('currentClassFilter', function(newval, oldval) {
+        $scope.overrideMoreUsersDisabled = true;
+        $scope.loadUsersButtonText = 'Click to load more users.';
+    });
+
+    $scope.cancelStatusUpdate = function() {
+        $scope.statusInput = "";
+        $scope.statusInputShow = false;
+    };
+
+    $scope.saveStatusUpdate = function() {
+        $scope.me.status = $scope.statusInput;
+        $scope.me.statusCreated = Date.now();
+
+        $http.post('/api/userprofile', {data: $scope.me})
+            .success(function(response) {
+                siteSocket.emit('update:status', {userId: $scope.me._id, status: $scope.me.status, statusCreated: Date.now()});
+                $scope.me.statusCreated = Date.now();
+                $scope.me.statusFormatted = $scope.formatDate($scope.me.statusCreated);
+                principal.updateIdentity($scope.me).then(function(response) {
+                    $scope.statusInput = "";
+                    $scope.statusInputShow = false;
+                })
+            })
+            .error(function () {
+                flash.error = 'Profile could not be saved. Please try again later.';
+            });
+    };
+
+    $scope.filterByClass = function(className) {
+        if (className == 'All') {
+            $scope.currentClassFilter = "";
+        } else {
+            $scope.currentClassFilter = className;
+        }
+    };
+
     $scope.messages = {};
 
     $scope.message = {rows: 1, from: $scope.me.id, to: $scope.room, toEmail: ''};
@@ -65,20 +117,23 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     };
 
     $scope.getMoreUsers = function() {
-        if (!$scope.moreUsersDisabled) {
-            userFactory.getMoreUsers($scope.sortBy).then(function(usersArr) {
+        if (!$scope.moreUsersDisabled || $scope.overrideMoreUsersDisabled) {
+            userFactory.getMoreUsers('statusCreated').then(function(usersArr) {
                 var newUsers = false;
                 for (var i = 0; i <  usersArr.length; i++) {
                     var elem = usersArr[i];
                     if ($scope.users[elem._id] == null) {
                         newUsers = true;
                         $scope.users[elem._id] = elem;
-                        $scope.usersList.push(elem);
                     }
                 }
                 if (!newUsers) {
                     $scope.newUsersDisabled = true;
-                    $scope.loadUsersButtonText = 'No more users to load.';
+                    if ($scope.currentClassFilter == "") {
+                        $scope.loadUsersButtonText = 'No more users to load.';
+                    } else {
+                        $scope.loadUsersButtonText = 'Whoops! It appears no one else in that class is on Twerk yet. Tell your classmates to try it out!';
+                    }
                 }
             }, function(err) {
                 flash.error = err;
