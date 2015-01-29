@@ -1,21 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="638d5d45-97e7-4d8a-9320-b6af04ec080c" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.sass-cache/3d6d2d7499b0adade37e798aaa19de993ab8ea36/all.scssc" afterPath="$PROJECT_DIR$/.sass-cache/3d6d2d7499b0adade37e798aaa19de993ab8ea36/all.scssc" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/all.css" afterPath="$PROJECT_DIR$/public/css/all.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/all.min.css" afterPath="$PROJECT_DIR$/public/css/all.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/scss/all.scss" afterPath="$PROJECT_DIR$/scss/all.scss" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/controllers/api.js" afterPath="$PROJECT_DIR$/controllers/api.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/css/application.min.css" afterPath="$PROJECT_DIR$/public/css/application.min.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/application.min.js.map" afterPath="$PROJECT_DIR$/public/js/application.min.js.map" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/application.min.js" afterPath="$PROJECT_DIR$/public/js/application.min.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/partials/head.jade" afterPath="$PROJECT_DIR$/views/partials/head.jade" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/twerkApp.annotated.js" afterPath="$PROJECT_DIR$/public/js/angular/twerkApp.annotated.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/twerkApp.js" afterPath="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/views/partials/outerState/verify.jade" afterPath="$PROJECT_DIR$/views/partials/outerState/verify.jade" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-    </list>
+    <list default="true" id="638d5d45-97e7-4d8a-9320-b6af04ec080c" name="Default" comment="" />
     <ignored path="twerk_io.iws" />
     <ignored path=".idea/workspace.xml" />
     <ignored path=".idea/dataSources.local.xml" />
@@ -983,12 +969,12 @@
       <workItem from="1422356698094" duration="3808000" />
       <workItem from="1422461892495" duration="17282000" />
       <workItem from="1422497774185" duration="14067000" />
-      <workItem from="1422553557431" duration="2261000" />
+      <workItem from="1422553557431" duration="2302000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="358108000" />
+    <option name="totallyTimeSpent" value="358149000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1676" height="1027" extended-state="6" />
