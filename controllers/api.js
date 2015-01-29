@@ -61,16 +61,12 @@ exports.getUser = function (req, res) {
 exports.getUsersForBrowse = function (req, res) {
     if (req.query.num && req.query.sortBy && req.query.start) {
         var selectString = '_id name email picture status classes statusCreated lastOnline';
-        var sortString = req.query.sortBy;
+        var sortString = '-statusCreated';
 
-        if (sortString == 'lastOnline') {
-            sortString = '-' + req.query.sortBy;
-        }
 
         User.find({_id: {"$ne": req.user._id}})
             .select(selectString)
             .skip(req.query.start)
-            .limit(req.query.num)
             .sort(sortString)
             .exec(function (err, users) {
                 if (err) {
@@ -444,22 +440,17 @@ exports.getUserProfile = function (req, res, next) {
 
 exports.postUserProfile = function (req, res, next) {
     var userUpdate = req.body.data;
-
-    User.findOne({email: req.user.email}, function (err, user) {
-
+    User.findById(req.user._id, function (err, user) {
         if (err) {
-            return res.status(401).end('A user with that email already exists.');
+            console.log(err);
+            return res.status(401).end('An error occurred while updating. Please try again later.');
         }
 
-        user.email = userUpdate.email || user.email;
         user.status = userUpdate.status || user.status;
         if (user.status == userUpdate.status) {
             user.statusCreated = Date.now();
         }
         user.name = userUpdate.name || user.name;
-        user.major = userUpdate.major || user.major;
-        user.minor = userUpdate.minor || user.minor;
-        user.roles = userUpdate.roles || user.roles;
         user.classes = userUpdate.classes || user.classes;
 
         user.save(function (err) {
