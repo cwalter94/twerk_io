@@ -163,7 +163,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
     //        return;
     //    }
     //
-    //    //user.remove();
+    //    user.remove();
     //});
     //
     //
