@@ -230,7 +230,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                 }
             })
-
             .state('site.auth.profile', {
                 url: '/profile',
                 templateUrl: '/partials/outer/profile',
@@ -253,40 +252,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 }
             })
 
-
-            .state('site.auth.dashboard', {
-                url: '/dashboard',
-                templateUrl: '/partials/outer/dashboard',
-                abstract: true
-            })
-            .state('site.auth.dashboard.users', {
-                url: '/users',
-                controller: 'dashboardCtrl',
-
-                templateUrl: '/partials/inner/dashboard/users',
-                resolve: {
-                    users: ['$http', function ($http) {
-                        return $http.get('/api/admin/allusers')
-                            .then(function (response) {
-                                return response.data.users;
-                            });
-                    }],
-                    me: ['principal', '$location', '$state',
-                        function (principal, $location, $state) {
-                            return principal.identity().then(function(identity) {
-                                if (!identity.verified) {
-                                    $state.transitionTo('site.auth.verify');
-                                }
-                                return identity;
-                            }, function(err) {
-                                $location.path('/login');
-                            });
-                        }
-
-
-                    ]
-                }
-            })
 
             .state('site.auth.messages', {
                 url: '/messages',
@@ -910,14 +875,13 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         for (var u in data.users) {
                             var user = data.users[u];
                             if (!_usersOnlineStatus[user._id]) {
-                                _usersOnlineStatus[user._id] = {online: false, lastOnline: null, currentRoomId: null};
+                                _usersOnlineStatus[user._id] = {online: false, lastOnline: user.lastOnline, currentRoomId: null};
                             }
 
                             if (!_allUsers[user._id]) {
                                 _allUsers[user._id] = user;
-                                _allUsers[user._id].onlineStatus =  _usersOnlineStatus[user._id];
                             }
-
+                            _allUsers[user._id].onlineStatus =  _usersOnlineStatus[user._id];
 
                         }
 
@@ -1026,13 +990,18 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 var deferred = $q.defer();
 
                 this.getUsers().then(function(allUsers) {
-                    _usersOnlineStatus[userId].online = true;
-                    _usersOnlineStatus[userId].lastOnline = Date.now();
+                    if (_usersOnlineStatus[userId] == null) {
+                        _usersOnlineStatus[userId] = {online: true, lastOnline: Date.now(), currentRoomId: null};
+
+                    } else {
+                        _usersOnlineStatus[userId].online = true;
+                        _usersOnlineStatus[userId].lastOnline = Date.now();
+                    }
 
                     if (_allUsers[userId]) {
                         _allUsers[userId].onlineStatus = _usersOnlineStatus[userId];
+                        _allUsers[userId].lastOnline =  new Date(_usersOnlineStatus[userId].lastOnline).toString();
                     }
-
                     deferred.resolve(_allUsers);
 
 
@@ -1046,8 +1015,9 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 var deferred = $q.defer();
 
                 this.getUsers().then(function(allUsers) {
-                    if (!_usersOnlineStatus[userId]) {
-                        _usersOnlineStatus[userId] = {online: false, lastOnline: null, currentRoomId: null};
+                    if (_usersOnlineStatus[userId] == null) {
+                        _usersOnlineStatus[userId] = {online: false, lastOnline: _allUsers[userId].lastOnline, currentRoomId: null};
+
                     } else {
                         _usersOnlineStatus[userId].online = false;
                         _usersOnlineStatus[userId].lastOnline = Date.now();
@@ -1055,6 +1025,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                     if (_allUsers[userId]) {
                         _allUsers[userId].onlineStatus = _usersOnlineStatus[userId];
+                        _allUsers[userId].lastOnline =  new Date(_usersOnlineStatus[userId].lastOnline).toString();
                     }
 
                     deferred.resolve(_allUsers);
@@ -1072,6 +1043,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                         if (_allUsers[userId]) {
                             _allUsers[userId].onlineStatus = _usersOnlineStatus[userId];
+
                         }
                     }
                     deferred.resolve(_usersOnlineStatus);
@@ -1088,8 +1060,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 this.getUsers().then(function(allUsersArr) {
                     if (!_allUsers[user._id]) {
                         _allUsers[user._id] = user;
-                        _allUsers[user._id].online = _usersOnlineStatus[user._id] != null ? _usersOnlineStatus[user._id].online :  _allUsers[user._id].online;
-                        _allUsers[user._id].lastOnline = _usersOnlineStatus[user._id] != null ? _usersOnlineStatus[user._id].lastOnline :  _allUsers[user._id].lastOnline;
+                        _allUsers[user._id].onlineStatus = _usersOnlineStatus[user._id] != null ? _usersOnlineStatus[user._id] : {online: false, lastOnline: user.lastOnline, currentRoomId: null};
                     }
                     deferred.resolve(_allUsers[user._id]);
 

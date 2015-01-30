@@ -32,14 +32,17 @@ div.container#browse-container
                             input.search-box-inner(ng-model="search", placeholder="Filter by class, status updates, and name")
 
                     .browse-inner-container
-                        a.browse-sm-container.offline(ng-repeat="user in users | browseFilter:search:currentClassFilter | orderBy: 'statusCreated' : true track by user._id",
+                        a.browse-sm-container.offline(ng-repeat="user in users | browseFilter:search:currentClassFilter | orderBy: 'lastOnline' : true track by user._id",
                         ng-class="{'online': user.onlineStatus.online}", ng-click="goToMessages(user)")
                             .profile-info-container
                                 .row
                                     .col-xs-3.img-col
                                         img(once-src="getThumbnail(user.picture)")
                                     .col-xs-9.status-col
-                                        .status-date {{formatDate(user.statusCreated)}}
+                                        .date-container
+                                            .status-date {{formatDate(user.statusCreated)}}
+                                            .last-seen last seen: {{user.onlineStatus.online ? 'now' : formatDate(user.onlineStatus.lastOnline)}}
+
                                         .status.text-left {{user.status || 'No status to display.'}}
                                 .row
                                     .col-xs-12

@@ -774,7 +774,7 @@ html {
 
             .status-date {
               float: left;
-              width: 110px;
+              width: 120px;
               border-top-left-radius:5px;
               border-top-right-radius: 5px;
               background:  #CFEEFF;
@@ -968,8 +968,6 @@ html {
                   height: 80px;
                 }
 
-
-
                 .img-col {
                   overflow-x: hidden;
                   height: 100%;
@@ -991,7 +989,6 @@ html {
 
                   font-weight: 500;
                   font-size: 13px;
-                  overflow: scroll;
                   height: 100%;
 
 
@@ -1007,21 +1004,37 @@ html {
                     border-top-left-radius: 0px;
                     padding: 5px;
                     height: calc(100% - 11px);
+                    overflow-y: scroll;
 
                   }
 
-                  .status-date {
+                  .date-container {
                     height: 11px;
                     float: left;
                     display: block;
                     position: relative;
-                    font-size: 10px;
-                    font-weight: 700;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    border-top-left-radius: 3px;
-                    border-top-right-radius: 3px;
-                    background:#FFD2CF;
+                    width: 100%;
+
+                    .status-date {
+                      font-size: 10px;
+                      font-weight: 700;
+                      padding-left: 5px;
+                      padding-right: 5px;
+                      border-top-left-radius: 3px;
+                      border-top-right-radius: 3px;
+                      background:#FFD2CF;
+                      position: relative;
+                      float: left;
+                    }
+
+                    .last-seen {
+                      position: relative;
+                      float: left;
+                      color: #aaa;
+                      font-size: 10px;
+                      float: right;
+                    }
+
                   }
 
                 }
@@ -1312,6 +1325,8 @@ html {
         .name-col {
           float: left;
           padding: 10px;
+          height: 100%;
+          overflow-y: scroll;
 
           .name {
             margin: 0px;

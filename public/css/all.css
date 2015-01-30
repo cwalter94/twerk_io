@@ -499,7 +499,7 @@ html body {
           height: calc(100% - 80px); }
           html body #browse-container .browse-left-col .status-container .status-inner-container .status-date {
             float: left;
-            width: 110px;
+            width: 120px;
             border-top-left-radius: 5px;
             border-top-right-radius: 5px;
             background: #CFEEFF;
@@ -647,7 +647,6 @@ html body {
               html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col {
                 font-weight: 500;
                 font-size: 13px;
-                overflow: scroll;
                 height: 100%; }
                 html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col .status, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col .status {
                   display: block;
@@ -660,19 +659,30 @@ html body {
                   border-radius: 5px;
                   border-top-left-radius: 0px;
                   padding: 5px;
-                  height: calc(100% - 11px); }
-                html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col .status-date, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col .status-date {
+                  height: calc(100% - 11px);
+                  overflow-y: scroll; }
+                html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col .date-container, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col .date-container {
                   height: 11px;
                   float: left;
                   display: block;
                   position: relative;
-                  font-size: 10px;
-                  font-weight: 700;
-                  padding-left: 5px;
-                  padding-right: 5px;
-                  border-top-left-radius: 3px;
-                  border-top-right-radius: 3px;
-                  background: #FFD2CF; }
+                  width: 100%; }
+                  html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col .date-container .status-date, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col .date-container .status-date {
+                    font-size: 10px;
+                    font-weight: 700;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                    border-top-left-radius: 3px;
+                    border-top-right-radius: 3px;
+                    background: #FFD2CF;
+                    position: relative;
+                    float: left; }
+                  html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col .date-container .last-seen, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col .date-container .last-seen {
+                    position: relative;
+                    float: left;
+                    color: #aaa;
+                    font-size: 10px;
+                    float: right; }
               html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .class-col, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .class-col {
                 height: 100px;
                 border-left: 2px solid #ccc;
@@ -847,7 +857,9 @@ html body {
           width: 100%; }
       html body #chat-container .chat-profile-container .name-col {
         float: left;
-        padding: 10px; }
+        padding: 10px;
+        height: 100%;
+        overflow-y: scroll; }
         html body #chat-container .chat-profile-container .name-col .name {
           margin: 0px;
           padding: 0px; }

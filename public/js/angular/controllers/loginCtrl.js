@@ -1,5 +1,6 @@
 var loginCtrl = app.controller('loginCtrl', function($scope, $http, $location, $window, principal, flash, $state) {
 
+
     $scope.processForm = function() {
         if ($scope.formData.email && $scope.formData.password ) {
             var credentials = {

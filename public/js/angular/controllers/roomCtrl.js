@@ -34,14 +34,24 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
         return $location.path();
     };
 
-    $scope.formatDate = function(dateString) {
-        var date = new Date(dateString);
-        return {
-            year : date.getFullYear(),
-            month: date.getMonth() + 1,
-            day: date.getDate(),
-            time: date.getHours() + ":" + date.getMinutes()
+
+    $scope.formatDate = function(date) {
+        var formatted = new Date(date);
+        var day = formatted.getDate();
+        var month = formatted.getMonth() + 1;
+        var minutes = formatted.getMinutes();
+        var hours = formatted.getHours();
+        var timestamp = "am";
+
+        if (minutes < 10) {
+            minutes = '0' + '' + minutes;
         }
+        if (hours >= 12) {
+            timestamp = "pm";
+        }
+        hours = hours > 12 ?  hours % 12 : hours;
+        var time = hours + ':' + minutes;
+        return month + '/' + day + ' @ ' + time;
     };
 
     $scope.getThumbnail = function(picUrl) {

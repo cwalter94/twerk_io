@@ -11,12 +11,31 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.me = me;
     $scope.currentClassFilter = "";
 
+
     $scope.formatDate = function(date) {
-        var formatted = new Date(date);
-        var day = formatted.getDate();
-        var month = formatted.getMonth() + 1;
-        var time = formatted.getHours() + ':' + formatted.getMinutes();
-        return month + '/' + day + ' @ ' + time;
+
+        if (date != null) {
+            var formatted = new Date(date);
+            var day = formatted.getDate();
+            var month = formatted.getMonth() + 1;
+            var minutes = formatted.getMinutes();
+            var hours = formatted.getHours();
+            var timestamp = "am";
+
+            if (minutes < 10) {
+                var temp = '0' + minutes;
+                minutes = temp;
+            }
+            if (hours >= 12) {
+                timestamp = "pm";
+            }
+            hours = hours > 12 ?  hours % 12 : hours;
+            hours = hours == 0 ? 12 : hours;
+
+            var time = hours + ':' + minutes;
+            return month + '/' + day + ' @ ' + time + timestamp;
+        }
+
     };
 
     $scope.me.statusDateFormatted = $scope.formatDate($scope.me.statusCreated);
