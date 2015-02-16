@@ -718,403 +718,407 @@ html {
     #browse-container {
       height: 100%;
       padding-top: 50px;
+      .class-selection-container {
+        width: 100%;
+        background: #fff;
+        margin: 10px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        float: left;
+        position: relative;
 
-      .browse-left-col {
-        height: 100%;
-        overflow-y: scroll;
-
-        .class-selection-container {
-          background: #fff;
-          margin: 10px;
-          padding: 15px;
-          border: 1px solid #ccc;
-
-          .class-container {
-            font-size: 18px;
-            width: 100%;
-            height: 20px;
-            margin: 5px;
-            position: relative;
-            float: left;
-            color: #aaa;
-
-            &:hover {
-              color: #52008C;
-            }
-
-            &.selected {
-              color: #52008C;
-            }
-          }
-        }
-        .status-container {
-          height: 240px;
+        .class-container {
+          font-size: 18px;
+          height: 20px;
+          margin: 5px;
           position: relative;
           float: left;
-          background: #fff;
-          margin: 10px;
-          padding: 15px;
-          border: 1px solid #ccc;
+          color: #aaa;
+          display: inline-block;
 
-          .btn-status {
-            position: absolute;
-            top: 0;
-            right: 10px;
-            height: 30px;
-            width: 40px;
-            margin: 0;
-            font-size: 14px;
-            padding: 3px;
+          &:hover {
             color: #52008C;
-
           }
 
-          .status-inner-container {
-            height: calc(100% - 80px);
-
-            .status-date {
-              float: left;
-              width: 120px;
-              border-top-left-radius:5px;
-              border-top-right-radius: 5px;
-              background:  #CFEEFF;
-              font-weight: 700;
-              padding: 2px 10px;
-
-
-            }
-            .status {
-              float: left;
-              position: relative;
-              width: 100%;
-              background:  #CFEEFF;
-              border-top-right-radius: 5px;
-              border-bottom-right-radius: 5px;
-              border-bottom-left-radius: 5px;
-              min-height: 45px;
-              padding: 5px;
-
-            }
-
-            .btn-status-save, .btn-status-cancel {
-              position: absolute;
-
-              right: 20px;
-              color: #CCC;
-              font-size: 24px;
-              width: 24px;
-              height: 24px;
-              padding: 0px;
-
-            }
-
-            .btn-status-cancel {
-              bottom:10px;
-              right: 60px;
-            }
-
-            .btn-status-save {
-              bottom: 13px;
-              right: 20px;
-              color: #A378C2;
-
-            }
-
-            .status-update {
-              width: 100%;
-              height: 100%;
-
-              .status-input {
-                border: 1px solid #ccc;
-                resize: none;
-                background: white;
-                font-size: 16px;
-                -webkit-box-shadow: none;
-                -moz-box-shadow: none;
-                box-shadow: none;
-                outline: none;
-                padding: 5px;
-                height: 100%;
-                width: 100%;
-                padding-right: 50px;
-
-              }
-
-
-            }
+          &.selected {
+            color: #52008C;
           }
-
         }
-
-
-
       }
 
 
-      .browse-right-col {
-        height: 100%;
-        padding-top: 10px;
-
-        .browse-outer-container {
+      .browse-row {
+        height: calc(100% - 80px);
+        .browse-left-col {
           height: 100%;
+          overflow-y: scroll;
 
-          .browse-search-container {
+
+          .status-container {
+            height: 180px;
             position: relative;
-            width: 100%;
-            height: 50px;
             float: left;
+            background: #fff;
+            margin: 10px;
+            padding: 15px;
+            border: 1px solid #ccc;
 
-            .search-box-outer {
-              border: 2px solid #ccc;
-              border-radius: 2px;
-              background: #fff;
-              width: 100%;
-              height: 100%;
+            .btn-status {
+              position: absolute;
+              top: 0;
+              right: 10px;
+              height: 30px;
+              width: 40px;
+              margin: 0;
+              font-size: 14px;
+              padding: 3px;
+              color: #52008C;
 
-              .search-icon {
-                position: absolute;
-                top: 4px;
-                left: 10px;
-                width: 40px;
-                height: 100%;
-                line-height: 40px;
-                vertical-align: middle;
-                font-size: 24px;
-                color: #52008C;
+            }
+
+            .status-inner-container {
+              height: calc(100% - 80px);
+
+              .status-date {
+                float: left;
+                width: 120px;
+                border-top-left-radius:5px;
+                border-top-right-radius: 5px;
+                background:  #CFEEFF;
+                font-weight: 700;
+                padding: 2px 10px;
+
+
+              }
+              .status {
+                float: left;
+                position: relative;
+                width: 100%;
+                background:  #CFEEFF;
+                border-top-right-radius: 5px;
+                border-bottom-right-radius: 5px;
+                border-bottom-left-radius: 5px;
+                min-height: 45px;
+                padding: 5px;
 
               }
 
+              .btn-status-save, .btn-status-cancel {
+                position: absolute;
 
-
-              input {
-                width: 100%;
-                padding: 2px;
-                padding-left: 40px;
-                height: 100%;
+                right: 20px;
+                color: #CCC;
                 font-size: 24px;
-                border: none;
-                box-shadow: none;
+                width: 24px;
+                height: 24px;
+                padding: 0px;
 
-                font-family: Helvetica, sans-serif !important;
-                font-weight: 200 !important;
+              }
 
-                &:hover, &:focus {
+              .btn-status-cancel {
+                bottom:10px;
+                right: 60px;
+              }
+
+              .btn-status-save {
+                bottom: 13px;
+                right: 20px;
+                color: #A378C2;
+
+              }
+
+              .status-update {
+                width: 100%;
+                height: 100%;
+
+                .status-input {
+                  border: 1px solid #ccc;
+                  resize: none;
+                  background: white;
+                  font-size: 16px;
+                  -webkit-box-shadow: none;
+                  -moz-box-shadow: none;
+                  box-shadow: none;
+                  outline: none;
+                  padding: 5px;
+                  height: 100%;
+                  width: 100%;
+                  padding-right: 50px;
+
+                }
+
+
+              }
+            }
+
+          }
+
+          .users-outer-container {
+            height: calc(100% - 200px);
+            position: relative;
+            float: left;
+
+            .users-search-container {
+              position: relative;
+              width: 100%;
+              height: 50px;
+              float: left;
+
+              .search-box-outer {
+                border: 2px solid #ccc;
+                border-radius: 2px;
+                background: #fff;
+                width: 100%;
+                height: 100%;
+
+                .search-icon {
+                  position: absolute;
+                  top: 4px;
+                  left: 10px;
+                  width: 40px;
+                  height: 100%;
+                  line-height: 40px;
+                  vertical-align: middle;
+                  font-size: 24px;
+                  color: #52008C;
+
+                }
+
+
+
+                input {
+                  width: 100%;
+                  padding: 2px;
+                  padding-left: 40px;
+                  height: 100%;
+                  font-size: 24px;
                   border: none;
                   box-shadow: none;
 
+                  font-family: Helvetica, sans-serif !important;
+                  font-weight: 200 !important;
+
+                  &:hover, &:focus {
+                    border: none;
+                    box-shadow: none;
+
+                  }
                 }
-              }
 
-              .search-box-selection {
-                position: absolute;
-                top: 0;
-                right: 0;
-                height: 50px;
-                border: 2px solid;
-              }
+                .search-box-selection {
+                  position: absolute;
+                  top: 0;
+                  right: 0;
+                  height: 50px;
+                  border: 2px solid;
+                }
 
+              }
             }
-          }
 
-          .browse-inner-container, .messages-inner-container {
-            overflow: scroll;
-            height: calc(100% - 100px);
-            width: 100%;
-            float: left;
-            background: #eee;
-            border: 1px solid #ccc;
-            border-top: 0px;
-            padding: 10px;
-
-
-            .browse-sm-container {
-              position: relative;
+            .users-inner-container, .messages-inner-container {
+              overflow: scroll;
+              height: calc(100% - 100px);
+              width: 100%;
               float: left;
-              width: calc(50% - 20px);
-              min-width: 316px;
-              height: 160px;
-              overflow: hidden;
-              border-radius: 2px;
-              margin: 10px;
+              background: #eee;
               border: 1px solid #ccc;
-              color: #666;
+              border-top: 0px;
+              padding: 10px;
 
-              -webkit-transition: all .5s;
-              -moz-transition: all .5s;
-              -ms-transition: all .5s;
-              -o-transition: all .5s;
-              transition: all .5s;
 
-              background: rgba(255, 255, 255, 1);
-              background: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-              background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(50%, rgba(252, 252, 252, 1)), color-stop(100%, rgba(252, 252, 252, 1)));
-              background: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-              background: -o-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-              background: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-              background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
-              filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fcfcfc', GradientType=1);
+              .users-sm-container {
+                position: relative;
+                float: left;
+                width: calc(50% - 20px);
+                min-width: 316px;
+                height: 160px;
+                overflow: hidden;
+                border-radius: 2px;
+                margin: 10px;
+                border: 1px solid #ccc;
+                color: #666;
 
-              .profile-info-container {
-                padding: 5px;
-                height: 100%;
-                width: 100%;
-                height: 100%;
-                overflow-y: hidden;
+                -webkit-transition: all .5s;
+                -moz-transition: all .5s;
+                -ms-transition: all .5s;
+                -o-transition: all .5s;
+                transition: all .5s;
 
-                > .row {
-                  margin-left: -5px;
-                  margin-right: -5px;
+                background: rgba(255, 255, 255, 1);
+                background: -moz-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+                background: -webkit-gradient(left top, right bottom, color-stop(0%, rgba(255, 255, 255, 1)), color-stop(50%, rgba(252, 252, 252, 1)), color-stop(100%, rgba(252, 252, 252, 1)));
+                background: -webkit-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+                background: -o-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+                background: -ms-linear-gradient(-45deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+                background: linear-gradient(135deg, rgba(255, 255, 255, 1) 0%, rgba(252, 252, 252, 1) 50%, rgba(252, 252, 252, 1) 100%);
+                filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fcfcfc', GradientType=1);
+
+                .profile-info-container {
+                  padding: 5px;
+                  height: 100%;
+                  width: 100%;
+                  height: 100%;
                   overflow-y: hidden;
-                  height: 80px;
+
+                  > .row {
+                    margin-left: -5px;
+                    margin-right: -5px;
+                    overflow-y: hidden;
+                    height: 80px;
+                  }
+
+                  .img-col {
+                    overflow-x: hidden;
+                    height: 100%;
+
+                    img {
+                      height: 100%;
+                    }
+                  }
+
+                  .name {
+                    padding: 5px 0px 0px;
+                  }
+
+                  .classes {
+                    font-size: 12px;
+                  }
+
+                  .status-col {
+
+                    font-weight: 500;
+                    font-size: 13px;
+                    height: 100%;
+
+
+                    .status {
+                      display: block;
+                      float: left;
+                      position: relative;
+                      background: #FFD2CF;
+                      height: 50px;
+                      font-size: 14px;
+                      width: 100%;
+                      border-radius: 5px;
+                      border-top-left-radius: 0px;
+                      padding: 5px;
+                      height: calc(100% - 11px);
+                      overflow-y: scroll;
+
+                    }
+
+                    .date-container {
+                      height: 11px;
+                      float: left;
+                      display: block;
+                      position: relative;
+                      width: 100%;
+
+                      .status-date {
+                        font-size: 10px;
+                        font-weight: 700;
+                        padding-left: 5px;
+                        padding-right: 5px;
+                        border-top-left-radius: 3px;
+                        border-top-right-radius: 3px;
+                        background:#FFD2CF;
+                        position: relative;
+                        float: left;
+                      }
+
+                      .last-seen {
+                        position: relative;
+                        float: left;
+                        color: #aaa;
+                        font-size: 10px;
+                        float: right;
+                      }
+
+                    }
+
+                  }
+
+                  .class-col {
+                    height: 100px;
+                    border-left: 2px solid #ccc;
+                    font-size: 12px;
+                  }
+
+
+                }
+                .chat-container {
+                  display: none;
                 }
 
-                .img-col {
-                  overflow-x: hidden;
-                  height: 100%;
+                &.online {
+                  .status {
+                    background: #CFEEFF !important;
 
-                  img {
-                    height: 100%;
+                  }
+                  .status-date {
+                    background: #CFEEFF !important;
+                  }
+
+                }
+
+                &.message-sm-container {
+                  height: 380px;
+                }
+
+                .glyphicon-comment {
+                  display: none;
+                }
+
+
+
+                &:hover {
+                  cursor: pointer;
+
+                }
+                .btn-message {
+                  height: 50px;
+                  border-top: 1px solid #999;
+                  background-color: #FFF;
+                  margin-top: 15px;
+
+                  i {
+                    margin-right: 10px;
+
+                  }
+
+                  &:hover {
                   }
                 }
 
                 .name {
-                  padding: 5px 0px 0px;
-                }
-
-                .classes {
-                  font-size: 12px;
-                }
-
-                .status-col {
-
-                  font-weight: 500;
-                  font-size: 13px;
-                  height: 100%;
-
-
-                  .status {
-                    display: block;
-                    float: left;
-                    position: relative;
-                    background: #FFD2CF;
-                    height: 50px;
-                    font-size: 14px;
-                    width: 100%;
-                    border-radius: 5px;
-                    border-top-left-radius: 0px;
-                    padding: 5px;
-                    height: calc(100% - 11px);
-                    overflow-y: scroll;
-
-                  }
-
-                  .date-container {
-                    height: 11px;
-                    float: left;
-                    display: block;
-                    position: relative;
-                    width: 100%;
-
-                    .status-date {
-                      font-size: 10px;
-                      font-weight: 700;
-                      padding-left: 5px;
-                      padding-right: 5px;
-                      border-top-left-radius: 3px;
-                      border-top-right-radius: 3px;
-                      background:#FFD2CF;
-                      position: relative;
-                      float: left;
-                    }
-
-                    .last-seen {
-                      position: relative;
-                      float: left;
-                      color: #aaa;
-                      font-size: 10px;
-                      float: right;
-                    }
-
-                  }
-
-                }
-
-                .class-col {
-                  height: 100px;
-                  border-left: 2px solid #ccc;
-                  font-size: 12px;
-                }
-
-
-              }
-              .chat-container {
-                display: none;
-              }
-
-              &.online {
-                .status {
-                  background: #CFEEFF !important;
-
-                }
-                .status-date {
-                  background: #CFEEFF !important;
+                  margin-top: 10px;
+                  margin-bottom: 5px;
+                  color: #2E22A1;
+                  font-size: 16px;
                 }
 
               }
 
-              &.message-sm-container {
-                height: 380px;
-              }
-
-              .glyphicon-comment {
-                display: none;
-              }
-
-
-
-              &:hover {
+              .manual-load-button {
+                position: relative;
+                float: left;
+                height: 100px;
+                width: 100%;
+                padding: 20px;
+                font-size: 24px;
+                text-align: center;
                 cursor: pointer;
-
               }
-              .btn-message {
-                height: 50px;
-                border-top: 1px solid #999;
-                background-color: #FFF;
-                margin-top: 15px;
-
-                i {
-                  margin-right: 10px;
-
-                }
-
-                &:hover {
-                }
-              }
-
-              .name {
-                margin-top: 10px;
-                margin-bottom: 5px;
-                color: #2E22A1;
-                font-size: 16px;
-              }
-
             }
 
-            .manual-load-button {
-              position: relative;
-              float: left;
-              height: 100px;
-              width: 100%;
-              padding: 20px;
-              font-size: 24px;
-              text-align: center;
-              cursor: pointer;
-            }
           }
 
         }
 
       }
+
+
 
 
     }

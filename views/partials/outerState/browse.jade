@@ -1,12 +1,14 @@
 div.container#browse-container
-        .row(style="height: 100%;")
-            .col-md-3.col-xs-5.browse-left-col
-                .class-selection-container.clearfix
-                    h4 Classes
+        .row
+            .col-xs-12
+                .class-selection-container
                     div.no-class-message(ng-show="me.classes.length == 0") You have no classes! Add some on the profile page.
-                    a.class-container(ng-show="me.classes.length != 0", ng-click="filterByClass('All')", ng-class="{'selected' : currentClassFilter == ''}", style="border-bottom: 1px solid #ccc; height: 30px;") ALL
+                    a.class-container(ng-show="me.classes.length != 0", ng-click="filterByClass('All')", ng-class="{'selected' : currentClassFilter == ''}") ALL
                     a.class-container(ng-show="me.classes.length != 0", ng-repeat="class in me.classes", ng-click="filterByClass(class)", ng-class="{'selected' : class == currentClassFilter}")
                         div(once-text="class")
+        .row.browse-row
+            .col-md-4.col-xs-0.browse-left-col
+
                 .status-container
                     h4 Status
                     .btn.btn-main.btn-status(ng-click="statusInputShow = true;", ng-show="!statusInputShow")
@@ -21,18 +23,16 @@ div.container#browse-container
                             a.btn-status-cancel(ng-click="cancelStatusUpdate()")
                                 i.glyphicon.glyphicon-remove
 
-
-            .col-md-9.col-xs-7.browse-right-col
-                .browse-outer-container(infinite-scroll="getMoreUsers()", infinite-scroll-disabled="newUsersDisabled")
-                    .browse-search-container
+                .users-outer-container
+                    .users-search-container
                         div.alert-warn.fade(flash-alert='error', active-class='in alert')
                             strong.alert-message {{flash.message}}
                         .search-box-outer
                             i.fa.fa-search.search-icon
                             input.search-box-inner(ng-model="search", placeholder="Filter by class, status updates, and name")
 
-                    .browse-inner-container
-                        a.browse-sm-container.offline(ng-repeat="user in users | browseFilter:search:currentClassFilter | orderBy: 'lastOnline' : true track by user._id",
+                    .users-inner-container(infinite-scroll="getMoreUsers()", infinite-scroll-disabled="newUsersDisabled")
+                        a.users-sm-container.offline(ng-repeat="user in users | browseFilter:search:currentClassFilter | orderBy: 'lastOnline' : true track by user._id",
                         ng-class="{'online': user.onlineStatus.online}", ng-click="goToMessages(user)")
                             .profile-info-container
                                 .row
@@ -49,11 +49,9 @@ div.container#browse-container
                                         .name.text-left(once-text="user.name")
                                         .classes.text-left(once-text="user.classes.length > 0 ? user.classes.join(', ') : 'No classes.'")
 
-                            .chat-container
-                                .chat-message-display-container
-                                    .message-row(ng-repeat="message in user.messages", ng-class="{'me' : message.from != user._id")
-
-                                .chat-input-container
-                                    textarea.input
                         .manual-load-button(ng-click="getMoreUsers()") {{ loadUsersButtonText }}
+
+            .col-md-9.col-xs-7.browse-right-col
+                .ui-view
+
 

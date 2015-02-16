@@ -344,6 +344,34 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         }, function(err) {
                             return null;
                         });
+                    }],
+                    groups: ['groupFactory', function(groupFactory) {
+                        return groupFactory.getGroups().then(function(response) {
+                            return response.groups;
+                        }, function(err) {
+                            console.log(err);
+                            return null;
+                        })
+                    }]
+                }
+            })
+            .state('site.auth.browse.all', {
+                url: '',
+                controller: 'groupCtrl',
+                templateUrl: '/partials/inner/browse/group'
+            })
+            .state('site.auth.browse.group', {
+                url: '/{name}',
+                controller: 'groupController',
+                templateUrl: '/partials/inner/browse/group',
+                resolve: {
+                    groupPosts: ['groupFactory', '$stateParams', function(groupFactory, $stateParams) {
+                        return groupFactory.getGroupPosts($stateParams.name).then(function(response) {
+                            return response.groupPosts;
+                        }, function(err) {
+                            console.log(err);
+                            return null;
+                        });
                     }]
                 }
             });
@@ -725,7 +753,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                         _allRooms[roomId].messageArr.push(message);
                         _allRooms[roomId].lastMessage = message.text;
-                        _allRooms[roomId].lastMessageCreated = message.created;
+                        _allRooms[roomId].lastMessageCreated = message.createdAt;
 
                         if (!_currRoom || _currRoom._id != roomId) {
                             _allRooms[roomId].unreadMessages += 1;

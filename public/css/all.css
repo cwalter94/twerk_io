@@ -457,269 +457,273 @@ html body {
   html body #browse-container {
     height: 100%;
     padding-top: 50px; }
-    html body #browse-container .browse-left-col {
-      height: 100%;
-      overflow-y: scroll; }
-      html body #browse-container .browse-left-col .class-selection-container {
-        background: #fff;
-        margin: 10px;
-        padding: 15px;
-        border: 1px solid #ccc; }
-        html body #browse-container .browse-left-col .class-selection-container .class-container {
-          font-size: 18px;
-          width: 100%;
-          height: 20px;
-          margin: 5px;
-          position: relative;
-          float: left;
-          color: #aaa; }
-          html body #browse-container .browse-left-col .class-selection-container .class-container:hover {
-            color: #52008C; }
-          html body #browse-container .browse-left-col .class-selection-container .class-container.selected {
-            color: #52008C; }
-      html body #browse-container .browse-left-col .status-container {
-        height: 240px;
+    html body #browse-container .class-selection-container {
+      width: 100%;
+      background: #fff;
+      margin: 10px;
+      padding: 5px;
+      border: 1px solid #ccc;
+      float: left;
+      position: relative; }
+      html body #browse-container .class-selection-container .class-container {
+        font-size: 18px;
+        height: 20px;
+        margin: 5px;
         position: relative;
         float: left;
-        background: #fff;
-        margin: 10px;
-        padding: 15px;
-        border: 1px solid #ccc; }
-        html body #browse-container .browse-left-col .status-container .btn-status {
-          position: absolute;
-          top: 0;
-          right: 10px;
-          height: 30px;
-          width: 40px;
-          margin: 0;
-          font-size: 14px;
-          padding: 3px;
+        color: #aaa;
+        display: inline-block; }
+        html body #browse-container .class-selection-container .class-container:hover {
           color: #52008C; }
-        html body #browse-container .browse-left-col .status-container .status-inner-container {
-          height: calc(100% - 80px); }
-          html body #browse-container .browse-left-col .status-container .status-inner-container .status-date {
-            float: left;
-            width: 120px;
-            border-top-left-radius: 5px;
-            border-top-right-radius: 5px;
-            background: #CFEEFF;
-            font-weight: 700;
-            padding: 2px 10px; }
-          html body #browse-container .browse-left-col .status-container .status-inner-container .status {
-            float: left;
-            position: relative;
-            width: 100%;
-            background: #CFEEFF;
-            border-top-right-radius: 5px;
-            border-bottom-right-radius: 5px;
-            border-bottom-left-radius: 5px;
-            min-height: 45px;
-            padding: 5px; }
-          html body #browse-container .browse-left-col .status-container .status-inner-container .btn-status-save, html body #browse-container .browse-left-col .status-container .status-inner-container .btn-status-cancel {
-            position: absolute;
-            right: 20px;
-            color: #CCC;
-            font-size: 24px;
-            width: 24px;
-            height: 24px;
-            padding: 0px; }
-          html body #browse-container .browse-left-col .status-container .status-inner-container .btn-status-cancel {
-            bottom: 10px;
-            right: 60px; }
-          html body #browse-container .browse-left-col .status-container .status-inner-container .btn-status-save {
-            bottom: 13px;
-            right: 20px;
-            color: #A378C2; }
-          html body #browse-container .browse-left-col .status-container .status-inner-container .status-update {
-            width: 100%;
-            height: 100%; }
-            html body #browse-container .browse-left-col .status-container .status-inner-container .status-update .status-input {
-              border: 1px solid #ccc;
-              resize: none;
-              background: white;
-              font-size: 16px;
-              -webkit-box-shadow: none;
-              -moz-box-shadow: none;
-              box-shadow: none;
-              outline: none;
-              padding: 5px;
-              height: 100%;
-              width: 100%;
-              padding-right: 50px; }
-    html body #browse-container .browse-right-col {
-      height: 100%;
-      padding-top: 10px; }
-      html body #browse-container .browse-right-col .browse-outer-container {
-        height: 100%; }
-        html body #browse-container .browse-right-col .browse-outer-container .browse-search-container {
+        html body #browse-container .class-selection-container .class-container.selected {
+          color: #52008C; }
+    html body #browse-container .browse-row {
+      height: calc(100% - 80px); }
+      html body #browse-container .browse-row .browse-left-col {
+        height: 100%;
+        overflow-y: scroll; }
+        html body #browse-container .browse-row .browse-left-col .status-container {
+          height: 180px;
           position: relative;
-          width: 100%;
-          height: 50px;
-          float: left; }
-          html body #browse-container .browse-right-col .browse-outer-container .browse-search-container .search-box-outer {
-            border: 2px solid #ccc;
-            border-radius: 2px;
-            background: #fff;
-            width: 100%;
-            height: 100%; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-search-container .search-box-outer .search-icon {
-              position: absolute;
-              top: 4px;
-              left: 10px;
-              width: 40px;
-              height: 100%;
-              line-height: 40px;
-              vertical-align: middle;
-              font-size: 24px;
-              color: #52008C; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-search-container .search-box-outer input {
-              width: 100%;
-              padding: 2px;
-              padding-left: 40px;
-              height: 100%;
-              font-size: 24px;
-              border: none;
-              box-shadow: none;
-              font-family: Helvetica, sans-serif !important;
-              font-weight: 200 !important; }
-              html body #browse-container .browse-right-col .browse-outer-container .browse-search-container .search-box-outer input:hover, html body #browse-container .browse-right-col .browse-outer-container .browse-search-container .search-box-outer input:focus {
-                border: none;
-                box-shadow: none; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-search-container .search-box-outer .search-box-selection {
-              position: absolute;
-              top: 0;
-              right: 0;
-              height: 50px;
-              border: 2px solid; }
-        html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container {
-          overflow: scroll;
-          height: calc(100% - 100px);
-          width: 100%;
           float: left;
-          background: #eee;
-          border: 1px solid #ccc;
-          border-top: 0px;
-          padding: 10px; }
-          html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container {
-            position: relative;
-            float: left;
-            width: calc(50% - 20px);
-            min-width: 316px;
-            height: 160px;
-            overflow: hidden;
-            border-radius: 2px;
-            margin: 10px;
-            border: 1px solid #ccc;
-            color: #666;
-            -webkit-transition: all .5s;
-            -moz-transition: all .5s;
-            -ms-transition: all .5s;
-            -o-transition: all .5s;
-            transition: all .5s;
-            background: white;
-            background: -moz-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
-            background: -webkit-gradient(left top, right bottom, color-stop(0%, white), color-stop(50%, #fcfcfc), color-stop(100%, #fcfcfc));
-            background: -webkit-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
-            background: -o-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
-            background: -ms-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
-            background: linear-gradient(135deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
-            filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fcfcfc', GradientType=1); }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container {
-              padding: 5px;
-              height: 100%;
+          background: #fff;
+          margin: 10px;
+          padding: 15px;
+          border: 1px solid #ccc; }
+          html body #browse-container .browse-row .browse-left-col .status-container .btn-status {
+            position: absolute;
+            top: 0;
+            right: 10px;
+            height: 30px;
+            width: 40px;
+            margin: 0;
+            font-size: 14px;
+            padding: 3px;
+            color: #52008C; }
+          html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container {
+            height: calc(100% - 80px); }
+            html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container .status-date {
+              float: left;
+              width: 120px;
+              border-top-left-radius: 5px;
+              border-top-right-radius: 5px;
+              background: #CFEEFF;
+              font-weight: 700;
+              padding: 2px 10px; }
+            html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container .status {
+              float: left;
+              position: relative;
               width: 100%;
-              height: 100%;
-              overflow-y: hidden; }
-              html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container > .row, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container > .row {
-                margin-left: -5px;
-                margin-right: -5px;
-                overflow-y: hidden;
-                height: 80px; }
-              html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .img-col, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .img-col {
-                overflow-x: hidden;
-                height: 100%; }
-                html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .img-col img, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .img-col img {
-                  height: 100%; }
-              html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .name, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .name {
-                padding: 5px 0px 0px; }
-              html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .classes, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .classes {
-                font-size: 12px; }
-              html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col {
-                font-weight: 500;
-                font-size: 13px;
-                height: 100%; }
-                html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col .status, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col .status {
-                  display: block;
-                  float: left;
-                  position: relative;
-                  background: #FFD2CF;
-                  height: 50px;
-                  font-size: 14px;
-                  width: 100%;
-                  border-radius: 5px;
-                  border-top-left-radius: 0px;
-                  padding: 5px;
-                  height: calc(100% - 11px);
-                  overflow-y: scroll; }
-                html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col .date-container, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col .date-container {
-                  height: 11px;
-                  float: left;
-                  display: block;
-                  position: relative;
-                  width: 100%; }
-                  html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col .date-container .status-date, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col .date-container .status-date {
-                    font-size: 10px;
-                    font-weight: 700;
-                    padding-left: 5px;
-                    padding-right: 5px;
-                    border-top-left-radius: 3px;
-                    border-top-right-radius: 3px;
-                    background: #FFD2CF;
-                    position: relative;
-                    float: left; }
-                  html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .status-col .date-container .last-seen, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .status-col .date-container .last-seen {
-                    position: relative;
-                    float: left;
-                    color: #aaa;
-                    font-size: 10px;
-                    float: right; }
-              html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .profile-info-container .class-col, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .profile-info-container .class-col {
-                height: 100px;
-                border-left: 2px solid #ccc;
-                font-size: 12px; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .chat-container, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .chat-container {
-              display: none; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container.online .status, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container.online .status {
-              background: #CFEEFF !important; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container.online .status-date, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container.online .status-date {
-              background: #CFEEFF !important; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container.message-sm-container, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container.message-sm-container {
-              height: 380px; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .glyphicon-comment, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .glyphicon-comment {
-              display: none; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container:hover, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container:hover {
-              cursor: pointer; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .btn-message, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .btn-message {
-              height: 50px;
-              border-top: 1px solid #999;
-              background-color: #FFF;
-              margin-top: 15px; }
-              html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .btn-message i, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .btn-message i {
-                margin-right: 10px; }
-            html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .browse-sm-container .name, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .browse-sm-container .name {
-              margin-top: 10px;
-              margin-bottom: 5px;
-              color: #2E22A1;
-              font-size: 16px; }
-          html body #browse-container .browse-right-col .browse-outer-container .browse-inner-container .manual-load-button, html body #browse-container .browse-right-col .browse-outer-container .messages-inner-container .manual-load-button {
+              background: #CFEEFF;
+              border-top-right-radius: 5px;
+              border-bottom-right-radius: 5px;
+              border-bottom-left-radius: 5px;
+              min-height: 45px;
+              padding: 5px; }
+            html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container .btn-status-save, html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container .btn-status-cancel {
+              position: absolute;
+              right: 20px;
+              color: #CCC;
+              font-size: 24px;
+              width: 24px;
+              height: 24px;
+              padding: 0px; }
+            html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container .btn-status-cancel {
+              bottom: 10px;
+              right: 60px; }
+            html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container .btn-status-save {
+              bottom: 13px;
+              right: 20px;
+              color: #A378C2; }
+            html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container .status-update {
+              width: 100%;
+              height: 100%; }
+              html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container .status-update .status-input {
+                border: 1px solid #ccc;
+                resize: none;
+                background: white;
+                font-size: 16px;
+                -webkit-box-shadow: none;
+                -moz-box-shadow: none;
+                box-shadow: none;
+                outline: none;
+                padding: 5px;
+                height: 100%;
+                width: 100%;
+                padding-right: 50px; }
+        html body #browse-container .browse-row .browse-left-col .users-outer-container {
+          height: calc(100% - 200px);
+          position: relative;
+          float: left; }
+          html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container {
             position: relative;
-            float: left;
-            height: 100px;
             width: 100%;
-            padding: 20px;
-            font-size: 24px;
-            text-align: center;
-            cursor: pointer; }
+            height: 50px;
+            float: left; }
+            html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container .search-box-outer {
+              border: 2px solid #ccc;
+              border-radius: 2px;
+              background: #fff;
+              width: 100%;
+              height: 100%; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container .search-box-outer .search-icon {
+                position: absolute;
+                top: 4px;
+                left: 10px;
+                width: 40px;
+                height: 100%;
+                line-height: 40px;
+                vertical-align: middle;
+                font-size: 24px;
+                color: #52008C; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container .search-box-outer input {
+                width: 100%;
+                padding: 2px;
+                padding-left: 40px;
+                height: 100%;
+                font-size: 24px;
+                border: none;
+                box-shadow: none;
+                font-family: Helvetica, sans-serif !important;
+                font-weight: 200 !important; }
+                html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container .search-box-outer input:hover, html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container .search-box-outer input:focus {
+                  border: none;
+                  box-shadow: none; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container .search-box-outer .search-box-selection {
+                position: absolute;
+                top: 0;
+                right: 0;
+                height: 50px;
+                border: 2px solid; }
+          html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container {
+            overflow: scroll;
+            height: calc(100% - 100px);
+            width: 100%;
+            float: left;
+            background: #eee;
+            border: 1px solid #ccc;
+            border-top: 0px;
+            padding: 10px; }
+            html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container {
+              position: relative;
+              float: left;
+              width: calc(50% - 20px);
+              min-width: 316px;
+              height: 160px;
+              overflow: hidden;
+              border-radius: 2px;
+              margin: 10px;
+              border: 1px solid #ccc;
+              color: #666;
+              -webkit-transition: all .5s;
+              -moz-transition: all .5s;
+              -ms-transition: all .5s;
+              -o-transition: all .5s;
+              transition: all .5s;
+              background: white;
+              background: -moz-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+              background: -webkit-gradient(left top, right bottom, color-stop(0%, white), color-stop(50%, #fcfcfc), color-stop(100%, #fcfcfc));
+              background: -webkit-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+              background: -o-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+              background: -ms-linear-gradient(-45deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+              background: linear-gradient(135deg, white 0%, #fcfcfc 50%, #fcfcfc 100%);
+              filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#fcfcfc', GradientType=1); }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container {
+                padding: 5px;
+                height: 100%;
+                width: 100%;
+                height: 100%;
+                overflow-y: hidden; }
+                html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container > .row, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container > .row {
+                  margin-left: -5px;
+                  margin-right: -5px;
+                  overflow-y: hidden;
+                  height: 80px; }
+                html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .img-col, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .img-col {
+                  overflow-x: hidden;
+                  height: 100%; }
+                  html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .img-col img, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .img-col img {
+                    height: 100%; }
+                html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .name, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .name {
+                  padding: 5px 0px 0px; }
+                html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .classes, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .classes {
+                  font-size: 12px; }
+                html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .status-col, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .status-col {
+                  font-weight: 500;
+                  font-size: 13px;
+                  height: 100%; }
+                  html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .status-col .status, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .status-col .status {
+                    display: block;
+                    float: left;
+                    position: relative;
+                    background: #FFD2CF;
+                    height: 50px;
+                    font-size: 14px;
+                    width: 100%;
+                    border-radius: 5px;
+                    border-top-left-radius: 0px;
+                    padding: 5px;
+                    height: calc(100% - 11px);
+                    overflow-y: scroll; }
+                  html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .status-col .date-container, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .status-col .date-container {
+                    height: 11px;
+                    float: left;
+                    display: block;
+                    position: relative;
+                    width: 100%; }
+                    html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .status-col .date-container .status-date, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .status-col .date-container .status-date {
+                      font-size: 10px;
+                      font-weight: 700;
+                      padding-left: 5px;
+                      padding-right: 5px;
+                      border-top-left-radius: 3px;
+                      border-top-right-radius: 3px;
+                      background: #FFD2CF;
+                      position: relative;
+                      float: left; }
+                    html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .status-col .date-container .last-seen, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .status-col .date-container .last-seen {
+                      position: relative;
+                      float: left;
+                      color: #aaa;
+                      font-size: 10px;
+                      float: right; }
+                html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .profile-info-container .class-col, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .profile-info-container .class-col {
+                  height: 100px;
+                  border-left: 2px solid #ccc;
+                  font-size: 12px; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .chat-container, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .chat-container {
+                display: none; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container.online .status, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container.online .status {
+                background: #CFEEFF !important; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container.online .status-date, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container.online .status-date {
+                background: #CFEEFF !important; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container.message-sm-container, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container.message-sm-container {
+                height: 380px; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .glyphicon-comment, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .glyphicon-comment {
+                display: none; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container:hover, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container:hover {
+                cursor: pointer; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .btn-message, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .btn-message {
+                height: 50px;
+                border-top: 1px solid #999;
+                background-color: #FFF;
+                margin-top: 15px; }
+                html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .btn-message i, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .btn-message i {
+                  margin-right: 10px; }
+              html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container .name, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container .name {
+                margin-top: 10px;
+                margin-bottom: 5px;
+                color: #2E22A1;
+                font-size: 16px; }
+            html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .manual-load-button, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .manual-load-button {
+              position: relative;
+              float: left;
+              height: 100px;
+              width: 100%;
+              padding: 20px;
+              font-size: 24px;
+              text-align: center;
+              cursor: pointer; }
   html body #messages-container {
     padding-top: 50px;
     height: calc(100% - 50px); }
@@ -755,7 +759,7 @@ html body {
             line-height: 40px;
             vertical-align: middle;
             font-size: 24px;
-            color: #52008C; }
+            color: #52008c; }
           html body #messages-container .messages-outer-container .nav-messages .search-box-outer input {
             width: 100%;
             padding: 2px;

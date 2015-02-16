@@ -8,11 +8,11 @@
             .text-left(once-text="toUser.classesString")
             .text-left {{toUser.status || 'No status to display.'}}
     .chat-message-display-container(scroll-glue="true")
-        .chat-message(ng-repeat="m in messages track by m.created")
+        .chat-message(ng-repeat="m in messages track by m._id")
             .col-xs-1.img-col(once-show="m.from != me._id")
                 img(once-src="toUserPicture")
             .col-xs-10.text-col(once-class="{'col-xs-offset-1': m.from == me._id}")
-                strong.chat-date(once-text="formatDate(m.created)", once-class="{'text-right' : m.from == me._id}")
+                strong.chat-date(once-text="formatDate(m.createdAt)", once-class="{'text-right' : m.from == me._id}")
                 .chat-text(once-text="m.text", once-class="{'pull-right' : m.from == me._id}")
             .col-xs-1.img-col(once-show="m.from == me._id", style="padding-right: 5px; padding-left: 0px;")
                 img(once-src="mePicture")

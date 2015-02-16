@@ -62,7 +62,7 @@ var roomCtrl = app.controller('roomCtrl', function($scope, $http, $location, fla
 
     $scope.sendMessage = function() {
         if ($scope.message.to && $scope.message.from && $scope.message.text && $scope.message.toEmail) {
-            $scope.message.created = Date.now();
+            $scope.message.createdAt = Date.now();
             siteSocket.emit('send:message', $scope.message);
 
             messageFactory.addMessage($scope.roomId, $scope.message, $scope.me, siteSocket).then(function(messages) {

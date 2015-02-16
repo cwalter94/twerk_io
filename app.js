@@ -21,6 +21,8 @@ var connectAssets = require('connect-assets');
 var User = require('./models/User');
 var Room = require('./models/Room');
 var Message = require('./models/Message');
+var Group = require('./models/Group');
+
 var expressJwt = require('express-jwt');
 var jwt = require('jsonwebtoken');
 var socketioJwt = require('socketio-jwt');
@@ -107,130 +109,60 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
     //    if (err) console.log("err in room removal");
     //    console.log("room removal");
     //});
-
-
-    //User.findOne({testData: true}).remove(function(err) {
-    //    if (err) console.log("error in removing testdata");
-    //    console.log("testdata remove");
-    //});
-
-    User.findOne({email: 'test@berkeley.edu'}, function(err, user) {
-        if (err) console.log("error in seeding test user.")
-        if (!user) {
-            var testuser = new User({
-                testData: true,
-                name: 'Test User',
-                email: 'test@berkeley.edu',
-                classes: ['COMPSCI 161', 'COMPSCI 170', 'MATH 110'],
-                major: 'Computer Science',
-                verified: true,
-                password: 'kanye1234'
-            });
-
-            testuser.save(function(err) {
-                if (err) console.log("error in saving test user.");
-                console.log("test user success.");
-            })
-        } else {
-            //user.remove();
+    
+    function addUserToGroups(user, className) {
+        return function() {
+            var groupUrl = className.replace(/\s+/,'').toLowerCase();
+            console.log("NAME -> URL", className, groupUrl);
+            //Group.findOne({url: groupUrl}, function(err, group) {
+            //    if (err) {
+            //        console.log(err);
+            //        return;
+            //    }
+            //    if (!group) {
+            //        var newGroup = new Group({
+            //            name: className + 'Spring 2015',
+            //            url: groupUrl,
+            //            term: 'Spring 2015',
+            //            users: [user._id]
+            //        });
+            //
+            //        newGroup.save(function(err) {
+            //            if (err) {
+            //                console.log("ERR IN CREATING GROUP ", newGroup);
+            //            } else {
+            //                console.log("GROUP SUCCESSFULLY CREATED FOR ", newGroup.name);
+            //            }
+            //        });
+            //    } else {
+            //        group.users.push(user._id);
+            //        group.save(function(err) {
+            //            if (err) {
+            //                console.log("ERR IN ADDING USER TO GROUP ", user, group);
+            //            } else {
+            //                console.log("USER SUCCESSFULLY ADDED TO GROUP ", user, group.name);
+            //            }
+            //        });
+            //    }
+            //});
         }
-    });
-    User.findOne({email: 'test2@berkeley.edu'}, function(err, user) {
-        if (err) console.log("error in seeding test user.")
-        if (!user) {
-            var testuser = new User({
-                testData: true,
-                name: 'Test User',
-                email: 'test2@berkeley.edu',
-                classes: ['COMPSCI 161', 'COMPSCI 189', 'MATH 110'],
-                major: 'Computer Science',
-                verified: true,
-                password: 'kanye1234'
-            });
-
-            testuser.save(function(err) {
-                if (err) console.log("error in saving test user.");
-                console.log("test user success.");
-            })
+    }
+    
+    User.find({}, function(err, users) {
+        if (err) {
+            console.log(err);
+            console.log("ERR IN FINDING USERS");
         } else {
-            //user.remove();
+            for (var i = 0; i < users.length; i++) {
+                var user = users[i];
+                for (var j = 0; j < user.classes.length; j++) {
+                    var userClass = user.classes[j];
+                    addUserToGroups(user, userClass)();
+                }
+            }
         }
-    });
+    })
 
-    //User.findOne({email: 'cwalter94@berkeley.edu'}, function(err, user) {
-    //    if (err) {
-    //        console.log("err in deleting cwalter94");
-    //        return;
-    //    }
-    //
-    //    user.remove();
-    //});
-    //
-    //
-    //Room.findById('54c6bc376f9e0f462e891820').remove(function(err) {
-    //    if (err) console.log(err);
-    //    console.log("room removal");
-    //});
-    //Message.find({}).remove(function(err) {
-    //    if (err) console.log(err);
-    //    console.log("message removal");
-    //});
-
-
-
-
-     // User.findOne({email: 'user26@berkeley.edu'},
-     //    function (err, existingUser) {
-     //        if (err) console.log(err);
-
-     //        if (existingUser == null) {
-     //            console.log("Mongo connection success.");
-
-     //            User.remove({testData: true}, function(err) {
-     //                User.find({}, function(err, users) {
-     //                    console.log(users.length);
-     //                    var departments = ['Math', 'CS', 'Econ', 'African American Studies', 'Stat', 'Geology', 'Bio', 'Chem'];
-     //                    var names = ['Sally Janeperson', 'John Doesomething'];
-
-     //                    for (var i = 26; i < 3000; i++) {
-     //                        var classes = new Array();
-     //                        for (var j = 0; j < Math.round(Math.random() * 5); j++) {
-     //                            classes.push(departments[Math.floor(Math.random() * (departments.length - 1))]  + ' ' + Math.floor(Math.random() * 210))
-     //                        }
-     //                        var minor = Math.random() < 0.2 ? departments[Math.floor(Math.random() * (departments.length - 1))] : null;
-
-     //                        var user = new User({
-     //                            email: 'user' + i + '@berkeley.edu',
-     //                            name: names[Math.floor(Math.random() * 2)] + ' ' + i,
-     //                            password: secrets.admin_pw,
-     //                            roles: ['User'],
-     //                            verified: true,
-     //                            testData: true,
-     //                            classes: classes,
-     //                            major: departments[Math.floor(Math.random() * (departments.length - 1))],
-     //                            minor: minor,
-     //                            lastOnline: Date.now()
-     //                        });
-
-     //                        user.save(function (err) {
-     //                            if (err) console.log(err);
-     //                            console.log(user);
-     //                            console.log("Seed data " + i + " success.");
-     //                        })
-     //                    }
-
-
-     //                });
-
-     //            });
-
-
-
-
-     //        } else {
-     //            console.log("Mongo connection success. No seed data necessary.");
-     //        }
-     //    });
 
 }) ();
 
@@ -274,6 +206,8 @@ app.post('/api/admin/saveuser', apiController.adminSaveUser);
 app.post('/api/admin/deleteuser', apiController.adminDeleteUser);
 
 
+app.get('/api/groups', apiController.getGroupsForReqUser);
+app.get('/api/groups/:groupId/groupPosts', apiController.getGroupPostsForGroupId);
 app.get('/api/logout', apiController.getUserLogout);
 
 app.get("*", function(req, res) {

@@ -1263,9 +1263,7 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
     });
 
     $scope.addCourse = function() {
-        console.log($scope.courseSearch.selectedCourse);
         $scope.me.classes.push($scope.courseSearch.selectedCourse);
-        $scope.courseSearch.courses = [];
         $scope.courseSearch.selectedCourse = "";
     };
 
