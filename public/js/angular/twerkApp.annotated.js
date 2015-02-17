@@ -3,7 +3,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
     'btford.socket-io', 'once', 'infinite-scroll', 'luegg.directives'], function () {
 
 })
-    .config(['uiSelectConfig', 'flashProvider', '$httpProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', 'cfpLoadingBarProvider', function (uiSelectConfig, flashProvider, $httpProvider, $stateProvider, $urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
+    .config(['uiSelectConfig', 'flashProvider', '$httpProvider', '$stateProvider', '$urlRouterProvider', '$locationProvider', 'cfpLoadingBarProvider', 'redactorOptions', function (uiSelectConfig, flashProvider, $httpProvider, $stateProvider, $urlRouterProvider, $locationProvider, cfpLoadingBarProvider, redactorOptions) {
 
         uiSelectConfig.theme = 'selectize';
         $locationProvider.html5Mode(true).hashPrefix('!');
@@ -314,6 +314,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/browse',
                 templateUrl: '/partials/outer/browse',
                 controller: 'browseCtrl',
+                abstract: true,
                 resolve: {
                     me: ['principal', '$location', '$state',
                         function (principal, $location, $state) {
@@ -342,6 +343,34 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                        return messageFactory.setCurrentRoom(null, null, siteSocket).then(function(room) {
                             return null;
                         }, function(err) {
+                            return null;
+                        });
+                    }],
+                    groups: ['groupFactory', function(groupFactory) {
+                        return groupFactory.getGroups().then(function(groups) {
+                            return groups;
+                        }, function(err) {
+                            console.log(err);
+                            return null;
+                        })
+                    }]
+                }
+            })
+            .state('site.auth.browse.all', {
+                url: '',
+                controller: 'groupCtrl',
+                templateUrl: '/partials/inner/browse/group'
+            })
+            .state('site.auth.browse.group', {
+                url: '/{url}',
+                controller: 'groupController',
+                templateUrl: '/partials/inner/browse/group',
+                resolve: {
+                    groupPosts: ['groupFactory', '$stateParams', function(groupFactory, $stateParams) {
+                        return groupFactory.getGroupPosts($stateParams.name).then(function(response) {
+                            return response.groupPosts;
+                        }, function(err) {
+                            console.log(err);
                             return null;
                         });
                     }]
@@ -725,7 +754,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
 
                         _allRooms[roomId].messageArr.push(message);
                         _allRooms[roomId].lastMessage = message.text;
-                        _allRooms[roomId].lastMessageCreated = message.created;
+                        _allRooms[roomId].lastMessageCreated = message.createdAt;
 
                         if (!_currRoom || _currRoom._id != roomId) {
                             _allRooms[roomId].unreadMessages += 1;
@@ -1423,106 +1452,7 @@ var authCtrl = app.controller('authCtrl', ['$scope', '$state', '$rootScope', 'me
 
 
 }]);
-var browseClassCtrl = app.controller('browseClassCtrl', ['$scope', '$http', '$location', 'flash', '$state', '$stateParams', 'me', 'usersObj', 'siteSocket', 'principal', 'messageFactory', 'userFactory', function($scope, $http, $location, flash, $state, $stateParams, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
-
-    $scope.users = usersObj;
-    $scope.search = "";
-    $scope.messageButtons = null;
-    $scope.sortBy = 'lastOnline';
-    $scope.busy = false;
-    $scope.moreUsersDisabled = false;
-    $scope.loadUsersButtonText = 'Click to load more users.';
-    $scope.me = me;
-    $scope.filterByClass = $stateParams.class != 'all' ? $stateParams.class : null;
-
-
-
-    $scope.displayUser = function(user) {
-        user.majorString = user.major.length ? user.major.join(', ') : 'Unknown major.';
-        user.minorString = user.minor && user.minor.length ? user.minor.join(', ') : 'N/A';
-        user.name = user.name ? user.name : 'Unknown Name';
-        user.classesString = user.classes.length ? user.classes.join(', ') : 'No classes.';
-    };
-
-    $scope.getThumbnail = function(picUrl) {
-        if (!picUrl || picUrl == "" || picUrl == '/img/generic_avatar.gif') return '/img/generic_avatar.gif';
-        return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
-    };
-
-    $scope.formatDate = function(date) {
-        var formatted = new Date(date);
-        var day = formatted.getDate();
-        var month = formatted.getMonth() + 1;
-        var time = formatted.getHours() + ':' + formatted.getMinutes();
-        return month + '/' + day + ' @ ' + time;
-    };
-
-    siteSocket.on('update:status', function(data) {
-        userFactory.updateUserStatus(data.userId, data.status, data.statusCreated).then(function(user) {
-            $scope.users[user._id].status = user.status;
-            $scope.users[user._id].statusCreated = new Date(user.statusCreated).toString();
-
-        }, function(err) {
-
-        })
-    });
-
-    $scope.me = me;
-    $scope.siteSocket = siteSocket;
-    $scope.rooms = {};
-    $scope.quickMessageTo = null;
-    $scope.sortCat = 'Name';
-    $scope.getUrl = function() {
-        return $location.path();
-    };
-
-    $scope.messages = {};
-
-    $scope.message = {rows: 1, from: $scope.me.id, to: $scope.room, toEmail: ''};
-    $scope.searchFocus = true;
-
-    $scope.sortCats = ['Name', 'Email', 'Major', 'Minor', 'Status', 'Classes'];
-
-    $scope.goToMessages = function(user) {
-        messageFactory.getRoomId(user, siteSocket).then(function(room) {
-            $state.transitionTo('site.auth.messages.room', {'roomId': room._id}, { reload: false, inherit: true, notify: true });
-        });
-
-    };
-
-    $scope.getMoreUsers = function() {
-        if (!$scope.moreUsersDisabled) {
-            userFactory.getMoreUsers($scope.filterByClass).then(function(usersArr) {
-                var newUsers = false;
-                for (var i = 0; i <  usersArr.length; i++) {
-                    var elem = usersArr[i];
-                    if ($scope.users[elem._id] == null) {
-                        newUsers = true;
-                        $scope.users[elem._id] = elem;
-                        $scope.usersList.push(elem);
-                    }
-                }
-                if (!newUsers) {
-                    $scope.newUsersDisabled = true;
-                    $scope.loadUsersButtonText = 'No more users to load.';
-                }
-            }, function(err) {
-                flash.error = err;
-            });
-        }
-
-    };
-
-    $scope.sortUsers = function(s) {
-        $scope.sortBy = s;
-        $scope.usersList.sort(function(a, b) {
-            return a[$scope.sortBy] - b[$scope.sortBy];
-        });
-    };
-
-}]);
-
-var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', 'flash', '$state', 'me', 'usersObj', 'siteSocket', 'principal', 'messageFactory', 'userFactory', function($scope, $http, $location, flash, $state, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
+var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', 'flash', '$state', 'me', 'groups', 'usersObj', 'siteSocket', 'principal', 'messageFactory', 'userFactory', function($scope, $http, $location, flash, $state, me, groups, usersObj, siteSocket, principal, messageFactory, userFactory) {
 
     $scope.users = usersObj;
     $scope.search = "";
@@ -1534,7 +1464,7 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
     $scope.currentClassFilter = "";
-
+    $scope.groups = groups;
 
     $scope.formatDate = function(date) {
 
@@ -1817,6 +1747,37 @@ var dashboardCtrl = app.controller('dashboardCtrl', ['$scope', '$http', '$locati
 
 }]);
 
+var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q', 'flash', '$state', '$stateParams', 'me', 'groups', 'siteSocket', 'principal', 'userFactory', 'groupFactory', function($scope, $http, $location, $q, flash, $state, $stateParams, me, groups, siteSocket, principal, userFactory, groupFactory) {
+    var promises = [];
+
+    angular.forEach(groups, function(group) {
+        promises.push(groupFactory.getGroupPosts(group._id));
+    });
+
+    $q.all(promises).then(function(response) {
+        console.log('$q.all response', response);
+        console.log('promises', promises);
+    }, function(err) {
+        console.log(err);
+        flash.error = err;
+    });
+
+    $scope.groupPostText.customMenu = [
+        ['bold', 'italic', 'underline', 'strikethrough', 'subscript', 'superscript'],
+        ['font'],
+        ['font-size'],
+        ['font-color', 'hilite-color'],
+        ['remove-format'],
+        ['ordered-list', 'unordered-list', 'outdent', 'indent'],
+        ['left-justify', 'center-justify', 'right-justify'],
+        ['code', 'quote', 'paragragh'],
+        ['link', 'image']
+    ];
+
+
+
+}]);
+
 var loginCtrl = app.controller('loginCtrl', ['$scope', '$http', '$location', '$window', 'principal', 'flash', '$state', function($scope, $http, $location, $window, principal, flash, $state) {
 
 
@@ -2013,7 +1974,7 @@ var roomCtrl = app.controller('roomCtrl', ['$scope', '$http', '$location', 'flas
 
     $scope.sendMessage = function() {
         if ($scope.message.to && $scope.message.from && $scope.message.text && $scope.message.toEmail) {
-            $scope.message.created = Date.now();
+            $scope.message.createdAt = Date.now();
             siteSocket.emit('send:message', $scope.message);
 
             messageFactory.addMessage($scope.roomId, $scope.message, $scope.me, siteSocket).then(function(messages) {
@@ -2105,4 +2066,68 @@ var verifyCtrl = app.controller('verifyCtrl', ['$scope', '$upload', '$http', fun
             });
     };
 
+}]);
+var groupPostDir = app.directive('groupPost', function() {
+    return {
+
+    }
+});
+var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $q) {
+    var _groupPosts = {}, _groups = null;
+
+    return {
+        getGroups: function(user) {
+            var deferred = $q.defer();
+            if (_groups) {
+                deferred.resolve(_groups);
+            } else {
+                $http(
+                    {
+                        url: '/api/groups',
+                        method: 'GET'
+                    }
+                ).success(function(response) {
+                        _groups = {};
+                        for (var g = 0; g < response.groups.length; g++) {
+                            _groupPosts[response.groups[g]._id] = [];
+                            _groups[response.groups[g]._id] = response.groups[g];
+                            _groups[response.groups[g]._id].groupPosts = _groupPosts[response.groups[g]._id];
+                        }
+                        deferred.resolve(_groups);
+                    }).error(function(err) {
+                        deferred.reject(err);
+                    });
+            }
+            return deferred.promise;
+        },
+
+        getGroupPosts: function(groupId) {
+            var deferred = $q.defer();
+
+            if (_groupPosts[groupId] != null) {
+                deferred.resolve(_groupPosts[groupId]);
+            } else {
+                $http({
+                    url: '/api/groups/' + groupId + '/groupPosts',
+                    method: 'GET'
+                }).success(function(response) {
+                    _groupPosts[groupId] = [];
+                    for (var p = 0; p < response.groupPosts.length; p++) {
+                        var groupPost = response.groupPosts[p];
+                        _groupPosts[groupId].push(groupPost);
+                    }
+                    deferred.resolve(_groupPosts[groupId]);
+                }).error(function(err) {
+                    deferred.reject(err);
+                });
+            }
+            return deferred.promise;
+        },
+
+        newGroupPost: function(group, post) {
+            var deferred = $q.defer();
+            _groupPosts[group._id].push(post);
+        }
+
+    }
 }]);

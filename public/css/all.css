@@ -460,14 +460,15 @@ html body {
     html body #browse-container .class-selection-container {
       width: 100%;
       background: #fff;
-      margin: 10px;
       padding: 5px;
       border: 1px solid #ccc;
       float: left;
-      position: relative; }
+      position: fixed;
+      max-width: 1140px;
+      z-index: 5; }
       html body #browse-container .class-selection-container .class-container {
-        font-size: 18px;
-        height: 20px;
+        font-size: 1.3em;
+        height: 25px;
         margin: 5px;
         position: relative;
         float: left;
@@ -475,13 +476,16 @@ html body {
         display: inline-block; }
         html body #browse-container .class-selection-container .class-container:hover {
           color: #52008C; }
-        html body #browse-container .class-selection-container .class-container.selected {
-          color: #52008C; }
+        html body #browse-container .class-selection-container .class-container.active {
+          color: #52008C;
+          border-bottom: 1px solid #52008C; }
     html body #browse-container .browse-row {
       height: calc(100% - 80px); }
       html body #browse-container .browse-row .browse-left-col {
-        height: 100%;
-        overflow-y: scroll; }
+        height: calc(100% - 50px);
+        top: 100px;
+        position: fixed;
+        width: 380px; }
         html body #browse-container .browse-row .browse-left-col .status-container {
           height: 180px;
           position: relative;
@@ -552,36 +556,37 @@ html body {
                 width: 100%;
                 padding-right: 50px; }
         html body #browse-container .browse-row .browse-left-col .users-outer-container {
-          height: calc(100% - 200px);
+          height: calc(100% - 270px);
           position: relative;
-          float: left; }
+          float: left;
+          margin: 10px;
+          width: calc(100% - 20px);
+          background: #fff;
+          border: 1px solid #ccc; }
           html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container {
             position: relative;
             width: 100%;
             height: 50px;
-            float: left; }
+            float: left;
+            border-bottom: 1px solid #ccc; }
             html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container .search-box-outer {
-              border: 2px solid #ccc;
-              border-radius: 2px;
               background: #fff;
               width: 100%;
               height: 100%; }
               html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container .search-box-outer .search-icon {
                 position: absolute;
-                top: 4px;
+                top: 14px;
                 left: 10px;
                 width: 40px;
                 height: 100%;
-                line-height: 40px;
-                vertical-align: middle;
-                font-size: 24px;
+                font-size: 18px;
                 color: #52008C; }
               html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container .search-box-outer input {
                 width: 100%;
                 padding: 2px;
                 padding-left: 40px;
                 height: 100%;
-                font-size: 24px;
+                font-size: 12px;
                 border: none;
                 box-shadow: none;
                 font-family: Helvetica, sans-serif !important;
@@ -597,22 +602,19 @@ html body {
                 border: 2px solid; }
           html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container {
             overflow: scroll;
-            height: calc(100% - 100px);
+            height: calc(100% - 60px);
             width: 100%;
             float: left;
-            background: #eee;
-            border: 1px solid #ccc;
-            border-top: 0px;
             padding: 10px; }
             html body #browse-container .browse-row .browse-left-col .users-outer-container .users-inner-container .users-sm-container, html body #browse-container .browse-row .browse-left-col .users-outer-container .messages-inner-container .users-sm-container {
               position: relative;
               float: left;
-              width: calc(50% - 20px);
-              min-width: 316px;
+              width: 100%;
+              min-width: 300px;
               height: 160px;
               overflow: hidden;
               border-radius: 2px;
-              margin: 10px;
+              margin-top: 10px;
               border: 1px solid #ccc;
               color: #666;
               -webkit-transition: all .5s;
@@ -724,6 +726,52 @@ html body {
               font-size: 24px;
               text-align: center;
               cursor: pointer; }
+      html body #browse-container .browse-row .browse-right-col {
+        margin-top: 60px; }
+    @media (max-width: 768px) {
+      html body #browse-container .browse-left-col {
+        display: none; } }
+  html body #group-container .group-post-textarea-container {
+    float: left;
+    position: relative;
+    padding: 5px;
+    width: 100%;
+    height: auto;
+    background: #eeeeee;
+    border: 1px solid #CCC;
+    -webkit-transition: height .5s;
+    -moz-transition: height .5s;
+    -ms-transition: height .5s;
+    -o-transition: height .5s;
+    transition: height .5s; }
+    html body #group-container .group-post-textarea-container .edit-button {
+      display: none; }
+      html body #group-container .group-post-textarea-container .edit-button:hover {
+        border-color: #52008C; }
+      html body #group-container .group-post-textarea-container .edit-button i {
+        color: #52008C; }
+    html body #group-container .group-post-textarea-container .group-post-buttons {
+      margin: 5px; }
+      html body #group-container .group-post-textarea-container .group-post-buttons .btn {
+        margin: 5px; }
+        html body #group-container .group-post-textarea-container .group-post-buttons .btn.btn-post {
+          background: #CFEEFF; }
+        html body #group-container .group-post-textarea-container .group-post-buttons .btn.btn-cancel {
+          background: #FFD2CF; }
+    html body #group-container .group-post-textarea-container.minimize {
+      width: 100%; }
+      html body #group-container .group-post-textarea-container.minimize text-angular {
+        display: none; }
+      html body #group-container .group-post-textarea-container.minimize .edit-button {
+        display: block;
+        width: 100%;
+        height: 100%;
+        text-align: center; }
+        html body #group-container .group-post-textarea-container.minimize .edit-button i {
+          font-size: 24px;
+          padding: 5px; }
+      html body #group-container .group-post-textarea-container.minimize .btn-group {
+        display: none; }
   html body #messages-container {
     padding-top: 50px;
     height: calc(100% - 50px); }

@@ -3,13 +3,13 @@ nav.navbar.navbar-custom.navbar-fixed-top(role="navigation", ng-class="{'transpa
         .navbar-header.page-scroll
             button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-main-collapse")
                 i.fa.fa-bars
-            a.navbar-brand(ui-sref="{{principal.isAuthenticated() ? 'site.auth.browse' : 'site.home.intro'}}")
+            a.navbar-brand(ui-sref="{{principal.isAuthenticated() ? 'site.auth.browse.all' : 'site.home.intro'}}")
                 h1 Twerk.io
         // Collect the nav links, forms, and other content for toggling
         .collapse.navbar-collapse.navbar-right.navbar-main-collapse
             ul.nav.navbar-nav
                 li.float-right(ng-show="principal.isAuthenticated()")
-                    a(ui-sref="site.auth.browse")
+                    a(ui-sref="site.auth.browse.all")
                         div.nav-icon.glyphicon.glyphicon-globe
                         div.nav-icon-text Browse
 

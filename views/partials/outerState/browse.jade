@@ -3,9 +3,10 @@ div.container#browse-container
             .col-xs-12
                 .class-selection-container
                     div.no-class-message(ng-show="me.classes.length == 0") You have no classes! Add some on the profile page.
-                    a.class-container(ng-show="me.classes.length != 0", ng-click="filterByClass('All')", ng-class="{'selected' : currentClassFilter == ''}") ALL
-                    a.class-container(ng-show="me.classes.length != 0", ng-repeat="class in me.classes", ng-click="filterByClass(class)", ng-class="{'selected' : class == currentClassFilter}")
-                        div(once-text="class")
+                    a.class-container(ng-show="me.classes.length != 0", ui-sref="site.auth.browse.all", ui-sref-active="active") ALL
+                    a.class-container(ng-show="me.classes.length != 0",
+                    ng-repeat="group in groups", ui-sref="site.auth.browse.group({url : group.url})", ui-sref-active="active")
+                        div(once-text="group.name.substring(0, group.name.indexOf(' Spring 2015'))")
         .row.browse-row
             .col-md-4.col-xs-0.browse-left-col
 
@@ -51,7 +52,7 @@ div.container#browse-container
 
                         .manual-load-button(ng-click="getMoreUsers()") {{ loadUsersButtonText }}
 
-            .col-md-9.col-xs-7.browse-right-col
-                .ui-view
+            .col-sm-8.col-sm-offset-4.col-xs-12.browse-right-col
+                .ui-view#group-container
 
 

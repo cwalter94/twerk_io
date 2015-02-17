@@ -1,4 +1,4 @@
-var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location, flash, $state, me, usersObj, siteSocket, principal, messageFactory, userFactory) {
+var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location, flash, $state, me, groups, usersObj, siteSocket, principal, messageFactory, userFactory) {
 
     $scope.users = usersObj;
     $scope.search = "";
@@ -10,7 +10,7 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
     $scope.loadUsersButtonText = 'Click to load more users.';
     $scope.me = me;
     $scope.currentClassFilter = "";
-
+    $scope.groups = groups;
 
     $scope.formatDate = function(date) {
 

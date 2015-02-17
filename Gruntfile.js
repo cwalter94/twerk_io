@@ -93,8 +93,12 @@ module.exports = function(grunt) {
                         'public/bower_components/angular-ui/build/angular-ui.min.js',
                         'public/bower_components/angular-cookies/angular-cookies.min.js',
                         'public/bower_components/angular-ui-utils/ui-utils.min.js',
-                        'public/bower_components/angular-smart-table/dist/smart-table.min.js',
                         'public/bower_components/angular-scroll-glue/src/scrollglue.js',
+                        'public/bower_components/angular-bootstrap-colorpicker/js/bootstrap-colorpicker-module.min.js',
+                        'public/bower_components/textAngular/dist/textAngular-rangy.min.js',
+                        'public/bower_components/textAngular/dist/textAngular-sanitize.min.js',
+                        'public/bower_components/textAngular/dist/textAngular.min.js',
+
                         'public/js/angular/twerkApp.annotated.js'
 
                     ],

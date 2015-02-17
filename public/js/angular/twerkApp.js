@@ -1,6 +1,6 @@
 var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnimate', 'ui.select', 'angularFileUpload', 'ui.bootstrap',
-    'mgcrea.ngStrap', 'xeditable', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies', 'smart-table',
-    'btford.socket-io', 'once', 'infinite-scroll', 'luegg.directives'], function () {
+    'mgcrea.ngStrap', 'xeditable', 'angular-flash.service', 'angular-flash.flash-alert-directive', 'ui.router', 'ngCookies',
+    'btford.socket-io', 'once', 'infinite-scroll', 'luegg.directives', 'textAngular'], function () {
 
 })
     .config(function (uiSelectConfig, flashProvider, $httpProvider, $stateProvider, $urlRouterProvider, $locationProvider, cfpLoadingBarProvider) {
@@ -314,6 +314,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/browse',
                 templateUrl: '/partials/outer/browse',
                 controller: 'browseCtrl',
+                abstract: true,
                 resolve: {
                     me: ['principal', '$location', '$state',
                         function (principal, $location, $state) {
@@ -346,8 +347,8 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         });
                     }],
                     groups: ['groupFactory', function(groupFactory) {
-                        return groupFactory.getGroups().then(function(response) {
-                            return response.groups;
+                        return groupFactory.getGroups().then(function(groups) {
+                            return groups;
                         }, function(err) {
                             console.log(err);
                             return null;
@@ -361,8 +362,8 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 templateUrl: '/partials/inner/browse/group'
             })
             .state('site.auth.browse.group', {
-                url: '/{name}',
-                controller: 'groupController',
+                url: '/{url}',
+                controller: 'groupCtrl',
                 templateUrl: '/partials/inner/browse/group',
                 resolve: {
                     groupPosts: ['groupFactory', '$stateParams', function(groupFactory, $stateParams) {

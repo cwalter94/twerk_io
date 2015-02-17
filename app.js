@@ -110,59 +110,59 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
     //    console.log("room removal");
     //});
     
-    function addUserToGroups(user, className) {
-        return function() {
-            var groupUrl = className.replace(/\s+/,'').toLowerCase();
-            console.log("NAME -> URL", className, groupUrl);
-            //Group.findOne({url: groupUrl}, function(err, group) {
-            //    if (err) {
-            //        console.log(err);
-            //        return;
-            //    }
-            //    if (!group) {
-            //        var newGroup = new Group({
-            //            name: className + 'Spring 2015',
-            //            url: groupUrl,
-            //            term: 'Spring 2015',
-            //            users: [user._id]
-            //        });
-            //
-            //        newGroup.save(function(err) {
-            //            if (err) {
-            //                console.log("ERR IN CREATING GROUP ", newGroup);
-            //            } else {
-            //                console.log("GROUP SUCCESSFULLY CREATED FOR ", newGroup.name);
-            //            }
-            //        });
-            //    } else {
-            //        group.users.push(user._id);
-            //        group.save(function(err) {
-            //            if (err) {
-            //                console.log("ERR IN ADDING USER TO GROUP ", user, group);
-            //            } else {
-            //                console.log("USER SUCCESSFULLY ADDED TO GROUP ", user, group.name);
-            //            }
-            //        });
-            //    }
-            //});
-        }
-    }
-    
-    User.find({}, function(err, users) {
-        if (err) {
-            console.log(err);
-            console.log("ERR IN FINDING USERS");
-        } else {
-            for (var i = 0; i < users.length; i++) {
-                var user = users[i];
-                for (var j = 0; j < user.classes.length; j++) {
-                    var userClass = user.classes[j];
-                    addUserToGroups(user, userClass)();
-                }
-            }
-        }
-    })
-
+    //function addUserToGroups(user, className) {
+    //    return function() {
+    //        var groupUrl = className.replace(/\s+/g,'').toLowerCase();
+    //        Group.findOne({url: groupUrl}, function(err, group) {
+    //            if (err) {
+    //                console.log(err);
+    //                return;
+    //            }
+    //            if (!group) {
+    //                var newGroup = new Group({
+    //                    name: className + ' Spring 2015',
+    //                    url: groupUrl,
+    //                    term: 'Spring 2015',
+    //                    users: [user._id]
+    //                });
+    //
+    //                newGroup.save(function(err) {
+    //                    if (err) {
+    //                        console.log("ERR IN CREATING GROUP ", newGroup);
+    //                    }
+    //                });
+    //            } else {
+    //                if (group.users.indexOf(user._id) == -1) {
+    //                    group.users = group.users.concat([user._id]);
+    //                    group.save(function(err) {
+    //                        if (err) {
+    //                            console.log("ERR IN ADDING USER TO GROUP ", user, group);
+    //                            console.log(err);
+    //                        }
+    //                    });
+    //                } else {
+    //                    console.log("user" + user.name + " already in group " + group.name);
+    //                }
+    //
+    //            }
+    //        });
+    //    }
+    //}
+    //
+    //User.find({}, function(err, users) {
+    //    if (err) {
+    //        console.log(err);
+    //        console.log("ERR IN FINDING USERS");
+    //    } else {
+    //        for (var i = 0; i < users.length; i++) {
+    //            var user = users[i];
+    //            for (var j = 0; j < user.classes.length; j++) {
+    //                var userClass = user.classes[j];
+    //                addUserToGroups(user, userClass)();
+    //            }
+    //        }
+    //    }
+    //})
 
 }) ();
 

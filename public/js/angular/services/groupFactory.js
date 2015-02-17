@@ -1,5 +1,5 @@
 var groupFactory = app.factory('groupFactory', function($http, $q) {
-    var _groupPosts = null, _groups = null;
+    var _groupPosts = {}, _groups = null;
 
     return {
         getGroups: function(user) {

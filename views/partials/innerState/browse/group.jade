@@ -1,1 +1,7 @@
-h1 THIS IS THE GROUP PAGE
+.group-post-textarea-container.clearfix(ng-class="{'minimize': textareaMinimize}")
+    button.btn.btn-default.edit-button(ng-click="textareaMinimize = false")
+        i.fa.fa-2x.fa-plus   New Post
+    text-angular(ng-model="groupPostTextarea.text")
+    .btn-group.pull-right.group-post-buttons
+        button.btn.btn-large.btn-cancel(ng-click="cancelTextarea()") Cancel
+        button.btn.btn-large.btn-post Post

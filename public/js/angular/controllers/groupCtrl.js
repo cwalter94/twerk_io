@@ -13,6 +13,19 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
         flash.error = err;
     });
 
+    $scope.groupPostTextarea = {
+        toolbar: [['bold','italics','underline','pre','quote','insertImage','insertVideo', 'ul', 'ol']]
+    };
 
+    $scope.textareaMinimize = true;
+
+    $scope.cancelTextarea = function() {
+        $scope.textareaMinimize = true;
+        $scope.groupPostTextarea.text = "";
+    };
+
+    $scope.submitGroupPost = function() {
+
+    }
 
 });
