@@ -1,6 +1,9 @@
 var Message = require('../models/Message');
 var Room = require('../models/Room');
 var User = require('../models/User');
+var GroupPost = require('../models/GroupPost');
+var Group = require('../models/Group');
+
 var mongoose = require('mongoose');
 
 exports.socketHandler = function (allUsers) {
@@ -23,7 +26,14 @@ exports.socketHandler = function (allUsers) {
                                 console.log(err);
                                 socket.emit('error', err);
                             } else {
-                                socket.broadcast.emit('user:online', userId);
+
+                                Group.find({users: user._id}, function(err, groups) {
+                                    for (var i = 0; i < groups.length; i++) {
+                                        socket.join(groups[i]._id);
+                                        console.log("User " + user._id + " joined socket for group " + groups[i]._id);
+                                    }
+                                    socket.broadcast.emit('user:online', userId);
+                                });
 
                             }
                         })
@@ -31,7 +41,7 @@ exports.socketHandler = function (allUsers) {
 
                 }
 
-            })
+            });
 
         });
 
@@ -165,6 +175,18 @@ exports.socketHandler = function (allUsers) {
             socket.broadcast.emit('update:status', data);
         });
 
+        socket.on('new:groupPost', function(groupPost) {
+            var newPost = new GroupPost(groupPost);
+            newPost.save(function(err) {
+                if (err) {
+                    socket.emit('error', err);
+                    console.log(err);
+                } else {
+                    socket.broadcast.to(newPost.groupId).emit('new:groupPost', newPost);
+                    console.log("Post emitted to socket for " + newPost.groupId);
+                }
+            });
+        });
 
         socket.on("disconnect", function() {
 

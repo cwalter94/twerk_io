@@ -22,7 +22,8 @@ var userSchema = new mongoose.Schema({
     phone: String,
     resetPasswordToken: String,
     resetPasswordExpires: Date,
-    unreadRooms: {type: Object, default: {}, required: true}
+    unreadRooms: {type: Object, default: {}, required: true},
+    groups: {type: [mongoose.Schema.Types.objectId]}
 });
 
 /**

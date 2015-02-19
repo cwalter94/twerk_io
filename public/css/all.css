@@ -493,7 +493,8 @@ html body {
           background: #fff;
           margin: 10px;
           padding: 15px;
-          border: 1px solid #ccc; }
+          border: 1px solid #ccc;
+          width: 100%; }
           html body #browse-container .browse-row .browse-left-col .status-container .btn-status {
             position: absolute;
             top: 0;
@@ -560,7 +561,7 @@ html body {
           position: relative;
           float: left;
           margin: 10px;
-          width: calc(100% - 20px);
+          width: 100%;
           background: #fff;
           border: 1px solid #ccc; }
           html body #browse-container .browse-row .browse-left-col .users-outer-container .users-search-container {
@@ -586,7 +587,7 @@ html body {
                 padding: 2px;
                 padding-left: 40px;
                 height: 100%;
-                font-size: 12px;
+                font-size: 14px;
                 border: none;
                 box-shadow: none;
                 font-family: Helvetica, sans-serif !important;
@@ -611,7 +612,7 @@ html body {
               float: left;
               width: 100%;
               min-width: 300px;
-              height: 160px;
+              height: 170px;
               overflow: hidden;
               border-radius: 2px;
               margin-top: 10px;
@@ -772,6 +773,27 @@ html body {
           padding: 5px; }
       html body #group-container .group-post-textarea-container.minimize .btn-group {
         display: none; }
+  html body #group-container .group-post-container {
+    width: calc(100% - 20px);
+    position: relative;
+    float: left;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background: #FCFCFC;
+    padding: 0px 15px 15px; }
+    html body #group-container .group-post-container .profile-info {
+      height: 70px;
+      background: rgba(82, 0, 140, 0.13); }
+      html body #group-container .group-post-container .profile-info .picture {
+        overflow-y: hidden;
+        height: 100%; }
+        html body #group-container .group-post-container .profile-info .picture img {
+          width: 100%; }
+      html body #group-container .group-post-container .profile-info .name, html body #group-container .group-post-container .profile-info .group-name {
+        font-size: 18px; }
+    html body #group-container .group-post-container .post-text {
+      padding: 10px 0px; }
   html body #messages-container {
     padding-top: 50px;
     height: calc(100% - 50px); }

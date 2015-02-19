@@ -4,4 +4,17 @@
     text-angular(ng-model="groupPostTextarea.text")
     .btn-group.pull-right.group-post-buttons
         button.btn.btn-large.btn-cancel(ng-click="cancelTextarea()") Cancel
-        button.btn.btn-large.btn-post Post
+        button.btn.btn-large.btn-post(ng-click="submitGroupPost()") Post
+
+.group-post-container(ng-repeat="groupPost in groupPosts | orderBy: 'createdAt' : true",
+        ng-init="getUser(groupPost)")
+    .row.profile-info
+        .col-xs-2.picture
+            img(ng-src="{{userFactory.getThumbnail(groupPost.user.picture)}}")
+        .col-xs-6
+            div.name {{groupPost.user.name}}
+        .col-xs-4.text-right
+            div.group-name(once-text="groups[groupPost.groupId].name")
+    .row.post-text
+        .col-xs-12
+            div.content(once-html="groupPost.text")

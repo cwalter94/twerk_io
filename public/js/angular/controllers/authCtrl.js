@@ -1,4 +1,4 @@
-var authCtrl = app.controller('authCtrl', function ($scope, $state, $rootScope, me, siteSocket, userFactory, messageFactory, allRooms) {
+var authCtrl = app.controller('authCtrl', function ($scope, $state, $rootScope, me, siteSocket, userFactory, messageFactory, groupFactory, allRooms) {
 
 
     siteSocket.emit('user:init', me._id);
@@ -53,6 +53,13 @@ var authCtrl = app.controller('authCtrl', function ($scope, $state, $rootScope, 
 
     siteSocket.on('send:message', function(message) {
         messageFactory.addMessage(message.to, message, me._id, siteSocket);
+    });
+
+    siteSocket.on('new:groupPost', function(groupPost) {
+        groupFactory.addNewPost(groupPost).then(function(groupPost) {
+        }, function(err) {
+            console.log(err);
+        })
     });
 
 

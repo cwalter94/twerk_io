@@ -96,7 +96,7 @@ exports.getGroupsForReqUser = function (req, res) {
 
 exports.getGroupPostsForGroupId = function (req, res) {
     if (!req.params.groupId) {
-        return res.status(401).end('Group ID is required to find posts');
+        return res.status(401).end('Group URL is required to find posts');
     }
 
     GroupPost.find({groupId: req.params.groupId}, function(err, groupPosts) {
@@ -499,11 +499,6 @@ exports.postUserProfile = function (req, res, next) {
             user.statusCreated = Date.now();
         }
         user.name = userUpdate.name || user.name;
-        user.classes = userUpdate.classes || user.classes;
-
-        for (var i = 0; i < userUpdate.classes.length; i++) {
-            var newClass = userUpdate.classes[i];
-        }
 
         user.save(function (err) {
             if (err) return res.status(401).end('An error occurred. Please try again later.');
@@ -511,6 +506,95 @@ exports.postUserProfile = function (req, res, next) {
         });
     });
 
+};
+
+exports.addReqUserToGroup = function (req, res) {
+    if (!req.params.name) {
+      return res.status(404).end('Group name required.');
+    }
+
+    Group.findOne({name: req.params.name}, function(err, group) {
+        if (err) {
+            console.log(err);
+            return res.status(401).end('An unknown error occurred in adding user to group.');
+        }
+        if (group) {
+            group.users.push(req.user._id);
+            group.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    return res.status(401).end('An unknown error occurred in saving group users.');
+                }
+
+                req.user.groups.push(group._id);
+                req.user.save(function(err) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(401).end('An unknown error occurred in saving user.');
+                    }
+                    console.log("REQ USER SUCCESSFULLY ADDED TO GROUP " + group._id, req.user);
+                    return res.json({token: req.token, group: group});
+                });
+
+            });
+        } else {
+            var groupUrl = req.params.name.replace(/\s+/g,'').toLowerCase();
+
+            var newGroup = new Group({
+                name: req.params.name,
+                url: groupUrl,
+                users: [req.user._id]
+            });
+
+            newGroup.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    return res.status(401).end('An unknown error occurred in saving group.');
+                }
+                req.user.groups.push(newGroup._id);
+                req.user.save(function(err) {
+                    if (err) {
+                        console.log(err);
+                        return res.status(401).end('An unknown error occurred in saving user.');
+                    }
+                    console.log("REQ USER SUCCESSFULLY ADDED TO GROUP ", newGroup, req.user);
+                    return res.json({token: req.token, group: newGroup});
+                });
+
+            })
+        }
+
+    });
+
+};
+
+exports.removeReqUserFromGroup = function(req, res) {
+    if (!req.params.groupId) {
+        return res.status(404).end('Group ID required.');
+    }
+    Group.findById(mongoose.Types.ObjectId(req.params.groupId), function(err, group) {
+        if (err) {
+            console.log(err);
+            return res.status(401).end('An unknown error occurred in removing user from group.');
+        }
+        console.log("GROUP USERS", group.users);
+        group.users.splice(group.users.indexOf(req.user._id), 1);
+        group.save(function(err) {
+            if (err) {
+                console.log(err);
+                return res.status(401).end('An unknown error occurred in removing user from group.');
+            }
+            req.user.groups.splice(req.user.groups.indexOf(mongoose.Types.ObjectId(req.params.groupId)), 1);
+            req.user.save(function(err) {
+                if (err) {
+                    console.log(err);
+                    return res.status(401).end('An unknown error occurred in saving user.');
+                }
+                console.log("REQ USER SUCCESSFULLY REMOVED FROM GROUP", group, req.user);
+                return res.json({token: req.token});
+            });
+        })
+    });
 };
 
 exports.postUserPicture = function (req, res, next) {

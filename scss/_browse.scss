@@ -50,6 +50,7 @@
         margin: 10px;
         padding: 15px;
         border: 1px solid #ccc;
+        width: 100%;
 
         .btn-status {
           position: absolute;
@@ -146,7 +147,7 @@
         position: relative;
         float: left;
         margin: 10px;
-        width: calc(100% - 20px);
+        width: 100%;
         background: #fff;
         border: 1px solid #ccc;
 
@@ -181,7 +182,7 @@
               padding: 2px;
               padding-left: 40px;
               height: 100%;
-              font-size: 12px;
+              font-size: 14px;
               border: none;
               box-shadow: none;
 
@@ -219,7 +220,7 @@
             float: left;
             width: 100%;
             min-width: 300px;
-            height: 160px;
+            height: 170px;
             overflow: hidden;
             border-radius: 2px;
             margin-top: 10px;

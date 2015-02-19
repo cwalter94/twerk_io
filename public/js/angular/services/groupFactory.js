@@ -30,14 +30,17 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
         getGroupPosts: function(groupId) {
             var deferred = $q.defer();
 
-            if (_groupPosts[groupId] != null) {
+            if (_groupPosts[groupId] && _groupPosts[groupId].length > 0) {
                 deferred.resolve(_groupPosts[groupId]);
             } else {
+                if (!_groupPosts[groupId]) {
+                    _groupPosts[groupId] = [];
+                }
+
                 $http({
                     url: '/api/groups/' + groupId + '/groupPosts',
                     method: 'GET'
                 }).success(function(response) {
-                    _groupPosts[groupId] = [];
                     for (var p = 0; p < response.groupPosts.length; p++) {
                         var groupPost = response.groupPosts[p];
                         _groupPosts[groupId].push(groupPost);
@@ -50,9 +53,16 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
             return deferred.promise;
         },
 
-        newGroupPost: function(group, post) {
+        submitNewPost: function(post, socket) {
+            socket.emit('new:groupPost', post);
+            this.addNewPost(post);
+        },
+
+        addNewPost: function(groupPost) {
             var deferred = $q.defer();
-            _groupPosts[group._id].push(post);
+            _groupPosts[groupPost.groupId].push(groupPost);
+            deferred.resolve(groupPost);
+            return deferred.promise;
         }
 
     }

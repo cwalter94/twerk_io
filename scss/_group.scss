@@ -69,4 +69,39 @@
 
     }
   }
+
+  .group-post-container {
+    width: calc(100% - 20px);
+    position: relative;
+    float: left;
+    margin: 10px;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background: #FCFCFC;
+    padding: 0px 15px 15px;
+
+    .profile-info {
+      height: 70px;
+      background: rgba(82, 0, 140, 0.13);
+
+      .picture {
+        overflow-y: hidden;
+        height: 100%;
+
+        img {
+          width: 100%;
+        }
+
+      }
+
+      .name, .group-name {
+        font-size: 18px;
+      }
+
+    }
+
+    .post-text {
+      padding: 10px 0px;
+    }
+  }
 }

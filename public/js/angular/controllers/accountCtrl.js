@@ -22,11 +22,17 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
 
     $scope.search = "";
 
-    $scope.$watch('me', function(newval, oldval) {
+    $scope.$watch('me.name', function(newval, oldval) {
        if (newval != oldval) {
-           $scope.dataHasChanged = !angular.equals($scope.me, $scope.origMe);
+           $scope.dataHasChanged = !angular.equals($scope.me.name, $scope.origMe.name);
        }
-    }, true);
+    });
+
+    $scope.$watch('me.status', function(newval, oldval) {
+        if (newval != oldval) {
+            $scope.dataHasChanged = !angular.equals($scope.me.status, $scope.origMe.status);
+        }
+    });
 
     $scope.$watch('courseSearch.selectedDepartment', function(newval, oldval) {
         if (newval != "") {
@@ -34,9 +40,18 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
         }
     });
 
-    $scope.addCourse = function() {
-        $scope.me.classes.push($scope.courseSearch.selectedCourse);
-        $scope.courseSearch.selectedCourse = "";
+    $scope.addGroup = function() {
+
+        $http({
+            url: '/api/groups/' + $scope.courseSearch.selectedCourse + '/addUser',
+            method: 'POST'
+        }).success(function(response) {
+            me.groups[response.group._id] = response.group;
+            $scope.courseSearch.selectedCourse = "";
+        }).error(function(err) {
+            flash.error = err;
+        });
+
     };
 
     $scope.getCoursesForDepartment = function(selectedDepartment) {
@@ -66,9 +81,15 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
         });
     };
 
-    $scope.removeClass = function(className) {
-        var index = $scope.me.classes.indexOf(className);
-        $scope.me.classes.splice(index, 1);
+    $scope.removeGroup = function(group) {
+        $http({
+            url: '/api/groups/' + group._id + '/removeUser',
+            method: 'POST'
+        }).success(function(response) {
+            delete me.groups[group._id];
+        }).error(function(err) {
+            flash.error = err;
+        });
     };
 
     $scope.resetSearchInput = function($select) {

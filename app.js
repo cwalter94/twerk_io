@@ -98,73 +98,89 @@ app.use('/api', userController.validateToken);
 
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
-(function seed () {
-
-    //User.find({email: 'cwalter94@berkeley.edu'}).remove(function(err) {
-    //    if (err) console.log("err in user removal");
-    //    console.log("user removal");
-    //});
-    //
-    //Room.find({}).remove(function(err) {
-    //    if (err) console.log("err in room removal");
-    //    console.log("room removal");
-    //});
-    
-    //function addUserToGroups(user, className) {
-    //    return function() {
-    //        var groupUrl = className.replace(/\s+/g,'').toLowerCase();
-    //        Group.findOne({url: groupUrl}, function(err, group) {
-    //            if (err) {
-    //                console.log(err);
-    //                return;
-    //            }
-    //            if (!group) {
-    //                var newGroup = new Group({
-    //                    name: className + ' Spring 2015',
-    //                    url: groupUrl,
-    //                    term: 'Spring 2015',
-    //                    users: [user._id]
-    //                });
-    //
-    //                newGroup.save(function(err) {
-    //                    if (err) {
-    //                        console.log("ERR IN CREATING GROUP ", newGroup);
-    //                    }
-    //                });
-    //            } else {
-    //                if (group.users.indexOf(user._id) == -1) {
-    //                    group.users = group.users.concat([user._id]);
-    //                    group.save(function(err) {
-    //                        if (err) {
-    //                            console.log("ERR IN ADDING USER TO GROUP ", user, group);
-    //                            console.log(err);
-    //                        }
-    //                    });
-    //                } else {
-    //                    console.log("user" + user.name + " already in group " + group.name);
-    //                }
-    //
-    //            }
-    //        });
-    //    }
-    //}
-    //
-    //User.find({}, function(err, users) {
-    //    if (err) {
-    //        console.log(err);
-    //        console.log("ERR IN FINDING USERS");
-    //    } else {
-    //        for (var i = 0; i < users.length; i++) {
-    //            var user = users[i];
-    //            for (var j = 0; j < user.classes.length; j++) {
-    //                var userClass = user.classes[j];
-    //                addUserToGroups(user, userClass)();
-    //            }
-    //        }
-    //    }
-    //})
-
-}) ();
+//(function seed () {
+//    function addUserToGroups(user, className) {
+//        return function() {
+//            var groupUrl = className.replace(/\s+/g,'').toLowerCase();
+//            Group.findOne({url: groupUrl}, function(err, group) {
+//                if (err) {
+//                    console.log(err);
+//                    return;
+//                }
+//                if (!group) {
+//                    var newGroup = new Group({
+//                        name: className,
+//                        url: groupUrl,
+//                        term: 'Spring 2015',
+//                        users: [user._id]
+//                    });
+//
+//                    newGroup.save(function(err) {
+//                        if (err) {
+//                            console.log("ERR IN CREATING GROUP ", newGroup);
+//                        } else {
+//                            if (!user.groups) {
+//                                user.groups = [];
+//                            }
+//                            user.groups.push(newGroup._id);
+//                            user.save(function(err) {
+//                                if (err) {
+//                                    console.log("ERR IN SAVING USER GROUPS", user, group);
+//                                    console.log(err);
+//                                } else {
+//                                    console.log("USER ADDED TO GROUP", user);
+//                                }
+//                            })
+//                        }
+//
+//                    });
+//                } else {
+//                    if (group.users.indexOf(user._id) == -1) {
+//                        group.users = group.users.concat([user._id]);
+//                        group.save(function(err) {
+//                            if (err) {
+//                                console.log("ERR IN ADDING USER TO GROUP ", user, group);
+//                                console.log(err);
+//                            }
+//                            if (user.groups.indexOf(group._id) == -1) {
+//                                user.groups.push(group._id);
+//                                user.save(function(err) {
+//                                    if (err) {
+//                                        console.log("ERR IN SAVING USER GROUPS", user, group);
+//                                        console.log(err);
+//                                    }
+//                                })
+//                            }
+//                        });
+//                    } else {
+//                        console.log("user" + user.name + " already in group " + group.name);
+//                    }
+//
+//                }
+//            });
+//        }
+//    }
+//
+//    Group.find({}).remove(function(err) {
+//        User.find({}, function(err, users) {
+//            if (err) {
+//                console.log(err);
+//                console.log("ERR IN FINDING USERS");
+//            } else {
+//                for (var i = 0; i < users.length; i++) {
+//                    var user = users[i];
+//                    user.groups = [];
+//                    for (var j = 0; j < user.classes.length; j++) {
+//                        var userClass = user.classes[j];
+//                        addUserToGroups(user, userClass)();
+//                    }
+//                }
+//            }
+//        })
+//    });
+//
+//
+//}) ();
 
 /**
  * Main routes.
@@ -208,6 +224,9 @@ app.post('/api/admin/deleteuser', apiController.adminDeleteUser);
 
 app.get('/api/groups', apiController.getGroupsForReqUser);
 app.get('/api/groups/:groupId/groupPosts', apiController.getGroupPostsForGroupId);
+
+app.post('/api/groups/:name/addUser', apiController.addReqUserToGroup);
+app.post('/api/groups/:groupId/removeUser', apiController.removeReqUserFromGroup);
 app.get('/api/logout', apiController.getUserLogout);
 
 app.get("*", function(req, res) {

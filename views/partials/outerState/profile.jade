@@ -55,13 +55,13 @@ div.container.content-container#account-container
                                         .col-xs-10
                                             textarea.form-control(rows="2", type='text', placeholder="What are you working on right now?", ng-model="me.status")
                                     .form-group.row
-                                        label.col-xs-2.control-label Classes
+                                        label.col-xs-2.control-label Groups
                                         .col-xs-10
-                                            .row(ng-repeat="class in me.classes", style="font-size: 18px;")
-                                                .col-xs-1(ng-click="removeClass(class)")
+                                            .row(ng-repeat="group in me.groups", style="font-size: 18px;")
+                                                .col-xs-1(ng-click="removeGroup(group)")
                                                     .glyphicon.glyphicon-remove
 
-                                                .col-xs-11(once-text="class")
+                                                .col-xs-11(once-text="group.name")
 
                                             .row(style="margin-top: 10px;")
                                                 .col-xs-7(style="padding-right: 0px;")
@@ -77,5 +77,5 @@ div.container.content-container#account-container
                                                         ui-select-choices(repeat='course in courseSearch.courses | filter:$select.search | orderBy: course : false')
                                                             | {{course}}
                                                 .col-xs-1(ng-show="courseSearch.selectedCourse != ''", style="padding: 5px; font-size: 24px; line-height: 24px;")
-                                                    a(ng-click="addCourse()")
+                                                    a(ng-click="addGroup()")
                                                         .glyphicon.glyphicon-plus

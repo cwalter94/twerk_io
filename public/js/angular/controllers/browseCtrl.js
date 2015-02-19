@@ -51,10 +51,7 @@ var browseCtrl = app.controller('browseCtrl', function($scope, $http, $location,
         user.classesString = user.classes.length ? user.classes.join(', ') : 'No classes.';
     };
 
-    $scope.getThumbnail = function(picUrl) {
-        if (!picUrl || picUrl == "" || picUrl == '/img/generic_avatar.gif') return '/img/generic_avatar.gif';
-        return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
-    };
+    $scope.getThumbnail = userFactory.getThumbnail;
 
 
 
