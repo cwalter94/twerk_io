@@ -579,7 +579,6 @@ exports.removeReqUserFromGroup = function(req, res) {
             console.log(err);
             return res.status(401).end('An unknown error occurred in removing user from group.');
         }
-        console.log("GROUP USERS", group.users);
         group.users.splice(group.users.indexOf(req.user._id), 1);
         group.save(function(err) {
             if (err) {
@@ -587,6 +586,8 @@ exports.removeReqUserFromGroup = function(req, res) {
                 return res.status(401).end('An unknown error occurred in removing user from group.');
             }
             req.user.groups.splice(req.user.groups.indexOf(mongoose.Types.ObjectId(req.params.groupId)), 1);
+            req.user.classes.splice(req.user.classes.indexOf(group.name), 1);
+
             req.user.save(function(err) {
                 if (err) {
                     console.log(err);

@@ -8,7 +8,7 @@
             .text-left(once-text="toUser.classesString")
             .text-left {{toUser.status || 'No status to display.'}}
     .chat-message-display-container(scroll-glue="true")
-        .chat-message(ng-repeat="m in messages track by m._id")
+        .chat-message(ng-repeat="m in messages track by m.createdAt")
             .col-xs-1.img-col(once-show="m.from != me._id")
                 img(once-src="toUserPicture")
             .col-xs-10.text-col(once-class="{'col-xs-offset-1': m.from == me._id}")
