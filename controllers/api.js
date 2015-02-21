@@ -46,7 +46,7 @@ exports.getApi = function (req, res) {
 
 exports.getUser = function (req, res) {
     if (req.user) {
-        User.findOne({_id: req.user._id}, 'email picture name status statusCreated roles classes major minor verified', function (err, user) {
+        User.findOne({_id: req.user._id}, 'email picture name status statusCreated roles classes major minor verified groups', function (err, user) {
 
             if (err) {
                 console.log(err);
