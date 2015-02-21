@@ -11,7 +11,11 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
         }
 
         $q.all(promises).then(function(response) {
+
             angular.forEach(response, function(postSet) {
+                angular.forEach(postSet, function(post) {
+                    groupFactory.getCommentsForGroupPost(post);
+                });
                 $scope.groupPosts = $scope.groupPosts.concat(postSet);
             });
         }, function(err) {
@@ -135,7 +139,7 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
             var c = {
                 text: $scope.commentTextarea.text,
                 groupPostId: groupPost._id,
-                groupId: $scope.currGroup._id,
+                groupId: groupPost.groupId,
                 parentId: parent != null ? parent._id : groupPost._id,
                 createdBy: me._id
             };
@@ -149,7 +153,7 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
             var c = {
                 text: groupPost.newCommentText,
                 groupPostId: groupPost._id,
-                groupId: $scope.currGroup._id,
+                groupId: groupPost.groupId,
                 parentId: parent != null ? parent._id : groupPost._id,
                 createdBy: me._id
             };

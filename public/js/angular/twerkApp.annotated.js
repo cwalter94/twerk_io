@@ -1015,8 +1015,7 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
     $scope.userFactory = userFactory;
     $scope.groups = groups;
     $scope.currGroup = null;
-
-    if ($stateParams.url == '') {
+    if (angular.isUndefined($stateParams.url)) {
         var promises = [];
 
         for (var id in groups) {
@@ -1024,8 +1023,12 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
         }
 
         $q.all(promises).then(function(response) {
+
             angular.forEach(response, function(postSet) {
-                $scope.groupPosts.concat(postSet);
+                angular.forEach(postSet, function(post) {
+                    groupFactory.getCommentsForGroupPost(post);
+                });
+                $scope.groupPosts = $scope.groupPosts.concat(postSet);
             });
         }, function(err) {
             console.log(err);
@@ -1148,7 +1151,7 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
             var c = {
                 text: $scope.commentTextarea.text,
                 groupPostId: groupPost._id,
-                groupId: $scope.currGroup._id,
+                groupId: groupPost.groupId,
                 parentId: parent != null ? parent._id : groupPost._id,
                 createdBy: me._id
             };
@@ -1162,7 +1165,7 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
             var c = {
                 text: groupPost.newCommentText,
                 groupPostId: groupPost._id,
-                groupId: $scope.currGroup._id,
+                groupId: groupPost.groupId,
                 parentId: parent != null ? parent._id : groupPost._id,
                 createdBy: me._id
             };
@@ -1516,7 +1519,6 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
         getGroups: function(user) {
             var deferred = $q.defer();
             if (_groups) {
-                "RESOLVE WITHOUT CALLING"
                 deferred.resolve(_groups);
             } else {
                 $http(
@@ -1623,6 +1625,7 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
             _comments[comment._id] = comment;
 
             if (comment.groupPostId == comment.parentId) {
+                console.log(_groupPosts, comment);
                 _groupPosts[comment.groupPostId].comments.push(comment);
             } else {
                 _comments[comment.parentId].children.push(_comments[comment._id]);

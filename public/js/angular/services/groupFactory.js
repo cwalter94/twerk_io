@@ -111,6 +111,7 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
             _comments[comment._id] = comment;
 
             if (comment.groupPostId == comment.parentId) {
+                console.log(_groupPosts, comment);
                 _groupPosts[comment.groupPostId].comments.push(comment);
             } else {
                 _comments[comment.parentId].children.push(_comments[comment._id]);
