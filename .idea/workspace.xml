@@ -122,7 +122,7 @@
           <file leaf-file-name="app.js" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/app.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.0" vertical-offset="3081" max-vertical-offset="3990">
+                <state vertical-scroll-proportion="0.0" vertical-offset="1371" max-vertical-offset="3990">
                   <caret line="162" column="2" selection-start-line="162" selection-start-column="2" selection-end-line="162" selection-end-column="2" />
                   <folding />
                 </state>
@@ -142,8 +142,8 @@
           <file leaf-file-name="api.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/controllers/api.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.6394558" vertical-offset="7161" max-vertical-offset="12915">
-                  <caret line="591" column="81" selection-start-line="591" selection-start-column="81" selection-end-line="591" selection-end-column="81" />
+                <state vertical-scroll-proportion="-0.4319728" vertical-offset="6951" max-vertical-offset="12930">
+                  <caret line="514" column="68" selection-start-line="514" selection-start-column="0" selection-end-line="515" selection-end-column="0" />
                   <folding>
                     <element signature="e#9742#10185#0" expanded="false" />
                     <element signature="e#13997#16501#0" expanded="false" />
@@ -573,7 +573,7 @@
     <property name="options.searchVisible" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="WebServerToolWindowFactoryState" value="false" />
-    <property name="SearchEverywhereHistoryKey" value="room.jad&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/messages/room.jade&#10;messages.jade&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/outerState/messages.jade&#10;browse&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/browseCtrl.js&#10;principal&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/services/principal.js&#10;browse.jade&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/outerState/browse.jade&#10;user.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/user.js&#10;app&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/app.js&#10;room.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/messages/room.jade&#10;_browse&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_browse.scss&#10;groupAll&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/browse/groupAll.jade&#10;head&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/head.jade&#10;grunt&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/Gruntfile.js&#10;.html&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/partials/comment.html&#10;authC&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;socket.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/socket.js&#10;authCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;socket&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/socket.js&#10;group.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_group.scss&#10;all.sc&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/all.scss&#10;groupCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/groupCtrl.js&#10;twerkApp&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/twerkApp.js&#10;groupCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_group.scss&#10;twerk&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/twerkApp.js&#10;account&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;authCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;all.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/all.scss&#10;groupCt&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/groupCtrl.js&#10;group.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_group.scss&#10;userFactor&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/services/userFactory.js&#10;GroupPost.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/GroupPost.js&#10;Group&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/Group.js&#10;socket.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/socket.js&#10;Comment&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/Comment.js&#10;GroupPost&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/GroupPost.js&#10;userFactory&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/services/userFactory.js&#10;group.jade&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/browse/group.jade&#10;.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_browse.scss&#10;profile.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/outerState/profile.jade&#10;User&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/User.js&#10;Group.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/Group.js&#10;api&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/api.js&#10;groupPost&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/GroupPost.js&#10;api.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/api.js&#10;app.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/app.js&#10;auth&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;authc&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;head.jad&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/head.jade&#10;group.jad&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/browse/group.jade&#10;navbar&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/navbar.jade&#10;application.min&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/application.min.js" />
+    <property name="SearchEverywhereHistoryKey" value="app&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/app.js&#10;room.jad&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/messages/room.jade&#10;messages.jade&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/outerState/messages.jade&#10;browse&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/browseCtrl.js&#10;principal&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/services/principal.js&#10;browse.jade&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/outerState/browse.jade&#10;user.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/user.js&#10;room.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/messages/room.jade&#10;_browse&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_browse.scss&#10;groupAll&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/browse/groupAll.jade&#10;head&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/head.jade&#10;grunt&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/Gruntfile.js&#10;.html&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/partials/comment.html&#10;authC&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;socket.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/socket.js&#10;authCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;socket&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/socket.js&#10;group.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_group.scss&#10;all.sc&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/all.scss&#10;groupCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/groupCtrl.js&#10;twerkApp&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/twerkApp.js&#10;groupCtrl&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_group.scss&#10;twerk&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/twerkApp.js&#10;account&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/accountCtrl.js&#10;authCtr&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;all.scs&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/all.scss&#10;groupCt&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/groupCtrl.js&#10;group.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_group.scss&#10;userFactor&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/services/userFactory.js&#10;GroupPost.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/GroupPost.js&#10;Group&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/Group.js&#10;socket.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/socket.js&#10;Comment&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/Comment.js&#10;GroupPost&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/GroupPost.js&#10;userFactory&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/services/userFactory.js&#10;group.jade&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/browse/group.jade&#10;.scss&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/scss/_browse.scss&#10;profile.j&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/outerState/profile.jade&#10;User&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/User.js&#10;Group.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/Group.js&#10;api&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/api.js&#10;groupPost&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/models/GroupPost.js&#10;api.&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/controllers/api.js&#10;app.js&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/app.js&#10;auth&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;authc&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/angular/controllers/authCtrl.js&#10;head.jad&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/head.jade&#10;group.jad&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/innerState/browse/group.jade&#10;navbar&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/views/partials/navbar.jade&#10;application.min&#9;FILE&#9;file:///Users/chriswalter/Desktop/web/twerk_io/public/js/application.min.js" />
     <property name="FullScreen" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="LayoutCode.rearrangeEntriesSCSS" value="false" />
@@ -1149,12 +1149,12 @@
       <workItem from="1424306941469" duration="4398000" />
       <workItem from="1424349964305" duration="15422000" />
       <workItem from="1424436508814" duration="15012000" />
-      <workItem from="1424549713186" duration="5339000" />
+      <workItem from="1424549713186" duration="5863000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="444583000" />
+    <option name="totallyTimeSpent" value="445107000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1676" height="1027" extended-state="6" />
@@ -1503,14 +1503,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0" vertical-offset="1440" max-vertical-offset="3990">
-          <caret line="162" column="2" selection-start-line="162" selection-start-column="2" selection-end-line="162" selection-end-column="2" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/views/partials/head.jade">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="1245">
@@ -1604,10 +1596,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/app.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0" vertical-offset="1440" max-vertical-offset="3990">
+          <caret line="162" column="2" selection-start-line="162" selection-start-column="2" selection-end-line="162" selection-end-column="2" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/controllers/api.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6394558" vertical-offset="7161" max-vertical-offset="12915">
-          <caret line="591" column="81" selection-start-line="591" selection-start-column="81" selection-end-line="591" selection-end-column="81" />
+        <state vertical-scroll-proportion="-0.4319728" vertical-offset="6951" max-vertical-offset="12930">
+          <caret line="514" column="68" selection-start-line="514" selection-start-column="0" selection-end-line="515" selection-end-column="0" />
           <folding>
             <element signature="e#9742#10185#0" expanded="false" />
             <element signature="e#13997#16501#0" expanded="false" />

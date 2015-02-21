@@ -512,8 +512,9 @@ exports.addReqUserToGroup = function (req, res) {
     if (!req.params.name) {
       return res.status(404).end('Group name required.');
     }
+    var groupUrl = req.params.name.replace(/\s+/g,'').toLowerCase();
 
-    Group.findOne({name: req.params.name}, function(err, group) {
+    Group.findOne({url: groupUrl}, function(err, group) {
         if (err) {
             console.log(err);
             return res.status(401).end('An unknown error occurred in adding user to group.');
