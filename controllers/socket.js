@@ -3,7 +3,7 @@ var Room = require('../models/Room');
 var User = require('../models/User');
 var GroupPost = require('../models/GroupPost');
 var Group = require('../models/Group');
-
+var Comment = require('../models/Comment');
 var mongoose = require('mongoose');
 
 exports.socketHandler = function (allUsers) {
@@ -183,7 +183,21 @@ exports.socketHandler = function (allUsers) {
                     console.log(err);
                 } else {
                     socket.broadcast.to(newPost.groupId).emit('new:groupPost', newPost);
-                    console.log("Post emitted to socket for " + newPost.groupId);
+                    socket.emit('new:groupPost', newPost);
+                }
+            });
+        });
+
+        socket.on('new:comment', function(comment) {
+            var newComment = new Comment(comment);
+
+            newComment.save(function(err) {
+                if (err) {
+                    socket.emit('error', err);
+                    console.log(err);
+                } else {
+                    socket.broadcast.to(newComment.groupId).emit('new:comment', newComment);
+                    socket.emit('new:comment', newComment);
                 }
             });
         });

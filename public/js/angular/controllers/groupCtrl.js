@@ -2,6 +2,7 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
     $scope.groupPosts = [];
     $scope.userFactory = userFactory;
     $scope.groups = groups;
+    $scope.currGroup = null;
 
     if ($stateParams.url == '') {
         var promises = [];
@@ -22,8 +23,14 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
         for (var id in groups) {
             if (groups[id].url == $stateParams.url) {
                 groupFactory.getGroupPosts(id).then(function(response) {
-                    console.log(response);
+                    $scope.currGroup = groups[id];
                     $scope.groupPosts = response;
+                    var promises = [];
+                    angular.forEach($scope.groupPosts, function(groupPost) {
+                        groupFactory.getCommentsForGroupPost(groupPost).then(function(response) {
+
+                        });
+                    });
                 }, function(err) {
                     console.log(err);
                 });
@@ -32,26 +39,65 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
         }
     }
 
+    $scope.setCurrentComment = function(child) {
+        $scope.commentTextarea.currentPostComment = child;
+        child.minimizeChildren = true;
+    };
+
+    $scope.getNumberChildren = function(child) {
+        if (!child.children || child.children.length == 0) {
+            return 0;
+        }
+        var countArr = [];
+
+        for (var i = 0; i < child.children.length; i++) {
+            countArr.push($scope.getNumberChildren(child.children[i]));
+        }
+        var total = child.children.length;
+
+        angular.forEach(countArr, function(count) {
+            total += count;
+        });
+
+        return total;
+    };
+
+    $scope.formatDate = principal.formatDate;
 
     $scope.groupPostTextarea = {
-        toolbar: [['bold','italics','underline','pre','quote','insertImage','insertVideo', 'ul', 'ol']]
+    };
+
+    $scope.commentTextarea = {
+        toolbar: [['bold','italics','underline','pre','quote','insertImage','insertVideo', 'ul', 'ol']],
+        currentPostComment: "emptystring"
+    };
+
+    $scope.cancelComment = function() {
+        $scope.commentTextarea.currentPostComment = "emptystring";
+        $scope.commentTextarea.text = "";
     };
 
     $scope.textareaMinimize = true;
 
-    $scope.getUser = function(groupPost) {
-        if (groupPost.createdBy == me._id) {
-            groupPost.user = me;
-        } else {
-            groupPost.user = {};
-            return userFactory.getUsersByIds([groupPost.createdBy]).then(function(usersArr) {
-                groupPost.user = usersArr[0];
-            }, function(err) {
-                flash.error = err;
-                return null;
-            });
+    $scope.getUser = function(item) {
+        if (item) {
+            if (item.createdBy == me._id) {
+                item.user = {
+                    name: me.name,
+                    picture: me.picture,
+                    email: me.email,
+                    _id: me._id
+                };
+            } else {
+                item.user = {};
+                return userFactory.getUsersByIds([item.createdBy]).then(function(usersArr) {
+                    item.user = usersArr[0];
+                }, function(err) {
+                    flash.error = err;
+                    return null;
+                });
+            }
         }
-
     };
 
     $scope.cancelTextarea = function() {
@@ -82,6 +128,40 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
                 $scope.groupPostTextarea.text = "";
             }
 
+        }
+    };
+
+    $scope.submitComment = function(groupPost, parent) {
+        if ($scope.commentTextarea.text != "" && parent) {
+            var c = {
+                text: $scope.commentTextarea.text,
+                groupPostId: groupPost._id,
+                groupId: $scope.currGroup._id,
+                parentId: parent != null ? parent._id : groupPost._id,
+                createdBy: me._id
+            };
+
+            groupFactory.submitNewComment(c, siteSocket);
+
+            $scope.commentTextarea.text = "";
+            groupPost.newCommentText = "";
+            $scope.commentTextarea.currentPostComment = null;
+        } else if (groupPost.newCommentText) {
+            var c = {
+                text: groupPost.newCommentText,
+                groupPostId: groupPost._id,
+                groupId: $scope.currGroup._id,
+                parentId: parent != null ? parent._id : groupPost._id,
+                createdBy: me._id
+            };
+
+            groupFactory.submitNewComment(c, siteSocket);
+
+            $scope.commentTextarea.text = "";
+            groupPost.newCommentText = "";
+            $scope.commentTextarea.currentPostComment = null;
+        } else {
+            flash.err = 'Empty comments cannot be posted.';
         }
     }
 

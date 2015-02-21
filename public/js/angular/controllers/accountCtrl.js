@@ -2,7 +2,7 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
 
     $scope.me = me;
     $scope.me.selectedClasses = [];
-
+    console.log("ME", $scope.me);
     $scope.allClasses = [];
     $scope.loadingClasses = [{departmentCode: 'Loading classes...', courseNumber: ''}];
     $scope.courseSearch = {departments: [], selectedDepartment: "", courses: [], selectedCourse: ""};
@@ -47,6 +47,8 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
             method: 'POST'
         }).success(function(response) {
             me.groups[response.group._id] = response.group;
+            me.groups[response.group._id].groupPosts = null;
+
             $scope.courseSearch.selectedCourse = "";
         }).error(function(err) {
             flash.error = err;

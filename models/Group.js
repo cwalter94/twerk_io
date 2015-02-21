@@ -6,7 +6,6 @@ var groupSchema = new mongoose.Schema({
     name: {type: String, required: true},
     url: {type: String, required: true},
     term: {type: String, default: 'Spring 2015'},
-    groupPosts: {type: [mongoose.Schema.Types.objectId], default: []},
     users: {type: [mongoose.Schema.Types.objectId]}
 });
 

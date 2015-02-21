@@ -11,7 +11,7 @@ var loginCtrl = app.controller('loginCtrl', function($scope, $http, $location, $
                 if (!identity.verified) {
                     $state.transitionTo('site.auth.verify');
                 } else {
-                    $state.transitionTo('site.auth.browse');
+                    $state.transitionTo('site.auth.browse.all');
                 }
             }, (function(error) {
                 flash.error = error;

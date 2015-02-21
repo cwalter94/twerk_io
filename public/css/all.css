@@ -183,118 +183,117 @@ html body {
     color: #AAA; }
     html body .btn.btn-default.ng-pristine.ng-browsety {
       color: #333; }
-  html body nav {
-    margin: 0px; }
-    html body nav ul.nav {
-      background: transparent !important; }
-      html body nav ul.nav li {
-        height: 50px;
-        width: 90px; }
-        html body nav ul.nav li a {
-          height: 100%;
-          color: #ffffff !important;
-          background: transparent !important;
-          overflow: hidden; }
-          html body nav ul.nav li a .message-icon-container {
-            width: 100%;
+  html body nav.navbar {
+    margin: 0px;
+    background: #52008C;
+    padding: 0px; }
+    html body nav.navbar .navbar-brand > * {
+      color: #fff; }
+  html body nav ul.nav {
+    background: transparent !important; }
+    html body nav ul.nav li {
+      height: 50px;
+      width: 90px; }
+      html body nav ul.nav li a {
+        height: 100%;
+        color: #ffffff !important;
+        background: transparent !important;
+        overflow: hidden; }
+        html body nav ul.nav li a .message-icon-container {
+          width: 100%;
+          position: relative;
+          float: left; }
+          html body nav ul.nav li a .message-icon-container .glyphicon-envelope {
+            width: 90px;
             position: relative;
-            float: left; }
-            html body nav ul.nav li a .message-icon-container .glyphicon-envelope {
-              width: 90px;
-              position: relative;
-              text-align: center;
-              height: 100%;
-              -webkit-transition: all .25s;
-              -moz-transition: all .25s;
-              -ms-transition: all .25s;
-              -o-transition: all .25s;
-              transition: all .25s; }
-              html body nav ul.nav li a .message-icon-container .glyphicon-envelope.left {
-                width: 50px; }
-            html body nav ul.nav li a .message-icon-container .message-indicator {
-              width: 0;
-              position: relative;
-              float: left;
-              text-align: center;
-              background: transparent;
-              font-size: 18px;
-              color: #fff;
-              line-height: 27px;
-              padding: 0;
-              -webkit-transition: all .25s;
-              -moz-transition: all .25s;
-              -ms-transition: all .25s;
-              -o-transition: all .25s;
-              transition: all .25s; }
-              html body nav ul.nav li a .message-icon-container .message-indicator.visible {
-                width: 20px; }
-          html body nav ul.nav li a .nav-icon, html body nav ul.nav li a .message-icon-container {
-            -webkit-transition: all .3s;
-            -moz-transition: all .3s;
-            -ms-transition: all .3s;
-            -o-transition: all .3s;
-            transition: all .3s;
             text-align: center;
-            width: 100%;
-            left: 0;
-            top: 0;
-            font-size: 24px; }
-          html body nav ul.nav li a .nav-icon-text {
-            -webkit-transition: all .3s;
-            -moz-transition: all .3s;
-            -ms-transition: all .3s;
-            -o-transition: all .3s;
-            transition: all .3s;
-            font-size: 8px;
-            width: 100%;
+            height: 100%;
+            -webkit-transition: all .25s;
+            -moz-transition: all .25s;
+            -ms-transition: all .25s;
+            -o-transition: all .25s;
+            transition: all .25s; }
+            html body nav ul.nav li a .message-icon-container .glyphicon-envelope.left {
+              width: 50px; }
+          html body nav ul.nav li a .message-icon-container .message-indicator {
+            width: 0;
+            position: relative;
+            float: left;
             text-align: center;
-            bottom: -20px;
-            left: 0; }
-          html body nav ul.nav li a:hover {
-            background: transparent !important; }
-            html body nav ul.nav li a:hover .nav-icon, html body nav ul.nav li a:hover .message-icon-container {
-              top: -12px; }
-              html body nav ul.nav li a:hover .nav-icon.glyphicon-envelope, html body nav ul.nav li a:hover .message-icon-container.glyphicon-envelope {
-                top: 0; }
-            html body nav ul.nav li a:hover .nav-icon-text {
-              bottom: 10px; }
-    html body nav li.dropdown {
-      cursor: pointer; }
-      html body nav li.dropdown.open a {
-        background-color: rgba(255, 255, 255, 0) !important;
+            background: transparent;
+            font-size: 18px;
+            color: #fff;
+            line-height: 27px;
+            padding: 0;
+            -webkit-transition: all .25s;
+            -moz-transition: all .25s;
+            -ms-transition: all .25s;
+            -o-transition: all .25s;
+            transition: all .25s; }
+            html body nav ul.nav li a .message-icon-container .message-indicator.visible {
+              width: 20px; }
+        html body nav ul.nav li a .nav-icon, html body nav ul.nav li a .message-icon-container {
+          -webkit-transition: all .3s;
+          -moz-transition: all .3s;
+          -ms-transition: all .3s;
+          -o-transition: all .3s;
+          transition: all .3s;
+          text-align: center;
+          width: 100%;
+          left: 0;
+          top: 0;
+          font-size: 24px; }
+        html body nav ul.nav li a .nav-icon-text {
+          -webkit-transition: all .3s;
+          -moz-transition: all .3s;
+          -ms-transition: all .3s;
+          -o-transition: all .3s;
+          transition: all .3s;
+          font-size: 8px;
+          width: 100%;
+          text-align: center;
+          bottom: -20px;
+          left: 0; }
+        html body nav ul.nav li a:hover {
+          background: transparent !important; }
+          html body nav ul.nav li a:hover .nav-icon, html body nav ul.nav li a:hover .message-icon-container {
+            top: -12px; }
+            html body nav ul.nav li a:hover .nav-icon.glyphicon-envelope, html body nav ul.nav li a:hover .message-icon-container.glyphicon-envelope {
+              top: 0; }
+          html body nav ul.nav li a:hover .nav-icon-text {
+            bottom: 10px; }
+  html body nav li.dropdown {
+    cursor: pointer; }
+    html body nav li.dropdown.open a {
+      background-color: rgba(255, 255, 255, 0) !important;
+      color: #444 !important; }
+    html body nav li.dropdown.open ul {
+      padding: 0px;
+      background-color: rgba(255, 255, 255, 0.4) !important; }
+      html body nav li.dropdown.open ul a:hover {
+        background-color: rgba(255, 255, 255, 0.4) !important;
         color: #444 !important; }
-      html body nav li.dropdown.open ul {
-        padding: 0px;
-        background-color: rgba(255, 255, 255, 0.4) !important; }
-        html body nav li.dropdown.open ul a:hover {
-          background-color: rgba(255, 255, 255, 0.4) !important;
-          color: #444 !important; }
-    html body nav li a div {
-      dislay: inline-block;
-      position: relative;
+  html body nav li a div {
+    dislay: inline-block;
+    position: relative;
+    float: left;
+    width: 90%; }
+    html body nav li a div.message-indicator {
       float: left;
-      width: 90%; }
-      html body nav li a div.message-indicator {
-        float: left;
-        width: auto;
-        overflow: hidden;
-        padding-left: 10px;
-        color: red; }
-    html body nav.top-nav-collapse li.dropdown.open a {
-      background-color: rgba(255, 255, 255, 0.2) !important;
+      width: auto;
+      overflow: hidden;
+      padding-left: 10px;
+      color: red; }
+  html body nav.top-nav-collapse li.dropdown.open a {
+    background-color: rgba(255, 255, 255, 0.2) !important;
+    color: #444 !important;
+    cursor: pointer; }
+  html body nav.top-nav-collapse li.dropdown.open ul {
+    background-color: white !important; }
+    html body nav.top-nav-collapse li.dropdown.open ul a:hover {
+      background-color: rgba(0, 0, 0, 0.1) !important;
       color: #444 !important;
       cursor: pointer; }
-    html body nav.top-nav-collapse li.dropdown.open ul {
-      background-color: white !important; }
-      html body nav.top-nav-collapse li.dropdown.open ul a:hover {
-        background-color: rgba(0, 0, 0, 0.1) !important;
-        color: #444 !important;
-        cursor: pointer; }
-    html body nav.transparent-nav {
-      background: #52008C;
-      padding: 0px; }
-      html body nav.transparent-nav .navbar-brand > * {
-        color: #fff; }
   html body .form-control-row {
     margin-top: 50px; }
   html body .btn-form {
@@ -732,6 +731,12 @@ html body {
     @media (max-width: 768px) {
       html body #browse-container .browse-left-col {
         display: none; } }
+  html body #group-container a {
+    text-effect: none;
+    color: inherit; }
+    html body #group-container a:hover, html body #group-container a:active {
+      text-effect: none;
+      color: inherit; }
   html body #group-container .group-post-textarea-container {
     float: left;
     position: relative;
@@ -745,35 +750,51 @@ html body {
     -ms-transition: height .5s;
     -o-transition: height .5s;
     transition: height .5s; }
-    html body #group-container .group-post-textarea-container .edit-button {
-      display: none; }
-      html body #group-container .group-post-textarea-container .edit-button:hover {
+    html body #group-container .group-post-textarea-container .new-post-button {
+      display: none;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 24px;
+      color: #52008C; }
+      html body #group-container .group-post-textarea-container .new-post-button:hover {
         border-color: #52008C; }
-      html body #group-container .group-post-textarea-container .edit-button i {
+      html body #group-container .group-post-textarea-container .new-post-button i {
         color: #52008C; }
-    html body #group-container .group-post-textarea-container .group-post-buttons {
+    html body #group-container .group-post-textarea-container .btn-cancel {
+      background: #FFD2CF;
       margin: 5px; }
-      html body #group-container .group-post-textarea-container .group-post-buttons .btn {
-        margin: 5px; }
-        html body #group-container .group-post-textarea-container .group-post-buttons .btn.btn-post {
-          background: #CFEEFF; }
-        html body #group-container .group-post-textarea-container .group-post-buttons .btn.btn-cancel {
-          background: #FFD2CF; }
+    html body #group-container .group-post-textarea-container .btn-post {
+      background: #CFEEFF;
+      margin: 5px; }
+    html body #group-container .group-post-textarea-container text-angular {
+      position: relative;
+      float: left; }
+      html body #group-container .group-post-textarea-container text-angular .ta-editor {
+        min-height: 100px;
+        overflow: auto;
+        font-family: inherit;
+        font-size: 100%;
+        margin: 10px 0; }
+        html body #group-container .group-post-textarea-container text-angular .ta-editor > .ta-bind {
+          min-height: 100px; }
+        html body #group-container .group-post-textarea-container text-angular .ta-editor.ta-html {
+          min-height: 100px; }
+        html body #group-container .group-post-textarea-container text-angular .ta-editor img {
+          max-width: 50%; }
     html body #group-container .group-post-textarea-container.minimize {
       width: 100%; }
       html body #group-container .group-post-textarea-container.minimize text-angular {
         display: none; }
-      html body #group-container .group-post-textarea-container.minimize .edit-button {
+      html body #group-container .group-post-textarea-container.minimize .new-post-button {
         display: block;
         width: 100%;
         height: 100%;
         text-align: center; }
-        html body #group-container .group-post-textarea-container.minimize .edit-button i {
+        html body #group-container .group-post-textarea-container.minimize .new-post-button i {
           font-size: 24px;
           padding: 5px; }
       html body #group-container .group-post-textarea-container.minimize .btn-group {
         display: none; }
-  html body #group-container .group-post-container {
+  html body #group-container .group-post-outer-container .group-post-container {
     width: calc(100% - 20px);
     position: relative;
     float: left;
@@ -781,19 +802,129 @@ html body {
     border: 1px solid #ccc;
     border-radius: 2px;
     background: #FCFCFC;
-    padding: 0px 15px 15px; }
-    html body #group-container .group-post-container .profile-info {
-      height: 70px;
-      background: rgba(82, 0, 140, 0.13); }
-      html body #group-container .group-post-container .profile-info .picture {
+    padding: 0px 15px; }
+    html body #group-container .group-post-outer-container .group-post-container .picture {
+      overflow-y: hidden;
+      height: 100%;
+      max-height: 106px;
+      padding-left: 0px; }
+      html body #group-container .group-post-outer-container .group-post-container .picture img {
+        width: 100%; }
+    html body #group-container .group-post-outer-container .group-post-container .content {
+      padding-left: 0px; }
+      html body #group-container .group-post-outer-container .group-post-container .content .name {
+        font-size: 18px;
+        color: #52008C;
+        font-weight: 700; }
+      html body #group-container .group-post-outer-container .group-post-container .content .name, html body #group-container .group-post-outer-container .group-post-container .content .date {
+        padding: 5px; }
+      html body #group-container .group-post-outer-container .group-post-container .content .post-text {
+        padding: 10px 0px; }
+  html body #group-container .group-post-outer-container .comment-outer-container {
+    margin-left: 10px; }
+    html body #group-container .group-post-outer-container .comment-outer-container .minimize-button {
+      position: absolute;
+      left: -30px;
+      top: calc(50% - 20px);
+      color: #52008C;
+      border: none;
+      box-shadow: none;
+      background: transparent; }
+      html body #group-container .group-post-outer-container .comment-outer-container .minimize-button:focus, html body #group-container .group-post-outer-container .comment-outer-container .minimize-button:hover, html body #group-container .group-post-outer-container .comment-outer-container .minimize-button:active {
+        border: none;
+        box-shadow: none;
+        background: transparent; }
+      html body #group-container .group-post-outer-container .comment-outer-container .minimize-button .minus-icon {
+        display: block; }
+      html body #group-container .group-post-outer-container .comment-outer-container .minimize-button .plus-icon {
+        display: none; }
+    html body #group-container .group-post-outer-container .comment-outer-container .comment-container {
+      width: calc(100% - 30px);
+      position: relative;
+      float: left;
+      margin: 10px;
+      margin-top: -5px;
+      margin-bottom: 8px;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      background: #FCFCFC;
+      padding: 0px 15px;
+      margin-left: 20px; }
+      html body #group-container .group-post-outer-container .comment-outer-container .comment-container .picture {
+        padding: 0px;
         overflow-y: hidden;
         height: 100%; }
-        html body #group-container .group-post-container .profile-info .picture img {
+        html body #group-container .group-post-outer-container .comment-outer-container .comment-container .picture img {
           width: 100%; }
-      html body #group-container .group-post-container .profile-info .name, html body #group-container .group-post-container .profile-info .group-name {
-        font-size: 18px; }
-    html body #group-container .group-post-container .post-text {
-      padding: 10px 0px; }
+      html body #group-container .group-post-outer-container .comment-outer-container .comment-container .name {
+        font-weight: 500;
+        color: #52008C;
+        padding: 5px; }
+      html body #group-container .group-post-outer-container .comment-outer-container .comment-container .date {
+        padding: 5px;
+        font-size: 12px; }
+      html body #group-container .group-post-outer-container .comment-outer-container .comment-container img {
+        max-width: 100%; }
+    html body #group-container .group-post-outer-container .comment-outer-container .minimize-comment-container {
+      display: none; }
+    html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .comment-outer-container {
+      display: none; }
+    html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .minimize-comment-container {
+      display: block; }
+    html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .minimize-button .minus-icon {
+      display: none; }
+    html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .minimize-button .plus-icon {
+      display: block; }
+  html body #group-container .group-post-outer-container .new-comment-container {
+    width: calc(100% - 50px);
+    margin: -5px 10px 10px 40px;
+    position: relative;
+    float: left;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    background: #FCFCFC;
+    display: none; }
+    html body #group-container .group-post-outer-container .new-comment-container.visible {
+      display: block; }
+    html body #group-container .group-post-outer-container .new-comment-container .post-button {
+      background: #CFEEFF;
+      position: absolute;
+      bottom: 30px;
+      right: 5px;
+      font-size: 12px;
+      padding: 10px; }
+    html body #group-container .group-post-outer-container .new-comment-container .cancel-button {
+      position: absolute;
+      top: 0px;
+      right: 0px;
+      background: transparent;
+      border: none;
+      color: #CCC; }
+      html body #group-container .group-post-outer-container .new-comment-container .cancel-button:focus, html body #group-container .group-post-outer-container .new-comment-container .cancel-button:hover, html body #group-container .group-post-outer-container .new-comment-container .cancel-button:active {
+        color: #000; }
+    html body #group-container .group-post-outer-container .new-comment-container text-angular {
+      position: relative;
+      float: left;
+      width: calc(100% - 70px); }
+      html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor {
+        min-height: 0px;
+        overflow: auto;
+        font-family: inherit;
+        font-size: 100%;
+        margin: 10px 0; }
+        html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor > .ta-bind {
+          min-height: 0px; }
+        html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor.ta-html {
+          min-height: 0px; }
+        html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor img {
+          max-width: 50%; }
+    html body #group-container .group-post-outer-container .new-comment-container .new-comment-title {
+      margin: 10px 10px 0px;
+      font-size: 24px;
+      font-weight: 700; }
+  html body #group-container .group-post-outer-container > .new-comment-container {
+    width: calc(100% - 40px);
+    margin-left: 30px; }
   html body #messages-container {
     padding-top: 50px;
     height: calc(100% - 50px); }

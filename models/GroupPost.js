@@ -7,7 +7,6 @@ var groupPostSchema = new mongoose.Schema({
     text: {type: String, required: true},
     updatedAt: {type: Date},
     createdBy: {type: mongoose.Schema.ObjectId, required: true},
-    comments: {type: [mongoose.Schema.Types.objectId], default: []}
 });
 
 module.exports = mongoose.model('GroupPost', groupPostSchema);

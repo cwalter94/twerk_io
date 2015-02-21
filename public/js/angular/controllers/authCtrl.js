@@ -62,6 +62,10 @@ var authCtrl = app.controller('authCtrl', function ($scope, $state, $rootScope, 
         })
     });
 
+    siteSocket.on('new:comment', function(comment) {
+        groupFactory.addNewComment(comment);
+    })
+
 
 
 });

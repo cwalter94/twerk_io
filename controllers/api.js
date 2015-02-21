@@ -597,6 +597,22 @@ exports.removeReqUserFromGroup = function(req, res) {
     });
 };
 
+exports.getCommentsForGroupPostId = function(req, res) {
+    if (!req.params.groupPostId) {
+        return res.status(404).end('GroupPost ID required.');
+    }
+
+    Comment.find({groupPostId: req.params.groupPostId}, function(err, comments) {
+        if (err) {
+            console.log(err);
+            return res.status(401).end('An unknown error occurred in resolving comments.');
+        }
+
+        return res.json({token: req.token, comments: comments});
+    });
+};
+
+
 exports.postUserPicture = function (req, res, next) {
     var form = new multiparty.Form();
     form.parse(req, function (err, fields, files) {

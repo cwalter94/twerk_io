@@ -6,8 +6,13 @@ var commentSchema = new mongoose.Schema({
     text: {type: String, required: true},
     updatedAt: {type: Date},
     createdBy: {type: mongoose.Schema.Types.ObjectId, required: true},
-    groupPost: {type: mongoose.Schema.Types.ObjectId},
-    replyTo: {type: mongoose.Schema.Types.ObjectId}
+    groupPostId: {type: mongoose.Schema.Types.ObjectId, required: true},
+    groupId: {type: mongoose.Schema.Types.ObjectId, required: true},
+    children: {type: [mongoose.Schema.Types.ObjectId]},
+    parentId: {type: mongoose.Schema.Types.ObjectId, required: true},
+    likes: {type: Number, default: 0, required: true},
+    dislikes: {type: Number, default: 0, required: true}
+
 });
 
 module.exports = mongoose.model('Comment', commentSchema);

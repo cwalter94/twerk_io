@@ -244,6 +244,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 return identity;
                             }, function(err) {
                                 $location.path('/login');
+                                return null;
                             });
                         }
 
@@ -359,30 +360,14 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             .state('site.auth.browse.all', {
                 url: '',
                 controller: 'groupCtrl',
-                templateUrl: '/partials/inner/browse/group'
+                templateUrl: '/partials/inner/browse/groupAll'
             })
             .state('site.auth.browse.group', {
                 url: '/{url}',
                 controller: 'groupCtrl',
                 templateUrl: '/partials/inner/browse/group',
                 resolve: {
-                    //groupPosts: ['groupFactory', '$stateParams', 'groups', function(groupFactory, $stateParams, groups) {
-                    //    var currGroup = null;
-                    //
-                    //    for (var id in groups) {
-                    //        if (groups[id].url == $stateParams.url) {
-                    //            currGroup = groups[id];
-                    //        }
-                    //    }
-                    //
-                    //    return groupFactory.getGroupPosts(currGroup._id).then(function(response) {
-                    //        console.log("RESPONSE", response);
-                    //        return response.groupPosts;
-                    //    }, function(err) {
-                    //        console.log(err);
-                    //        return null;
-                    //    });
-                    //}]
+
                 }
             });
 
@@ -530,7 +515,7 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
 
     $scope.me = me;
     $scope.me.selectedClasses = [];
-
+    console.log("ME", $scope.me);
     $scope.allClasses = [];
     $scope.loadingClasses = [{departmentCode: 'Loading classes...', courseNumber: ''}];
     $scope.courseSearch = {departments: [], selectedDepartment: "", courses: [], selectedCourse: ""};
@@ -575,6 +560,8 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
             method: 'POST'
         }).success(function(response) {
             me.groups[response.group._id] = response.group;
+            me.groups[response.group._id].groupPosts = null;
+
             $scope.courseSearch.selectedCourse = "";
         }).error(function(err) {
             flash.error = err;
@@ -748,6 +735,10 @@ var authCtrl = app.controller('authCtrl', ['$scope', '$state', '$rootScope', 'me
         })
     });
 
+    siteSocket.on('new:comment', function(comment) {
+        groupFactory.addNewComment(comment);
+    })
+
 
 
 }]);
@@ -765,31 +756,7 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
     $scope.currentClassFilter = "";
     $scope.groups = groups;
 
-    $scope.formatDate = function(date) {
-
-        if (date != null) {
-            var formatted = new Date(date);
-            var day = formatted.getDate();
-            var month = formatted.getMonth() + 1;
-            var minutes = formatted.getMinutes();
-            var hours = formatted.getHours();
-            var timestamp = "am";
-
-            if (minutes < 10) {
-                var temp = '0' + minutes;
-                minutes = temp;
-            }
-            if (hours >= 12) {
-                timestamp = "pm";
-            }
-            hours = hours > 12 ?  hours % 12 : hours;
-            hours = hours == 0 ? 12 : hours;
-
-            var time = hours + ':' + minutes;
-            return month + '/' + day + ' @ ' + time + timestamp;
-        }
-
-    };
+    $scope.formatDate = principal.formatDate;
 
     $scope.me.statusDateFormatted = $scope.formatDate($scope.me.statusCreated);
 
@@ -804,10 +771,7 @@ var browseCtrl = app.controller('browseCtrl', ['$scope', '$http', '$location', '
         user.classesString = user.classes.length ? user.classes.join(', ') : 'No classes.';
     };
 
-    $scope.getThumbnail = function(picUrl) {
-        if (!picUrl || picUrl == "" || picUrl == '/img/generic_avatar.gif') return '/img/generic_avatar.gif';
-        return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
-    };
+    $scope.getThumbnail = userFactory.getThumbnail;
 
 
 
@@ -1048,6 +1012,9 @@ var dashboardCtrl = app.controller('dashboardCtrl', ['$scope', '$http', '$locati
 
 var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q', 'flash', '$state', '$stateParams', 'me', 'groups', 'siteSocket', 'principal', 'userFactory', 'groupFactory', function($scope, $http, $location, $q, flash, $state, $stateParams, me, groups, siteSocket, principal, userFactory, groupFactory) {
     $scope.groupPosts = [];
+    $scope.userFactory = userFactory;
+    $scope.groups = groups;
+    $scope.currGroup = null;
 
     if ($stateParams.url == '') {
         var promises = [];
@@ -1068,8 +1035,14 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
         for (var id in groups) {
             if (groups[id].url == $stateParams.url) {
                 groupFactory.getGroupPosts(id).then(function(response) {
-                    console.log(response);
+                    $scope.currGroup = groups[id];
                     $scope.groupPosts = response;
+                    var promises = [];
+                    angular.forEach($scope.groupPosts, function(groupPost) {
+                        groupFactory.getCommentsForGroupPost(groupPost).then(function(response) {
+
+                        });
+                    });
                 }, function(err) {
                     console.log(err);
                 });
@@ -1078,12 +1051,66 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
         }
     }
 
+    $scope.setCurrentComment = function(child) {
+        $scope.commentTextarea.currentPostComment = child;
+        child.minimizeChildren = true;
+    };
+
+    $scope.getNumberChildren = function(child) {
+        if (!child.children || child.children.length == 0) {
+            return 0;
+        }
+        var countArr = [];
+
+        for (var i = 0; i < child.children.length; i++) {
+            countArr.push($scope.getNumberChildren(child.children[i]));
+        }
+        var total = child.children.length;
+
+        angular.forEach(countArr, function(count) {
+            total += count;
+        });
+
+        return total;
+    };
+
+    $scope.formatDate = principal.formatDate;
 
     $scope.groupPostTextarea = {
-        toolbar: [['bold','italics','underline','pre','quote','insertImage','insertVideo', 'ul', 'ol']]
+    };
+
+    $scope.commentTextarea = {
+        toolbar: [['bold','italics','underline','pre','quote','insertImage','insertVideo', 'ul', 'ol']],
+        currentPostComment: "emptystring"
+    };
+
+    $scope.cancelComment = function() {
+        $scope.commentTextarea.currentPostComment = "emptystring";
+        $scope.commentTextarea.text = "";
     };
 
     $scope.textareaMinimize = true;
+
+    $scope.getUser = function(item) {
+        if (item) {
+            if (item.createdBy == me._id) {
+                item.user = {
+                    name: me.name,
+                    picture: me.picture,
+                    email: me.email,
+                    _id: me._id
+                };
+            } else {
+                item.user = {};
+                return userFactory.getUsersByIds([item.createdBy]).then(function(usersArr) {
+                    item.user = usersArr[0];
+                }, function(err) {
+                    flash.error = err;
+                    return null;
+                });
+            }
+        }
+    };
 
     $scope.cancelTextarea = function() {
         $scope.textareaMinimize = true;
@@ -1110,8 +1137,43 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
                 };
 
                 groupFactory.submitNewPost(newPost, siteSocket);
+                $scope.groupPostTextarea.text = "";
             }
 
+        }
+    };
+
+    $scope.submitComment = function(groupPost, parent) {
+        if ($scope.commentTextarea.text != "" && parent) {
+            var c = {
+                text: $scope.commentTextarea.text,
+                groupPostId: groupPost._id,
+                groupId: $scope.currGroup._id,
+                parentId: parent != null ? parent._id : groupPost._id,
+                createdBy: me._id
+            };
+
+            groupFactory.submitNewComment(c, siteSocket);
+
+            $scope.commentTextarea.text = "";
+            groupPost.newCommentText = "";
+            $scope.commentTextarea.currentPostComment = null;
+        } else if (groupPost.newCommentText) {
+            var c = {
+                text: groupPost.newCommentText,
+                groupPostId: groupPost._id,
+                groupId: $scope.currGroup._id,
+                parentId: parent != null ? parent._id : groupPost._id,
+                createdBy: me._id
+            };
+
+            groupFactory.submitNewComment(c, siteSocket);
+
+            $scope.commentTextarea.text = "";
+            groupPost.newCommentText = "";
+            $scope.commentTextarea.currentPostComment = null;
+        } else {
+            flash.err = 'Empty comments cannot be posted.';
         }
     }
 
@@ -1130,7 +1192,7 @@ var loginCtrl = app.controller('loginCtrl', ['$scope', '$http', '$location', '$w
                 if (!identity.verified) {
                     $state.transitionTo('site.auth.verify');
                 } else {
-                    $state.transitionTo('site.auth.browse');
+                    $state.transitionTo('site.auth.browse.all');
                 }
             }, (function(error) {
                 flash.error = error;
@@ -1448,12 +1510,13 @@ var authorization = app.factory('authorization', ['$rootScope', '$state', 'princ
 ])
 
 var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $q) {
-    var _groupPosts = {}, _groups = null;
+    var _groupPosts = {}, _groups = null, _comments = {};
 
     return {
         getGroups: function(user) {
             var deferred = $q.defer();
             if (_groups) {
+                "RESOLVE WITHOUT CALLING"
                 deferred.resolve(_groups);
             } else {
                 $http(
@@ -1466,7 +1529,7 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
                         for (var g = 0; g < response.groups.length; g++) {
                             _groupPosts[response.groups[g]._id] = [];
                             _groups[response.groups[g]._id] = response.groups[g];
-                            _groups[response.groups[g]._id].groupPosts = _groupPosts[response.groups[g]._id];
+                            _groups[response.groups[g]._id].groupPosts = null;
                         }
                         deferred.resolve(_groups);
                     }).error(function(err) {
@@ -1479,11 +1542,11 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
         getGroupPosts: function(groupId) {
             var deferred = $q.defer();
 
-            if (_groupPosts[groupId] && _groupPosts[groupId].length > 0) {
-                deferred.resolve(_groupPosts[groupId]);
+            if (_groups[groupId] && _groups[groupId].groupPosts) {
+                deferred.resolve(_groups[groupId].groupPosts);
             } else {
-                if (!_groupPosts[groupId]) {
-                    _groupPosts[groupId] = [];
+                if (!_groups[groupId].groupPosts) {
+                    _groups[groupId].groupPosts = [];
                 }
 
                 $http({
@@ -1492,9 +1555,10 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
                 }).success(function(response) {
                     for (var p = 0; p < response.groupPosts.length; p++) {
                         var groupPost = response.groupPosts[p];
-                        _groupPosts[groupId].push(groupPost);
+                        _groupPosts[groupPost._id] = groupPost;
+                        _groups[groupId].groupPosts.push(_groupPosts[groupPost._id]);
                     }
-                    deferred.resolve(_groupPosts[groupId]);
+                    deferred.resolve(_groups[groupId].groupPosts);
                 }).error(function(err) {
                     deferred.reject(err);
                 });
@@ -1502,17 +1566,67 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
             return deferred.promise;
         },
 
-        submitNewPost: function(post, socket) {
-            console.log("SUBMIT NEW POSt", post);
+        getCommentsForGroupPost: function(groupPost) {
             var deferred = $q.defer();
+            var promises = [];
+
+            $http({
+                url: '/api/comments/' + groupPost._id,
+                method: 'GET'
+            }).success(function(response) {
+                _groupPosts[groupPost._id].comments = [];
+                angular.forEach(response.comments, function(c) {
+                    _comments[c._id] = c;
+                    if (c.parentId == c.groupPostId) {
+                        _groupPosts[groupPost._id].comments.push(_comments[c._id]);
+                    }
+                    c.children = [];
+                });
+
+                angular.forEach(response.comments, function(c) {
+                    if (c.parentId !== c.groupPostId) {
+                        _comments[c.parentId].children.push(c);
+                    }
+                });
+
+                deferred.resolve(_groupPosts[groupPost._id].comments);
+
+            }).error(function(err) {
+                console.log(err);
+                return null;
+            });
+
+            return deferred.promise;
+
+        },
+
+        submitNewPost: function(post, socket) {
             socket.emit('new:groupPost', post);
         },
 
         addNewPost: function(groupPost) {
             var deferred = $q.defer();
-            _groupPosts[groupPost.groupId].push(groupPost);
+            _groupPosts[groupPost._id] = groupPost;
+            _groupPosts[groupPost._id].comments = [];
+            _groups[groupPost.groupId].groupPosts.push(_groupPosts[groupPost._id]);
             deferred.resolve(groupPost);
             return deferred.promise;
+        },
+
+        submitNewComment: function(comment, socket) {
+            socket.emit('new:comment', comment);
+        },
+
+        addNewComment: function(comment) {
+            var deferred = $q.defer();
+            comment.children = [];
+            _comments[comment._id] = comment;
+
+            if (comment.groupPostId == comment.parentId) {
+                _groupPosts[comment.groupPostId].comments.push(comment);
+            } else {
+                _comments[comment.parentId].children.push(_comments[comment._id]);
+            }
         }
 
     }
@@ -1827,7 +1941,6 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                             _authenticated = true;
                             groupFactory.getGroups(_identity).then(function(groups) {
                                 _identity.groups = groups;
-                                console.log("IDENTITY GROUPS", _identity);
                                 deferred.resolve(_identity);
                             }, function(err) {
                                 console.log(err);
@@ -1937,6 +2050,30 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                 if (temp === _identity) {
                     _identity.verified = true;
                 }
+            },
+            formatDate: function(date) {
+                if (date != null) {
+                    var formatted = new Date(date);
+                    var day = formatted.getDate();
+                    var month = formatted.getMonth() + 1;
+                    var minutes = formatted.getMinutes();
+                    var hours = formatted.getHours();
+                    var timestamp = "am";
+
+                    if (minutes < 10) {
+                        var temp = '0' + minutes;
+                        minutes = temp;
+                    }
+                    if (hours >= 12) {
+                        timestamp = "pm";
+                    }
+                    hours = hours > 12 ?  hours % 12 : hours;
+                    hours = hours == 0 ? 12 : hours;
+
+                    var time = hours + ':' + minutes;
+                    return month + '/' + day + ' @ ' + time + timestamp;
+                }
+                return "Unknown Date";
             }
         };
     }
@@ -2226,6 +2363,11 @@ var userFactory = app.factory('userFactory', ['$http', '$q', function($http, $q)
             });
 
             return deferred.promise;
+        },
+
+        getThumbnail: function(picUrl) {
+            if (!picUrl || picUrl == "" || picUrl == '/img/generic_avatar.gif') return '/img/generic_avatar.gif';
+            return picUrl.substring(0, picUrl.lastIndexOf('/')) + '/thumbnails' + picUrl.substring(picUrl.lastIndexOf('/'));
         }
     }
 }])

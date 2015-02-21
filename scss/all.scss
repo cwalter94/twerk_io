@@ -278,7 +278,20 @@ html {
     }
 
     nav {
-      margin: 0px;
+
+      &.navbar {
+        margin: 0px;
+        background: #52008C;
+        padding: 0px;
+
+        .navbar-brand {
+          > * {
+            color: #fff;
+
+          }
+        }
+      }
+
 
       ul.nav {
         background: transparent !important;
@@ -446,18 +459,6 @@ html {
                 cursor: pointer;
               }
             }
-          }
-        }
-      }
-
-      &.transparent-nav {
-        background: #52008C;
-        padding: 0px;
-
-        .navbar-brand {
-          > * {
-            color: #fff;
-
           }
         }
       }

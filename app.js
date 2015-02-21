@@ -224,9 +224,11 @@ app.post('/api/admin/deleteuser', apiController.adminDeleteUser);
 
 app.get('/api/groups', apiController.getGroupsForReqUser);
 app.get('/api/groups/:groupId/groupPosts', apiController.getGroupPostsForGroupId);
-
 app.post('/api/groups/:name/addUser', apiController.addReqUserToGroup);
 app.post('/api/groups/:groupId/removeUser', apiController.removeReqUserFromGroup);
+
+app.get('/api/comments/:groupPostId', apiController.getCommentsForGroupPostId);
+
 app.get('/api/logout', apiController.getUserLogout);
 
 app.get("*", function(req, res) {

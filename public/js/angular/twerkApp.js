@@ -244,6 +244,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                 return identity;
                             }, function(err) {
                                 $location.path('/login');
+                                return null;
                             });
                         }
 
@@ -359,30 +360,14 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             .state('site.auth.browse.all', {
                 url: '',
                 controller: 'groupCtrl',
-                templateUrl: '/partials/inner/browse/group'
+                templateUrl: '/partials/inner/browse/groupAll'
             })
             .state('site.auth.browse.group', {
                 url: '/{url}',
                 controller: 'groupCtrl',
                 templateUrl: '/partials/inner/browse/group',
                 resolve: {
-                    //groupPosts: ['groupFactory', '$stateParams', 'groups', function(groupFactory, $stateParams, groups) {
-                    //    var currGroup = null;
-                    //
-                    //    for (var id in groups) {
-                    //        if (groups[id].url == $stateParams.url) {
-                    //            currGroup = groups[id];
-                    //        }
-                    //    }
-                    //
-                    //    return groupFactory.getGroupPosts(currGroup._id).then(function(response) {
-                    //        console.log("RESPONSE", response);
-                    //        return response.groupPosts;
-                    //    }, function(err) {
-                    //        console.log(err);
-                    //        return null;
-                    //    });
-                    //}]
+
                 }
             });
 

@@ -54,7 +54,6 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                             _authenticated = true;
                             groupFactory.getGroups(_identity).then(function(groups) {
                                 _identity.groups = groups;
-                                console.log("IDENTITY GROUPS", _identity);
                                 deferred.resolve(_identity);
                             }, function(err) {
                                 console.log(err);
@@ -164,6 +163,30 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                 if (temp === _identity) {
                     _identity.verified = true;
                 }
+            },
+            formatDate: function(date) {
+                if (date != null) {
+                    var formatted = new Date(date);
+                    var day = formatted.getDate();
+                    var month = formatted.getMonth() + 1;
+                    var minutes = formatted.getMinutes();
+                    var hours = formatted.getHours();
+                    var timestamp = "am";
+
+                    if (minutes < 10) {
+                        var temp = '0' + minutes;
+                        minutes = temp;
+                    }
+                    if (hours >= 12) {
+                        timestamp = "pm";
+                    }
+                    hours = hours > 12 ?  hours % 12 : hours;
+                    hours = hours == 0 ? 12 : hours;
+
+                    var time = hours + ':' + minutes;
+                    return month + '/' + day + ' @ ' + time + timestamp;
+                }
+                return "Unknown Date";
             }
         };
     }

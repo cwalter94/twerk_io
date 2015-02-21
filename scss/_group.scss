@@ -1,4 +1,16 @@
 #group-container {
+
+  a {
+    text-effect: none;
+    color: inherit;
+
+    &:hover, &:active {
+      text-effect: none;
+      color: inherit;
+    }
+  }
+
+
   .group-post-textarea-container {
     float: left;
     position: relative;
@@ -15,8 +27,11 @@
     transition: height .5s;
 
 
-    .edit-button {
+    .new-post-button {
       display: none;
+      font-family: Helvetica, Arial, sans-serif;
+      font-size: 24px;
+      color: #52008C;
 
       &:hover {
         border-color: #52008C;
@@ -26,20 +41,43 @@
 
       }
     }
-    .group-post-buttons {
+
+    .btn-cancel {
+      background: #FFD2CF;
       margin: 5px;
+    }
 
-      .btn {
-        margin: 5px;
+    .btn-post {
+      background: #CFEEFF;
+      margin: 5px;
+    }
 
-        &.btn-post {
-          background: #CFEEFF;
+    text-angular {
+      position: relative;
+      float: left;
+
+      .ta-editor {
+        min-height: 100px;
+        overflow: auto;
+        font-family: inherit;
+        font-size: 100%;
+        margin: 10px 0;
+
+        > .ta-bind {
+          min-height: 100px;
         }
 
-        &.btn-cancel {
-          background: #FFD2CF;
+
+        &.ta-html {
+          min-height: 100px;
+        }
+
+        img {
+          max-width: 50%;
+
         }
       }
+
     }
 
     &.minimize {
@@ -49,7 +87,7 @@
         display: none;
       }
 
-      .edit-button {
+      .new-post-button {
         display: block;
 
         width: 100%;
@@ -68,40 +106,235 @@
 
 
     }
+
   }
 
-  .group-post-container {
-    width: calc(100% - 20px);
-    position: relative;
-    float: left;
-    margin: 10px;
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    background: #FCFCFC;
-    padding: 0px 15px 15px;
+  .group-post-outer-container {
 
-    .profile-info {
-      height: 70px;
-      background: rgba(82, 0, 140, 0.13);
+    .group-post-container {
+      width: calc(100% - 20px);
+      position: relative;
+      float: left;
+      margin: 10px;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      background: #FCFCFC;
+      padding: 0px 15px;
 
       .picture {
         overflow-y: hidden;
         height: 100%;
+        max-height: 106px;
+        padding-left: 0px;
 
         img {
           width: 100%;
+
         }
 
       }
 
-      .name, .group-name {
-        font-size: 18px;
+      .content {
+        padding-left: 0px;
+
+        .name {
+          font-size: 18px;
+          color: #52008C;
+          font-weight: 700;
+        }
+
+        .name, .date {
+          padding: 5px;
+        }
+
+
+
+        .post-text {
+          padding: 10px 0px;
+        }
       }
 
     }
 
-    .post-text {
-      padding: 10px 0px;
+    .comment-outer-container {
+      margin-left: 10px;
+
+      .minimize-button {
+        position: absolute;
+        left: -30px;
+        top: calc(50% - 20px);
+        color: #52008C;
+        border: none;
+        box-shadow: none;
+        background: transparent;
+
+        &:focus, &:hover, &:active {
+          border: none;
+          box-shadow: none;
+          background: transparent;
+        }
+
+        .minus-icon {
+          display: block;
+        }
+        .plus-icon {
+          display: none;
+        }
+      }
+      .comment-container {
+        width: calc(100% - 30px);
+        position: relative;
+        float: left;
+        margin: 10px;
+        margin-top: -5px;
+        margin-bottom: 8px;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        background: #FCFCFC;
+        padding: 0px 15px;
+        margin-left: 20px;
+
+        .picture {
+          padding: 0px;
+          overflow-y: hidden;
+          height: 100%;
+
+          img {
+            width: 100%;
+          }
+        }
+
+        .name {
+          font-weight: 500;
+          color: #52008C;
+          padding: 5px;
+        }
+
+        .date {
+          padding: 5px;
+          font-size: 12px;
+        }
+
+        img {
+          max-width: 100%;
+
+        }
+
+      }
+
+
+
+      .minimize-comment-container {
+        display: none;
+      }
+
+
+
+      &.minimize-children {
+        .comment-outer-container {
+          display: none;
+        }
+
+        .minimize-comment-container {
+          display: block;
+        }
+
+        .minimize-button {
+          .minus-icon {
+            display: none;
+          }
+          .plus-icon {
+            display: block;
+          }
+        }
+      }
+
+
+
+
+
     }
+
+    .new-comment-container {
+      width: calc(100% - 50px);
+      margin: -5px 10px 10px 40px;
+      position: relative;
+      float: left;
+      border: 1px solid #ccc;
+      border-radius: 2px;
+      background: #FCFCFC;
+      display: none;
+
+      &.visible {
+        display: block;
+      }
+
+      .post-button {
+        background: #CFEEFF;
+        position: absolute;
+        bottom: 30px;
+        right: 5px;
+        font-size: 12px;
+        padding: 10px;
+      }
+
+      .cancel-button {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        background: transparent;
+        border: none;
+        color: #CCC;
+
+        &:focus, &:hover, &:active {
+          color: #000;
+        }
+      }
+
+      text-angular {
+        position: relative;
+        float: left;
+        width: calc(100% - 70px);
+
+        .ta-editor {
+          min-height: 0px;
+          overflow: auto;
+          font-family: inherit;
+          font-size: 100%;
+          margin: 10px 0;
+
+          > .ta-bind {
+            min-height: 0px;
+          }
+
+
+          &.ta-html {
+            min-height: 0px;
+          }
+
+          img {
+            max-width: 50%;
+
+          }
+        }
+
+      }
+
+      .new-comment-title {
+        margin: 10px 10px 0px;
+        font-size: 24px;
+        font-weight: 700;
+      }
+
+    }
+
+    >.new-comment-container {
+      width: calc(100% - 40px);
+      margin-left: 30px;
+    }
+
+
+
+
   }
 }
