@@ -469,7 +469,7 @@ exports.getUserProfile = function (req, res, next) {
 
     if (req.user) {
         User.findOne({email: req.user.email},
-            'email status roles name email classes picture major minor verified',
+            'email status roles name email classes picture major minor verified groups',
 
             function (err, user) {
 
