@@ -224,7 +224,7 @@ exports.getUsersForUserIdsArr = function (req, res) {
         for (var i in req.query.userIds) {
             userObjectIds.push(mongoose.Types.ObjectId(req.query.userIds[i]))
         }
-        User.find({_id: {"$in": userObjectIds}}, 'email status roles name email classes picture major minor', function (err, users) {
+        User.find({_id: {"$in": userObjectIds}}, 'email status roles name email classes picture major minor groups', function (err, users) {
             if (err) {
                 console.log(err);
                 return res.status(401).end('An unknown error occurred while finding user data.');
@@ -376,7 +376,7 @@ exports.authenticate = function (req, res, next) {
         return res.status(401).end('An error occurred during login. Please verify your credentials and try again.');
     }
 
-    User.findOne({email: email}, 'email name status classes verified statusCreated picture lastOnline', function (err, user) {
+    User.findOne({email: email}, 'email name status classes verified statusCreated picture lastOnline groups', function (err, user) {
 
         if (err) {
             console.log(err);
@@ -527,12 +527,13 @@ exports.addReqUserToGroup = function (req, res) {
                 }
 
                 req.user.groups.push(group._id);
+                req.user.classes.push(group.name);
+
                 req.user.save(function(err) {
                     if (err) {
                         console.log(err);
                         return res.status(401).end('An unknown error occurred in saving user.');
                     }
-                    console.log("REQ USER SUCCESSFULLY ADDED TO GROUP " + group._id, req.user);
                     return res.json({token: req.token, group: group});
                 });
 
@@ -552,6 +553,7 @@ exports.addReqUserToGroup = function (req, res) {
                     return res.status(401).end('An unknown error occurred in saving group.');
                 }
                 req.user.groups.push(newGroup._id);
+                req.user.classes.push(newGroup.name);
                 req.user.save(function(err) {
                     if (err) {
                         console.log(err);
