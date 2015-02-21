@@ -465,6 +465,11 @@ html body {
       position: fixed;
       max-width: 1140px;
       z-index: 5; }
+      html body #browse-container .class-selection-container .title {
+        display: inline-block;
+        float: left;
+        position: relative;
+        margin: 8px; }
       html body #browse-container .class-selection-container .class-container {
         font-size: 1.3em;
         height: 25px;
@@ -508,7 +513,7 @@ html body {
             height: calc(100% - 80px); }
             html body #browse-container .browse-row .browse-left-col .status-container .status-inner-container .status-date {
               float: left;
-              width: 120px;
+              width: auto;
               border-top-left-radius: 5px;
               border-top-right-radius: 5px;
               background: #CFEEFF;
@@ -818,6 +823,13 @@ html body {
         font-weight: 700; }
       html body #group-container .group-post-outer-container .group-post-container .content .name, html body #group-container .group-post-outer-container .group-post-container .content .date {
         padding: 5px; }
+      html body #group-container .group-post-outer-container .group-post-container .content .group-name {
+        width: auto;
+        color: #52008C;
+        border: 1px solid #52008C;
+        margin: 5px;
+        padding: 0px 5px;
+        border-radius: 2px; }
       html body #group-container .group-post-outer-container .group-post-container .content .post-text {
         padding: 10px 0px; }
   html body #group-container .group-post-outer-container .comment-outer-container {
@@ -925,6 +937,13 @@ html body {
   html body #group-container .group-post-outer-container > .new-comment-container {
     width: calc(100% - 40px);
     margin-left: 30px; }
+  html body #group-container .no-posts-message {
+    font-size: 24px;
+    width: 100%;
+    height: 100%; }
+    html body #group-container .no-posts-message .message {
+      text-align: center;
+      margin-top: calc(50% - 12px); }
   html body #messages-container {
     padding-top: 50px;
     height: calc(100% - 50px); }

@@ -3,8 +3,7 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
     $scope.userFactory = userFactory;
     $scope.groups = groups;
     $scope.currGroup = null;
-
-    if ($stateParams.url == '') {
+    if (angular.isUndefined($stateParams.url)) {
         var promises = [];
 
         for (var id in groups) {
@@ -13,7 +12,7 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
 
         $q.all(promises).then(function(response) {
             angular.forEach(response, function(postSet) {
-                $scope.groupPosts.concat(postSet);
+                $scope.groupPosts = $scope.groupPosts.concat(postSet);
             });
         }, function(err) {
             console.log(err);

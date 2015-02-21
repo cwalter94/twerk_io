@@ -5,7 +5,6 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
         getGroups: function(user) {
             var deferred = $q.defer();
             if (_groups) {
-                "RESOLVE WITHOUT CALLING"
                 deferred.resolve(_groups);
             } else {
                 $http(

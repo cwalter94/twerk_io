@@ -12,6 +12,13 @@
     max-width: 1140px;
     z-index: 5;
 
+    .title {
+      display: inline-block;
+      float: left;
+      position: relative;
+      margin: 8px;
+    }
+
     .class-container {
       font-size: 1.3em;
       height: 25px;
@@ -20,6 +27,8 @@
       float: left;
       color: #aaa;
       display: inline-block;
+
+
 
       &:hover {
         color: #52008C;
@@ -70,7 +79,7 @@
 
           .status-date {
             float: left;
-            width: 120px;
+            width: auto;
             border-top-left-radius:5px;
             border-top-right-radius: 5px;
             background:  #CFEEFF;
