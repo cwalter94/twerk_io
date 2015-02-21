@@ -1,13 +1,13 @@
-div.container#browse-container(infinite-scroll="getMorePosts()")
+div.container#browse-container(infinite-scroll="getMorePosts()", ng-init="me.groups = groups")
         .row
             .col-xs-12
                 .class-selection-container
                     .container
                         h4.title Twerkspaces
-                        div.no-class-message(ng-show="me.groups.length == 0") You have no classes! Add some on the profile page.
-                        a.class-container(ng-show="me.groups != null", ui-sref="site.auth.browse.all", ui-sref-active="active") ALL
+                        div.no-class-message(ng-show="groups.length == 0") You have no classes! Add some on the profile page.
+                        a.class-container(ng-show="groups != null", ui-sref="site.auth.browse.all", ui-sref-active="active") ALL
                         a.class-container(
-                        ng-repeat="group in me.groups", ui-sref="site.auth.browse.group({url : group.url})", ui-sref-active="active")
+                        ng-repeat="group in groups", ui-sref="site.auth.browse.group({url : group.url})", ui-sref-active="active")
                             div(once-text="group.name")
         .row.browse-row
             .col-md-4.col-xs-0.browse-left-col

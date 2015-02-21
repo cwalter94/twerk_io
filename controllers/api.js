@@ -63,7 +63,7 @@ exports.getUser = function (req, res) {
 
 exports.getUsersForBrowse = function (req, res) {
     if (req.query.num && req.query.sortBy && req.query.start) {
-        var selectString = '_id name email picture status classes statusCreated lastOnline';
+        var selectString = '_id name email picture status classes statusCreated lastOnline groups';
         var sortString = '-statusCreated';
 
 
