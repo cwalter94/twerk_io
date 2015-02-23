@@ -349,6 +349,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                     }],
                     groups: ['groupFactory', function(groupFactory) {
                         return groupFactory.getGroups().then(function(groups) {
+                            console.log("GET GROUPS BROWSE", groups);
                             return groups;
                         }, function(err) {
                             console.log(err);

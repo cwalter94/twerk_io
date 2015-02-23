@@ -14,6 +14,9 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
                     }
                 ).success(function(response) {
                         _groups = {};
+                        if (response.groups.length == 0) {
+                            deferred.resolve(null);
+                        }
                         for (var g = 0; g < response.groups.length; g++) {
                             _groupPosts[response.groups[g]._id] = [];
                             _groups[response.groups[g]._id] = response.groups[g];
@@ -86,6 +89,24 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
 
             return deferred.promise;
 
+        },
+
+        addGroup: function(selectedCourse) {
+            var deferred = $q.defer();
+
+            $http({
+                url: '/api/groups/' + selectedCourse + '/addUser',
+                method: 'POST'
+            }).success(function(response) {
+                _groups[response.group._id] = response.group;
+                _groups[response.group._id].groupPosts = [];
+
+                deferred.resolve(_groups);
+            }).error(function(err) {
+                deferred.reject(err);
+            });
+
+            return deferred.promise;
         },
 
         submitNewPost: function(post, socket) {

@@ -944,6 +944,22 @@ html body {
     html body #group-container .no-posts-message .message {
       text-align: center;
       margin-top: calc(50% - 12px); }
+  html body #group-container #intro-container {
+    width: 100%;
+    min-height: 300px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px; }
+    html body #group-container #intro-container .title {
+      font-size: 24px; }
+    html body #group-container #intro-container .add-groups-container {
+      padding: 20px; }
+    html body #group-container #intro-container .update-status-row {
+      margin-top: 50px; }
+      html body #group-container #intro-container .update-status-row .status-saved-message {
+        font-size: 10px;
+        color: #52008C;
+        text-align: center; }
   html body #messages-container {
     padding-top: 50px;
     height: calc(100% - 50px); }

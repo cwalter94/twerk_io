@@ -42,6 +42,61 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
         }
     }
 
+    $scope.courseSearch = {
+        selectedCourse: "",
+        courses: [],
+        departments: [],
+        selectedDepartment: ""
+    };
+
+    $scope.addGroup = function() {
+
+        $http({
+            url: '/api/groups/' + $scope.courseSearch.selectedCourse + '/addUser',
+            method: 'POST'
+        }).success(function(response) {
+            me.groups[response.group._id] = response.group;
+            me.groups[response.group._id].groupPosts = [];
+
+            $scope.courseSearch.selectedCourse = "";
+        }).error(function(err) {
+            flash.error = err;
+        });
+
+    };
+
+    $scope.removeGroup = function(group) {
+        $http({
+            url: '/api/groups/' + group._id + '/removeUser',
+            method: 'POST'
+        }).success(function(response) {
+            delete me.groups[group._id];
+        }).error(function(err) {
+            flash.error = err;
+        });
+    };
+
+    $scope.getCoursesForDepartment = function(selectedDepartment) {
+        $http({
+            url: '/api/courses',
+            method: 'GET',
+            params: {
+                department: selectedDepartment
+            }
+        }).success(function(data) {
+            $scope.courseSearch.courses = data.courses;
+        })
+
+    };
+
+
+    $scope.$watch('courseSearch.selectedDepartment', function(newval, oldval) {
+        if (newval != "") {
+            $scope.getCoursesForDepartment(newval);
+        }
+    });
+
+
     $scope.setCurrentComment = function(child) {
         $scope.commentTextarea.currentPostComment = child;
         child.minimizeChildren = true;

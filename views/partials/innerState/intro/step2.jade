@@ -1,0 +1,21 @@
+.title Step 2: Update your status to tell people what you're twerking on.
+    .row.update-status-row
+        .col-xs-10.col-xs-offset-1
+            textarea.form-control(rows="2", type='text',
+            placeholder="What are you working on right now?", ng-model="me.status")
+        .col-xs-1(ng-show="dataHasChanged", style="padding: 5px; font-size: 24px; line-height: 24px;")
+            a(ng-click="saveStatusUpdate()")
+                .fa.fa-check
+            .status-saved-message(ng-show="statusSaved")
+                | Saved
+    .row.form-control-row
+        .col-xs-6.text-center
+            a.btn-form(ui-sref='site.auth.browse.intro.step1')
+                i.fa.fa-angle-left
+                span Back
+
+        .col-xs-6.text-center
+            a.btn-form(ui-sref='site.auth.browse.all')
+                span Finish
+                i.fa.fa-angle-right
+

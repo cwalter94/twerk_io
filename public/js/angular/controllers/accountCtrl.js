@@ -1,8 +1,8 @@
-var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal, siteSocket) {
+var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http, $location, me, flash, $cookieStore, principal, siteSocket, groupFactory) {
 
     $scope.me = me;
     $scope.me.selectedClasses = [];
-    console.log("ME", $scope.me);
+    $scope.statusSaved = false;
     $scope.allClasses = [];
     $scope.loadingClasses = [{departmentCode: 'Loading classes...', courseNumber: ''}];
     $scope.courseSearch = {departments: [], selectedDepartment: "", courses: [], selectedCourse: ""};
@@ -31,6 +31,7 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
     $scope.$watch('me.status', function(newval, oldval) {
         if (newval != oldval) {
             $scope.dataHasChanged = !angular.equals($scope.me.status, $scope.origMe.status);
+            $scope.statusSaved = false;
         }
     });
 
@@ -47,13 +48,30 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
             method: 'POST'
         }).success(function(response) {
             me.groups[response.group._id] = response.group;
-            me.groups[response.group._id].groupPosts = null;
+            me.groups[response.group._id].groupPosts = [];
 
             $scope.courseSearch.selectedCourse = "";
         }).error(function(err) {
             flash.error = err;
         });
 
+    };
+    $scope.saveStatusUpdate = function() {
+        $scope.me.statusCreated = Date.now();
+
+        $http.post('/api/userprofile', {data: $scope.me})
+            .success(function(response) {
+                siteSocket.emit('update:status', {userId: $scope.me._id, status: $scope.me.status, statusCreated: Date.now()});
+                $scope.me.statusCreated = Date.now();
+                $scope.me.statusDateFormatted = $scope.formatDate($scope.me.statusCreated);
+                principal.updateIdentity($scope.me).then(function(response) {
+                    $scope.statusInput = "";
+                    $scope.statusSaved = true;
+                })
+            })
+            .error(function () {
+                flash.error = 'Profile could not be saved. Please try again later.';
+            });
     };
 
     $scope.getCoursesForDepartment = function(selectedDepartment) {

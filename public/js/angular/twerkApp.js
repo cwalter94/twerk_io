@@ -176,7 +176,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                                     principal.verifyIdentity(identity);
                                     flash.success = 'Account successfully verified.';
                                     $scope.verified = true;
-                                    $state.transitionTo('site.auth.browse.all');
+                                    $state.transitionTo('site.auth.browse.intro.step1');
                                 });
                             }
                             , function(err) {
@@ -347,9 +347,11 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             return null;
                         });
                     }],
-                    groups: ['groupFactory', function(groupFactory) {
+                    groups: ['groupFactory', '$state', function(groupFactory, $state) {
                         return groupFactory.getGroups().then(function(groups) {
-                            console.log("GET GROUPS BROWSE", groups);
+                            if (!groups) {
+                                $state.transitionTo('site.auth.browse.intro.step1');
+                            }
                             return groups;
                         }, function(err) {
                             console.log(err);
@@ -357,6 +359,20 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         })
                     }]
                 }
+            })
+            .state('site.auth.browse.intro', {
+                url: '/intro',
+                controller: 'accountCtrl',
+                abstract: true,
+                templateUrl: '/partials/inner/intro/intro'
+            })
+            .state('site.auth.browse.intro.step1', {
+                url: '/step1',
+                templateUrl:'/partials/inner/intro/step1'
+            })
+            .state('site.auth.browse.intro.step2', {
+                url: '/step2',
+                templateUrl: '/partials/inner/intro/step2'
             })
             .state('site.auth.browse.all', {
                 url: '',

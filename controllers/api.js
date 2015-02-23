@@ -277,7 +277,7 @@ exports.deletePictureForReqUser = function (req, res) {
 exports.getCoursesForDepartment = function (req, res) {
     if (req.query.department) {
         for (var i = 0; i < courses.length; i++) {
-            if (req.query.department.indexOf(courses[i].name) > -1 || req.query.department.indexOf(courses[i].abbreviation) > -1) {
+            if (req.query.department.indexOf(courses[i].abbreviation) > -1) {
                 return res.json({token: req.token, courses: courses[i].courses})
             }
         }

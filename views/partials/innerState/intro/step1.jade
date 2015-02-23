@@ -1,0 +1,31 @@
+.title Step 1: Add Twerkspaces for your classes.
+
+
+div.add-groups-container
+    .row(ng-repeat="group in me.groups", style="font-size: 18px;")
+        .col-xs-1(ng-click="removeGroup(group)")
+            .glyphicon.glyphicon-remove
+        .col-xs-11(once-text="group.name")
+
+    .row(style="margin-top: 10px;")
+        .col-xs-7(style="padding-right: 0px;")
+            input(type="hidden", ng-model="courseSearch.selectedDepartment")
+            ui-select.address-select(ng-model='courseSearch.selectedDepartment', theme='selectize')
+                ui-select-match(placeholder='Department') {{courseSearch.selectedDepartment}}
+                ui-select-choices(repeat='dept in courseSearch.departments | filter:$select.search | orderBy: dept : false')
+                    | {{dept}}
+        .col-xs-4(style="padding-left: 5px;")
+            input(type="hidden", ng-model="courseSearch.selectedCourse")
+            ui-select.address-select(ng-model='courseSearch.selectedCourse', theme='selectize')
+                ui-select-match(placeholder='Course') {{courseSearch.selectedCourse}}
+                ui-select-choices(repeat='course in courseSearch.courses | filter:$select.search | orderBy: course : false')
+                    | {{course}}
+        .col-xs-1(ng-show="courseSearch.selectedCourse != ''", style="padding: 5px; font-size: 24px; line-height: 24px;")
+            a(ng-click="addGroup()")
+                .glyphicon.glyphicon-plus
+    .row.form-control-row
+
+        .col-xs-6.col-xs-offset-6.text-center
+            a.btn-form(ui-sref='site.auth.browse.intro.step2')
+                span Next
+                i.fa.fa-angle-right

@@ -99,9 +99,18 @@ app.use('/api', userController.validateToken);
 app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 
 //(function seed () {
-//    function addUserToGroups(user, className) {
+//    var seenUsers = [];
+//    function addUserToGroups(user, className, index, ret) {
 //        return function() {
 //            var groupUrl = className.replace(/\s+/g,'').toLowerCase();
+//            if(seenUsers.indexOf(user.email) == -1) {
+//                seenUsers.push(user.email);
+//                user.groups = [];
+//                user.save(function(err) {
+//                    if (err) console.log(err);
+//                })
+//
+//            }
 //            Group.findOne({url: groupUrl}, function(err, group) {
 //                if (err) {
 //                    console.log(err);
@@ -115,7 +124,7 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 //                        users: [user._id]
 //                    });
 //
-//                    newGroup.save(function(err) {
+//                    newGroup.save(function (err) {
 //                        if (err) {
 //                            console.log("ERR IN CREATING GROUP ", newGroup);
 //                        } else {
@@ -123,12 +132,15 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 //                                user.groups = [];
 //                            }
 //                            user.groups.push(newGroup._id);
-//                            user.save(function(err) {
+//                            user.save(function (err) {
 //                                if (err) {
 //                                    console.log("ERR IN SAVING USER GROUPS", user, group);
 //                                    console.log(err);
 //                                } else {
-//                                    console.log("USER ADDED TO GROUP", user);
+//                                    //console.log("USER ADDED TO GROUP", user);
+//                                    ret(index + 1);
+//                                    console.log("USER ADDED TO GROUP", user, newGroup.name);
+//
 //                                }
 //                            })
 //                        }
@@ -137,27 +149,38 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 //                } else {
 //                    if (group.users.indexOf(user._id) == -1) {
 //                        group.users = group.users.concat([user._id]);
-//                        group.save(function(err) {
+//                        group.save(function (err) {
 //                            if (err) {
 //                                console.log("ERR IN ADDING USER TO GROUP ", user, group);
 //                                console.log(err);
 //                            }
 //                            if (user.groups.indexOf(group._id) == -1) {
 //                                user.groups.push(group._id);
-//                                user.save(function(err) {
+//                                user.save(function (err) {
 //                                    if (err) {
 //                                        console.log("ERR IN SAVING USER GROUPS", user, group);
 //                                        console.log(err);
+//                                    } else {
+//                                        console.log("USER ADDED TO GROUP", user, group.name);
+//                                        ret(index + 1);
 //                                    }
 //                                })
 //                            }
 //                        });
 //                    } else {
-//                        console.log("user" + user.name + " already in group " + group.name);
+//                        console.log("user" + user + " already in group " + group.name);
+//                        ret(index + 1);
 //                    }
-//
 //                }
 //            });
+//        }
+//    }
+//    var allUsers = [];
+//    var index = 0;
+//
+//    function addUserToClass(index) {
+//        if (index < allUsers.length) {
+//            addUserToGroups(allUsers[index].user, allUsers[index].className, index, addUserToClass)();
 //        }
 //    }
 //
@@ -169,18 +192,41 @@ app.use(express.static(path.join(__dirname, 'public'), { maxAge: week }));
 //            } else {
 //                for (var i = 0; i < users.length; i++) {
 //                    var user = users[i];
-//                    user.groups = [];
 //                    for (var j = 0; j < user.classes.length; j++) {
-//                        var userClass = user.classes[j];
-//                        addUserToGroups(user, userClass)();
+//                        var className = user.classes[j];
+//                        user.groups = [];
+//                        allUsers.push({user: user, className: className});
 //                    }
 //                }
+//
+//                addUserToGroups(allUsers[0].user, allUsers[0].className, 0, addUserToClass)();
+//
 //            }
 //        })
 //    });
-//
+
+//    User.findOne({email: 'test@berkeley.edu'}, function(err, user) {
+//        console.log(user);
+//    });
 //
 //}) ();
+
+//User.findOne({email: 'cwalter94@berkeley.edu'}, function(err, user) {
+//    console.log(user);
+//    if (user) {
+//        user.remove(function(err) {
+//            if (err) {
+//                console.log(err);
+//            } else {
+//                console.log("cwalter94 removed");
+//            }
+//
+//        });
+//    } else {
+//        console.log("no user removed");
+//    }
+//
+//});
 
 /**
  * Main routes.

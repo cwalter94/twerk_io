@@ -357,4 +357,30 @@
       margin-top: calc(50% - 12px);
     }
   }
+
+  #intro-container {
+    width: 100%;
+    min-height: 300px;
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 15px;
+
+    .title {
+      font-size: 24px;
+    }
+
+    .add-groups-container {
+      padding: 20px;
+    }
+
+    .update-status-row {
+      margin-top: 50px;
+
+      .status-saved-message {
+        font-size: 10px;
+        color: #52008C;
+        text-align: center;
+      }
+    }
+  }
 }
