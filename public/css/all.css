@@ -109,7 +109,7 @@ html body {
     font-size: 14px;
     padding: 10px 10px 5px 10px; }
   html body ul {
-    list-style-type: none !important; }
+    list-style-type: none; }
   html body a {
     cursor: pointer; }
   html body .scroll-container {
@@ -733,7 +733,7 @@ html body {
               cursor: pointer; }
       html body #browse-container .browse-row .browse-right-col {
         margin-top: 60px; }
-    @media (max-width: 768px) {
+    @media (max-width: 1024px) {
       html body #browse-container .browse-left-col {
         display: none; } }
   html body #group-container a {
@@ -750,6 +750,7 @@ html body {
     height: auto;
     background: #eeeeee;
     border: 1px solid #CCC;
+    margin-bottom: 10px;
     -webkit-transition: height .5s;
     -moz-transition: height .5s;
     -ms-transition: height .5s;
@@ -773,6 +774,10 @@ html body {
     html body #group-container .group-post-textarea-container text-angular {
       position: relative;
       float: left; }
+      html body #group-container .group-post-textarea-container text-angular h1, html body #group-container .group-post-textarea-container text-angular h2, html body #group-container .group-post-textarea-container text-angular h3, html body #group-container .group-post-textarea-container text-angular h4, html body #group-container .group-post-textarea-container text-angular h5, html body #group-container .group-post-textarea-container text-angular h6 {
+        margin-bottom: 0px; }
+      html body #group-container .group-post-textarea-container text-angular ul {
+        list-style-type: circle; }
       html body #group-container .group-post-textarea-container text-angular .ta-editor {
         min-height: 100px;
         overflow: auto;
@@ -799,144 +804,163 @@ html body {
           padding: 5px; }
       html body #group-container .group-post-textarea-container.minimize .btn-group {
         display: none; }
-  html body #group-container .group-post-outer-container .group-post-container {
-    width: calc(100% - 20px);
-    position: relative;
-    float: left;
-    margin: 10px;
+  html body #group-container .group-post-outer-container {
+    background: #FCFCFC;
     border: 1px solid #ccc;
     border-radius: 2px;
-    background: #FCFCFC;
-    padding: 0px 15px; }
-    html body #group-container .group-post-outer-container .group-post-container .picture {
-      overflow-y: hidden;
-      height: 100%;
-      max-height: 106px;
-      padding-left: 0px; }
-      html body #group-container .group-post-outer-container .group-post-container .picture img {
-        width: 100%; }
-    html body #group-container .group-post-outer-container .group-post-container .content {
-      padding-left: 0px; }
-      html body #group-container .group-post-outer-container .group-post-container .content .name {
-        font-size: 18px;
-        color: #52008C;
-        font-weight: 700; }
-      html body #group-container .group-post-outer-container .group-post-container .content .name, html body #group-container .group-post-outer-container .group-post-container .content .date {
-        padding: 5px; }
-      html body #group-container .group-post-outer-container .group-post-container .content .group-name {
-        width: auto;
-        color: #52008C;
-        border: 1px solid #52008C;
-        margin: 5px;
-        padding: 0px 5px;
-        border-radius: 2px; }
-      html body #group-container .group-post-outer-container .group-post-container .content .post-text {
-        padding: 10px 0px; }
-  html body #group-container .group-post-outer-container .comment-outer-container {
-    margin-left: 10px; }
-    html body #group-container .group-post-outer-container .comment-outer-container .minimize-button {
-      position: absolute;
-      left: -30px;
-      top: calc(50% - 20px);
-      color: #52008C;
+    margin-bottom: 40px;
+    float: left;
+    position: relative;
+    width: 100%; }
+    html body #group-container .group-post-outer-container ul {
+      list-style-type: circle; }
+    html body #group-container .group-post-outer-container h1, html body #group-container .group-post-outer-container h2, html body #group-container .group-post-outer-container h3, html body #group-container .group-post-outer-container h4, html body #group-container .group-post-outer-container h5, html body #group-container .group-post-outer-container h6 {
+      margin-bottom: 0px; }
+    html body #group-container .group-post-outer-container .group-post-container {
+      width: 100%;
+      position: relative;
+      float: left;
       border: none;
-      box-shadow: none;
-      background: transparent; }
-      html body #group-container .group-post-outer-container .comment-outer-container .minimize-button:focus, html body #group-container .group-post-outer-container .comment-outer-container .minimize-button:hover, html body #group-container .group-post-outer-container .comment-outer-container .minimize-button:active {
+      border-bottom: 1px solid #ccc;
+      background: #FCFCFC;
+      padding: 0px 15px;
+      padding-bottom: 10px;
+      margin-bottom: 8px; }
+      html body #group-container .group-post-outer-container .group-post-container .picture {
+        overflow-y: hidden;
+        height: 100%;
+        max-height: 106px;
+        padding-left: 0px; }
+        html body #group-container .group-post-outer-container .group-post-container .picture img {
+          width: 100%; }
+      html body #group-container .group-post-outer-container .group-post-container .content {
+        padding-left: 0px; }
+        html body #group-container .group-post-outer-container .group-post-container .content .name {
+          font-size: 18px;
+          color: #52008C;
+          font-weight: 700; }
+        html body #group-container .group-post-outer-container .group-post-container .content .name, html body #group-container .group-post-outer-container .group-post-container .content .date {
+          padding: 5px; }
+        html body #group-container .group-post-outer-container .group-post-container .content .group-name {
+          width: auto;
+          color: #52008C;
+          border: 1px solid #52008C;
+          margin: 5px;
+          padding: 0px 5px;
+          border-radius: 2px; }
+        html body #group-container .group-post-outer-container .group-post-container .content .post-text {
+          padding: 10px 0px; }
+    html body #group-container .group-post-outer-container .comment-outer-container {
+      margin-left: 10px; }
+      html body #group-container .group-post-outer-container .comment-outer-container .minimize-button {
+        position: absolute;
+        left: -30px;
+        top: calc(50% - 20px);
+        color: #52008C;
         border: none;
         box-shadow: none;
         background: transparent; }
-      html body #group-container .group-post-outer-container .comment-outer-container .minimize-button .minus-icon {
-        display: block; }
-      html body #group-container .group-post-outer-container .comment-outer-container .minimize-button .plus-icon {
+        html body #group-container .group-post-outer-container .comment-outer-container .minimize-button:focus, html body #group-container .group-post-outer-container .comment-outer-container .minimize-button:hover, html body #group-container .group-post-outer-container .comment-outer-container .minimize-button:active {
+          border: none;
+          box-shadow: none;
+          background: transparent; }
+        html body #group-container .group-post-outer-container .comment-outer-container .minimize-button .minus-icon {
+          display: block; }
+        html body #group-container .group-post-outer-container .comment-outer-container .minimize-button .plus-icon {
+          display: none; }
+      html body #group-container .group-post-outer-container .comment-outer-container .comment-container {
+        width: calc(100% - 30px);
+        position: relative;
+        float: left;
+        margin: 10px;
+        margin-top: -5px;
+        margin-bottom: 8px;
+        border: 1px solid #ccc;
+        border-radius: 2px;
+        background: #FCFCFC;
+        padding: 0px 15px;
+        margin-left: 20px; }
+        html body #group-container .group-post-outer-container .comment-outer-container .comment-container .picture {
+          padding: 0px;
+          overflow-y: hidden;
+          height: 100%; }
+          html body #group-container .group-post-outer-container .comment-outer-container .comment-container .picture img {
+            width: 100%; }
+        html body #group-container .group-post-outer-container .comment-outer-container .comment-container .name {
+          font-weight: 500;
+          color: #52008C;
+          padding: 5px; }
+        html body #group-container .group-post-outer-container .comment-outer-container .comment-container .date {
+          padding: 5px;
+          font-size: 12px; }
+        html body #group-container .group-post-outer-container .comment-outer-container .comment-container img {
+          max-width: 100%; }
+      html body #group-container .group-post-outer-container .comment-outer-container .minimize-comment-container {
         display: none; }
-    html body #group-container .group-post-outer-container .comment-outer-container .comment-container {
-      width: calc(100% - 30px);
+      html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .comment-outer-container {
+        display: none; }
+      html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .minimize-comment-container {
+        display: block; }
+      html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .minimize-button .minus-icon {
+        display: none; }
+      html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .minimize-button .plus-icon {
+        display: block; }
+    html body #group-container .group-post-outer-container .new-comment-container {
+      width: calc(100% - 50px);
+      margin: -5px 10px 10px 40px;
       position: relative;
       float: left;
-      margin: 10px;
-      margin-top: -5px;
-      margin-bottom: 8px;
       border: 1px solid #ccc;
       border-radius: 2px;
       background: #FCFCFC;
-      padding: 0px 15px;
-      margin-left: 20px; }
-      html body #group-container .group-post-outer-container .comment-outer-container .comment-container .picture {
-        padding: 0px;
-        overflow-y: hidden;
-        height: 100%; }
-        html body #group-container .group-post-outer-container .comment-outer-container .comment-container .picture img {
-          width: 100%; }
-      html body #group-container .group-post-outer-container .comment-outer-container .comment-container .name {
-        font-weight: 500;
-        color: #52008C;
-        padding: 5px; }
-      html body #group-container .group-post-outer-container .comment-outer-container .comment-container .date {
-        padding: 5px;
-        font-size: 12px; }
-      html body #group-container .group-post-outer-container .comment-outer-container .comment-container img {
-        max-width: 100%; }
-    html body #group-container .group-post-outer-container .comment-outer-container .minimize-comment-container {
       display: none; }
-    html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .comment-outer-container {
-      display: none; }
-    html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .minimize-comment-container {
-      display: block; }
-    html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .minimize-button .minus-icon {
-      display: none; }
-    html body #group-container .group-post-outer-container .comment-outer-container.minimize-children .minimize-button .plus-icon {
-      display: block; }
-  html body #group-container .group-post-outer-container .new-comment-container {
-    width: calc(100% - 50px);
-    margin: -5px 10px 10px 40px;
-    position: relative;
-    float: left;
-    border: 1px solid #ccc;
-    border-radius: 2px;
-    background: #FCFCFC;
-    display: none; }
-    html body #group-container .group-post-outer-container .new-comment-container.visible {
-      display: block; }
-    html body #group-container .group-post-outer-container .new-comment-container .post-button {
-      background: #CFEEFF;
-      position: absolute;
-      bottom: 30px;
-      right: 5px;
-      font-size: 12px;
-      padding: 10px; }
-    html body #group-container .group-post-outer-container .new-comment-container .cancel-button {
-      position: absolute;
-      top: 0px;
-      right: 0px;
-      background: transparent;
+      html body #group-container .group-post-outer-container .new-comment-container.visible {
+        display: block; }
+      html body #group-container .group-post-outer-container .new-comment-container .post-button {
+        background: #FCFCFC;
+        position: absolute;
+        bottom: 30px;
+        right: 5px;
+        font-size: 12px;
+        padding: 10px; }
+        html body #group-container .group-post-outer-container .new-comment-container .post-button:focus, html body #group-container .group-post-outer-container .new-comment-container .post-button:active, html body #group-container .group-post-outer-container .new-comment-container .post-button:hover {
+          border: inherit;
+          box-shadow: none; }
+      html body #group-container .group-post-outer-container .new-comment-container .cancel-button {
+        position: absolute;
+        top: 0px;
+        right: 0px;
+        background: transparent;
+        border: none;
+        color: #CCC; }
+        html body #group-container .group-post-outer-container .new-comment-container .cancel-button:focus, html body #group-container .group-post-outer-container .new-comment-container .cancel-button:hover, html body #group-container .group-post-outer-container .new-comment-container .cancel-button:active {
+          color: #000; }
+      html body #group-container .group-post-outer-container .new-comment-container text-angular {
+        position: relative;
+        float: left;
+        width: calc(100% - 70px); }
+        html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor {
+          min-height: 0px;
+          overflow: auto;
+          font-family: inherit;
+          font-size: 100%;
+          margin: 10px 0; }
+          html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor > .ta-bind {
+            min-height: 0px; }
+          html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor.ta-html {
+            min-height: 0px; }
+          html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor img {
+            max-width: 50%; }
+      html body #group-container .group-post-outer-container .new-comment-container .new-comment-title {
+        margin: 10px 10px 0px;
+        font-size: 24px;
+        font-weight: 700; }
+    html body #group-container .group-post-outer-container > .new-comment-container {
+      width: 100%;
+      margin: 0px;
       border: none;
-      color: #CCC; }
-      html body #group-container .group-post-outer-container .new-comment-container .cancel-button:focus, html body #group-container .group-post-outer-container .new-comment-container .cancel-button:hover, html body #group-container .group-post-outer-container .new-comment-container .cancel-button:active {
-        color: #000; }
-    html body #group-container .group-post-outer-container .new-comment-container text-angular {
-      position: relative;
-      float: left;
-      width: calc(100% - 70px); }
-      html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor {
-        min-height: 0px;
-        overflow: auto;
-        font-family: inherit;
-        font-size: 100%;
-        margin: 10px 0; }
-        html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor > .ta-bind {
-          min-height: 0px; }
-        html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor.ta-html {
-          min-height: 0px; }
-        html body #group-container .group-post-outer-container .new-comment-container text-angular .ta-editor img {
-          max-width: 50%; }
-    html body #group-container .group-post-outer-container .new-comment-container .new-comment-title {
-      margin: 10px 10px 0px;
-      font-size: 24px;
-      font-weight: 700; }
-  html body #group-container .group-post-outer-container > .new-comment-container {
-    width: calc(100% - 40px);
-    margin-left: 30px; }
+      border-top: 1px solid #ccc;
+      background: rgba(103, 13, 167, 0.13); }
   html body #group-container .no-posts-message {
     font-size: 24px;
     width: 100%;

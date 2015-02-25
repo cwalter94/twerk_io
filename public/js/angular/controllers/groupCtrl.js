@@ -1,12 +1,20 @@
-var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $q, flash, $state, $stateParams, me, groups, siteSocket, principal, userFactory, groupFactory) {
+var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $q, flash, $state, $stateParams, me, siteSocket, principal, userFactory, groupFactory, $rootScope) {
     $scope.groupPosts = [];
     $scope.userFactory = userFactory;
-    $scope.groups = groups;
+    $scope.groups = me.groups;
+    $scope.Date = Date;
+    $scope.groups = me.groups;
     $scope.currGroup = null;
+
+    $scope.defaultGroupPost = {
+        text: '<h2>welcome to twerkspaces!</h2><p><br/></p><h4>how it works:</h4><ul><ul><li>Add classes on the profile page or intro page: <a href="http://twerk.io/browse/intro/step1"><u>http://twerk.io/browse/intro/step1</u></a></li><li>Select twerkspaces above to create posts that are visible to everyone in that class.</li><li>Find people who are twerking too.</li><li>Then twerk with those people.</li></ul></ul>'
+    };
+
+
     if (angular.isUndefined($stateParams.url)) {
         var promises = [];
 
-        for (var id in groups) {
+        for (var id in me.groups) {
             promises.push(groupFactory.getGroupPosts(id));
         }
 
@@ -23,11 +31,12 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
             flash.error = err;
         });
     } else {
-        for (var id in groups) {
-            if (groups[id].url == $stateParams.url) {
+        for (var id in me.groups) {
+            if (me.groups[id].url == $stateParams.url) {
                 groupFactory.getGroupPosts(id).then(function(response) {
-                    $scope.currGroup = groups[id];
+                    $scope.currGroup = me.groups[id];
                     $scope.groupPosts = response;
+
                     var promises = [];
                     angular.forEach($scope.groupPosts, function(groupPost) {
                         groupFactory.getCommentsForGroupPost(groupPost).then(function(response) {
@@ -41,6 +50,7 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
             }
         }
     }
+
 
     $scope.courseSearch = {
         selectedCourse: "",
@@ -57,7 +67,6 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
         }).success(function(response) {
             me.groups[response.group._id] = response.group;
             me.groups[response.group._id].groupPosts = [];
-
             $scope.courseSearch.selectedCourse = "";
         }).error(function(err) {
             flash.error = err;
@@ -169,8 +178,8 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
         } else {
             var currGroup = null;
             for (var id in groups) {
-                if (groups[id].url == $stateParams.url) {
-                    currGroup = groups[id];
+                if (me.groups[id].url == $stateParams.url) {
+                    currGroup = me.groups[id];
                     break;
                 }
             }
@@ -222,5 +231,11 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
             flash.err = 'Empty comments cannot be posted.';
         }
     }
+
+    siteSocket.on('new:groupPost', function(groupPost) {
+        if ($scope.groupPosts.indexOf(groupPost) == -1) {
+            $scope.groupPosts.push(groupPost);
+        }
+    });
 
 });

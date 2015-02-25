@@ -29,7 +29,7 @@ div.container.content-container#account-container
                     .row
                         .clearfix
 
-                        .col-md-4.col-xs-4.picture-col
+                        .col-md-4.col-xs-12.picture-col
 
                             .profile-picture(ng-file-drop='onFileSelect($files)',
                             ng-file-drop-available="dropSupported=true", ng-file-drag-over-delay='100', ng-class="{'empty' : me.picture == null || me.picture == '' || me.picture == '/img/generic_avatar.gif'}")
@@ -39,7 +39,7 @@ div.container.content-container#account-container
 
                                 .picture-upload
                                     .upload-text Drag and Drop Picture
-                        .col-md-8.col-xs-8.info-col
+                        .col-md-8.col-xs-12.info-col
                             .row
                                 .col-xs-10.col-xs-offset-1
                                     .form-group.row

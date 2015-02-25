@@ -15,7 +15,7 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
                 ).success(function(response) {
                         _groups = {};
                         if (response.groups.length == 0) {
-                            deferred.resolve(null);
+                            deferred.resolve(_groups);
                         }
                         for (var g = 0; g < response.groups.length; g++) {
                             _groupPosts[response.groups[g]._id] = [];
@@ -100,8 +100,7 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
             }).success(function(response) {
                 _groups[response.group._id] = response.group;
                 _groups[response.group._id].groupPosts = [];
-
-                deferred.resolve(_groups);
+                deferred.resolve(_groups[response.group._id]);
             }).error(function(err) {
                 deferred.reject(err);
             });

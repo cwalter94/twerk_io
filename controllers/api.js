@@ -520,25 +520,27 @@ exports.addReqUserToGroup = function (req, res) {
             return res.status(401).end('An unknown error occurred in adding user to group.');
         }
         if (group) {
-            group.users.push(req.user._id);
-            group.save(function(err) {
-                if (err) {
-                    console.log(err);
-                    return res.status(401).end('An unknown error occurred in saving group users.');
-                }
-
-                req.user.groups.push(group._id);
-                req.user.classes.push(group.name);
-
-                req.user.save(function(err) {
+            if (group.users.indexOf(req.user._id) == -1) {
+                group.users.push(req.user._id);
+                group.save(function(err) {
                     if (err) {
                         console.log(err);
-                        return res.status(401).end('An unknown error occurred in saving user.');
+                        return res.status(401).end('An unknown error occurred in saving group users.');
                     }
-                    return res.json({token: req.token, group: group});
-                });
 
-            });
+                    req.user.groups.push(group._id);
+                    req.user.classes.push(group.name);
+
+                    req.user.save(function(err) {
+                        if (err) {
+                            console.log(err);
+                            return res.status(401).end('An unknown error occurred in saving user.');
+                        }
+                        return res.json({token: req.token, group: group});
+                    });
+
+                });
+            }
         } else {
             var groupUrl = req.params.name.replace(/\s+/g,'').toLowerCase();
 

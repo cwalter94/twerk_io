@@ -4,7 +4,6 @@ div.container#browse-container(infinite-scroll="getMorePosts()", ng-init="me.gro
                 .class-selection-container
                     .container
                         h4.title Twerkspaces
-                        div.no-class-message(ng-show="groups.length == 0") You have no classes! Add some on the profile page.
                         a.class-container(ng-show="groups != null", ui-sref="site.auth.browse.all", ui-sref-active="active") ALL
                         a.class-container(
                         ng-repeat="group in groups", ui-sref="site.auth.browse.group({url : group.url})", ui-sref-active="active")
@@ -54,7 +53,7 @@ div.container#browse-container(infinite-scroll="getMorePosts()", ng-init="me.gro
 
                         .manual-load-button(ng-click="getMoreUsers()") {{ loadUsersButtonText }}
 
-            .col-sm-8.col-sm-offset-4.col-xs-12.browse-right-col
+            .col-md-8.col-md-offset-4.col-sm-12.browse-right-col
                 .ui-view#group-container
 
 

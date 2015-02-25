@@ -317,19 +317,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 controller: 'browseCtrl',
                 abstract: true,
                 resolve: {
-                    me: ['principal', '$location', '$state',
-                        function (principal, $location, $state) {
-                            return principal.identity().then(function(identity) {
-                                if (identity && !identity.verified) {
-                                    $state.transitionTo('site.auth.verify');
-                                }
-                                return identity;
-                            }, function(err) {
-                                $location.path('/login');
-                                return null;
-                            });
-                        }
-                    ],
                     allRooms: ['messageFactory', function(messageFactory) {
                         return messageFactory.getRooms().then(function(allRooms) {
                             return allRooms;
@@ -346,17 +333,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         }, function(err) {
                             return null;
                         });
-                    }],
-                    groups: ['groupFactory', '$state', function(groupFactory, $state) {
-                        return groupFactory.getGroups().then(function(groups) {
-                            if (!groups) {
-                                $state.transitionTo('site.auth.browse.intro.step1');
-                            }
-                            return groups;
-                        }, function(err) {
-                            console.log(err);
-                            return null;
-                        })
                     }]
                 }
             })
@@ -377,14 +353,63 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
             .state('site.auth.browse.all', {
                 url: '',
                 controller: 'groupCtrl',
-                templateUrl: '/partials/inner/browse/groupAll'
+                templateUrl: '/partials/inner/browse/groupAll',
+                resolve: {
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                if (identity && !identity.verified) {
+                                    $state.transitionTo('site.auth.verify');
+                                }
+                                var temp = false;
+                                for (var key in identity.groups) {
+                                    if (identity.groups[key]) {
+                                        temp = true;
+                                        break;
+                                    }
+                                }
+
+                                if (!temp) {
+                                    $state.transitionTo('site.auth.browse.intro.step1');
+                                }
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                                return null;
+                            });
+                        }
+                    ]
+                }
             })
             .state('site.auth.browse.group', {
                 url: '/{url}',
                 controller: 'groupCtrl',
                 templateUrl: '/partials/inner/browse/group',
                 resolve: {
+                    me: ['principal', '$location', '$state',
+                        function (principal, $location, $state) {
+                            return principal.identity().then(function(identity) {
+                                if (identity && !identity.verified) {
+                                    $state.transitionTo('site.auth.verify');
+                                }
+                                var temp = false;
+                                for (var key in identity.groups) {
+                                    if (identity.groups[key]) {
+                                        temp = true;
+                                        break;
+                                    }
+                                }
 
+                                if (!temp) {
+                                    $state.transitionTo('site.auth.browse.intro.step1');
+                                }
+                                return identity;
+                            }, function(err) {
+                                $location.path('/login');
+                                return null;
+                            });
+                        }
+                    ]
                 }
             });
 

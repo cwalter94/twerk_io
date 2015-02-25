@@ -56,7 +56,9 @@ var authCtrl = app.controller('authCtrl', function ($scope, $state, $rootScope, 
     });
 
     siteSocket.on('new:groupPost', function(groupPost) {
+
         groupFactory.addNewPost(groupPost).then(function(groupPost) {
+            $rootScope.$broadcast('new:groupPost', groupPost);
         }, function(err) {
             console.log(err);
         })

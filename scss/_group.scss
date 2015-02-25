@@ -19,6 +19,7 @@
     height: auto;
     background: rgb(238, 238, 238);
     border: 1px solid #CCC;
+    margin-bottom: 10px;
 
     -webkit-transition: height .5s;
     -moz-transition: height .5s;
@@ -56,6 +57,14 @@
       position: relative;
       float: left;
 
+      h1, h2, h3, h4, h5, h6 {
+        margin-bottom: 0px;
+      }
+
+      ul {
+        list-style-type: circle;
+      }
+
       .ta-editor {
         min-height: 100px;
         overflow: auto;
@@ -85,6 +94,7 @@
 
       text-angular {
         display: none;
+
       }
 
       .new-post-button {
@@ -110,16 +120,33 @@
   }
 
   .group-post-outer-container {
+    background: #FCFCFC;
+    border: 1px solid #ccc;
+    border-radius: 2px;
+    margin-bottom: 40px;
+    float: left;
+    position: relative;
+    width: 100%;
+
+    ul {
+      list-style-type: circle;
+    }
+
+    h1, h2, h3, h4, h5, h6 {
+      margin-bottom: 0px;
+    }
 
     .group-post-container {
-      width: calc(100% - 20px);
+      width: 100%;
       position: relative;
       float: left;
-      margin: 10px;
-      border: 1px solid #ccc;
-      border-radius: 2px;
+      border: none;
+      border-bottom: 1px solid #ccc;
       background: #FCFCFC;
       padding: 0px 15px;
+      padding-bottom: 10px;
+      margin-bottom: 8px;
+
 
       .picture {
         overflow-y: hidden;
@@ -279,12 +306,18 @@
       }
 
       .post-button {
-        background: #CFEEFF;
+        background: #FCFCFC;
         position: absolute;
         bottom: 30px;
         right: 5px;
         font-size: 12px;
         padding: 10px;
+
+        &:focus, &:active, &:hover {
+          border: inherit;
+          box-shadow: none;
+
+        }
       }
 
       .cancel-button {
@@ -338,8 +371,12 @@
     }
 
     >.new-comment-container {
-      width: calc(100% - 40px);
-      margin-left: 30px;
+      width: 100%;
+      margin: 0px;
+      border: none;
+      border-top: 1px solid #ccc;
+      background: rgba(103, 13, 167, 0.13);
+
     }
 
 

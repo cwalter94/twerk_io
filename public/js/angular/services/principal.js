@@ -50,8 +50,11 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                     $http.get('/api/user')
                         .success(function (data) {
                             _identity = data.user;
+                            _identity.groups = {};
+
                             $cookieStore.put('jwt', data.token);
                             _authenticated = true;
+
                             groupFactory.getGroups(_identity).then(function(groups) {
                                 _identity.groups = groups;
                                 deferred.resolve(_identity);

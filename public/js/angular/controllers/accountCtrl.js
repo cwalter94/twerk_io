@@ -42,19 +42,14 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
     });
 
     $scope.addGroup = function() {
+        groupFactory.addGroup($scope.courseSearch.selectedCourse).then(function(groups) {
+            groupFactory.getGroups(me).then(function(groups) {
+                console.log(groups);
+            });
 
-        $http({
-            url: '/api/groups/' + $scope.courseSearch.selectedCourse + '/addUser',
-            method: 'POST'
-        }).success(function(response) {
-            me.groups[response.group._id] = response.group;
-            me.groups[response.group._id].groupPosts = [];
-
-            $scope.courseSearch.selectedCourse = "";
-        }).error(function(err) {
-            flash.error = err;
+        }, function(err) {
+            console.log(err);
         });
-
     };
     $scope.saveStatusUpdate = function() {
         $scope.me.statusCreated = Date.now();
