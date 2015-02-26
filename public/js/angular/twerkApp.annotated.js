@@ -354,6 +354,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '',
                 controller: 'groupCtrl',
                 templateUrl: '/partials/inner/browse/groupAll',
+                reload: true,
                 resolve: {
                     me: ['principal', '$location', '$state',
                         function (principal, $location, $state) {
@@ -385,6 +386,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/{url}',
                 controller: 'groupCtrl',
                 templateUrl: '/partials/inner/browse/group',
+                reload: true,
                 resolve: {
                     me: ['principal', '$location', '$state',
                         function (principal, $location, $state) {
@@ -410,7 +412,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             });
                         }
                     ]
-                }
+                },
             });
 
 
@@ -599,7 +601,9 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
     $scope.addGroup = function() {
         groupFactory.addGroup($scope.courseSearch.selectedCourse).then(function(groups) {
             groupFactory.getGroups(me).then(function(groups) {
-                console.log(groups);
+                angular.forEach(groups, function(group) {
+                   groupFactory.getGroupPosts(group._id);
+                });
             });
 
         }, function(err) {
@@ -1083,9 +1087,9 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
     if (angular.isUndefined($stateParams.url)) {
         var promises = [];
 
-        for (var id in me.groups) {
-            promises.push(groupFactory.getGroupPosts(id));
-        }
+        angular.forEach(me.groups, function(group) {
+            promises.push(groupFactory.getGroupPosts(group._id));
+        });
 
         $q.all(promises).then(function(response) {
 
@@ -1246,7 +1250,7 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
             flash.error = 'Text must be included to make a post.';
         } else {
             var currGroup = null;
-            for (var id in groups) {
+            for (var id in me.groups) {
                 if (me.groups[id].url == $stateParams.url) {
                     currGroup = me.groups[id];
                     break;
@@ -1646,6 +1650,8 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
     return {
         getGroups: function(user) {
             var deferred = $q.defer();
+            var obj = this;
+
             if (_groups) {
                 deferred.resolve(_groups);
             } else {
@@ -1656,10 +1662,8 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
                     }
                 ).success(function(response) {
                         _groups = {};
-                        if (response.groups.length == 0) {
-                            deferred.resolve(_groups);
-                        }
                         for (var g = 0; g < response.groups.length; g++) {
+                            var temp = true;
                             _groupPosts[response.groups[g]._id] = [];
                             _groups[response.groups[g]._id] = response.groups[g];
                             _groups[response.groups[g]._id].groupPosts = null;
@@ -1675,27 +1679,34 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
         getGroupPosts: function(groupId) {
             var deferred = $q.defer();
 
-            if (_groups[groupId] && _groups[groupId].groupPosts) {
-                deferred.resolve(_groups[groupId].groupPosts);
-            } else {
-                if (!_groups[groupId].groupPosts) {
-                    _groups[groupId].groupPosts = [];
+            this.getGroups().then(function(groups) {
+                if (_groups[groupId] && _groups[groupId].groupPosts) {
+                    deferred.resolve(_groups[groupId].groupPosts);
+                } else {
+
+
+                    $http({
+                        url: '/api/groups/' + groupId + '/groupPosts',
+                        method: 'GET'
+                    }).success(function(response) {
+                        _groups[groupId].groupPosts = [];
+
+                        for (var p = 0; p < response.groupPosts.length; p++) {
+                            var groupPost = response.groupPosts[p];
+                            _groupPosts[groupPost._id] = groupPost;
+                            _groups[groupId].groupPosts.push(_groupPosts[groupPost._id]);
+                        }
+                        deferred.resolve(_groups[groupId].groupPosts);
+                    }).error(function(err) {
+                        deferred.reject(err);
+                    });
                 }
 
-                $http({
-                    url: '/api/groups/' + groupId + '/groupPosts',
-                    method: 'GET'
-                }).success(function(response) {
-                    for (var p = 0; p < response.groupPosts.length; p++) {
-                        var groupPost = response.groupPosts[p];
-                        _groupPosts[groupPost._id] = groupPost;
-                        _groups[groupId].groupPosts.push(_groupPosts[groupPost._id]);
-                    }
-                    deferred.resolve(_groups[groupId].groupPosts);
-                }).error(function(err) {
-                    deferred.reject(err);
-                });
-            }
+            }, function(err) {
+                deferred.reject(err);
+            });
+
+
             return deferred.promise;
         },
 
@@ -1735,14 +1746,20 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
 
         addGroup: function(selectedCourse) {
             var deferred = $q.defer();
+            var obj = this;
 
             $http({
                 url: '/api/groups/' + selectedCourse + '/addUser',
                 method: 'POST'
             }).success(function(response) {
                 _groups[response.group._id] = response.group;
-                _groups[response.group._id].groupPosts = [];
-                deferred.resolve(_groups[response.group._id]);
+                _groups[response.group._id].groupPosts = null;
+                obj.getGroupPosts(response.group._id).then(function(groupPosts) {
+
+                    deferred.resolve(_groups[response.group._id]);
+                }, function(err) {
+                    deferred.reject(err);
+                });
             }).error(function(err) {
                 deferred.reject(err);
             });
@@ -2126,7 +2143,13 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                         _identity = data.user;
                         $cookieStore.put('jwt', data.token);
                         _authenticated = true;
-                        deferred.resolve(_identity);
+                        groupFactory.getGroups(_identity).then(function(groups) {
+                            _identity.groups = groups;
+                            deferred.resolve(_identity);
+                        }, function(err) {
+                            console.log(err);
+                            deferred.resolve(_identity);
+                        });
 
                     })
                     .error(function (err) {

@@ -354,6 +354,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '',
                 controller: 'groupCtrl',
                 templateUrl: '/partials/inner/browse/groupAll',
+                reload: true,
                 resolve: {
                     me: ['principal', '$location', '$state',
                         function (principal, $location, $state) {
@@ -385,6 +386,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/{url}',
                 controller: 'groupCtrl',
                 templateUrl: '/partials/inner/browse/group',
+                reload: true,
                 resolve: {
                     me: ['principal', '$location', '$state',
                         function (principal, $location, $state) {
@@ -410,7 +412,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                             });
                         }
                     ]
-                }
+                },
             });
 
 

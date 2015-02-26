@@ -44,7 +44,9 @@ var accountCtrl = app.controller('accountCtrl', function($scope, $upload, $http,
     $scope.addGroup = function() {
         groupFactory.addGroup($scope.courseSearch.selectedCourse).then(function(groups) {
             groupFactory.getGroups(me).then(function(groups) {
-                console.log(groups);
+                angular.forEach(groups, function(group) {
+                   groupFactory.getGroupPosts(group._id);
+                });
             });
 
         }, function(err) {

@@ -4,6 +4,8 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
     return {
         getGroups: function(user) {
             var deferred = $q.defer();
+            var obj = this;
+
             if (_groups) {
                 deferred.resolve(_groups);
             } else {
@@ -14,10 +16,8 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
                     }
                 ).success(function(response) {
                         _groups = {};
-                        if (response.groups.length == 0) {
-                            deferred.resolve(_groups);
-                        }
                         for (var g = 0; g < response.groups.length; g++) {
+                            var temp = true;
                             _groupPosts[response.groups[g]._id] = [];
                             _groups[response.groups[g]._id] = response.groups[g];
                             _groups[response.groups[g]._id].groupPosts = null;
@@ -33,27 +33,34 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
         getGroupPosts: function(groupId) {
             var deferred = $q.defer();
 
-            if (_groups[groupId] && _groups[groupId].groupPosts) {
-                deferred.resolve(_groups[groupId].groupPosts);
-            } else {
-                if (!_groups[groupId].groupPosts) {
-                    _groups[groupId].groupPosts = [];
+            this.getGroups().then(function(groups) {
+                if (_groups[groupId] && _groups[groupId].groupPosts) {
+                    deferred.resolve(_groups[groupId].groupPosts);
+                } else {
+
+
+                    $http({
+                        url: '/api/groups/' + groupId + '/groupPosts',
+                        method: 'GET'
+                    }).success(function(response) {
+                        _groups[groupId].groupPosts = [];
+
+                        for (var p = 0; p < response.groupPosts.length; p++) {
+                            var groupPost = response.groupPosts[p];
+                            _groupPosts[groupPost._id] = groupPost;
+                            _groups[groupId].groupPosts.push(_groupPosts[groupPost._id]);
+                        }
+                        deferred.resolve(_groups[groupId].groupPosts);
+                    }).error(function(err) {
+                        deferred.reject(err);
+                    });
                 }
 
-                $http({
-                    url: '/api/groups/' + groupId + '/groupPosts',
-                    method: 'GET'
-                }).success(function(response) {
-                    for (var p = 0; p < response.groupPosts.length; p++) {
-                        var groupPost = response.groupPosts[p];
-                        _groupPosts[groupPost._id] = groupPost;
-                        _groups[groupId].groupPosts.push(_groupPosts[groupPost._id]);
-                    }
-                    deferred.resolve(_groups[groupId].groupPosts);
-                }).error(function(err) {
-                    deferred.reject(err);
-                });
-            }
+            }, function(err) {
+                deferred.reject(err);
+            });
+
+
             return deferred.promise;
         },
 
@@ -93,14 +100,20 @@ var groupFactory = app.factory('groupFactory', function($http, $q) {
 
         addGroup: function(selectedCourse) {
             var deferred = $q.defer();
+            var obj = this;
 
             $http({
                 url: '/api/groups/' + selectedCourse + '/addUser',
                 method: 'POST'
             }).success(function(response) {
                 _groups[response.group._id] = response.group;
-                _groups[response.group._id].groupPosts = [];
-                deferred.resolve(_groups[response.group._id]);
+                _groups[response.group._id].groupPosts = null;
+                obj.getGroupPosts(response.group._id).then(function(groupPosts) {
+
+                    deferred.resolve(_groups[response.group._id]);
+                }, function(err) {
+                    deferred.reject(err);
+                });
             }).error(function(err) {
                 deferred.reject(err);
             });

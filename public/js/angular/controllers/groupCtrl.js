@@ -14,9 +14,9 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
     if (angular.isUndefined($stateParams.url)) {
         var promises = [];
 
-        for (var id in me.groups) {
-            promises.push(groupFactory.getGroupPosts(id));
-        }
+        angular.forEach(me.groups, function(group) {
+            promises.push(groupFactory.getGroupPosts(group._id));
+        });
 
         $q.all(promises).then(function(response) {
 
@@ -177,7 +177,7 @@ var groupCtrl = app.controller('groupCtrl', function($scope, $http, $location, $
             flash.error = 'Text must be included to make a post.';
         } else {
             var currGroup = null;
-            for (var id in groups) {
+            for (var id in me.groups) {
                 if (me.groups[id].url == $stateParams.url) {
                     currGroup = me.groups[id];
                     break;

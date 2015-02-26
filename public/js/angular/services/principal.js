@@ -88,7 +88,13 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                         _identity = data.user;
                         $cookieStore.put('jwt', data.token);
                         _authenticated = true;
-                        deferred.resolve(_identity);
+                        groupFactory.getGroups(_identity).then(function(groups) {
+                            _identity.groups = groups;
+                            deferred.resolve(_identity);
+                        }, function(err) {
+                            console.log(err);
+                            deferred.resolve(_identity);
+                        });
 
                     })
                     .error(function (err) {
