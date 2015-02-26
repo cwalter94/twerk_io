@@ -528,8 +528,13 @@ exports.addReqUserToGroup = function (req, res) {
                         return res.status(401).end('An unknown error occurred in saving group users.');
                     }
 
-                    req.user.groups.push(group._id);
-                    req.user.classes.push(group.name);
+                    if (req.user.classes.indexOf(group.name) == -1) {
+                        req.user.classes.push(group.name);
+                    }
+
+                    if (req.user.groups.indexOf(group._id) == -1) {
+                        req.user.groups.push(group._id);
+                    }
 
                     req.user.save(function(err) {
                         if (err) {
@@ -540,6 +545,8 @@ exports.addReqUserToGroup = function (req, res) {
                     });
 
                 });
+            } else {
+                return res.status(401).end('User already in group.');
             }
         } else {
             var groupUrl = req.params.name.replace(/\s+/g,'').toLowerCase();
@@ -555,16 +562,19 @@ exports.addReqUserToGroup = function (req, res) {
                     console.log(err);
                     return res.status(401).end('An unknown error occurred in saving group.');
                 }
-                req.user.groups.push(newGroup._id);
-                if (req.user.classes.indexOf(newGroup.name) > -1) {
+                if (req.user.groups.indexOf(newGroup._id) == -1) {
+                    req.user.groups.push(newGroup._id);
+                }
+
+                if (req.user.classes.indexOf(newGroup.name) == -1) {
                     req.user.classes.push(newGroup.name);
                 }
+
                 req.user.save(function(err) {
                     if (err) {
                         console.log(err);
                         return res.status(401).end('An unknown error occurred in saving user.');
                     }
-                    console.log("REQ USER SUCCESSFULLY ADDED TO GROUP ", newGroup, req.user);
                     return res.json({token: req.token, group: newGroup});
                 });
 
@@ -585,6 +595,7 @@ exports.removeReqUserFromGroup = function(req, res) {
             return res.status(401).end('An unknown error occurred in removing user from group.');
         }
         group.users.splice(group.users.indexOf(req.user._id), 1);
+
         group.save(function(err) {
             if (err) {
                 console.log(err);
