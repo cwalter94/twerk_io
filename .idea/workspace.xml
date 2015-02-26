@@ -6,12 +6,9 @@
       <change type="DELETED" beforePath="$PROJECT_DIR$/public/js/application3.min.js" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/public/js/application3.min.js.map" afterPath="" />
       <change type="DELETED" beforePath="$PROJECT_DIR$/public/js/application4.min.js" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/controllers/accountCtrl.js" afterPath="$PROJECT_DIR$/public/js/angular/controllers/accountCtrl.js" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/application2.min.js.map" afterPath="$PROJECT_DIR$/public/js/application2.min.js.map" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/application2.min.js" afterPath="$PROJECT_DIR$/public/js/application2.min.js" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/controllers/groupCtrl.js" afterPath="$PROJECT_DIR$/public/js/angular/controllers/groupCtrl.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/services/groupFactory.js" afterPath="$PROJECT_DIR$/public/js/angular/services/groupFactory.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/services/principal.js" afterPath="$PROJECT_DIR$/public/js/angular/services/principal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/js/angular/twerkApp.js" afterPath="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="twerk_io.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -166,8 +163,8 @@
           <file leaf-file-name="groupCtrl.js" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/groupCtrl.js">
               <provider selected="true" editor-type-id="text-editor">
-                <state vertical-scroll-proportion="0.61190736" vertical-offset="0" max-vertical-offset="3705">
-                  <caret line="37" column="49" selection-start-line="37" selection-start-column="49" selection-end-line="37" selection-end-column="49" />
+                <state vertical-scroll-proportion="0.14884233" vertical-offset="0" max-vertical-offset="3705">
+                  <caret line="9" column="127" selection-start-line="9" selection-start-column="127" selection-end-line="9" selection-end-column="127" />
                   <folding />
                 </state>
               </provider>
@@ -277,8 +274,8 @@
         <option value="$PROJECT_DIR$/public/js/angular/controllers/accountCtrl.js" />
         <option value="$PROJECT_DIR$/public/js/angular/services/principal.js" />
         <option value="$PROJECT_DIR$/public/js/angular/twerkApp.js" />
-        <option value="$PROJECT_DIR$/public/js/angular/controllers/groupCtrl.js" />
         <option value="$PROJECT_DIR$/public/js/angular/services/groupFactory.js" />
+        <option value="$PROJECT_DIR$/public/js/angular/controllers/groupCtrl.js" />
       </list>
     </option>
   </component>
@@ -1198,12 +1195,12 @@
       <workItem from="1424614300388" duration="5330000" />
       <workItem from="1424806267792" duration="134000" />
       <workItem from="1424807986716" duration="8079000" />
-      <workItem from="1424965022540" duration="3862000" />
+      <workItem from="1424965022540" duration="4064000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="465685000" />
+    <option name="totallyTimeSpent" value="465887000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="4" y="23" width="1676" height="1027" extended-state="6" />
@@ -1646,18 +1643,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/groupCtrl.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.61190736" vertical-offset="0" max-vertical-offset="3705">
-          <caret line="37" column="49" selection-start-line="37" selection-start-column="49" selection-end-line="37" selection-end-column="49" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/js/angular/services/groupFactory.js">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.46306506" vertical-offset="120" max-vertical-offset="2400">
           <caret line="36" column="0" selection-start-line="36" selection-start-column="0" selection-end-line="36" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/js/angular/controllers/groupCtrl.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.14884233" vertical-offset="0" max-vertical-offset="3705">
+          <caret line="9" column="127" selection-start-line="9" selection-start-column="127" selection-end-line="9" selection-end-column="127" />
           <folding />
         </state>
       </provider>

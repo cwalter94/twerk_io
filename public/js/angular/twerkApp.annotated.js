@@ -1080,7 +1080,7 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
     $scope.currGroup = null;
 
     $scope.defaultGroupPost = {
-        text: '<h2>welcome to twerkspaces!</h2><p><br/></p><h4>how it works:</h4><ul><ul><li>Add classes on the profile page or intro page: <a href="http://twerk.io/browse/intro/step1"><u>http://twerk.io/browse/intro/step1</u></a></li><li>Select twerkspaces above to create posts that are visible to everyone in that class.</li><li>Find people who are twerking too.</li><li>Then twerk with those people.</li></ul></ul>'
+        text: '<h2>welcome to twerkspaces!</h2><p><br/></p><h4>how it works:</h4><ul><ul><li>Add classes on the profile page or <a href="http://www.twerk.io/browse/intro/step1"><u>intro page</u></a></li><li>Select twerkspaces above to create posts that are visible to everyone in that class.</li><li>Find people who are twerking too.</li><li>Then twerk with those people.</li></ul></ul>'
     };
 
 
