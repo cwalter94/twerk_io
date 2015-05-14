@@ -122,7 +122,6 @@ module.exports = function(grunt) {
             css: {
                 files: [
                     'public/css/bootstrap.min.css',
-                    'public/font-awesome/css/font-awesome.min.css',
                     'public/css/animate.css',
                     'public/css/style.css',
                     'public/color/default.css',

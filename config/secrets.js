@@ -18,7 +18,7 @@
 
 module.exports = {
 
-    db: process.env.MONGOLAB_URI || process.env.MONGODB || 'mongodb://localhost:27017/twerk_io',
+    db: process.env.MONGOLAB_URI || process.env.MONGODB || 'mongodb://localhost:27017/twerk',
     jwt: process.env.JWT_SECRET || 'Kanye west is the best rapper alive.',
     admin_pw: process.env.ADMIN_PW || 'adminpasswordchangethis',
     sessionSecret: process.env.SESSION_SECRET || 'Your Session Secret goes here',

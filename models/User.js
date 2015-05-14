@@ -33,7 +33,7 @@ var userSchema = new mongoose.Schema({
 
 userSchema.pre('save', function (next) {
     var user = this;
-    user.lastOnline = Date.now();
+    //user.lastOnline = Date.now();
     if (!user.isModified('password')) return next();
 
     bcrypt.genSalt(5, function (err, salt) {

@@ -1,0 +1,31 @@
+[class*='col-'] {
+  &.no-gutter {
+
+    padding-right:0;
+    padding-left:0;
+  }
+
+  &.no-gutter-left {
+    padding-left: 0;
+  }
+
+  &.no-gutter-right {
+    padding-right: 0;
+  }
+}
+
+
+.btn-post {
+  border: 1px solid $main-purple;
+  background: $main-light-purple;
+  color: #fff;
+  font-size: 12px;
+  line-height: 24px;
+  padding: 10px;
+
+  &:hover, &:focus {
+    border: 1px solid $main-purple;
+    background: $main-purple;
+    color: #fff;
+  }
+}

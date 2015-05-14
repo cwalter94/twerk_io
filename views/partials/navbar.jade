@@ -1,36 +1,43 @@
 nav.navbar.navbar-custom.navbar-fixed-top(role="navigation", ng-class="{'transparent-nav': getUrl() !== '/'}")
     .container
-        .navbar-header.page-scroll
-            button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-main-collapse")
-                i.fa.fa-bars
-            a.navbar-brand(ui-sref="{{principal.isAuthenticated() ? 'site.auth.browse.all' : 'site.home.intro'}}")
-                h1 Twerk.io
-        // Collect the nav links, forms, and other content for toggling
-        .collapse.navbar-collapse.navbar-right.navbar-main-collapse
-            ul.nav.navbar-nav
-                li.float-right(ng-show="principal.isAuthenticated()")
-                    a(ui-sref="site.auth.browse.all")
-                        div.nav-icon.glyphicon.glyphicon-globe
-                        div.nav-icon-text Browse
+        .row
+            .col-xs-2
+                .navbar-header.page-scroll
+                    button.navbar-toggle(type="button", data-toggle="collapse", data-target=".navbar-main-collapse")
+                        i.fa.fa-bars
+                    a.navbar-brand(ui-sref="{{principal.isAuthenticated() ? 'site.auth.browse.feed' : 'site.home.intro'}}")
+                        h1 Twerk.io
+            .col-md-6.col-sm-6.col-xs-9
+                .search-container(ng-if='principal.isAuthenticated()')
+                    .search-box-outer
+                        i.fa.fa-search.search-icon
+                        input.search-box-inner(ng-model="search", placeholder="Filter by class, status updates, and name")
 
-                li.float-right(ng-show="principal.isAuthenticated()")
-                    a(ui-sref="site.auth.messages", style="padding-left: 0px; padding-right: 0px;")
-                        div.message-icon-container
-                            div.nav-icon.glyphicon.glyphicon-envelope(ng-class="{'left' : unreadMessages > 0}")
-                            div.message-indicator(ng-class="{'visible' : unreadMessages > 0}") {{unreadMessages}}
-                        div.nav-icon-text Messages
+            .col-sm-4.col-xs-1
+                // Collect the nav links, forms, and other content for toggling
+                .collapse.navbar-collapse.navbar-right.navbar-main-collapse
+                    ul.nav.navbar-nav
+                        li.float-right(ng-show="principal.isAuthenticated()")
+                            a(ui-sref="site.auth.browse.all")
+                                div.nav-icon.glyphicon.glyphicon-tasks
+                                div.nav-icon-text Browse
+
+                        li.float-right(ng-show="principal.isAuthenticated()")
+                            a(ui-sref="site.auth.messages", style="padding-left: 0px; padding-right: 0px;")
+                                div.message-icon-container
+                                    div.nav-icon.glyphicon.glyphicon-envelope(ng-class="{'left' : unreadMessages > 0}")
+                                    div.message-indicator(ng-class="{'visible' : unreadMessages > 0}") {{unreadMessages}}
+                                div.nav-icon-text Messages
+                        li.float-right(ng-show="principal.isAuthenticated()")
+                            a(ui-sref="site.auth.profile")
+                                div.nav-icon.glyphicon.glyphicon-user
+                                div.nav-icon-text Profile
+
+                        li.float-right(ng-show="principal.isAuthenticated()")
+                            a(ng-click="logout()")
+                                div.nav-icon.glyphicon.glyphicon-log-out
+                                div.nav-icon-text Logout
 
 
-                li.float-right(ng-show="principal.isAuthenticated()")
-                    a(ui-sref="site.auth.profile")
-                        div.nav-icon.glyphicon.glyphicon-user
-                        div.nav-icon-text Profile
-
-                li.float-right(ng-show="principal.isAuthenticated()")
-                    a(ng-click="logout()")
-                        div.nav-icon.glyphicon.glyphicon-log-out
-                        div.nav-icon-text Logout
-
-
-                li(ng-if="!principal.isAuthenticated()")
-                    a(ui-sref="site.home.login") Login
+                        li(ng-if="!principal.isAuthenticated()")
+                            a(ui-sref="site.home.login") Login

@@ -1,7 +1,7 @@
 var secrets = require('../config/secrets');
 var User = require('../models/User');
 var Group = require('../models/Group');
-var GroupPost = require('../models/GroupPost');
+var LivePost = require('../models/LivePost');
 var Comment = require('../models/Comment');
 
 
@@ -94,19 +94,6 @@ exports.getGroupsForReqUser = function (req, res) {
     });
 };
 
-exports.getGroupPostsForGroupId = function (req, res) {
-    if (!req.params.groupId) {
-        return res.status(401).end('Group URL is required to find posts');
-    }
-
-    GroupPost.find({groupId: req.params.groupId}, function(err, groupPosts) {
-        if (err) {
-           console.log(err);
-           return res.status(401).end('An error occurred while finding Group Posts. Please try again later.');
-        }
-        return res.json({token: req.token, groupPosts: groupPosts});
-    });
-};
 
 exports.getAllRoomsForReqUser = function (req, res) {
     Room.find({users: req.user._id}, '_id users messages lastMessage lastMessageCreated unreadMessages', function (err, rooms) {
@@ -618,12 +605,13 @@ exports.removeReqUserFromGroup = function(req, res) {
     });
 };
 
-exports.getCommentsForGroupPostId = function(req, res) {
-    if (!req.params.groupPostId) {
-        return res.status(404).end('GroupPost ID required.');
+
+exports.getCommentsForLivePostId = function(req, res) {
+    if (!req.params.livePostId) {
+        return res.status(404).end('LivePost ID required.');
     }
 
-    Comment.find({groupPostId: req.params.groupPostId}, function(err, comments) {
+    Comment.find({livePostId: req.params.livePostId}, function(err, comments) {
         if (err) {
             console.log(err);
             return res.status(401).end('An unknown error occurred in resolving comments.');
@@ -633,6 +621,43 @@ exports.getCommentsForGroupPostId = function(req, res) {
     });
 };
 
+exports.getLivePosts = function(req, res) {
+    if (req.user) {
+        var sortString = '-createdAt';
+
+        LivePost.find({})
+            .limit(10)
+            .sort(sortString)
+            .exec(function(err, livePosts) {
+                if (err) {
+                    return res.status(401).end('An error occurred while retrieving posts.');
+                }
+                return res.json({token: req.token, livePosts: livePosts});
+            });
+    } else {
+        return res.status(401).end('An unknown error occurred.');
+    }
+};
+
+exports.getMoreLivePosts = function(req, res) {
+    if (req.user && req.params.skip) {
+        var sortString = '-createdAt';
+        var skip = req.params.skip;
+
+        LivePost.find({})
+            .limit(10)
+            .sort(sortString)
+            .skip(skip)
+            .exec(function(err, livePosts) {
+                if (err) {
+                    return res.status(401).end('An error occurred while retrieving posts.');
+                }
+                return res.json({token: req.token, livePosts: livePosts});
+            });
+    } else {
+        return res.status(401).end('An unknown error occurred.');
+    }
+};
 
 exports.postUserPicture = function (req, res, next) {
     var form = new multiparty.Form();

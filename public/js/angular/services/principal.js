@@ -1,5 +1,5 @@
-var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', '$cookieStore', '$state', 'socket', 'groupFactory',
-    function ($q, $http, $timeout, $window, $cookieStore, $state, socket, groupFactory) {
+var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', '$cookieStore', '$state', 'socket', 'livePostFactory',
+    function ($q, $http, $timeout, $window, $cookieStore, $state, socket, livePostFactory) {
         var _identity = undefined,
             _authenticated = false,
             _verified = false;
@@ -50,18 +50,9 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                     $http.get('/api/user')
                         .success(function (data) {
                             _identity = data.user;
-                            _identity.groups = {};
-
                             $cookieStore.put('jwt', data.token);
                             _authenticated = true;
-
-                            groupFactory.getGroups(_identity).then(function(groups) {
-                                _identity.groups = groups;
-                                deferred.resolve(_identity);
-                            }, function(err) {
-                                console.log(err);
-                                deferred.resolve(_identity);
-                            });
+                            deferred.resolve(_identity);
                         })
                         .error(function (err) {
                             _identity = null;
@@ -88,13 +79,7 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                         _identity = data.user;
                         $cookieStore.put('jwt', data.token);
                         _authenticated = true;
-                        groupFactory.getGroups(_identity).then(function(groups) {
-                            _identity.groups = groups;
-                            deferred.resolve(_identity);
-                        }, function(err) {
-                            console.log(err);
-                            deferred.resolve(_identity);
-                        });
+                        deferred.resolve(_identity);
 
                     })
                     .error(function (err) {

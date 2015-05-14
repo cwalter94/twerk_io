@@ -1,0 +1,52 @@
+script(type='text/ng-template', id='comment.html', src="/js/angular/partials/comment.html")
+
+
+.new-live-post-container
+    .picture
+        img(src="{{me.picture}}")
+    .content
+        .row
+            .col-md-2.col-xs-12.no-gutter
+                label(style="margin: 10px 0px; font-size: 19px;") I'm working on...
+            .col-md-10.col-xs-12
+                .row
+                    .col-md-3.col-xs-12(style="padding-right: 0px;")
+                        input(type="hidden", ng-model="courseSearch.selectedDepartment")
+                        ui-select.address-select(ng-model='courseSearch.selectedDepartment', theme='selectize')
+                            ui-select-match(placeholder='Department') {{courseSearch.selectedDepartment}}
+                            ui-select-choices(repeat='dept in courseSearch.departments | filter:$select.search | orderBy: dept : false')
+                                | {{dept}}
+                    .col-md-3.col-xs-12.no-gutter-right(style="padding-left: 5px;")
+                        input(type="hidden", ng-model="courseSearch.selectedCourse")
+                        ui-select.address-select(ng-model='courseSearch.selectedCourse', theme='selectize')
+                            ui-select-match(placeholder='Course') {{courseSearch.selectedCourse}}
+                            ui-select-choices(repeat='course in courseSearch.courses | filter:$select.search | orderBy: course : false')
+                                | {{course}}
+                    label(style="margin: 10px; font-size: 20px; float: left; position: relative") at
+                    .col-md-4.col-xs-11.no-gutter-left
+                        .address-select
+                            .selectize-input
+                                input(ng-model="newLivePost.location", placeholder="Location")
+                    .col-md-1
+                        button.btn.btn-post(ng-click="submitLivePost()") Submit
+
+
+
+.live-post-outer-container.clearfix(ng-repeat="livePost in livePosts | orderBy: 'createdAt' : true",
+ng-init="getUser(livePost)")
+    .live-post-container
+        .picture
+            img(ng-src="{{userFactory.getThumbnail(livePost.user.picture)}}")
+        .content
+            .row
+                .col-xs-10.content
+                    .row
+                        div.name.pull-left {{livePost.user.name}}
+                        .group-name.pull-right(once-text="groups[livePost.groupId].name")
+                        .date.pull-right(once-text="formatDate(livePost.createdAt)")
+                    .post-text(once-html="livePost.text")
+
+    div(ng-repeat="child in livePost.comments", ng-init="getUser(child)", ng-include="'/js/angular/partials/comment.html'")
+    .live-post-textarea-container.new-comment-container
+        text-angular(ng-model="livePost.newCommentText", ta-toolbar="commentTextarea.toolbar", placeholder="Click to type a comment...")
+        button.btn.btn-large.post-button(ng-click="submitComment(livePost, null)") Submit

@@ -47,7 +47,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         function (principal, $location, $state) {
                             return principal.identity().then(function(identity) {
                                 if (identity != null) {
-                                    $state.transitionTo('site.auth.browse.all');
+                                    $state.transitionTo('site.auth.browse.feed');
                                 }
                                 return identity;
                             }, function(err) {
@@ -97,7 +97,10 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/repassword',
                 templateUrl: '/partials/inner/register/form-repassword'
             })
-
+            .state('site.home.live', {
+                url: '/live',
+                templateUrl: '/partials/inner/home/live'
+            })
 
 
 
@@ -350,10 +353,10 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/step2',
                 templateUrl: '/partials/inner/intro/step2'
             })
-            .state('site.auth.browse.all', {
+            .state('site.auth.browse.feed', {
                 url: '',
-                controller: 'groupCtrl',
-                templateUrl: '/partials/inner/browse/groupAll',
+                controller: 'feedCtrl',
+                templateUrl: '/partials/inner/browse/feed',
                 reload: true,
                 resolve: {
                     me: ['principal', '$location', '$state',
@@ -381,38 +384,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         }
                     ]
                 }
-            })
-            .state('site.auth.browse.group', {
-                url: '/{url}',
-                controller: 'groupCtrl',
-                templateUrl: '/partials/inner/browse/group',
-                reload: true,
-                resolve: {
-                    me: ['principal', '$location', '$state',
-                        function (principal, $location, $state) {
-                            return principal.identity().then(function(identity) {
-                                if (identity && !identity.verified) {
-                                    $state.transitionTo('site.auth.verify');
-                                }
-                                var temp = false;
-                                for (var key in identity.groups) {
-                                    if (identity.groups[key]) {
-                                        temp = true;
-                                        break;
-                                    }
-                                }
-
-                                if (!temp) {
-                                    $state.transitionTo('site.auth.browse.intro.step1');
-                                }
-                                return identity;
-                            }, function(err) {
-                                $location.path('/login');
-                                return null;
-                            });
-                        }
-                    ]
-                },
             });
 
 

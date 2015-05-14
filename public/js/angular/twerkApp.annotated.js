@@ -47,7 +47,7 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         function (principal, $location, $state) {
                             return principal.identity().then(function(identity) {
                                 if (identity != null) {
-                                    $state.transitionTo('site.auth.browse.all');
+                                    $state.transitionTo('site.auth.browse.feed');
                                 }
                                 return identity;
                             }, function(err) {
@@ -97,7 +97,10 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/repassword',
                 templateUrl: '/partials/inner/register/form-repassword'
             })
-
+            .state('site.home.live', {
+                url: '/live',
+                templateUrl: '/partials/inner/home/live'
+            })
 
 
 
@@ -350,10 +353,10 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                 url: '/step2',
                 templateUrl: '/partials/inner/intro/step2'
             })
-            .state('site.auth.browse.all', {
+            .state('site.auth.browse.feed', {
                 url: '',
-                controller: 'groupCtrl',
-                templateUrl: '/partials/inner/browse/groupAll',
+                controller: 'feedCtrl',
+                templateUrl: '/partials/inner/browse/feed',
                 reload: true,
                 resolve: {
                     me: ['principal', '$location', '$state',
@@ -381,38 +384,6 @@ var app = angular.module('twerkApp', ['ui.utils', 'angular-loading-bar', 'ngAnim
                         }
                     ]
                 }
-            })
-            .state('site.auth.browse.group', {
-                url: '/{url}',
-                controller: 'groupCtrl',
-                templateUrl: '/partials/inner/browse/group',
-                reload: true,
-                resolve: {
-                    me: ['principal', '$location', '$state',
-                        function (principal, $location, $state) {
-                            return principal.identity().then(function(identity) {
-                                if (identity && !identity.verified) {
-                                    $state.transitionTo('site.auth.verify');
-                                }
-                                var temp = false;
-                                for (var key in identity.groups) {
-                                    if (identity.groups[key]) {
-                                        temp = true;
-                                        break;
-                                    }
-                                }
-
-                                if (!temp) {
-                                    $state.transitionTo('site.auth.browse.intro.step1');
-                                }
-                                return identity;
-                            }, function(err) {
-                                $location.path('/login');
-                                return null;
-                            });
-                        }
-                    ]
-                },
             });
 
 
@@ -730,7 +701,7 @@ var accountCtrl = app.controller('accountCtrl', ['$scope', '$upload', '$http', '
     };
 }]);
 
-var authCtrl = app.controller('authCtrl', ['$scope', '$state', '$rootScope', 'me', 'siteSocket', 'userFactory', 'messageFactory', 'groupFactory', 'allRooms', function ($scope, $state, $rootScope, me, siteSocket, userFactory, messageFactory, groupFactory, allRooms) {
+var authCtrl = app.controller('authCtrl', ['$scope', '$state', '$rootScope', 'me', 'siteSocket', 'userFactory', 'messageFactory', 'livePostFactory', 'allRooms', function ($scope, $state, $rootScope, me, siteSocket, userFactory, messageFactory, livePostFactory, allRooms) {
 
 
     siteSocket.emit('user:init', me._id);
@@ -787,14 +758,15 @@ var authCtrl = app.controller('authCtrl', ['$scope', '$state', '$rootScope', 'me
         messageFactory.addMessage(message.to, message, me._id, siteSocket);
     });
 
-    siteSocket.on('new:groupPost', function(groupPost) {
+    siteSocket.on('new:livePost', function(livePost) {
 
-        groupFactory.addNewPost(groupPost).then(function(groupPost) {
-            $rootScope.$broadcast('new:groupPost', groupPost);
+        livePostFactory.addNewPost(livePost).then(function(livePost) {
+            $rootScope.$broadcast('new:livePost', livePost);
         }, function(err) {
             console.log(err);
         })
     });
+
 
     siteSocket.on('new:comment', function(comment) {
         groupFactory.addNewComment(comment);
@@ -1071,59 +1043,14 @@ var dashboardCtrl = app.controller('dashboardCtrl', ['$scope', '$http', '$locati
 
 }]);
 
-var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q', 'flash', '$state', '$stateParams', 'me', 'siteSocket', 'principal', 'userFactory', 'groupFactory', '$rootScope', function($scope, $http, $location, $q, flash, $state, $stateParams, me, siteSocket, principal, userFactory, groupFactory, $rootScope) {
-    $scope.groupPosts = [];
+var feedCtrl = app.controller('feedCtrl', ['$scope', '$http', '$location', '$q', 'flash', '$state', '$stateParams', 'me', 'siteSocket', 'principal', 'userFactory', 'livePostFactory', '$rootScope', function($scope, $http, $location, $q, flash, $state, $stateParams, me, siteSocket, principal, userFactory, livePostFactory, $rootScope) {
+    $scope.livePosts = [];
     $scope.userFactory = userFactory;
     $scope.groups = me.groups;
     $scope.Date = Date;
     $scope.groups = me.groups;
     $scope.currGroup = null;
-
-    $scope.defaultGroupPost = {
-        text: '<h2>welcome to twerkspaces!</h2><p><br/></p><h4>how it works:</h4><ul><ul><li>Add classes on the profile page or <a href="http://www.twerk.io/browse/intro/step1"><u>intro page</u></a></li><li>Select twerkspaces above to create posts that are visible to everyone in that class.</li><li>Find people who are twerking too.</li><li>Then twerk with those people.</li></ul></ul>'
-    };
-
-
-    if (angular.isUndefined($stateParams.url)) {
-        var promises = [];
-
-        angular.forEach(me.groups, function(group) {
-            promises.push(groupFactory.getGroupPosts(group._id));
-        });
-
-        $q.all(promises).then(function(response) {
-
-            angular.forEach(response, function(postSet) {
-                angular.forEach(postSet, function(post) {
-                    groupFactory.getCommentsForGroupPost(post);
-                });
-                $scope.groupPosts = $scope.groupPosts.concat(postSet);
-            });
-        }, function(err) {
-            console.log(err);
-            flash.error = err;
-        });
-    } else {
-        for (var id in me.groups) {
-            if (me.groups[id].url == $stateParams.url) {
-                groupFactory.getGroupPosts(id).then(function(response) {
-                    $scope.currGroup = me.groups[id];
-                    $scope.groupPosts = response;
-
-                    var promises = [];
-                    angular.forEach($scope.groupPosts, function(groupPost) {
-                        groupFactory.getCommentsForGroupPost(groupPost).then(function(response) {
-
-                        });
-                    });
-                }, function(err) {
-                    console.log(err);
-                });
-                break;
-            }
-        }
-    }
-
+    $scope.me = me;
 
     $scope.courseSearch = {
         selectedCourse: "",
@@ -1132,31 +1059,13 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
         selectedDepartment: ""
     };
 
-    $scope.addGroup = function() {
+    $http({
+        url: '/api/departments',
+        method: 'GET'
+    }).success(function(data) {
+        $scope.courseSearch.departments = data.departments;
+    });
 
-        $http({
-            url: '/api/groups/' + $scope.courseSearch.selectedCourse + '/addUser',
-            method: 'POST'
-        }).success(function(response) {
-            me.groups[response.group._id] = response.group;
-            me.groups[response.group._id].groupPosts = [];
-            $scope.courseSearch.selectedCourse = "";
-        }).error(function(err) {
-            flash.error = err;
-        });
-
-    };
-
-    $scope.removeGroup = function(group) {
-        $http({
-            url: '/api/groups/' + group._id + '/removeUser',
-            method: 'POST'
-        }).success(function(response) {
-            delete me.groups[group._id];
-        }).error(function(err) {
-            flash.error = err;
-        });
-    };
 
     $scope.getCoursesForDepartment = function(selectedDepartment) {
         $http({
@@ -1204,7 +1113,11 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
 
     $scope.formatDate = principal.formatDate;
 
-    $scope.groupPostTextarea = {
+    $scope.newLivePost = {
+        location: "",
+        classes: [],
+        createdByName: me.name,
+        createdBy: me._id
     };
 
     $scope.commentTextarea = {
@@ -1242,72 +1155,61 @@ var groupCtrl = app.controller('groupCtrl', ['$scope', '$http', '$location', '$q
 
     $scope.cancelTextarea = function() {
         $scope.textareaMinimize = true;
-        $scope.groupPostTextarea.text = "";
+        $scope.livePostTextarea.text = "";
     };
 
-    $scope.submitGroupPost = function() {
-        if ($scope.groupPostTextarea.text == null) {
-            flash.error = 'Text must be included to make a post.';
+    $scope.submitLivePost = function() {
+
+        if ($scope.newLivePost.location === "" || $scope.courseSearch.selectedCourse == null) {
+            flash.error = 'Class and location must be present to make a post.';
         } else {
-            var currGroup = null;
-            for (var id in me.groups) {
-                if (me.groups[id].url == $stateParams.url) {
-                    currGroup = me.groups[id];
-                    break;
-                }
-            }
-
-            if (currGroup != null) {
-                var newPost = {
-                    groupId: currGroup._id,
-                    text: $scope.groupPostTextarea.text,
-                    createdBy: me._id
-                };
-
-                groupFactory.submitNewPost(newPost, siteSocket);
-                $scope.groupPostTextarea.text = "";
-            }
+            $scope.newLivePost.classes.push($scope.courseSearch.selectedCourse);
+            livePostFactory.submitNewPost($scope.newLivePost, siteSocket);
+            $scope.newLivePost.location = "";
+            $scope.newLivePost.classes = [];
+            $scope.courseSearch.selectedCourse = "";
+            $scope.courseSearch.selectedDepartment = "";
 
         }
     };
 
-    $scope.submitComment = function(groupPost, parent) {
+    $scope.submitComment = function(livePost, parent) {
         if ($scope.commentTextarea.text != "" && parent) {
             var c = {
                 text: $scope.commentTextarea.text,
-                groupPostId: groupPost._id,
-                groupId: groupPost.groupId,
-                parentId: parent != null ? parent._id : groupPost._id,
+                livePostId: livePost._id,
+                groupId: livePost.groupId,
+                parentId: parent != null ? parent._id : livePost._id,
                 createdBy: me._id
             };
 
             groupFactory.submitNewComment(c, siteSocket);
 
             $scope.commentTextarea.text = "";
-            groupPost.newCommentText = "";
+            livePost.newCommentText = "";
             $scope.commentTextarea.currentPostComment = null;
-        } else if (groupPost.newCommentText) {
+        } else if (livePost.newCommentText) {
             var c = {
-                text: groupPost.newCommentText,
-                groupPostId: groupPost._id,
-                groupId: groupPost.groupId,
-                parentId: parent != null ? parent._id : groupPost._id,
+                text: livePost.newCommentText,
+                livePostId: livePost._id,
+                groupId: livePost.groupId,
+                parentId: parent != null ? parent._id : livePost._id,
                 createdBy: me._id
             };
 
             groupFactory.submitNewComment(c, siteSocket);
 
             $scope.commentTextarea.text = "";
-            groupPost.newCommentText = "";
+            livePost.newCommentText = "";
             $scope.commentTextarea.currentPostComment = null;
         } else {
             flash.err = 'Empty comments cannot be posted.';
         }
     }
 
-    siteSocket.on('new:groupPost', function(groupPost) {
-        if ($scope.groupPosts.indexOf(groupPost) == -1) {
-            $scope.groupPosts.push(groupPost);
+    siteSocket.on('new:livePost', function(livePost) {
+        if ($scope.livePosts.indexOf(livePost) == -1) {
+            $scope.livePosts.push(livePost);
         }
     });
 
@@ -1644,96 +1546,94 @@ var authorization = app.factory('authorization', ['$rootScope', '$state', 'princ
     }
 ])
 
-var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $q) {
-    var _groupPosts = {}, _groups = null, _comments = {};
+var livePostFactory = app.factory('livePostFactory', ['$http', '$q', function($http, $q) {
+    var _livePosts = {}, _livePostArr = [], _comments = {}, _allPostsLoaded = false, _unconfirmedPosts = {};
 
     return {
-        getGroups: function(user) {
+        getLivePosts: function() {
             var deferred = $q.defer();
-            var obj = this;
 
-            if (_groups) {
-                deferred.resolve(_groups);
-            } else {
-                $http(
-                    {
-                        url: '/api/groups',
-                        method: 'GET'
+            if (_livePostArr.length == 0) {
+                $http({
+                    url: '/api/liveposts',
+                    method: 'GET'
+                }).success(function(response) {
+
+                    for (var p = 0; p < response.livePosts.length; p++) {
+                        var livePost = response.livePosts[p];
+                        _livePosts[livePost._id] = livePost;
+                        _livePostArr.push(livePost);
                     }
-                ).success(function(response) {
-                        _groups = {};
-                        for (var g = 0; g < response.groups.length; g++) {
-                            var temp = true;
-                            _groupPosts[response.groups[g]._id] = [];
-                            _groups[response.groups[g]._id] = response.groups[g];
-                            _groups[response.groups[g]._id].groupPosts = null;
-                        }
-                        deferred.resolve(_groups);
-                    }).error(function(err) {
-                        deferred.reject(err);
-                    });
+                    deferred.resolve(_livePostArr);
+                }).error(function(err) {
+                    deferred.reject(err);
+                });
+
+                return deferred.promise;
+
+            } else {
+                return _livePostArr;
             }
-            return deferred.promise;
+
         },
 
-        getGroupPosts: function(groupId) {
+        getMoreLivePosts: function() {
             var deferred = $q.defer();
 
-            this.getGroups().then(function(groups) {
-                if (_groups[groupId] && _groups[groupId].groupPosts) {
-                    deferred.resolve(_groups[groupId].groupPosts);
-                } else {
-
-
-                    $http({
-                        url: '/api/groups/' + groupId + '/groupPosts',
-                        method: 'GET'
-                    }).success(function(response) {
-                        _groups[groupId].groupPosts = [];
-
-                        for (var p = 0; p < response.groupPosts.length; p++) {
-                            var groupPost = response.groupPosts[p];
-                            _groupPosts[groupPost._id] = groupPost;
-                            _groups[groupId].groupPosts.push(_groupPosts[groupPost._id]);
+            if (!_allPostsLoaded) {
+                $http({
+                    url: '/api/moreliveposts',
+                    method: 'GET',
+                    params: {
+                        skip: _livePostArr.length
+                    }
+                }).success(function(response) {
+                    if (!response.livePosts.length) {
+                        _allPostsLoaded = true;
+                        deferred.reject('No More Posts To Display.');
+                    } else {
+                        for (var p = 0; p < response.livePosts.length; p++) {
+                            var livePost = response.livePosts[p];
+                            _livePosts[livePost._id] = livePost;
+                            _livePostArr.push(livePost);
                         }
-                        deferred.resolve(_groups[groupId].groupPosts);
-                    }).error(function(err) {
-                        deferred.reject(err);
-                    });
-                }
+                    }
+                    deferred.resolve(_livePostArr);
+                }).error(function(err) {
+                    deferred.reject(err);
+                });
 
-            }, function(err) {
-                deferred.reject(err);
-            });
-
+            } else {
+                deferred.reject('No More Posts To Display.');
+            }
 
             return deferred.promise;
         },
 
-        getCommentsForGroupPost: function(groupPost) {
+        getCommentsForLivePost: function(livePost) {
             var deferred = $q.defer();
             var promises = [];
 
             $http({
-                url: '/api/comments/' + groupPost._id,
+                url: '/api/comments/' + livePost._id,
                 method: 'GET'
             }).success(function(response) {
-                _groupPosts[groupPost._id].comments = [];
+                _livePosts[livePost._id].comments = [];
                 angular.forEach(response.comments, function(c) {
                     _comments[c._id] = c;
-                    if (c.parentId == c.groupPostId) {
-                        _groupPosts[groupPost._id].comments.push(_comments[c._id]);
+                    if (c.parentId == c.livePostId) {
+                        _livePosts[livePost._id].comments.push(_comments[c._id]);
                     }
                     c.children = [];
                 });
 
                 angular.forEach(response.comments, function(c) {
-                    if (c.parentId !== c.groupPostId) {
+                    if (c.parentId !== c.livePostId) {
                         _comments[c.parentId].children.push(c);
                     }
                 });
 
-                deferred.resolve(_groupPosts[groupPost._id].comments);
+                deferred.resolve(_livePosts[livePost._id].comments);
 
             }).error(function(err) {
                 console.log(err);
@@ -1744,39 +1644,15 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
 
         },
 
-        addGroup: function(selectedCourse) {
-            var deferred = $q.defer();
-            var obj = this;
-
-            $http({
-                url: '/api/groups/' + selectedCourse + '/addUser',
-                method: 'POST'
-            }).success(function(response) {
-                _groups[response.group._id] = response.group;
-                _groups[response.group._id].groupPosts = null;
-                obj.getGroupPosts(response.group._id).then(function(groupPosts) {
-
-                    deferred.resolve(_groups[response.group._id]);
-                }, function(err) {
-                    deferred.reject(err);
-                });
-            }).error(function(err) {
-                deferred.reject(err);
-            });
-
-            return deferred.promise;
-        },
-
         submitNewPost: function(post, socket) {
-            socket.emit('new:groupPost', post);
+            socket.emit('new:livePost', post);
         },
 
-        addNewPost: function(groupPost) {
+        addNewPost: function(livePost) {
             var deferred = $q.defer();
-            _groupPosts[groupPost._id] = groupPost;
-            _groupPosts[groupPost._id].comments = [];
-            _groups[groupPost.groupId].groupPosts.push(_groupPosts[groupPost._id]);
-            deferred.resolve(groupPost);
+            _livePosts[livePost._id] = livePost;
+            _livePosts[livePost._id].comments = [];
+            deferred.resolve(livePost);
             return deferred.promise;
         },
 
@@ -1789,9 +1665,9 @@ var groupFactory = app.factory('groupFactory', ['$http', '$q', function($http, $
             comment.children = [];
             _comments[comment._id] = comment;
 
-            if (comment.groupPostId == comment.parentId) {
-                console.log(_groupPosts, comment);
-                _groupPosts[comment.groupPostId].comments.push(comment);
+            if (comment.livePostId == comment.parentId) {
+                console.log(_livePosts, comment);
+                _livePosts[comment.livePostId].comments.push(comment);
             } else {
                 _comments[comment.parentId].children.push(_comments[comment._id]);
             }
@@ -2053,8 +1929,8 @@ var messageFactory = app.factory('messageFactory', ['$http', '$q', '$rootScope',
     }
 }])
 
-var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', '$cookieStore', '$state', 'socket', 'groupFactory',
-    function ($q, $http, $timeout, $window, $cookieStore, $state, socket, groupFactory) {
+var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', '$cookieStore', '$state', 'socket', 'livePostFactory',
+    function ($q, $http, $timeout, $window, $cookieStore, $state, socket, livePostFactory) {
         var _identity = undefined,
             _authenticated = false,
             _verified = false;
@@ -2110,7 +1986,7 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                             $cookieStore.put('jwt', data.token);
                             _authenticated = true;
 
-                            groupFactory.getGroups(_identity).then(function(groups) {
+                            livePostFactory.getGroups(_identity).then(function(groups) {
                                 _identity.groups = groups;
                                 deferred.resolve(_identity);
                             }, function(err) {
@@ -2143,7 +2019,7 @@ var principal = app.factory('principal', ['$q', '$http', '$timeout', '$window', 
                         _identity = data.user;
                         $cookieStore.put('jwt', data.token);
                         _authenticated = true;
-                        groupFactory.getGroups(_identity).then(function(groups) {
+                        livePostFactory.getGroups(_identity).then(function(groups) {
                             _identity.groups = groups;
                             deferred.resolve(_identity);
                         }, function(err) {

@@ -1,7 +1,7 @@
 var Message = require('../models/Message');
 var Room = require('../models/Room');
 var User = require('../models/User');
-var GroupPost = require('../models/GroupPost');
+var LivePost = require('../models/LivePost');
 var Group = require('../models/Group');
 var Comment = require('../models/Comment');
 var mongoose = require('mongoose');
@@ -175,15 +175,15 @@ exports.socketHandler = function (allUsers) {
             socket.broadcast.emit('update:status', data);
         });
 
-        socket.on('new:groupPost', function(groupPost) {
-            var newPost = new GroupPost(groupPost);
+        socket.on('new:livePost', function(livePost) {
+            var newPost = new LivePost(livePost);
             newPost.save(function(err) {
                 if (err) {
                     socket.emit('error', err);
                     console.log(err);
                 } else {
-                    socket.broadcast.to(newPost.groupId).emit('new:groupPost', newPost);
-                    socket.emit('new:groupPost', newPost);
+                    socket.broadcast.emit('new:livePost', newPost);
+                    socket.emit('new:livePost', newPost);
                 }
             });
         });

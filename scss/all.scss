@@ -1,3 +1,6 @@
+@import 'variables';
+@import '../public/bower_components/font-awesome/scss/font-awesome';
+
 #formViews {
 
   &.ng-enter, &.ng-leave {
@@ -147,7 +150,7 @@ html {
     }
 
 
-
+    @import 'nav';
 
     #statusButtons {
       a {
@@ -558,7 +561,7 @@ html {
         height: 46px !important;
 
         input {
-          line-height: 24px;
+          line-height: 24px !important;
           font-size: 18px;
         }
       }
@@ -717,7 +720,7 @@ html {
     }
 
     @import "browse";
-    @import 'group';
+    @import 'feed';
 
 
     #messages-container {
@@ -1193,3 +1196,5 @@ html {
     }
   }
 }
+
+@import 'bootstrap_override';
